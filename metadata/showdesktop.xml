@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<compiz>
+  <plugin name="showdesktop" useBcop="true">
+    <short>Show desktop</short>
+    <long>Access your desktop easily</long>
+	<category>Desktop</category>
+    <feature>showdesktop</feature>
+    <screen>
+      <group>
+        <short>Misc. Options</short>
+        <option name="speed" type="float">
+          <short>Speed</short>
+          <long>Window movement speed</long>
+          <default>1.2</default>
+          <min>0.1</min>
+          <max>50.0</max>
+          <precision>0.1</precision>
+        </option>
+        <option name="timestep" type="float">
+          <short>Timestep</short>
+          <long>Window movement timestep</long>
+          <default>0.1</default>
+          <min>0.1</min>
+          <max>50.0</max>
+          <precision>0.1</precision>
+        </option>
+        <option name="direction" type="int">
+          <short>Movement Direction</short>
+          <long>Direction of window movement</long>
+		  <default>6</default>
+		  <min>0</min>
+		  <max>6</max>
+		  <desc>
+			  <value>0</value>
+			  <name>Up</name>
+		  </desc>
+		  <desc>
+			  <value>1</value>
+			  <name>Down</name>
+		  </desc>
+		  <desc>
+			  <value>2</value>
+			  <name>Left</name>
+		  </desc>
+		  <desc>
+			  <value>3</value>
+			  <name>Right</name>
+		  </desc>
+		  <desc>
+			  <value>4</value>
+			  <name>Up/Down</name>
+		  </desc>
+		  <desc>
+			  <value>5</value>
+			  <name>Left/Right</name>
+		  </desc>
+		  <desc>
+			  <value>6</value>
+			  <name>To Corners</name>
+		  </desc>
+        </option>
+        <option name="window_match" type="match">
+          <short>Window Types</short>
+          <long>Window types that should be moved out of sight when entering showdesktop mode</long>
+          <default>type=toolbar | type=utility | type=dialog | type=normal</default>
+        </option>
+      </group>
+      <group>
+        <short>Appearance</short>
+        <option name="window_opacity" type="float">
+          <short>Window Opacity</short>
+          <long>Window opacity when showdesktop'd</long>
+          <default>0.3</default>
+          <min>0.1</min>
+          <max>1.0</max>
+          <precision>0.01</precision>
+        </option>
+        <option name="window_part_size" type="int">
+          <short>Window Part Size</short>
+          <long>Window part size when showdesktop'd</long>
+          <default>20</default>
+          <min>0</min>
+          <max>300</max>
+        </option>
+      </group>
+    </screen>
+  </plugin>
+</compiz>
