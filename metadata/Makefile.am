@@ -1,7 +1,6 @@
 metadir = $(metadatadir)
 meta_DATA =	         \
 	fakeargb.xml \
-	showdesktop.xml \
 	snow.xml \
 	tile.xml
 
