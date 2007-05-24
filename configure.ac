@@ -153,7 +153,6 @@ Makefile
 metadata/Makefile
 src/Makefile
 src/fakeargb/Makefile
-src/showdesktop/Makefile
 src/snow/Makefile
 src/tile/Makefile
 ])
