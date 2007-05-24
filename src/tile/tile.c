@@ -257,8 +257,8 @@ static void tileDonePaintScreen(CompScreen * s)
 	    removeScreenGrab(s, ts->grabIndex, NULL);
 	    ts->grabIndex = 0;
 	}
-	else
-    	    damageScreen(s);
+
+	damageScreen(s);
     }
 
     UNWRAP(ts, s, donePaintScreen);
