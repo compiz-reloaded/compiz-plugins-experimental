@@ -73,6 +73,7 @@ typedef struct _TileWindow {
     unsigned int savedMaxState;
     Bool savedValid;
 
+    Bool needConfigure;
     Bool alreadyResized;
 
     WindowAnimationType animationType;
@@ -111,7 +112,8 @@ static Bool tilePaintWindow(CompWindow * w,
     {
 	WindowPaintAttrib wAttrib = *attrib;
 	CompTransform wTransform = *transform;
-	float animationDuration = tileGetAnimationDuration(s->display);
+	float progress = (float)ts->msResizing / 
+	                 (float)tileGetAnimationDuration(s->display);
 
 	switch (tileGetAnimateType(s->display))
 	{
@@ -120,7 +122,7 @@ static Bool tilePaintWindow(CompWindow * w,
 	       */
 	    case AnimateTypeDropFromTop:
 		matrixRotate(&wTransform,
-			     100.0f / animationDuration * ts->msResizing - 100, 
+			     (progress * 100.0f) - 100.0f,
 			     0.0f, 0.0f, 1.0f);
 		mask |= PAINT_WINDOW_TRANSFORMED_MASK;
 		break;
@@ -129,8 +131,7 @@ static Bool tilePaintWindow(CompWindow * w,
 	       Zoom animation
 	       */
 	    case AnimateTypeZoom:
-		matrixTranslate(&wTransform, 0, 0, 
-				-1 + ts->msResizing / animationDuration);
+		matrixTranslate(&wTransform, 0, 0, progress - 1.0f);
 		mask |= PAINT_WINDOW_TRANSFORMED_MASK;
 		break;
 
@@ -138,12 +139,10 @@ static Bool tilePaintWindow(CompWindow * w,
     	       Slide animation
 	       */
 	    case AnimateTypeSlide:
-		if (ts->msResizing < 0.75 * animationDuration)
-		    wAttrib.opacity = OPAQUE / 2;
+		if (progress < 0.75f)
+		    wAttrib.opacity /= 2;
 		else
-		    wAttrib.opacity = OPAQUE / 2 + OPAQUE / 2 * 
-			(ts->msResizing - 0.75 * animationDuration) /
-			(0.25 * animationDuration);
+		    wAttrib.opacity *= (0.5f + 2 * (progress - 0.75f));
 
 		if (ts->msResizing > tw->animationNum * ts->oneDuration) 
 		{
@@ -181,25 +180,21 @@ static Bool tilePaintWindow(CompWindow * w,
 	       */
 	    case AnimateTypeFade:
 		// first half of the animation, fade out
-		if (ts->msResizing < 0.40f * animationDuration)
+		if (progress < 0.4f)
+		    wAttrib.opacity -= wAttrib.opacity * progress / 0.4f;
+		else 
 		{
-		    wAttrib.opacity = OPAQUE - OPAQUE * 
-			ts->msResizing / (0.40f * animationDuration);
-		    mask |= PAINT_WINDOW_TRANSFORMED_MASK;
-		}
-		else if (ts->msResizing > 0.40f * animationDuration && !tw->alreadyResized) 
-		{
-		    // resize window right after first half
-		    tileSetNewWindowSize(w);
-		    dontDraw = TRUE;
-		}
-		else if (ts->msResizing > 0.60f * animationDuration) 
-    		    // second half of animation, fade in
-		{
-		    wAttrib.opacity = OPAQUE * 
-			(ts->msResizing - 0.60f * animationDuration) / 
-			(0.40f * animationDuration);
-		    mask |= PAINT_WINDOW_TRANSFORMED_MASK;
+		    if (progress > 0.6f && tw->alreadyResized)
+		    {
+			// second half of animation, fade in
+			wAttrib.opacity *= (progress - 0.6f) / 0.4f;
+		    }
+		    else 
+		    {
+			if (tw->needConfigure)
+			    tileSetNewWindowSize (w);
+			dontDraw = TRUE;
+		    }
 		}
 		break;
 
@@ -599,6 +594,7 @@ static Bool placeWin(CompWindow *w, int x, int y, int width, int height)
     tw->newCoords.height = height;
 
     tw->alreadyResized = FALSE; // window is not resized now
+    tw->needConfigure = TRUE;
 
     switch (tileGetAnimateType(w->screen->display))
     {
@@ -641,6 +637,7 @@ static Bool tileSetNewWindowSize(CompWindow *w)
     	    maximizeWindow(w, 0);
 
 	configureXWindow (w, CWX | CWY | CWWidth | CWHeight, &xwc);
+	tw->needConfigure = FALSE;
 
 	return TRUE;
 }
@@ -1036,6 +1033,7 @@ static Bool tileInitWindow(CompPlugin * p, CompWindow * w)
     tw->animationType = NoAnimation;
     tw->savedMaxState = 0;
     tw->isTiled = FALSE;
+    tw->needConfigure = FALSE;
 	
     // random color, from group.c thanks to the author for doing it
     tw->outlineColor[0] = rand() % 0xFFFF;
