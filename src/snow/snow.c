@@ -102,7 +102,7 @@ struct _SnowScreen
 
 	CompTimeoutHandle timeoutHandle;
 
-	PaintScreenProc paintScreen;
+	PaintOutputProc paintOutput;
 	DrawWindowProc drawWindow;
 
 	SnowTexture *snowTex;
@@ -311,10 +311,11 @@ static void beginRendering(SnowScreen * ss, CompScreen * s)
 // -------------------------------------------------  FUNCTIONS ----------------------------------------------------
 
 static Bool
-snowPaintScreen(CompScreen * s,
+snowPaintOutput(CompScreen * s,
 								const ScreenPaintAttrib * sa,
 								const CompTransform		* transform,
-								Region region, int output, unsigned int mask)
+								Region region, CompOutput *output, 
+								unsigned int mask)
 {
 	Bool status;
 
@@ -326,9 +327,9 @@ snowPaintScreen(CompScreen * s,
 		mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
 	}
 
-	UNWRAP(ss, s, paintScreen);
-	status = (*s->paintScreen) (s, sa, transform, region, output, mask);
-	WRAP(ss, s, paintScreen, snowPaintScreen);
+	UNWRAP(ss, s, paintOutput);
+	status = (*s->paintOutput) (s, sa, transform, region, output, mask);
+	WRAP(ss, s, paintOutput, snowPaintOutput);
 
 	if (snowGetSnowOverWindows(s->display) && ss->active)
 	{
@@ -514,7 +515,7 @@ static Bool snowInitScreen(CompPlugin * p, CompScreen * s)
 	updateSnowTextures(s);
 	setupDisplayList(ss);
 
-	WRAP(ss, s, paintScreen, snowPaintScreen);
+	WRAP(ss, s, paintOutput, snowPaintOutput);
 	WRAP(ss, s, drawWindow, snowDrawWindow);
 
 	ss->timeoutHandle = compAddTimeout(snowGetSnowUpdateDelay(s->display), stepSnowPositions, s);
@@ -543,7 +544,7 @@ static void snowFiniScreen(CompPlugin * p, CompScreen * s)
 		free(ss->allSnowFlakes);
 
 	//Restore the original function
-	UNWRAP(ss, s, paintScreen);
+	UNWRAP(ss, s, paintOutput);
 	UNWRAP(ss, s, drawWindow);
 
 	//Free the pointer
