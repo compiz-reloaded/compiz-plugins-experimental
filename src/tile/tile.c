@@ -61,7 +61,7 @@ typedef struct _TileScreen {
     WindowResizeNotifyProc windowResizeNotify;
     PreparePaintScreenProc preparePaintScreen;
     DonePaintScreenProc donePaintScreen;
-    PaintScreenProc paintScreen;
+    PaintOutputProc paintOutput;
 } TileScreen;
 
 typedef struct _TileWindow {
@@ -261,10 +261,11 @@ static void tileDonePaintScreen(CompScreen * s)
     WRAP(ts, s, donePaintScreen, tileDonePaintScreen);
 }
 
-static Bool tilePaintScreen(CompScreen * s,
+static Bool tilePaintOutput(CompScreen * s,
 			    const ScreenPaintAttrib * sa,
 			    const CompTransform		* transform,
-			    Region region, int output, unsigned int mask)
+			    Region region, CompOutput *output, 
+			    unsigned int mask)
 {
     Bool status;
     CompTransform sTransform = *transform;
@@ -274,9 +275,9 @@ static Bool tilePaintScreen(CompScreen * s,
     if (ts->grabIndex)
 	mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
 
-    UNWRAP(ts, s, paintScreen);
-    status = (*s->paintScreen) (s, sa, transform, region, output, mask);
-    WRAP(ts, s, paintScreen, tilePaintScreen);
+    UNWRAP(ts, s, paintOutput);
+    status = (*s->paintOutput) (s, sa, transform, region, output, mask);
+    WRAP(ts, s, paintOutput, tilePaintOutput);
 
     // Check if animation is enabled, there is resizing on screen and only outline should be drawn
 
@@ -497,7 +498,7 @@ static Bool tileInitScreen(CompPlugin * p, CompScreen * s)
 	ts->oneDuration = 0;
 
 	// Wrap plugin functions
-	WRAP(ts, s, paintScreen, tilePaintScreen);
+	WRAP(ts, s, paintOutput, tilePaintOutput);
 	WRAP(ts, s, preparePaintScreen, tilePreparePaintScreen);
 	WRAP(ts, s, donePaintScreen, tileDonePaintScreen);
 	WRAP(ts, s, windowResizeNotify, tileResizeNotify);
@@ -513,7 +514,7 @@ static void tileFiniScreen(CompPlugin * p, CompScreen * s)
 	freeWindowPrivateIndex(s, ts->windowPrivateIndex);
 
 	//Restore the original function
-	UNWRAP(ts, s, paintScreen);
+	UNWRAP(ts, s, paintOutput);
 	UNWRAP(ts, s, preparePaintScreen);
 	UNWRAP(ts, s, donePaintScreen);
 	UNWRAP(ts, s, windowResizeNotify);
