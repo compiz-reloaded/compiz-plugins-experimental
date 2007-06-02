@@ -60,6 +60,7 @@ typedef struct _TileScreen {
     PaintWindowProc paintWindow;
     WindowResizeNotifyProc windowResizeNotify;
     PreparePaintScreenProc preparePaintScreen;
+    PaintScreenProc paintScreen;
     DonePaintScreenProc donePaintScreen;
     PaintOutputProc paintOutput;
 } TileScreen;
@@ -232,6 +233,22 @@ static void tilePreparePaintScreen(CompScreen * s, int msSinceLastPaint)
     WRAP(ts, s, preparePaintScreen, tilePreparePaintScreen);
 }
 
+static void tilePaintScreen(CompScreen * s, CompOutput * outputs,
+			    int numOutputs, unsigned int mask)
+{
+    TILE_SCREEN(s);
+
+    if (ts->grabIndex)
+    {
+	outputs = &s->fullscreenOutput;
+	numOutputs = 1;
+    }
+
+    UNWRAP(ts, s, paintScreen);
+    (*s->paintScreen) (s, outputs, numOutputs, mask);
+    WRAP(ts, s, paintScreen, tilePaintScreen);
+}
+
 static void tileDonePaintScreen(CompScreen * s)
 {
     TILE_SCREEN(s);
@@ -281,7 +298,8 @@ static Bool tilePaintOutput(CompScreen * s,
 
     // Check if animation is enabled, there is resizing on screen and only outline should be drawn
 
-    if (ts->grabIndex && 
+    if (ts->grabIndex &&
+	(output->id == ~0) &&
 	(tileGetAnimateType(s->display) == AnimateTypeFilledOutline))
     {
 	CompWindow *w;
@@ -500,6 +518,7 @@ static Bool tileInitScreen(CompPlugin * p, CompScreen * s)
 	// Wrap plugin functions
 	WRAP(ts, s, paintOutput, tilePaintOutput);
 	WRAP(ts, s, preparePaintScreen, tilePreparePaintScreen);
+	WRAP(ts, s, paintScreen, tilePaintScreen);
 	WRAP(ts, s, donePaintScreen, tileDonePaintScreen);
 	WRAP(ts, s, windowResizeNotify, tileResizeNotify);
 	WRAP(ts, s, paintWindow, tilePaintWindow);
@@ -516,6 +535,7 @@ static void tileFiniScreen(CompPlugin * p, CompScreen * s)
 	//Restore the original function
 	UNWRAP(ts, s, paintOutput);
 	UNWRAP(ts, s, preparePaintScreen);
+	UNWRAP(ts, s, paintScreen);
 	UNWRAP(ts, s, donePaintScreen);
 	UNWRAP(ts, s, windowResizeNotify);
 	UNWRAP(ts, s, paintWindow);
