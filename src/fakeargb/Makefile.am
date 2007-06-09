@@ -3,7 +3,7 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libfakeargb_la_LDFLAGS = $(PFLAGS)
 libfakeargb_la_LIBADD = @COMPIZ_LIBS@
-libfakeargb_la_SOURCES = fakeargb_options.c fakeargb.c
+libfakeargb_la_SOURCES = fakeargb_options.c fakeargb_options.h fakeargb.c
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \

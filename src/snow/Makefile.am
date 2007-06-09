@@ -3,7 +3,7 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libsnow_la_LDFLAGS = $(PFLAGS)
 libsnow_la_LIBADD = @COMPIZ_LIBS@
-libsnow_la_SOURCES = snow_options.c snow.c
+libsnow_la_SOURCES = snow_options.c snow_options.h snow.c
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \

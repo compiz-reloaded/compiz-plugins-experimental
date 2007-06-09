@@ -3,7 +3,7 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libtile_la_LDFLAGS = $(PFLAGS)
 libtile_la_LIBADD = @COMPIZ_LIBS@
-libtile_la_SOURCES = tile_options.c tile.c
+libtile_la_SOURCES = tile_options.c tile_options.h tile.c
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \
