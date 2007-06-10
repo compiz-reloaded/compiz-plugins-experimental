@@ -441,10 +441,12 @@ static void updateSnowTextures(CompScreen * s)
 								   &ss->snowTex[count].height);
 		if (!ss->snowTex[count].loaded)
 		{
-			printf("[Snow]: Texture not found : %s\n", sd->snowTexFiles[i].s);
+			compLogMessage (s->display, "snow", CompLogLevelWarn,
+							"Texture not found : %s", sd->snowTexFiles[i].s);
 			continue;
 		}
-		printf("[Snow]: Loaded Texture %s\n", sd->snowTexFiles[i].s);
+		compLogMessage (s->display, "snow", CompLogLevelInfo,
+						"Loaded Texture %s", sd->snowTexFiles[i].s);
 		CompMatrix *mat = &ss->snowTex[count].tex.matrix;
 		SnowTexture *sTex = &ss->snowTex[count];
 
