@@ -89,7 +89,7 @@
         <option name="snow_textures" type="list">
           <short>Snow Textures</short>
           <long>Snow textures</long>
-          <hints>file;image;pngonly;</hints>
+          <hints>file;image;</hints>
           <type>string</type>
         </option>
       </group>
