@@ -1,17 +1,17 @@
 <compiz>
-	<plugin name="fakeargb" useBcop="true">
-		<_short>Color Opacity</_short>
-		<_long>Alter window opacity based on color.</_long>
-		<category>Extras</category>
-		<display>
-			<option name="window_toggle" type="action">
-				<_short>Toggle Window Fake ARGB</_short>
-				<_long>Toggle window fake ARGB.</_long>
-				<allowed key="true" button="true"/>
-				<default>
-					<key>&lt;Super&gt;f</key>
-				</default>
-			</option>
-		</display>
-	</plugin>
+    <plugin name="fakeargb" useBcop="true">
+	<_short>Color Opacity</_short>
+	<_long>Alter window opacity based on color.</_long>
+	<category>Extras</category>
+	<display>
+	    <option name="window_toggle" type="action">
+		<_short>Toggle Window Fake ARGB</_short>
+		<_long>Toggle window fake ARGB.</_long>
+		<allowed key="true" button="true"/>
+		<default>
+		   <key>&lt;Super&gt;f</key>
+		</default>
+	    </option>
+	</display>
+    </plugin>
 </compiz>
