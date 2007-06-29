@@ -1,143 +1,143 @@
 <?xml version="1.0"?>
 <compiz>
   <plugin name="tile" useBcop="true">
-    <_short>Tile</_short>
-    <_long>Tile windows</_long>
+    <short>Tile</short>
+    <long>Tile windows</long>
 	<category>Window Management</category>
     <display>
       <group>
-        <_short>Options</_short>
+        <short>Options</short>
         <option name="animate_type" type="int">
-          <_short>Tiling Animation Type</_short>
-          <_long>Selects the animation used while tiling</_long>
+          <short>Tiling Animation Type</short>
+          <long>Selects the animation used while tiling</long>
 		  <default>0</default>
 		  <min>0</min>
 		  <max>5</max>
 		  <desc>
 			  <value>0</value>
-			  <_name>None</_name>
+			  <name>None</name>
 		  </desc>
 		  <desc>
 			  <value>1</value>
-			  <_name>Filled Outline</_name>
+			  <name>Filled Outline</name>
 		  </desc>
 		  <desc>
 			  <value>2</value>
-			  <_name>Slide</_name>
+			  <name>Slide</name>
 		  </desc>
 		  <desc>
 			  <value>3</value>
-			  <_name>Zoom</_name>
+			  <name>Zoom</name>
 		  </desc>
 		  <desc>
 			  <value>4</value>
-			  <_name>Drop From Top</_name>
+			  <name>Drop From Top</name>
 		  </desc>
 		  <desc>
 			  <value>5</value>
-			  <_name>Fade</_name>
+			  <name>Fade</name>
 		  </desc>
         </option>
         <option name="animation_duration" type="int">
-          <_short>Animation Duration</_short>
-          <_long>Duration (in ms) of the tiling animation</_long>
+          <short>Animation Duration</short>
+          <long>Duration (in ms) of the tiling animation</long>
           <default>1000</default>
           <min>100</min>
           <max>2000</max>
         </option>
         <option name="tile_toggle_type" type="int">
-          <_short>Tiling Method For Toggle</_short>
-          <_long>Choose the tiling type you want when using toggle.</_long>
+          <short>Tiling Method For Toggle</short>
+          <long>Choose the tiling type you want when using toggle.</long>
 		  <default>0</default>
 		  <min>0</min>
 		  <max>4</max>
 		  <desc>
 			  <value>0</value>
-			  <_name>Tile</_name>
+			  <name>Tile</name>
 		  </desc>
 		  <desc>
 			  <value>1</value>
-			  <_name>Left</_name>
+			  <name>Left</name>
 		  </desc>
 		  <desc>
 			  <value>2</value>
-			  <_name>Tile Vertically</_name>
+			  <name>Tile Vertically</name>
 		  </desc>
 		  <desc>
 			  <value>3</value>
-			  <_name>Tile Horizontally</_name>
+			  <name>Tile Horizontally</name>
 		  </desc>
 		  <desc>
 			  <value>4</value>
-			  <_name>Cascade</_name>
+			  <name>Cascade</name>
 		  </desc>
         </option>
         <option name="tile_join" type="bool">
-          <_short>Join Windows (EXPERIMENTAL)</_short>
-          <_long>Tries to join the windows together when horizontal, vertical or left tiling is enabled so that when you resize a window surrounding windows resize accordingly. This may cause problems if you dont leave them enough space.</_long>
+          <short>Join Windows (EXPERIMENTAL)</short>
+          <long>Tries to join the windows together when horizontal, vertical or left tiling is enabled so that when you resize a window surrounding windows resize accordingly. This may cause problems if you dont leave them enough space.</long>
           <default>false</default>
         </option>
         <option name="tile_delta" type="int">
-          <_short>Cascade Delta</_short>
-          <_long>Distance between windows when using cascade</_long>
+          <short>Cascade Delta</short>
+          <long>Distance between windows when using cascade</long>
           <default>35</default>
           <min>0</min>
           <max>250</max>
         </option>
         <option name="tile_left_occupancy" type="int">
-          <_short>Left Occupancy</_short>
-          <_long>Occupancy percentage for window placed left. This number is percentage of screen width, which the active window will have it as width when tiled. Applies to Left tiling type.</_long>
+          <short>Left Occupancy</short>
+          <long>Occupancy percentage for window placed left. This number is percentage of screen width, which the active window will have it as width when tiled. Applies to Left tiling type.</long>
           <default>60</default>
           <min>20</min>
           <max>80</max>
         </option>
         <option name="exclude_match" type="match">
-          <_short>Excluded Windows</_short>
-          <_long>Windows which should be excluded from tiling</_long>
+          <short>Excluded Windows</short>
+          <long>Windows which should be excluded from tiling</long>
           <default/>
         </option>
       </group>
       <group>
-        <_short>Key Bindings</_short>
+        <short>Key Bindings</short>
         <option name="tile_vertically" type="action">
-          <_short>Tile Windows Vertically</_short>
-          <_long>Move and resize all visible windows so that they have full height, same width and occupy whole screen.</_long>
+          <short>Tile Windows Vertically</short>
+          <long>Move and resize all visible windows so that they have full height, same width and occupy whole screen.</long>
           <allowed/>
           <default/>
         </option>
         <option name="tile_horizontally" type="action">
-          <_short>Tile Windows Horizontally</_short>
-          <_long>Move and resize all visible windows so that they have full width, same height and occupy whole screen.</_long>
+          <short>Tile Windows Horizontally</short>
+          <long>Move and resize all visible windows so that they have full width, same height and occupy whole screen.</long>
           <allowed/>
           <default/>
         </option>
         <option name="tile_tile" type="action">
-          <_short>Tile Windows</_short>
-          <_long>Move and resize all visible windows both vertically and horizontally, so that the occupy whole screen and are in a grid.</_long>
+          <short>Tile Windows</short>
+          <long>Move and resize all visible windows both vertically and horizontally, so that the occupy whole screen and are in a grid.</long>
           <allowed key="true"/>
           <default>
             <key>&lt;Super&gt;&lt;Shift&gt;a</key>
           </default>
         </option>
         <option name="tile_cascade" type="action">
-          <_short>Cascade Windows</_short>
-          <_long>Move and resize all visible windows with the delta value set for cascading.</_long>
+          <short>Cascade Windows</short>
+          <long>Move and resize all visible windows with the delta value set for cascading.</long>
           <allowed key="true"/>
           <default>
             <key>&lt;Super&gt;&lt;Shift&gt;s</key>
           </default>
         </option>
         <option name="tile_restore" type="action">
-          <_short>Restore Windows</_short>
-          <_long>Restore windows to their original position they had before tiling.</_long>
+          <short>Restore Windows</short>
+          <long>Restore windows to their original position they had before tiling.</long>
           <allowed key="true"/>
           <default>
             <key>&lt;Super&gt;&lt;Shift&gt;z</key>
           </default>
         </option>
         <option name="tile_toggle" type="action">
-          <_short>Toggle Tiling</_short>
-          <_long>Toggle between tile and restore</_long>
+          <short>Toggle Tiling</short>
+          <long>Toggle between tile and restore</long>
           <allowed key="true"/>
           <default>
             <key>&lt;Super&gt;&lt;Shift&gt;x</key>
@@ -147,4 +147,3 @@
     </display>
   </plugin>
 </compiz>
-
