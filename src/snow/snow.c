@@ -321,7 +321,7 @@ snowPaintOutput(CompScreen * s,
 
 	SNOW_SCREEN(s);
 
-	if (!snowGetSnowOverWindows(s->display) && ss->active)
+	if (ss->active && !snowGetSnowOverWindows(s->display))
 	{
 		// This line is essential. Without it the snow will be rendered above (some) other windows.
 		mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
@@ -331,7 +331,7 @@ snowPaintOutput(CompScreen * s,
 	status = (*s->paintOutput) (s, sa, transform, region, output, mask);
 	WRAP(ss, s, paintOutput, snowPaintOutput);
 
-	if (snowGetSnowOverWindows(s->display) && ss->active)
+	if (ss->active && snowGetSnowOverWindows(s->display))
 	{
 		CompTransform sTransform = *transform;
 		transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &sTransform);
@@ -349,7 +349,7 @@ static Bool
 snowDrawWindow(CompWindow * w, const CompTransform *transform, const FragmentAttrib *attrib,
 				Region region, unsigned int mask)
 {
-	int status;;
+	int status;
 
 	SNOW_SCREEN(w->screen);
 
@@ -359,8 +359,11 @@ snowDrawWindow(CompWindow * w, const CompTransform *transform, const FragmentAtt
 	WRAP(ss, w->screen, drawWindow, snowDrawWindow);
 
 	// Check whether this is the Desktop Window
-	if (w->type & CompWindowTypeDesktopMask && ss->active && !snowGetSnowOverWindows(w->screen->display))
+	if (ss->active && (w->type & CompWindowTypeDesktopMask) && 
+		!snowGetSnowOverWindows(w->screen->display))
+	{
 		beginRendering(ss, w->screen);
+	}
 
 	return status;
 }
