@@ -322,10 +322,6 @@ CompPluginVTable fakeVTable = {
 	0,
 	0,
 	0,
-	0,
-	0,
-	0,
-	0,
 	0
 };
 
