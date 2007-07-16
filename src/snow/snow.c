@@ -708,11 +708,7 @@ CompPluginVTable snowVTable = {
 	0,
 	0,
 	0,							/*snowGetScreenOptions */
-	0,							/*snowSetScreenOption */
-	0,
-	0,
-	0,
-	0
+	0							/*snowSetScreenOption */
 };
 
 CompPluginVTable *getCompPluginInfo(void)
