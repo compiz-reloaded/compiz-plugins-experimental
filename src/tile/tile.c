@@ -1258,11 +1258,7 @@ CompPluginVTable tileVTable = {
     0,
     0,
     0,			/*tileGetScreenOptions */
-    0,			/*tileSetScreenOption */
-    0,
-    0,
-    0,
-    0
+    0			/*tileSetScreenOption */
 };
 
 CompPluginVTable*
