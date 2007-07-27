@@ -4,6 +4,13 @@
 		<_short>Snow</_short>
 		<_long>Snow for Compiz</_long>
 		<category>Extras</category>
+		<deps>
+			<relation type="after">
+				<plugin>png</plugin>
+				<plugin>svg</plugin>
+				<plugin>jpeg</plugin>
+			</relation>
+		</deps>
 		<display>
 			<group>
 				<_short>Settings</_short>
