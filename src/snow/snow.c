@@ -1,11 +1,12 @@
 /**
  *
- * Beryl snow plugin
+ * Compiz snow plugin
  *
  * snow.c
  *
  * Copyright (c) 2006 Eckhart P. <beryl@cornergraf.net>
  * Copyright (c) 2006 Brian Jørgensen <qte@fundanemt.com>
+ * Maintained by Danny Baumann <maniac@opencompositing.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,680 +39,702 @@
 #include "snow_options.h"
 
 #define GET_SNOW_DISPLAY(d)                            \
-	((SnowDisplay *) (d)->privates[displayPrivateIndex].ptr)
+    ((SnowDisplay *) (d)->privates[displayPrivateIndex].ptr)
 
 #define SNOW_DISPLAY(d)                                \
-	SnowDisplay *sd = GET_SNOW_DISPLAY (d)
+    SnowDisplay *sd = GET_SNOW_DISPLAY (d)
 
 #define GET_SNOW_SCREEN(s, sd)                         \
-	((SnowScreen *) (s)->privates[(sd)->screenPrivateIndex].ptr)
+    ((SnowScreen *) (s)->privates[(sd)->screenPrivateIndex].ptr)
 
 #define SNOW_SCREEN(s)                                 \
-	SnowScreen *ss = GET_SNOW_SCREEN (s, GET_SNOW_DISPLAY (s->display))
+    SnowScreen *ss = GET_SNOW_SCREEN (s, GET_SNOW_DISPLAY (s->display))
 
 static int displayPrivateIndex = 0;
 
-// ------------------------------------------------------------  STRUCTS -----------------------------------------------------
+/* -------------------  STRUCTS ----------------------------- */
 typedef struct _SnowDisplay
 {
-	int screenPrivateIndex;
-	Bool useTextures;
+    int screenPrivateIndex;
 
-	int snowTexNFiles;
-	CompOptionValue *snowTexFiles;
+    Bool useTextures;
+
+    int             snowTexNFiles;
+    CompOptionValue *snowTexFiles;
 } SnowDisplay;
-
-typedef struct _SnowScreen SnowScreen;
 
 typedef struct _SnowTexture
 {
-	CompTexture tex;
-	unsigned int width;
-	unsigned int height;
-	Bool loaded;
-	GLuint dList;
+    CompTexture tex;
+
+    unsigned int width;
+    unsigned int height;
+
+    Bool   loaded;
+    GLuint dList;
 } SnowTexture;
 
 typedef struct _SnowFlake
 {
-	float x;
-	float y;
-	float z;
-	float xs;
-	float ys;
-	float zs;
-	float ra;					//rotation angle
-	float rs;					//rotation speed
+    float x, y, z;
+    float xs, ys, zs;
+    float ra; /* rotation angle */
+    float rs; /* rotation speed */
 
-	SnowTexture *tex;
+    SnowTexture *tex;
 } SnowFlake;
 
-static void InitiateSnowFlake(SnowScreen * ss, SnowFlake * sf);
-static void setSnowflakeTexture(SnowScreen * ss, SnowFlake * sf);
-static void beginRendering(SnowScreen * ss, CompScreen * s);
-static void setupDisplayList(SnowScreen * ss);
-
-static void snowThink(SnowScreen * ss, SnowFlake * sf);
-static void snowMove(CompDisplay *d, SnowFlake * sf);
-
-struct _SnowScreen
+typedef struct _SnowScreen
 {
-	CompScreen *s;
+    CompScreen *s;
 
-	Bool active;
+    Bool active;
 
-	CompTimeoutHandle timeoutHandle;
+    CompTimeoutHandle timeoutHandle;
 
-	PaintOutputProc paintOutput;
-	DrawWindowProc drawWindow;
+    PaintOutputProc paintOutput;
+    DrawWindowProc  drawWindow;
 
-	SnowTexture *snowTex;
-	int snowTexturesLoaded;
+    SnowTexture *snowTex;
+    int         snowTexturesLoaded;
 
-	GLuint displayList;
+    GLuint displayList;
+    Bool   displayListNeedsUpdate;
 
-	Bool displayListNeedsUpdate;
+    SnowFlake *allSnowFlakes;
+} SnowScreen;
 
-	SnowFlake *allSnowFlakes;
-};
+/* some forward declarations */
+static void initiateSnowFlake (SnowScreen * ss, SnowFlake * sf);
+static void snowMove (CompDisplay *d, SnowFlake * sf);
 
-
-static void snowThink(SnowScreen * ss, SnowFlake * sf)
+static void
+snowThink (SnowScreen *ss,
+	   SnowFlake  *sf)
 {
-	int boxing;
+    int boxing;
 
-	boxing = snowGetScreenBoxing(ss->s->display);
+    boxing = snowGetScreenBoxing (ss->s->display);
 
-	if (sf->y >= ss->s->height + boxing
-		|| sf->x <= -boxing
-		|| sf->y >= ss->s->width + boxing
-		|| sf->z <= -((float)snowGetScreenDepth(ss->s->display) / 500.0) || sf->z >= 1)
-
-	{
-		InitiateSnowFlake(ss, sf);
-	}
-	snowMove(ss->s->display, sf);
+    if (sf->y >= ss->s->height + boxing ||
+	sf->x <= -boxing ||
+	sf->y >= ss->s->width + boxing ||
+	sf->z <= -((float) snowGetScreenDepth (ss->s->display) / 500.0) ||
+	sf->z >= 1)
+    {
+	initiateSnowFlake (ss, sf);
+    }
+    snowMove (ss->s->display, sf);
 }
 
-static void snowMove(CompDisplay *d, SnowFlake * sf)
+static void
+snowMove (CompDisplay *d,
+	  SnowFlake   *sf)
 {
-	float tmp = 1.0f / (100.0f - snowGetSnowSpeed(d));
-	int snowUpdateDelay = snowGetSnowUpdateDelay(d);
+    float tmp = 1.0f / (100.0f - snowGetSnowSpeed (d));
+    int   snowUpdateDelay = snowGetSnowUpdateDelay (d);
 
-	sf->x += (sf->xs * (float)snowUpdateDelay) * tmp;
-	sf->y += (sf->ys * (float)snowUpdateDelay) * tmp;
-	sf->z += (sf->zs * (float)snowUpdateDelay) * tmp;
-	sf->ra += ((float)snowUpdateDelay) / (10.0f - sf->rs);
-}
-
-static Bool stepSnowPositions(void *sc)
-{
-	CompScreen *s = sc;
-	SNOW_SCREEN(s);
-
-	if (!ss->active)
-		return TRUE;
-
-	int i = 0;
-	SnowFlake *snowFlake = ss->allSnowFlakes;
-	int numFlakes = snowGetNumSnowflakes(s->display);
-	Bool onTop = snowGetSnowOverWindows(s->display);
-
-	for (i = 0; i < numFlakes; i++)
-		snowThink(ss, snowFlake++);
-
-	if (ss->active && !onTop)
-	{
-		CompWindow *w;
-
-		for (w = s->windows; w; w = w->next)
-		{
-			if (w->type & CompWindowTypeDesktopMask)
-			{
-				addWindowDamage(w);
-			}
-		}
-	}
-	else if (ss->active)
-		damageScreen(s);
-
-	return True;
+    sf->x += (sf->xs * (float) snowUpdateDelay) * tmp;
+    sf->y += (sf->ys * (float) snowUpdateDelay) * tmp;
+    sf->z += (sf->zs * (float) snowUpdateDelay) * tmp;
+    sf->ra += ((float) snowUpdateDelay) / (10.0f - sf->rs);
 }
 
 static Bool
-snowToggle(CompDisplay * d, CompAction * action, CompActionState state,
-		   CompOption * option, int nOption)
+stepSnowPositions (void *closure)
 {
-	CompScreen *s;
-	Window xid;
+    CompScreen *s = closure;
+    int        i, numFlakes;
+    SnowFlake  *snowFlake;
+    Bool       onTop;
 
-	xid = getIntOptionNamed(option, nOption, "root", 0);
-	s = findScreenAtDisplay(d, xid);
+    SNOW_SCREEN (s);
 
-	if (s)
-	{
-		SNOW_SCREEN(s);
-		ss->active = !ss->active;
-		if (!ss->active)
-			damageScreen(s);
-	}
-
+    if (!ss->active)
 	return TRUE;
+
+    snowFlake = ss->allSnowFlakes;
+    numFlakes = snowGetNumSnowflakes (s->display);
+    onTop = snowGetSnowOverWindows (s->display);
+
+    for (i = 0; i < numFlakes; i++)
+	snowThink(ss, snowFlake++);
+
+    if (ss->active && !onTop)
+    {
+	CompWindow *w;
+
+	for (w = s->windows; w; w = w->next)
+	{
+	    if (w->type & CompWindowTypeDesktopMask)
+		addWindowDamage (w);
+	}
+    }
+    else if (ss->active)
+	damageScreen (s);
+
+    return TRUE;
 }
 
-// -------------------------------------------------  HELPER FUNCTIONS ----------------------------------------------------
-
-int GetRand(int min, int max);
-int GetRand(int min, int max)
+static Bool
+snowToggle (CompDisplay     *d,
+	    CompAction      *action,
+	    CompActionState state,
+ 	    CompOption      *option,
+	    int             nOption)
 {
-	return (rand() % (max - min + 1) + min);
+    CompScreen *s;
+    Window     xid;
+
+    xid = getIntOptionNamed (option, nOption, "root", 0);
+    s = findScreenAtDisplay (d, xid);
+
+    if (s)
+    {
+	SNOW_SCREEN (s);
+	ss->active = !ss->active;
+	if (!ss->active)
+	    damageScreen (s);
+    }
+
+    return TRUE;
 }
 
-float mmrand(int min, int max, float divisor);
-float mmrand(int min, int max, float divisor)
+/* --------------------  HELPER FUNCTIONS ------------------------ */
+
+static inline int
+getRand (int min,
+	 int max)
 {
-	return ((float)GetRand(min, max)) / divisor;
+    return (rand() % (max - min + 1) + min);
+}
+
+static inline float
+mmRand (int   min,
+	int   max,
+	float divisor)
+{
+    return ((float) getRand(min, max)) / divisor;
 };
 
-// ------------------------------------------------- RENDERING ----------------------------------------------------
-static void setupDisplayList(SnowScreen * ss)
+/* --------------------------- RENDERING ------------------------- */
+static void
+setupDisplayList (SnowScreen *ss)
 {
-	float snowSize = snowGetSnowSize(ss->s->display);
-	// ----------------- untextured list
+    float snowSize = snowGetSnowSize (ss->s->display);
 
-	ss->displayList = glGenLists(1);
+    ss->displayList = glGenLists (1);
 
-	glNewList(ss->displayList, GL_COMPILE);
-	glBegin(GL_QUADS);
+    glNewList (ss->displayList, GL_COMPILE);
+    glBegin (GL_QUADS);
 
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	glVertex3f(0, 0, -0.0);
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	glVertex3f(0, snowSize, -0.0);
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	glVertex3f(snowSize, snowSize, -0.0);
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	glVertex3f(snowSize, 0, -0.0);
+    glColor4f (1.0, 1.0, 1.0, 1.0);
+    glVertex3f (0, 0, -0.0);
+    glColor4f (1.0, 1.0, 1.0, 1.0);
+    glVertex3f (0, snowSize, -0.0);
+    glColor4f (1.0, 1.0, 1.0, 1.0);
+    glVertex3f (snowSize, snowSize, -0.0);
+    glColor4f (1.0, 1.0, 1.0, 1.0);
+    glVertex3f (snowSize, 0, -0.0);
 
-	glEnd();
-	glEndList();
-
+    glEnd ();
+    glEndList ();
 }
 
-static void beginRendering(SnowScreen * ss, CompScreen * s)
+static void
+beginRendering (SnowScreen *ss,
+		CompScreen *s)
 {
-	if (snowGetUseBlending(s->display))
-		glEnable(GL_BLEND);
+    if (snowGetUseBlending (s->display))
+	glEnable (GL_BLEND);
 
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	if (ss->displayListNeedsUpdate)
+    if (ss->displayListNeedsUpdate)
+    {
+	setupDisplayList (ss);
+	ss->displayListNeedsUpdate = FALSE;
+    }
+
+    glColor4f (1.0, 1.0, 1.0, 1.0);
+    if (ss->snowTexturesLoaded && snowGetUseTextures (s->display))
+    {
+	int j;
+
+	for (j = 0; j < ss->snowTexturesLoaded; j++)
 	{
-		setupDisplayList(ss);
-		ss->displayListNeedsUpdate = FALSE;
-	}
+	    SnowFlake *snowFlake = ss->allSnowFlakes;
+	    int       i, numFlakes = snowGetNumSnowflakes (s->display);
+	    Bool      snowRotate = snowGetSnowRotation (s->display);
 
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	if (ss->snowTexturesLoaded && snowGetUseTextures(s->display))
-	{
-		int j = 0;
+	    enableTexture (ss->s, &ss->snowTex[j].tex,
+			   COMP_TEXTURE_FILTER_GOOD);
 
-		for (j = 0; j < ss->snowTexturesLoaded; j++)
+	    for (i = 0; i < numFlakes; i++)
+	    {
+		if (snowFlake->tex == &ss->snowTex[j])
 		{
-			enableTexture(ss->s, &ss->snowTex[j].tex,
-						  COMP_TEXTURE_FILTER_GOOD);
-
-			int i = 0;
-			SnowFlake *snowFlake = ss->allSnowFlakes;
-			int numFlakes = snowGetNumSnowflakes(s->display);
-			Bool snowRotate = snowGetSnowRotation(s->display);
-
-			for (i = 0; i < numFlakes; i++)
-			{
-				if (snowFlake->tex == &ss->snowTex[j])
-				{
-					glTranslatef(snowFlake->x, snowFlake->y, snowFlake->z);
-					if (snowRotate)
-						glRotatef(snowFlake->ra, 0, 0, 1);
-					glCallList(ss->snowTex[j].dList);
-					if (snowRotate)
-						glRotatef(-snowFlake->ra, 0, 0, 1);
-					glTranslatef(-snowFlake->x, -snowFlake->y, -snowFlake->z);
-				}
-				snowFlake++;
-			}
-			disableTexture(ss->s, &ss->snowTex[j].tex);
+		    glTranslatef (snowFlake->x, snowFlake->y, snowFlake->z);
+	    	    if (snowRotate)
+			glRotatef (snowFlake->ra, 0, 0, 1);
+	    	    glCallList (ss->snowTex[j].dList);
+    		    if (snowRotate)
+			glRotatef (-snowFlake->ra, 0, 0, 1);
+	    	    glTranslatef (-snowFlake->x, -snowFlake->y, -snowFlake->z);
 		}
+		snowFlake++;
+	    }
+	    disableTexture (ss->s, &ss->snowTex[j].tex);
 	}
-	else
+    }
+    else
+    {
+	SnowFlake *snowFlake = ss->allSnowFlakes;
+	int       i, numFlakes = snowGetNumSnowflakes (s->display);
+
+	for (i = 0; i < numFlakes; i++)
 	{
-		int i = 0;
-		SnowFlake *snowFlake = ss->allSnowFlakes;
-		int numFlakes = snowGetNumSnowflakes(s->display);
+	    glTranslatef (snowFlake->x, snowFlake->y, snowFlake->z);
+	    glRotatef (snowFlake->ra, 0, 0, 1);
+	    glCallList (ss->displayList);
+	    glRotatef (-snowFlake->ra, 0, 0, 1);
+	    glTranslatef (-snowFlake->x, -snowFlake->y, -snowFlake->z);
+	    snowFlake++;
+	}
+    }
+
+    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    if (snowGetUseBlending (s->display))
+    {
+	glDisable (GL_BLEND);
+	glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    }
+}
+
+/* ------------------------  FUNCTIONS -------------------- */
+
+static Bool
+snowPaintOutput (CompScreen              *s,
+		 const ScreenPaintAttrib *sa,
+		 const CompTransform	 *transform,
+		 Region                  region,
+		 CompOutput              *output, 
+		 unsigned int            mask)
+{
+    Bool status;
+
+    SNOW_SCREEN (s);
+
+    if (ss->active && !snowGetSnowOverWindows (s->display))
+	mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
+
+    UNWRAP (ss, s, paintOutput);
+    status = (*s->paintOutput) (s, sa, transform, region, output, mask);
+    WRAP (ss, s, paintOutput, snowPaintOutput);
+
+    if (ss->active && snowGetSnowOverWindows (s->display))
+    {
+	CompTransform sTransform = *transform;
+
+	transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &sTransform);
+
+	glPushMatrix ();
+	glLoadMatrixf (sTransform.m);
+	beginRendering (ss, s);
+	glPopMatrix ();
+    }
+
+    return status;
+}
+
+static Bool
+snowDrawWindow (CompWindow           *w,
+		const CompTransform  *transform,
+		const FragmentAttrib *attrib,
+		Region               region,
+		unsigned int         mask)
+{
+    Bool status;
+
+    SNOW_SCREEN (w->screen);
+
+    /* First draw Window as usual */
+    UNWRAP (ss, w->screen, drawWindow);
+    status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
+    WRAP (ss, w->screen, drawWindow, snowDrawWindow);
+
+    /* Check whether this is the Desktop Window */
+    if (ss->active && (w->type & CompWindowTypeDesktopMask) && 
+	!snowGetSnowOverWindows (w->screen->display))
+    {
+	beginRendering (ss, w->screen);
+    }
+
+    return status;
+}
+
+static void
+initiateSnowFlake (SnowScreen *ss,
+		   SnowFlake  *sf)
+{
+    /* TODO: possibly place snowflakes based on FOV, instead of a cube. */
+    int boxing = snowGetScreenBoxing (ss->s->display);
+
+    switch (snowGetSnowDirection (ss->s->display))
+    {
+    case SnowDirectionTopToBottom:
+	sf->x  = mmRand (-boxing, ss->s->width + boxing, 1);
+	sf->xs = mmRand (-1, 1, 500);
+	sf->y  = mmRand (-300, 0, 1);
+	sf->ys = mmRand (1, 3, 1);
+	break;
+    case SnowDirectionBottomToTop:
+	sf->x  = mmRand (-boxing, ss->s->width + boxing, 1);
+	sf->xs = mmRand (-1, 1, 500);
+	sf->y  = mmRand (ss->s->height, ss->s->height + 300, 1);
+	sf->ys = -mmRand (1, 3, 1);
+	break;
+    case SnowDirectionRightToLeft:
+	sf->x  = mmRand (ss->s->width, ss->s->width + 300, 1);
+	sf->xs = -mmRand (1, 3, 1);
+	sf->y  = mmRand (-boxing, ss->s->height + boxing, 1);
+	sf->ys = mmRand (-1, 1, 500);
+	break;
+    case SnowDirectionLeftToRight:
+	sf->x  = mmRand (-300, 0, 1);
+	sf->xs = mmRand (1, 3, 1);
+	sf->y  = mmRand (-boxing, ss->s->height + boxing, 1);
+	sf->ys = mmRand (-1, 1, 500);
+	break;
+    default:
+	break;
+    }
+
+    sf->z  = mmRand (-snowGetScreenDepth (ss->s->display), 0.1, 5000);
+    sf->zs = mmRand (-1000, 1000, 500000);
+    sf->ra = mmRand (-1000, 1000, 50);
+    sf->rs = mmRand (-1000, 1000, 1000);
+}
+
+static void
+setSnowflakeTexture (SnowScreen *ss,
+		     SnowFlake  *sf)
+{
+    if (ss->snowTexturesLoaded)
+	sf->tex = &ss->snowTex[rand () % ss->snowTexturesLoaded];
+}
+
+static void
+updateSnowTextures (CompScreen *s)
+{
+    int       i, count = 0;
+    float     snowSize = snowGetSnowSize(s->display);
+    int       numFlakes = snowGetNumSnowflakes(s->display);
+    SnowFlake *snowFlake;
+
+    SNOW_SCREEN (s);
+    SNOW_DISPLAY (s->display);
+
+    snowFlake = ss->allSnowFlakes;
+
+    for (i = 0; i < ss->snowTexturesLoaded; i++)
+    {
+	finiTexture (s, &ss->snowTex[i].tex);
+	glDeleteLists (ss->snowTex[i].dList, 1);
+    }
+
+    if (ss->snowTex)
+	free (ss->snowTex);
+    ss->snowTexturesLoaded = 0;
+
+    ss->snowTex = calloc (1, sizeof (SnowTexture) * sd->snowTexNFiles);
+
+    for (i = 0; i < sd->snowTexNFiles; i++)
+    {
+	CompMatrix  *mat;
+	SnowTexture *sTex;
+
+	ss->snowTex[count].loaded =
+	    readImageToTexture (s, &ss->snowTex[count].tex,
+				sd->snowTexFiles[i].s,
+				&ss->snowTex[count].width,
+				&ss->snowTex[count].height);
+	if (!ss->snowTex[count].loaded)
+	{
+	    compLogMessage (s->display, "snow", CompLogLevelWarn,
+			    "Texture not found : %s", sd->snowTexFiles[i].s);
+	    continue;
+	}
+	compLogMessage (s->display, "snow", CompLogLevelInfo,
+			"Loaded Texture %s", sd->snowTexFiles[i].s);
+	
+	mat = &ss->snowTex[count].tex.matrix;
+	sTex = &ss->snowTex[count];
+
+	sTex->dList = glGenLists (1);
+	glNewList (sTex->dList, GL_COMPILE);
+
+	glBegin (GL_QUADS);
+
+	glTexCoord2f (COMP_TEX_COORD_X (mat, 0), COMP_TEX_COORD_Y (mat, 0));
+	glVertex2f (0, 0);
+	glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
+		      COMP_TEX_COORD_Y (mat, sTex->height));
+	glVertex2f (0, snowSize * sTex->height / sTex->width);
+	glTexCoord2f (COMP_TEX_COORD_X (mat, sTex->width),
+		      COMP_TEX_COORD_Y (mat, sTex->height));
+	glVertex2f (snowSize, snowSize * sTex->height / sTex->width);
+	glTexCoord2f (COMP_TEX_COORD_X (mat, sTex->width),
+		      COMP_TEX_COORD_Y (mat, 0));
+	glVertex2f (snowSize, 0);
+
+	glEnd ();
+	glEndList ();
+
+	count++;
+    }
+
+    ss->snowTexturesLoaded = count;
+    if (count < sd->snowTexNFiles)
+	ss->snowTex = realloc (ss->snowTex, sizeof (SnowTexture) * count);
+
+    for (i = 0; i < numFlakes; i++)
+	setSnowflakeTexture (ss, snowFlake++);
+}
+
+static Bool
+snowInitScreen (CompPlugin *p,
+		CompScreen *s)
+{
+    SnowScreen *ss;
+    int        i, numFlakes = snowGetNumSnowflakes (s->display);
+    SnowFlake  *snowFlake;
+
+    SNOW_DISPLAY (s->display);
+
+    ss = calloc (1, sizeof(SnowScreen));
+
+    s->privates[sd->screenPrivateIndex].ptr = ss;
+
+    ss->s = s;
+    ss->snowTexturesLoaded = 0;
+    ss->snowTex = NULL;
+    ss->active = FALSE;
+    ss->displayListNeedsUpdate = FALSE;
+
+    ss->allSnowFlakes = snowFlake = malloc (numFlakes * sizeof (SnowFlake));
+
+    for (i = 0; i < numFlakes; i++)
+    {
+	initiateSnowFlake (ss, snowFlake);
+	setSnowflakeTexture (ss, snowFlake);
+	snowFlake++;
+    }
+
+    updateSnowTextures (s);
+    setupDisplayList (ss);
+
+    WRAP (ss, s, paintOutput, snowPaintOutput);
+    WRAP (ss, s, drawWindow, snowDrawWindow);
+
+    ss->timeoutHandle = compAddTimeout (snowGetSnowUpdateDelay (s->display),
+					stepSnowPositions, s);
+
+    return TRUE;
+}
+
+static void
+snowFiniScreen (CompPlugin *p,
+		CompScreen *s)
+{
+    int i;
+
+    SNOW_SCREEN (s);
+
+    if (ss->timeoutHandle)
+	compRemoveTimeout (ss->timeoutHandle);
+
+    for (i = 0; i < ss->snowTexturesLoaded; i++)
+    {
+	finiTexture (s, &ss->snowTex[i].tex);
+	glDeleteLists (ss->snowTex[i].dList, 1);
+    }
+
+    if (ss->snowTex)
+	free (ss->snowTex);
+
+    if (ss->allSnowFlakes)
+	free (ss->allSnowFlakes);
+
+    UNWRAP (ss, s, paintOutput);
+    UNWRAP (ss, s, drawWindow);
+
+    free (ss);
+}
+
+static void
+snowDisplayOptionChanged (CompDisplay        *d,
+			  CompOption         *opt,
+			  SnowDisplayOptions num)
+{
+    SNOW_DISPLAY (d);
+
+    switch (num)
+    {
+    case SnowDisplayOptionSnowSize:
+	{
+	    CompScreen *s;
+
+	    for (s = d->screens; s; s = s->next)
+	    {
+		SNOW_SCREEN (s);
+		ss->displayListNeedsUpdate = TRUE;
+		updateSnowTextures (s);
+	    }
+	}
+	break;
+    case SnowDisplayOptionSnowUpdateDelay:
+	{
+	    CompScreen *s;
+
+	    for (s = d->screens; s; s = s->next)
+	    {
+		SNOW_SCREEN (s);
+					
+		if (ss->timeoutHandle)
+		    compRemoveTimeout (ss->timeoutHandle);
+		ss->timeoutHandle =
+		    compAddTimeout (snowGetSnowUpdateDelay (d),
+				    stepSnowPositions, s);
+	    }
+	}
+	break;
+    case SnowDisplayOptionNumSnowflakes:
+	{
+	    CompScreen *s;
+	    int        i, numFlakes;
+	    SnowFlake  *snowFlake;
+
+	    numFlakes = snowGetNumSnowflakes (d);
+	    for (s = d->screens; s; s = s->next)
+    	    {
+		SNOW_SCREEN (s);
+		ss->allSnowFlakes = realloc (ss->allSnowFlakes,
+					     numFlakes * sizeof (SnowFlake));
+		snowFlake = ss->allSnowFlakes;
 
 		for (i = 0; i < numFlakes; i++)
 		{
-			glTranslatef(snowFlake->x, snowFlake->y, snowFlake->z);
-			glRotatef(snowFlake->ra, 0, 0, 1);
-			glCallList(ss->displayList);
-			glRotatef(-snowFlake->ra, 0, 0, 1);
-			glTranslatef(-snowFlake->x, -snowFlake->y, -snowFlake->z);
-			snowFlake++;
+		    initiateSnowFlake (ss, snowFlake);
+    		    setSnowflakeTexture (ss, snowFlake);
+	    	    snowFlake++;
 		}
+	    }
 	}
-
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	if (snowGetUseBlending(s->display))
+	break;
+    case SnowDisplayOptionSnowTextures:
 	{
-		glDisable(GL_BLEND);
-		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	    CompScreen *s;
+	    CompOption *texOpt;
+
+	    texOpt = snowGetSnowTexturesOption (d);
+
+	    sd->snowTexFiles = texOpt->value.list.value;
+    	    sd->snowTexNFiles = texOpt->value.list.nValue;
+
+	    for (s = d->screens; s; s = s->next)
+		updateSnowTextures (s);
 	}
-}
-
-// -------------------------------------------------  FUNCTIONS ----------------------------------------------------
-
-static Bool
-snowPaintOutput(CompScreen * s,
-								const ScreenPaintAttrib * sa,
-								const CompTransform		* transform,
-								Region region, CompOutput *output, 
-								unsigned int mask)
-{
-	Bool status;
-
-	SNOW_SCREEN(s);
-
-	if (ss->active && !snowGetSnowOverWindows(s->display))
-	{
-		// This line is essential. Without it the snow will be rendered above (some) other windows.
-		mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
-	}
-
-	UNWRAP(ss, s, paintOutput);
-	status = (*s->paintOutput) (s, sa, transform, region, output, mask);
-	WRAP(ss, s, paintOutput, snowPaintOutput);
-
-	if (ss->active && snowGetSnowOverWindows(s->display))
-	{
-		CompTransform sTransform = *transform;
-		transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &sTransform);
-
-		glPushMatrix();
-		glLoadMatrixf (sTransform.m);
-		beginRendering(ss, s);
-		glPopMatrix();
-	}
-
-	return status;
+	break;
+    default:
+	break;
+    }
 }
 
 static Bool
-snowDrawWindow(CompWindow * w, const CompTransform *transform, const FragmentAttrib *attrib,
-				Region region, unsigned int mask)
+snowInitDisplay (CompPlugin  *p,
+		 CompDisplay *d)
 {
-	int status;
+    CompOption  *texOpt;
+    SnowDisplay *sd;
+    
+    sd = malloc (sizeof (SnowDisplay));
 
-	SNOW_SCREEN(w->screen);
-
-	// First draw Window as usual
-	UNWRAP(ss, w->screen, drawWindow);
-	status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
-	WRAP(ss, w->screen, drawWindow, snowDrawWindow);
-
-	// Check whether this is the Desktop Window
-	if (ss->active && (w->type & CompWindowTypeDesktopMask) && 
-		!snowGetSnowOverWindows(w->screen->display))
-	{
-		beginRendering(ss, w->screen);
-	}
-
-	return status;
-}
-
-static void InitiateSnowFlake(SnowScreen * ss, SnowFlake * sf)
-{
-	//TODO: possibly place snowflakes based on FOV, instead of a cube.
-	int boxing = snowGetScreenBoxing(ss->s->display);
-
-	switch(snowGetSnowDirection(ss->s->display))
-	{
-		case SnowDirectionTopToBottom:
-			sf->x = mmrand(-boxing, ss->s->width + boxing, 1);
-			sf->xs = mmrand(-1, 1, 500);
-			sf->y = mmrand(-300, 0, 1);
-			sf->ys = mmrand(1, 3, 1);
-			break;
-		case SnowDirectionBottomToTop:
-			sf->x = mmrand(-boxing, ss->s->width + boxing, 1);
-			sf->xs = mmrand(-1, 1, 500);
-			sf->y = mmrand(ss->s->height, ss->s->height + 300, 1);
-			sf->ys = -mmrand(1, 3, 1);
-			break;
-		case SnowDirectionRightToLeft:
-			sf->x = mmrand(ss->s->width, ss->s->width + 300, 1);
-			sf->xs = -mmrand(1, 3, 1);
-			sf->y = mmrand(-boxing, ss->s->height + boxing, 1);
-			sf->ys = mmrand(-1, 1, 500);
-			break;
-		case SnowDirectionLeftToRight:
-			sf->x = mmrand(-300, 0, 1);
-			sf->xs = mmrand(1, 3, 1);
-			sf->y = mmrand(-boxing, ss->s->height + boxing, 1);
-			sf->ys = mmrand(-1, 1, 500);
-			break;
-		default:
-			break;
-	}
-
-	sf->z = mmrand(-snowGetScreenDepth(ss->s->display), 0.1, 5000);
-	sf->zs = mmrand(-1000, 1000, 500000);
-	sf->ra = mmrand(-1000, 1000, 50);
-	sf->rs = mmrand(-1000, 1000, 1000);
-}
-
-static void setSnowflakeTexture(SnowScreen * ss, SnowFlake * sf)
-{
-	if (ss->snowTexturesLoaded)
-		sf->tex = &ss->snowTex[rand() % ss->snowTexturesLoaded];
-}
-
-static void updateSnowTextures(CompScreen * s)
-{
-	SNOW_SCREEN(s);
-	SNOW_DISPLAY(s->display);
-	int i = 0;
-
-	for (i = 0; i < ss->snowTexturesLoaded; i++)
-	{
-		finiTexture(s, &ss->snowTex[i].tex);
-		glDeleteLists(ss->snowTex[i].dList, 1);
-	}
-	if (ss->snowTexturesLoaded)
-		free(ss->snowTex);
-	ss->snowTexturesLoaded = 0;
-
-	ss->snowTex = calloc(1, sizeof(SnowTexture) * sd->snowTexNFiles);
-
-	int count = 0;
-	float snowSize = snowGetSnowSize(s->display);
-
-	for (i = 0; i < sd->snowTexNFiles; i++)
-	{
-		ss->snowTex[count].loaded =
-				readImageToTexture(s, &ss->snowTex[count].tex,
-								   sd->snowTexFiles[i].s,
-								   &ss->snowTex[count].width,
-								   &ss->snowTex[count].height);
-		if (!ss->snowTex[count].loaded)
-		{
-			compLogMessage (s->display, "snow", CompLogLevelWarn,
-							"Texture not found : %s", sd->snowTexFiles[i].s);
-			continue;
-		}
-		compLogMessage (s->display, "snow", CompLogLevelInfo,
-						"Loaded Texture %s", sd->snowTexFiles[i].s);
-		CompMatrix *mat = &ss->snowTex[count].tex.matrix;
-		SnowTexture *sTex = &ss->snowTex[count];
-
-		sTex->dList = glGenLists(1);
-
-		glNewList(sTex->dList, GL_COMPILE);
-
-		glBegin(GL_QUADS);
-
-		glTexCoord2f(COMP_TEX_COORD_X(mat, 0), COMP_TEX_COORD_Y(mat, 0));
-		glVertex2f(0, 0);
-		glTexCoord2f(COMP_TEX_COORD_X(mat, 0),
-					 COMP_TEX_COORD_Y(mat, sTex->height));
-		glVertex2f(0, snowSize * sTex->height / sTex->width);
-		glTexCoord2f(COMP_TEX_COORD_X(mat, sTex->width),
-					 COMP_TEX_COORD_Y(mat, sTex->height));
-		glVertex2f(snowSize, snowSize * sTex->height / sTex->width);
-		glTexCoord2f(COMP_TEX_COORD_X(mat, sTex->width),
-					 COMP_TEX_COORD_Y(mat, 0));
-		glVertex2f(snowSize, 0);
-
-		glEnd();
-		glEndList();
-
-		count++;
-	}
-
-	ss->snowTexturesLoaded = count;
-	if (count < sd->snowTexNFiles)
-		ss->snowTex = realloc(ss->snowTex, sizeof(SnowTexture) * count);
-
-	SnowFlake *snowFlake = ss->allSnowFlakes;
-	int numFlakes = snowGetNumSnowflakes(s->display);
-
-	for (i = 0; i < numFlakes; i++)
-	{
-		setSnowflakeTexture(ss, snowFlake++);
-	}
-}
-
-static Bool snowInitScreen(CompPlugin * p, CompScreen * s)
-{
-	SNOW_DISPLAY(s->display);
-
-	SnowScreen *ss = (SnowScreen *) calloc(1, sizeof(SnowScreen));
-
-	ss->s = s;
-	s->privates[sd->screenPrivateIndex].ptr = ss;
-
-	ss->snowTexturesLoaded = 0;
-	ss->snowTex = NULL;
-	ss->active = FALSE;
-	ss->displayListNeedsUpdate = FALSE;
-
-	int i = 0;
-	int numFlakes = snowGetNumSnowflakes(s->display);
-
-	ss->allSnowFlakes = malloc(numFlakes * sizeof(SnowFlake));
-	SnowFlake *snowFlake = ss->allSnowFlakes;
-
-	for (i = 0; i < numFlakes; i++)
-	{
-		InitiateSnowFlake(ss, snowFlake);
-		setSnowflakeTexture(ss, snowFlake);
-		snowFlake++;
-	}
-
-	updateSnowTextures(s);
-	setupDisplayList(ss);
-
-	WRAP(ss, s, paintOutput, snowPaintOutput);
-	WRAP(ss, s, drawWindow, snowDrawWindow);
-
-	ss->timeoutHandle = compAddTimeout(snowGetSnowUpdateDelay(s->display), stepSnowPositions, s);
-
-	return TRUE;
-}
-
-static void snowFiniScreen(CompPlugin * p, CompScreen * s)
-{
-	SNOW_SCREEN(s);
-
-	if (ss->timeoutHandle)
-		compRemoveTimeout(ss->timeoutHandle);
-
-	int i = 0;
-
-	for (i = 0; i < ss->snowTexturesLoaded; i++)
-	{
-		finiTexture(s, &ss->snowTex[i].tex);
-		glDeleteLists(ss->snowTex[i].dList, 1);
-	}
-	if (ss->snowTexturesLoaded)
-		free(ss->snowTex);
-
-	if (ss->allSnowFlakes)
-		free(ss->allSnowFlakes);
-
-	//Restore the original function
-	UNWRAP(ss, s, paintOutput);
-	UNWRAP(ss, s, drawWindow);
-
-	//Free the pointer
-	free(ss);
-}
-
-static void snowDisplayOptionChanged(CompDisplay *d, CompOption *opt, SnowDisplayOptions num)
-{
-	SNOW_DISPLAY(d);
-
-	switch (num)
-	{
-		case SnowDisplayOptionSnowSize:
-			{
-				CompScreen *s;
-
-				for (s = d->screens; s; s = s->next)
-				{
-					SNOW_SCREEN(s);
-					ss->displayListNeedsUpdate = TRUE;
-					updateSnowTextures(s);
-				}
-			}
-			break;
-		case SnowDisplayOptionSnowUpdateDelay:
-			{
-				CompScreen *s;
-
-				for (s = d->screens; s; s = s->next)
-				{
-					SNOW_SCREEN(s);
-					
-					if (ss->timeoutHandle)
-						compRemoveTimeout(ss->timeoutHandle);
-					ss->timeoutHandle =
-						compAddTimeout(snowGetSnowUpdateDelay(d), stepSnowPositions, s);
-				}
-			}
-			break;
-		case SnowDisplayOptionNumSnowflakes:
-			{
-				CompScreen *s;
-				int i, numFlakes;
-				SnowFlake *snowFlake;
-
-				numFlakes = snowGetNumSnowflakes(d);
-				for (s = d->screens; s; s = s->next)
-				{
-					SNOW_SCREEN(s);
-					ss->allSnowFlakes = realloc(ss->allSnowFlakes, numFlakes * sizeof(SnowFlake));
-					snowFlake = ss->allSnowFlakes;
-
-					for (i = 0; i < numFlakes; i++)
-					{
-						InitiateSnowFlake(ss, snowFlake);
-						setSnowflakeTexture(ss, snowFlake);
-						snowFlake++;
-					}
-				}
-			}
-			break;
-		case SnowDisplayOptionSnowTextures:
-			{
-				CompScreen *s;
-				CompOption *texOpt;
-
-				texOpt = snowGetSnowTexturesOption(d);
-
-				sd->snowTexFiles = texOpt->value.list.value;
-				sd->snowTexNFiles = texOpt->value.list.nValue;
-
-				for (s = d->screens; s; s = s->next)
-					updateSnowTextures(s);
-			}
-			break;
-		default:
-			break;
-	}
-}
-
-static Bool snowInitDisplay(CompPlugin * p, CompDisplay * d)
-{
-	CompOption *texOpt;
-	//Generate a snow display
-	SnowDisplay *sd = (SnowDisplay *) malloc(sizeof(SnowDisplay));
-
-	//Allocate a private index
-	sd->screenPrivateIndex = allocateScreenPrivateIndex(d);
-
-	//Check if its valid
-	if (sd->screenPrivateIndex < 0)
-	{
-		free(sd);
-		return FALSE;
-	}
+    sd->screenPrivateIndex = allocateScreenPrivateIndex (d);
+    if (sd->screenPrivateIndex < 0)
+    {
+	free (sd);
+	return FALSE;
+    }
 	
-	snowSetToggleInitiate(d, snowToggle);
-	snowSetNumSnowflakesNotify(d, snowDisplayOptionChanged);
-	snowSetSnowSizeNotify(d, snowDisplayOptionChanged);
-	snowSetSnowUpdateDelayNotify(d, snowDisplayOptionChanged);
-	snowSetSnowTexturesNotify(d, snowDisplayOptionChanged);
+    snowSetToggleInitiate (d, snowToggle);
+    snowSetNumSnowflakesNotify (d, snowDisplayOptionChanged);
+    snowSetSnowSizeNotify (d, snowDisplayOptionChanged);
+    snowSetSnowUpdateDelayNotify (d, snowDisplayOptionChanged);
+    snowSetSnowTexturesNotify (d, snowDisplayOptionChanged);
 
-	texOpt = snowGetSnowTexturesOption(d);
-	sd->snowTexFiles = texOpt->value.list.value;
-	sd->snowTexNFiles = texOpt->value.list.nValue;
+    texOpt = snowGetSnowTexturesOption (d);
+    sd->snowTexFiles = texOpt->value.list.value;
+    sd->snowTexNFiles = texOpt->value.list.nValue;
 
-	//Record the display
-	d->privates[displayPrivateIndex].ptr = sd;
+    d->privates[displayPrivateIndex].ptr = sd;
 
-	return TRUE;
+    return TRUE;
 }
 
-static void snowFiniDisplay(CompPlugin * p, CompDisplay * d)
+static void
+snowFiniDisplay (CompPlugin  *p,
+		 CompDisplay *d)
 {
-	SNOW_DISPLAY(d);
+    SNOW_DISPLAY (d);
 
-	//Free the private index
-	freeScreenPrivateIndex(d, sd->screenPrivateIndex);
-	//Free the pointer
-	free(sd);
+    freeScreenPrivateIndex (d, sd->screenPrivateIndex);
+    free (sd);
 }
 
-static Bool snowInit(CompPlugin * p)
+static Bool
+snowInit (CompPlugin *p)
 {
-	displayPrivateIndex = allocateDisplayPrivateIndex();
+    displayPrivateIndex = allocateDisplayPrivateIndex ();
+    if (displayPrivateIndex < 0)
+	return FALSE;
 
-	if (displayPrivateIndex < 0)
-		return FALSE;
-
-	return TRUE;
+    return TRUE;
 }
 
-static void snowFini(CompPlugin * p)
+static void
+snowFini (CompPlugin *p)
 {
-	if (displayPrivateIndex >= 0)
-		freeDisplayPrivateIndex(displayPrivateIndex);
+    freeDisplayPrivateIndex (displayPrivateIndex);
 }
 
-static int snowGetVersion(CompPlugin *p, int version)
+static int
+snowGetVersion (CompPlugin *p,
+		int        version)
 {
-	return ABIVERSION;
+    return ABIVERSION;
 }
 
 CompPluginVTable snowVTable = {
-	"snow",
-	snowGetVersion,
-	0,
-	snowInit,
-	snowFini,
-	snowInitDisplay,
-	snowFiniDisplay,
-	snowInitScreen,
-	snowFiniScreen,
-	0,
-	0,
-	0,
-	0,
-	0,							/*snowGetScreenOptions */
-	0							/*snowSetScreenOption */
+    "snow",
+    snowGetVersion,
+    0,
+    snowInit,
+    snowFini,
+    snowInitDisplay,
+    snowFiniDisplay,
+    snowInitScreen,
+    snowFiniScreen,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
 };
 
-CompPluginVTable *getCompPluginInfo(void)
+CompPluginVTable*
+getCompPluginInfo (void)
 {
-	return &snowVTable;
+    return &snowVTable;
 }
