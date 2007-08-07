@@ -98,6 +98,9 @@
 					<_long>Snow textures</_long>
 					<hints>file;image;</hints>
 					<type>string</type>
+					<default>
+						<value>snowflake.png</value>
+					</default>
 				</option>
 			</group>
 			<group>
