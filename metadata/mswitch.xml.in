@@ -1,0 +1,17 @@
+<compiz>
+  <plugin name="mswitch" useBcop="true">
+    <_short>Mouse switch</_short>
+    <_long>Switch viewport in response to mouse gesture</_long>
+    <category>Desktop</category>
+    <display>
+      <option name="begin" type="action">
+	<_short>Begin Gesture</_short>
+	<_long> Begin Mouse Gesture </_long>
+	<allowed key="true" button="true"/>
+	<default>
+	  <key>&lt;Super&gt;s</key>
+	</default>
+      </option>
+    </display>
+  </plugin>
+</compiz>
