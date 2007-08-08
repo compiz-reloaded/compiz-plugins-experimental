@@ -83,6 +83,8 @@ AC_SUBST(imagedir)
 metadatadir=$datadir/compiz
 AC_SUBST(metadatadir)
 
+compdatadir=$datadir/compiz
+AC_SUBST(compdatadir)
 
 dnl ============================================================
 dnl Check for the pkg-config path.
@@ -150,6 +152,7 @@ fi
 
 AC_OUTPUT([
 Makefile
+images/Makefile
 metadata/Makefile
 src/Makefile
 src/fakeargb/Makefile
