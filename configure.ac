@@ -156,6 +156,7 @@ images/Makefile
 metadata/Makefile
 src/Makefile
 src/fakeargb/Makefile
+src/mswitch/Makefile
 src/snow/Makefile
 src/tile/Makefile
 po/Makefile.in
