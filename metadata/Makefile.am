@@ -1,6 +1,7 @@
 xmldir       = $(metadatadir)
 xml_in_files =		  \
 	fakeargb.xml.in	  \
+	mswitch.xml.in \
 	snow.xml.in   \
 	tile.xml.in
 	
