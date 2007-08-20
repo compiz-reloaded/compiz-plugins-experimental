@@ -102,46 +102,30 @@
 				<option name="tile_vertically" type="action">
 					<_short>Tile Windows Vertically</_short>
 					<_long>Move and resize all visible windows so that they have full height, same width and occupy whole screen.</_long>
-					<allowed/>
-					<default/>
 				</option>
 				<option name="tile_horizontally" type="action">
 					<_short>Tile Windows Horizontally</_short>
 					<_long>Move and resize all visible windows so that they have full width, same height and occupy whole screen.</_long>
-					<allowed/>
-					<default/>
 				</option>
-				<option name="tile_tile" type="action">
+				<option name="tile_tile_key" type="key">
 					<_short>Tile Windows</_short>
 					<_long>Move and resize all visible windows both vertically and horizontally, so that the occupy whole screen and are in a grid.</_long>
-					<allowed key="true"/>
-					<default>
-						<key>&lt;Super&gt;&lt;Shift&gt;a</key>
-					</default>
+					<default>&lt;Super&gt;&lt;Shift&gt;a</default>
 				</option>
-				<option name="tile_cascade" type="action">
+				<option name="tile_cascade_key" type="key">
 					<_short>Cascade Windows</_short>
 					<_long>Move and resize all visible windows with the delta value set for cascading.</_long>
-					<allowed key="true"/>
-					<default>
-						<key>&lt;Super&gt;&lt;Shift&gt;s</key>
-					</default>
+					<default>&lt;Super&gt;&lt;Shift&gt;s</default>
 				</option>
-				<option name="tile_restore" type="action">
+				<option name="tile_restore_key" type="key">
 					<_short>Restore Windows</_short>
 					<_long>Restore windows to their original position they had before tiling.</_long>
-					<allowed key="true"/>
-					<default>
-						<key>&lt;Super&gt;&lt;Shift&gt;z</key>
-					</default>
+					<default>&lt;Super&gt;&lt;Shift&gt;z</default>
 				</option>
-				<option name="tile_toggle" type="action">
+				<option name="tile_toggle_key" type="key">
 					<_short>Toggle Tiling</_short>
 					<_long>Toggle between tile and restore</_long>
-					<allowed key="true"/>
-					<default>
-						<key>&lt;Super&gt;&lt;Shift&gt;x</key>
-					</default>
+					<default>&lt;Super&gt;&lt;Shift&gt;x</default>
 				</option>
 			</group>
 		</display>

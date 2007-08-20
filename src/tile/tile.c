@@ -1155,10 +1155,10 @@ tileInitDisplay (CompPlugin  *p,
 
     tileSetTileVerticallyInitiate (d, tileVertically);
     tileSetTileHorizontallyInitiate (d, tileHorizontally);
-    tileSetTileTileInitiate (d, tileTile);
-    tileSetTileCascadeInitiate (d, tileCascade);
-    tileSetTileRestoreInitiate (d, tileRestore);
-    tileSetTileToggleInitiate (d, tileToggle);
+    tileSetTileTileKeyInitiate (d, tileTile);
+    tileSetTileCascadeKeyInitiate (d, tileCascade);
+    tileSetTileRestoreKeyInitiate (d, tileRestore);
+    tileSetTileToggleKeyInitiate (d, tileToggle);
 
     /* Record the display */
     d->privates[displayPrivateIndex].ptr = td;
