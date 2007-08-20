@@ -4,13 +4,14 @@
 	<_long>Alter window opacity based on color.</_long>
 	<category>Extras</category>
 	<display>
-	    <option name="window_toggle" type="action">
+	    <option name="window_toggle_key" type="key">
 		<_short>Toggle Window Fake ARGB</_short>
 		<_long>Toggle window fake ARGB.</_long>
-		<allowed key="true" button="true"/>
-		<default>
-		   <key>&lt;Super&gt;f</key>
-		</default>
+		<default>&lt;Super&gt;f</default>
+	    </option>
+	    <option name="window_toggle_button" type="button">
+		<_short>Toggle Window Fake ARGB</_short>
+		<_long>Toggle window fake ARGB.</_long>
 	    </option>
 	</display>
     </plugin>

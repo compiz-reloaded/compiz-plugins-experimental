@@ -211,7 +211,8 @@ static Bool fakeInitDisplay(CompPlugin * p, CompDisplay * d)
 		return FALSE;
 	}
 
-	fakeargbSetWindowToggleInitiate(d, fakeToggle);
+	fakeargbSetWindowToggleKeyInitiate(d, fakeToggle);
+	fakeargbSetWindowToggleButtonInitiate(d, fakeToggle);
 
 	d->privates[displayPrivateIndex].ptr = fd;
 
