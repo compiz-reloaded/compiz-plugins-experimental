@@ -4,13 +4,14 @@
     <_long>Switch viewport in response to mouse gesture</_long>
     <category>Desktop</category>
     <display>
-      <option name="begin" type="action">
+      <option name="begin_key" type="key">
 	<_short>Begin Gesture</_short>
 	<_long> Begin Mouse Gesture </_long>
-	<allowed key="true" button="true"/>
-	<default>
-	  <key>&lt;Super&gt;s</key>
-	</default>
+	<default>&lt;Super&gt;s</default>
+      </option>
+      <option name="begin_button" type="button">
+	<_short>Begin Gesture</_short>
+	<_long> Begin Mouse Gesture </_long>
       </option>
     </display>
   </plugin>

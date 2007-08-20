@@ -103,8 +103,10 @@ static Bool mswitchTerminate(CompDisplay *d, CompAction * action,
 static Bool mswitchInitDisplay(CompPlugin *p,
 			       CompDisplay *d)
 {
-	mswitchSetBeginInitiate(d, mswitchBegin);
-	mswitchSetBeginTerminate(d, mswitchTerminate);
+	mswitchSetBeginKeyInitiate(d, mswitchBegin);
+	mswitchSetBeginKeyTerminate(d, mswitchTerminate);
+	mswitchSetBeginButtonInitiate(d, mswitchBegin);
+	mswitchSetBeginButtonTerminate(d, mswitchTerminate);
 	return TRUE;
 }
 
