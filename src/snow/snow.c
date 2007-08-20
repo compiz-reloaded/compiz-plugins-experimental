@@ -667,7 +667,7 @@ snowInitDisplay (CompPlugin  *p,
 	return FALSE;
     }
 	
-    snowSetToggleInitiate (d, snowToggle);
+    snowSetToggleKeyInitiate (d, snowToggle);
     snowSetNumSnowflakesNotify (d, snowDisplayOptionChanged);
     snowSetSnowSizeNotify (d, snowDisplayOptionChanged);
     snowSetSnowUpdateDelayNotify (d, snowDisplayOptionChanged);

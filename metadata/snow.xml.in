@@ -118,13 +118,10 @@
 			</group>
 			<group>
 				<_short>Key Bindings</_short>
-				<option name="toggle" type="action">
+				<option name="toggle_key" type="key">
 					<_short>Snow Toggle</_short>
 					<_long>Snow toggle key</_long>
-					<allowed key="true"/>
-					<default>
-						<key>&lt;Super&gt;F3</key>
-					</default>
+					<default>&lt;Super&gt;F3</default>
 				</option>
 			</group>
 		</display>
