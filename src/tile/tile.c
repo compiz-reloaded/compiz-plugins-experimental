@@ -1153,8 +1153,8 @@ tileInitDisplay (CompPlugin  *p,
 	return FALSE;
     }
 
-    tileSetTileVerticallyInitiate (d, tileVertically);
-    tileSetTileHorizontallyInitiate (d, tileHorizontally);
+    tileSetTileVerticallyKeyInitiate (d, tileVertically);
+    tileSetTileHorizontallyKeyInitiate (d, tileHorizontally);
     tileSetTileTileKeyInitiate (d, tileTile);
     tileSetTileCascadeKeyInitiate (d, tileCascade);
     tileSetTileRestoreKeyInitiate (d, tileRestore);

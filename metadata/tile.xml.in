@@ -99,11 +99,11 @@
 			</group>
 			<group>
 				<_short>Key Bindings</_short>
-				<option name="tile_vertically" type="action">
+				<option name="tile_vertically_key" type="key">
 					<_short>Tile Windows Vertically</_short>
 					<_long>Move and resize all visible windows so that they have full height, same width and occupy whole screen.</_long>
 				</option>
-				<option name="tile_horizontally" type="action">
+				<option name="tile_horizontally_key" type="key">
 					<_short>Tile Windows Horizontally</_short>
 					<_long>Move and resize all visible windows so that they have full width, same height and occupy whole screen.</_long>
 				</option>
