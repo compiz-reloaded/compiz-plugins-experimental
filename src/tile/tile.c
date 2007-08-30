@@ -34,7 +34,7 @@
 #include <X11/Xatom.h>
 #include <X11/extensions/Xrender.h>
 
-#include <compiz.h>
+#include <compiz-core.h>
 #include "tile_options.h"
 
 static int displayPrivateIndex = 0;
@@ -85,17 +85,17 @@ typedef struct _TileWindow {
 } TileWindow;
 
 #define GET_TILE_DISPLAY(d) \
-    ((TileDisplay *) (d)->privates[displayPrivateIndex].ptr)
+    ((TileDisplay *) (d)->object.privates[displayPrivateIndex].ptr)
 #define TILE_DISPLAY(d) \
     TileDisplay *td = GET_TILE_DISPLAY (d)
 
 #define GET_TILE_SCREEN(s, td) \
-    ((TileScreen *) (s)->privates[(td)->screenPrivateIndex].ptr)
+    ((TileScreen *) (s)->object.privates[(td)->screenPrivateIndex].ptr)
 #define TILE_SCREEN(s) \
     TileScreen *ts = GET_TILE_SCREEN (s, GET_TILE_DISPLAY (s->display))
 
 #define GET_TILE_WINDOW(w, ts) \
-    ((TileWindow *) (w)->privates[(ts)->windowPrivateIndex].ptr)
+    ((TileWindow *) (w)->object.privates[(ts)->windowPrivateIndex].ptr)
 #define TILE_WINDOW(w) \
     TileWindow *tw = GET_TILE_WINDOW (w, \
 		     GET_TILE_SCREEN (w->screen, \
@@ -563,7 +563,7 @@ tileInitScreen (CompPlugin *p,
     }
     srand (time (0));
 
-    s->privates[td->screenPrivateIndex].ptr = ts;
+    s->object.privates[td->screenPrivateIndex].ptr = ts;
 
     ts->grabIndex = 0;
     ts->msResizing = 0;
@@ -1141,7 +1141,12 @@ tileInitDisplay (CompPlugin  *p,
 {
     TileDisplay *td;
 
-    td = (TileDisplay *) malloc (sizeof (TileDisplay));
+    if (!checkPluginABI ("core", CORE_ABIVERSION))
+	return FALSE;
+
+    td = malloc (sizeof (TileDisplay));
+    if (!td)
+	return FALSE;
 
     /* Allocate a private index */
     td->screenPrivateIndex = allocateScreenPrivateIndex (d);
@@ -1161,7 +1166,7 @@ tileInitDisplay (CompPlugin  *p,
     tileSetTileToggleKeyInitiate (d, tileToggle);
 
     /* Record the display */
-    d->privates[displayPrivateIndex].ptr = td;
+    d->object.privates[displayPrivateIndex].ptr = td;
 
     return TRUE;
 }
@@ -1205,7 +1210,7 @@ tileInitWindow (CompPlugin *p,
     tw->outlineColor[1] = rand() % 0xFFFF;
     tw->outlineColor[2] = rand() % 0xFFFF;
 
-    w->privates[ts->windowPrivateIndex].ptr = tw;
+    w->object.privates[ts->windowPrivateIndex].ptr = tw;
 
     return TRUE;
 }
@@ -1217,6 +1222,32 @@ tileFiniWindow (CompPlugin *p,
     TILE_WINDOW (w);
 
     free (tw);
+}
+
+static CompBool
+tileInitObject (CompPlugin *p,
+		CompObject *o)
+{
+    static InitPluginObjectProc dispTab[] = {
+	(InitPluginObjectProc) tileInitDisplay,
+	(InitPluginObjectProc) tileInitScreen,
+	(InitPluginObjectProc) tileInitWindow
+    };
+
+    RETURN_DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), TRUE, (p, o));
+}
+
+static void
+tileFiniObject (CompPlugin *p,
+		CompObject *o)
+{
+    static FiniPluginObjectProc dispTab[] = {
+	(FiniPluginObjectProc) tileFiniDisplay,
+	(FiniPluginObjectProc) tileFiniScreen,
+	(FiniPluginObjectProc) tileFiniWindow
+    };
+
+    DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), (p, o));
 }
 
 static Bool
@@ -1236,29 +1267,15 @@ tileFini (CompPlugin * p)
     freeDisplayPrivateIndex (displayPrivateIndex);
 }
 
-static int
-tileGetVersion (CompPlugin *p,
-		int        version)
-{
-    return ABIVERSION;
-}
-
 CompPluginVTable tileVTable = {
     "tile",
-    tileGetVersion,
     0,
     tileInit,
     tileFini,
-    tileInitDisplay,
-    tileFiniDisplay,
-    tileInitScreen,
-    tileFiniScreen,
-    tileInitWindow,
-    tileFiniWindow,
+    tileInitObject,
+    tileFiniObject,
     0,
-    0,
-    0,			/*tileGetScreenOptions */
-    0			/*tileSetScreenOption */
+    0
 };
 
 CompPluginVTable*
