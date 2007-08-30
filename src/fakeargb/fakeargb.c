@@ -26,7 +26,7 @@
 #include <X11/Xatom.h>
 #include <X11/extensions/Xrender.h>
 
-#include <compiz.h>
+#include <compiz-core.h>
 #include "fakeargb_options.h"
 
 static int displayPrivateIndex;
@@ -49,11 +49,11 @@ typedef struct _FakeWindow
 	Bool isFaked;
 } FakeWindow;
 
-#define GET_FAKE_DISPLAY(d) ((FakeDisplay *) (d)->privates[displayPrivateIndex].ptr)
+#define GET_FAKE_DISPLAY(d) ((FakeDisplay *) (d)->object.privates[displayPrivateIndex].ptr)
 #define FAKE_DISPLAY(d) FakeDisplay *fd = GET_FAKE_DISPLAY (d)
-#define GET_FAKE_SCREEN(s, nd) ((FakeScreen *) (s)->privates[(nd)->screenPrivateIndex].ptr)
+#define GET_FAKE_SCREEN(s, nd) ((FakeScreen *) (s)->object.privates[(nd)->screenPrivateIndex].ptr)
 #define FAKE_SCREEN(s) FakeScreen *fs = GET_FAKE_SCREEN (s, GET_FAKE_DISPLAY (s->display))
-#define GET_FAKE_WINDOW(w, ns) ((FakeWindow *) (w)->privates[(ns)->windowPrivateIndex].ptr)
+#define GET_FAKE_WINDOW(w, ns) ((FakeWindow *) (w)->object.privates[(ns)->windowPrivateIndex].ptr)
 #define FAKE_WINDOW(w) FakeWindow *fw = GET_FAKE_WINDOW  (w, GET_FAKE_SCREEN  (w->screen, GET_FAKE_DISPLAY (w->screen->display)))
 
 #define NUM_OPTIONS(s) (sizeof ((s)->opt) / sizeof (CompOption))
@@ -200,6 +200,9 @@ static Bool fakeInitDisplay(CompPlugin * p, CompDisplay * d)
 {
 	FakeDisplay *fd;
 
+	if (!checkPluginABI ("core", CORE_ABIVERSION))
+	    return FALSE;
+
 	fd = malloc(sizeof(FakeDisplay));
 	if (!fd)
 		return FALSE;
@@ -214,7 +217,7 @@ static Bool fakeInitDisplay(CompPlugin * p, CompDisplay * d)
 	fakeargbSetWindowToggleKeyInitiate(d, fakeToggle);
 	fakeargbSetWindowToggleButtonInitiate(d, fakeToggle);
 
-	d->privates[displayPrivateIndex].ptr = fd;
+	d->object.privates[displayPrivateIndex].ptr = fd;
 
 	return TRUE;
 }
@@ -247,7 +250,7 @@ static Bool fakeInitScreen(CompPlugin * p, CompScreen * s)
 
 	WRAP(fs, s, drawWindowTexture, fakeDrawWindowTexture);
 
-	s->privates[fd->screenPrivateIndex].ptr = fs;
+	s->object.privates[fd->screenPrivateIndex].ptr = fs;
 		
 	fs->black = TRUE;
 
@@ -276,7 +279,7 @@ static Bool fakeInitWindow(CompPlugin * p, CompWindow * w)
 
 	fw->isFaked = FALSE;
 
-	w->privates[fs->windowPrivateIndex].ptr = fw;
+	w->object.privates[fs->windowPrivateIndex].ptr = fw;
 
 	return TRUE;
 }
@@ -302,26 +305,39 @@ static void fakeFini(CompPlugin * p)
 		freeDisplayPrivateIndex(displayPrivateIndex);
 }
 
-static int
-fakeGetVersion (CompPlugin *plugin, int version)
+static CompBool
+fakeInitObject (CompPlugin *p,
+		 CompObject *o)
 {
-	return ABIVERSION;
+    static InitPluginObjectProc dispTab[] = {
+	(InitPluginObjectProc) fakeInitDisplay,
+	(InitPluginObjectProc) fakeInitScreen,
+	(InitPluginObjectProc) fakeInitWindow
+    };
+
+    RETURN_DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), TRUE, (p, o));
+}
+
+static void
+fakeFiniObject (CompPlugin *p,
+		 CompObject *o)
+{
+    static FiniPluginObjectProc dispTab[] = {
+	(FiniPluginObjectProc) fakeFiniDisplay,
+	(FiniPluginObjectProc) fakeFiniScreen,
+	(FiniPluginObjectProc) fakeFiniWindow
+    };
+
+    DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), (p, o));
 }
 
 CompPluginVTable fakeVTable = {
 	"fakeargb",
-	fakeGetVersion,
 	0,
 	fakeInit,
 	fakeFini,
-	fakeInitDisplay,
-	fakeFiniDisplay,
-	fakeInitScreen,
-	fakeFiniScreen,
-	fakeInitWindow,
-	fakeFiniWindow,
-	0,
-	0,
+	fakeInitObject,
+	fakeFiniObject,
 	0,
 	0
 };
