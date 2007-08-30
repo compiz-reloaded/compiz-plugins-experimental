@@ -35,17 +35,17 @@
 #include <X11/Xatom.h>
 #include <X11/extensions/Xrender.h>
 
-#include <compiz.h>
+#include <compiz-core.h>
 #include "snow_options.h"
 
 #define GET_SNOW_DISPLAY(d)                            \
-    ((SnowDisplay *) (d)->privates[displayPrivateIndex].ptr)
+    ((SnowDisplay *) (d)->object.privates[displayPrivateIndex].ptr)
 
 #define SNOW_DISPLAY(d)                                \
     SnowDisplay *sd = GET_SNOW_DISPLAY (d)
 
 #define GET_SNOW_SCREEN(s, sd)                         \
-    ((SnowScreen *) (s)->privates[(sd)->screenPrivateIndex].ptr)
+    ((SnowScreen *) (s)->object.privates[(sd)->screenPrivateIndex].ptr)
 
 #define SNOW_SCREEN(s)                                 \
     SnowScreen *ss = GET_SNOW_SCREEN (s, GET_SNOW_DISPLAY (s->display))
@@ -514,7 +514,7 @@ snowInitScreen (CompPlugin *p,
 
     ss = calloc (1, sizeof(SnowScreen));
 
-    s->privates[sd->screenPrivateIndex].ptr = ss;
+    s->object.privates[sd->screenPrivateIndex].ptr = ss;
 
     ss->s = s;
     ss->snowTexturesLoaded = 0;
@@ -657,7 +657,10 @@ snowInitDisplay (CompPlugin  *p,
 {
     CompOption  *texOpt;
     SnowDisplay *sd;
-    
+
+    if (!checkPluginABI ("core", CORE_ABIVERSION))
+	return FALSE;
+
     sd = malloc (sizeof (SnowDisplay));
 
     sd->screenPrivateIndex = allocateScreenPrivateIndex (d);
@@ -677,7 +680,7 @@ snowInitDisplay (CompPlugin  *p,
     sd->snowTexFiles = texOpt->value.list.value;
     sd->snowTexNFiles = texOpt->value.list.nValue;
 
-    d->privates[displayPrivateIndex].ptr = sd;
+    d->object.privates[displayPrivateIndex].ptr = sd;
 
     return TRUE;
 }
@@ -690,6 +693,30 @@ snowFiniDisplay (CompPlugin  *p,
 
     freeScreenPrivateIndex (d, sd->screenPrivateIndex);
     free (sd);
+}
+
+static CompBool
+snowInitObject (CompPlugin *p,
+		CompObject *o)
+{
+    static InitPluginObjectProc dispTab[] = {
+	(InitPluginObjectProc) snowInitDisplay,
+	(InitPluginObjectProc) snowInitScreen
+    };
+
+    RETURN_DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), TRUE, (p, o));
+}
+
+static void
+snowFiniObject (CompPlugin *p,
+		CompObject *o)
+{
+    static FiniPluginObjectProc dispTab[] = {
+	(FiniPluginObjectProc) snowFiniDisplay,
+	(FiniPluginObjectProc) snowFiniScreen
+    };
+
+    DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), (p, o));
 }
 
 static Bool
@@ -708,27 +735,13 @@ snowFini (CompPlugin *p)
     freeDisplayPrivateIndex (displayPrivateIndex);
 }
 
-static int
-snowGetVersion (CompPlugin *p,
-		int        version)
-{
-    return ABIVERSION;
-}
-
 CompPluginVTable snowVTable = {
     "snow",
-    snowGetVersion,
     0,
     snowInit,
     snowFini,
-    snowInitDisplay,
-    snowFiniDisplay,
-    snowInitScreen,
-    snowFiniScreen,
-    0,
-    0,
-    0,
-    0,
+    snowInitObject,
+    snowFiniObject,
     0,
     0
 };
