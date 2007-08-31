@@ -16,7 +16,7 @@
  *
  */
 
-#include <compiz.h>
+#include <compiz-core.h>
 #include <math.h>
 #include <X11/Xlib.h>
 #include "mswitch_options.h"
@@ -110,25 +110,23 @@ static Bool mswitchInitDisplay(CompPlugin *p,
 	return TRUE;
 }
 
-static int mswitchGetVersion(CompPlugin *p, int version)
+static CompBool
+mswitchInitObject (CompPlugin *p,
+		       CompObject *o)
 {
-	return ABIVERSION;
-}
+	static InitPluginObjectProc dispTab[] = {
+		(InitPluginObjectProc) mswitchInitDisplay,
+    };
 
+    RETURN_DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), TRUE, (p, o));
+}
 
 CompPluginVTable mswitchVTable = {
 	"mswitch",
-	mswitchGetVersion,
 	0,
 	0,
 	0,
-	mswitchInitDisplay,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
+	mswitchInitObject,
 	0,
 	0,
 	0
