@@ -85,17 +85,17 @@ typedef struct _TileWindow {
 } TileWindow;
 
 #define GET_TILE_DISPLAY(d) \
-    ((TileDisplay *) (d)->object.privates[displayPrivateIndex].ptr)
+    ((TileDisplay *) (d)->base.privates[displayPrivateIndex].ptr)
 #define TILE_DISPLAY(d) \
     TileDisplay *td = GET_TILE_DISPLAY (d)
 
 #define GET_TILE_SCREEN(s, td) \
-    ((TileScreen *) (s)->object.privates[(td)->screenPrivateIndex].ptr)
+    ((TileScreen *) (s)->base.privates[(td)->screenPrivateIndex].ptr)
 #define TILE_SCREEN(s) \
     TileScreen *ts = GET_TILE_SCREEN (s, GET_TILE_DISPLAY (s->display))
 
 #define GET_TILE_WINDOW(w, ts) \
-    ((TileWindow *) (w)->object.privates[(ts)->windowPrivateIndex].ptr)
+    ((TileWindow *) (w)->base.privates[(ts)->windowPrivateIndex].ptr)
 #define TILE_WINDOW(w) \
     TileWindow *tw = GET_TILE_WINDOW (w, \
 		     GET_TILE_SCREEN (w->screen, \
@@ -563,7 +563,7 @@ tileInitScreen (CompPlugin *p,
     }
     srand (time (0));
 
-    s->object.privates[td->screenPrivateIndex].ptr = ts;
+    s->base.privates[td->screenPrivateIndex].ptr = ts;
 
     ts->grabIndex = 0;
     ts->msResizing = 0;
@@ -1166,7 +1166,7 @@ tileInitDisplay (CompPlugin  *p,
     tileSetTileToggleKeyInitiate (d, tileToggle);
 
     /* Record the display */
-    d->object.privates[displayPrivateIndex].ptr = td;
+    d->base.privates[displayPrivateIndex].ptr = td;
 
     return TRUE;
 }
@@ -1210,7 +1210,7 @@ tileInitWindow (CompPlugin *p,
     tw->outlineColor[1] = rand() % 0xFFFF;
     tw->outlineColor[2] = rand() % 0xFFFF;
 
-    w->object.privates[ts->windowPrivateIndex].ptr = tw;
+    w->base.privates[ts->windowPrivateIndex].ptr = tw;
 
     return TRUE;
 }
@@ -1229,6 +1229,7 @@ tileInitObject (CompPlugin *p,
 		CompObject *o)
 {
     static InitPluginObjectProc dispTab[] = {
+	(InitPluginObjectProc) 0, /* InitCore */
 	(InitPluginObjectProc) tileInitDisplay,
 	(InitPluginObjectProc) tileInitScreen,
 	(InitPluginObjectProc) tileInitWindow
@@ -1242,6 +1243,7 @@ tileFiniObject (CompPlugin *p,
 		CompObject *o)
 {
     static FiniPluginObjectProc dispTab[] = {
+	(FiniPluginObjectProc) 0, /* FiniCore */
 	(FiniPluginObjectProc) tileFiniDisplay,
 	(FiniPluginObjectProc) tileFiniScreen,
 	(FiniPluginObjectProc) tileFiniWindow
