@@ -39,13 +39,13 @@
 #include "snow_options.h"
 
 #define GET_SNOW_DISPLAY(d)                            \
-    ((SnowDisplay *) (d)->object.privates[displayPrivateIndex].ptr)
+    ((SnowDisplay *) (d)->base.privates[displayPrivateIndex].ptr)
 
 #define SNOW_DISPLAY(d)                                \
     SnowDisplay *sd = GET_SNOW_DISPLAY (d)
 
 #define GET_SNOW_SCREEN(s, sd)                         \
-    ((SnowScreen *) (s)->object.privates[(sd)->screenPrivateIndex].ptr)
+    ((SnowScreen *) (s)->base.privates[(sd)->screenPrivateIndex].ptr)
 
 #define SNOW_SCREEN(s)                                 \
     SnowScreen *ss = GET_SNOW_SCREEN (s, GET_SNOW_DISPLAY (s->display))
@@ -514,7 +514,7 @@ snowInitScreen (CompPlugin *p,
 
     ss = calloc (1, sizeof(SnowScreen));
 
-    s->object.privates[sd->screenPrivateIndex].ptr = ss;
+    s->base.privates[sd->screenPrivateIndex].ptr = ss;
 
     ss->s = s;
     ss->snowTexturesLoaded = 0;
@@ -680,7 +680,7 @@ snowInitDisplay (CompPlugin  *p,
     sd->snowTexFiles = texOpt->value.list.value;
     sd->snowTexNFiles = texOpt->value.list.nValue;
 
-    d->object.privates[displayPrivateIndex].ptr = sd;
+    d->base.privates[displayPrivateIndex].ptr = sd;
 
     return TRUE;
 }
@@ -700,6 +700,7 @@ snowInitObject (CompPlugin *p,
 		CompObject *o)
 {
     static InitPluginObjectProc dispTab[] = {
+	(InitPluginObjectProc) 0, /* InitCore */
 	(InitPluginObjectProc) snowInitDisplay,
 	(InitPluginObjectProc) snowInitScreen
     };
@@ -712,6 +713,7 @@ snowFiniObject (CompPlugin *p,
 		CompObject *o)
 {
     static FiniPluginObjectProc dispTab[] = {
+	(FiniPluginObjectProc) 0, /* FiniCore */
 	(FiniPluginObjectProc) snowFiniDisplay,
 	(FiniPluginObjectProc) snowFiniScreen
     };
