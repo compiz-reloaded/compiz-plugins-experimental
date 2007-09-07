@@ -49,11 +49,11 @@ typedef struct _FakeWindow
 	Bool isFaked;
 } FakeWindow;
 
-#define GET_FAKE_DISPLAY(d) ((FakeDisplay *) (d)->object.privates[displayPrivateIndex].ptr)
+#define GET_FAKE_DISPLAY(d) ((FakeDisplay *) (d)->base.privates[displayPrivateIndex].ptr)
 #define FAKE_DISPLAY(d) FakeDisplay *fd = GET_FAKE_DISPLAY (d)
-#define GET_FAKE_SCREEN(s, nd) ((FakeScreen *) (s)->object.privates[(nd)->screenPrivateIndex].ptr)
+#define GET_FAKE_SCREEN(s, nd) ((FakeScreen *) (s)->base.privates[(nd)->screenPrivateIndex].ptr)
 #define FAKE_SCREEN(s) FakeScreen *fs = GET_FAKE_SCREEN (s, GET_FAKE_DISPLAY (s->display))
-#define GET_FAKE_WINDOW(w, ns) ((FakeWindow *) (w)->object.privates[(ns)->windowPrivateIndex].ptr)
+#define GET_FAKE_WINDOW(w, ns) ((FakeWindow *) (w)->base.privates[(ns)->windowPrivateIndex].ptr)
 #define FAKE_WINDOW(w) FakeWindow *fw = GET_FAKE_WINDOW  (w, GET_FAKE_SCREEN  (w->screen, GET_FAKE_DISPLAY (w->screen->display)))
 
 #define NUM_OPTIONS(s) (sizeof ((s)->opt) / sizeof (CompOption))
@@ -217,7 +217,7 @@ static Bool fakeInitDisplay(CompPlugin * p, CompDisplay * d)
 	fakeargbSetWindowToggleKeyInitiate(d, fakeToggle);
 	fakeargbSetWindowToggleButtonInitiate(d, fakeToggle);
 
-	d->object.privates[displayPrivateIndex].ptr = fd;
+	d->base.privates[displayPrivateIndex].ptr = fd;
 
 	return TRUE;
 }
@@ -250,7 +250,7 @@ static Bool fakeInitScreen(CompPlugin * p, CompScreen * s)
 
 	WRAP(fs, s, drawWindowTexture, fakeDrawWindowTexture);
 
-	s->object.privates[fd->screenPrivateIndex].ptr = fs;
+	s->base.privates[fd->screenPrivateIndex].ptr = fs;
 		
 	fs->black = TRUE;
 
@@ -279,7 +279,7 @@ static Bool fakeInitWindow(CompPlugin * p, CompWindow * w)
 
 	fw->isFaked = FALSE;
 
-	w->object.privates[fs->windowPrivateIndex].ptr = fw;
+	w->base.privates[fs->windowPrivateIndex].ptr = fw;
 
 	return TRUE;
 }
@@ -310,9 +310,10 @@ fakeInitObject (CompPlugin *p,
 		 CompObject *o)
 {
     static InitPluginObjectProc dispTab[] = {
-	(InitPluginObjectProc) fakeInitDisplay,
-	(InitPluginObjectProc) fakeInitScreen,
-	(InitPluginObjectProc) fakeInitWindow
+		(InitPluginObjectProc) 0, /* InitCore */
+		(InitPluginObjectProc) fakeInitDisplay,
+		(InitPluginObjectProc) fakeInitScreen,
+		(InitPluginObjectProc) fakeInitWindow
     };
 
     RETURN_DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), TRUE, (p, o));
@@ -323,9 +324,10 @@ fakeFiniObject (CompPlugin *p,
 		 CompObject *o)
 {
     static FiniPluginObjectProc dispTab[] = {
-	(FiniPluginObjectProc) fakeFiniDisplay,
-	(FiniPluginObjectProc) fakeFiniScreen,
-	(FiniPluginObjectProc) fakeFiniWindow
+		(FiniPluginObjectProc) 0, /* FiniCore */
+		(FiniPluginObjectProc) fakeFiniDisplay,
+		(FiniPluginObjectProc) fakeFiniScreen,
+		(FiniPluginObjectProc) fakeFiniWindow
     };
 
     DISPATCH (o, dispTab, ARRAY_SIZE (dispTab), (p, o));
