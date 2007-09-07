@@ -115,6 +115,7 @@ mswitchInitObject (CompPlugin *p,
 		       CompObject *o)
 {
 	static InitPluginObjectProc dispTab[] = {
+		(InitPluginObjectProc) 0, /* InitCore */
 		(InitPluginObjectProc) mswitchInitDisplay,
     };
 
