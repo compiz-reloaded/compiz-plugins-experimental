@@ -27,13 +27,7 @@
  * for helping me make this possible
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include <math.h>
-
-#include <X11/Xatom.h>
-#include <X11/extensions/Xrender.h>
 
 #include <compiz-core.h>
 #include "snow_options.h"
