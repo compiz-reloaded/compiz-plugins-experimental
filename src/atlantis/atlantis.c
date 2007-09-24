@@ -383,6 +383,8 @@ static void atlantisPaintInside (CompScreen              *s,
 
     as->damage = TRUE;
 
+    glColor4usv (defaultColor);
+
     UNWRAP (as, cs, paintInside);
     (*cs->paintInside) (s, sAttrib, transform, output, size);
     WRAP (as, cs, paintInside, atlantisPaintInside);
