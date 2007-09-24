@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="atlantis" useBcop="true">
+		<short>Cube Atlantis</short>
+		<long>Render some fish inside of the transparent cube</long>
+		<category>Effects</category>
+		<deps>
+		<relation type="after">
+			<plugin>cube</plugin>
+		</relation>
+		<requirement>
+			<plugin>cube</plugin>
+		</requirement>
+		</deps>
+		<screen>
+			<option name="num_fish" type="int">
+				<short>Number of fish</short>
+				<long>Number of fish inside the cube</long>
+				<default>20</default>
+				<min>5</min>
+				<max>100</max>
+			</option>
+			<option name="colors" type="bool">
+				<short>Colors</short>
+				<long>Enable colors</long>
+				<default>true</default>
+			</option>
+			<option name="fish_size" type="int">
+				<short>Fish size</short>
+				<long>Fish size</long>
+				<default>1500</default>
+				<min>100</min>
+				<max>10000</max>
+			</option>
+			<option name="shark_size" type="int">
+				<short>Shark size</short>
+				<long>Shark size</long>
+				<default>5000</default>
+				<min>100</min>
+				<max>10000</max>
+			</option>
+			<option name="dolphin_size" type="int">
+				<short>Dolphin size</short>
+				<long>Dolphin size.</long>
+				<default>5000</default>
+				<min>100</min>
+				<max>10000</max>
+			</option>
+			<option name="whale_size" type="int">
+				<short>Whale size</short>
+				<long>Whale size.</long>
+				<default>8000</default>
+				<min>100</min>
+				<max>10000</max>
+			</option>
+		</screen>
+	</plugin>
+</compiz>
