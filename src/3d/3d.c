@@ -234,7 +234,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
 {
     Bool       wasCulled;
     Bool       status;
-    int        wx, wy, wx2, wy2, ww, wh;
+    int        wx, wy, ww, wh;
     int        bevel;
     CompScreen *s = w->screen;
     GLdouble   point[4];
@@ -244,14 +244,11 @@ tdPaintWindowWithDepth (CompWindow              *w,
 
     wasCulled = glIsEnabled (GL_CULL_FACE);
 
-    wx = MAX (0, MIN (s->width, w->attrib.x - w->input.left));
-    wx2 = MAX (0, MIN (s->width, w->attrib.x + w->width + w->input.right));
+    wx = w->attrib.x - w->input.left;
+    wy = w->attrib.y - w->input.top;
 
-    wy = MAX (0, MIN (s->height, w->attrib.y - w->input.top));
-    wy2 = MAX (0, MIN (s->height, w->attrib.y + w->height + w->input.bottom));
-
-    ww = wx2 - wx;
-    wh = wy2 - wy;
+    ww = w->width + w->input.left + w->input.right;
+    wh = w->height + w->input.top + w->input.bottom;
 
     bevel = tdGetBevel (s);
 
