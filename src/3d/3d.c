@@ -71,10 +71,6 @@ typedef struct _tdScreen
 {
     int windowPrivateIndex;
 
-    Bool tdWindowExists;
-    Bool active;
-    Bool wasActive;
-
     PreparePaintScreenProc    preparePaintScreen;
     PaintOutputProc	      paintOutput;
     CubePostPaintViewportProc postPaintViewport;
@@ -86,6 +82,7 @@ typedef struct _tdScreen
     CompWindow *first;
     CompWindow *last;
 
+    Bool  active;
     Bool  painting3D;
     float currentScale;
 
@@ -140,16 +137,16 @@ tdPreparePaintScreen (CompScreen *s,
 {
     CompWindow *w;
     float      amount;
+    Bool       active;
 
     TD_SCREEN (s);
     CUBE_SCREEN (s);
 
-    tds->active = (cs->rotationState != RotationNone) &&
-	          !(tdGetManualOnly(s) &&
-		    (cs->rotationState != RotationManual));
+    active = (cs->rotationState != RotationNone) &&
+	     !(tdGetManualOnly(s) && (cs->rotationState != RotationManual));
 
     amount = ((float)msSinceLastPaint * tdGetSpeed (s) / 1000.0);
-    if (tds->active)
+    if (active)
     {
 	float maxDiv = (float) tdGetMaxWindowSpace (s) / 100;
 	float minScale = (float) tdGetMinCubeSize (s) / 100;
@@ -167,14 +164,13 @@ tdPreparePaintScreen (CompScreen *s,
 	    tdw->is3D = TRUE;
 	    tds->maxDepth++;
 	    tdw->depth = tds->maxDepth;
-	    tds->tdWindowExists = TRUE;
 	}
 
 	minScale =  MAX (minScale, 1.0 - (tds->maxDepth * maxDiv));
 	if (cs->invert == 1)
 	    tds->basicScale = MAX (minScale, tds->basicScale - amount);
 	else
- 	    tds->basicScale = MIN (2 - minScale, tds->basicScale + amount);
+	    tds->basicScale = MIN (2 - minScale, tds->basicScale + amount);
     }
     else
     {
@@ -184,11 +180,16 @@ tdPreparePaintScreen (CompScreen *s,
 	    tds->basicScale = MAX (1.0, tds->basicScale - amount);
     }
 
+    /* comparing float values with != is error prone, so better cache
+       the comparison and allow a small difference */
+    tds->active       = (fabs (tds->basicScale - 1.0f) > 1e-4);
+    tds->currentScale = tds->basicScale;
+
     UNWRAP (tds, s, preparePaintScreen);
     (*s->preparePaintScreen) (s, msSinceLastPaint);
     WRAP (tds, s, preparePaintScreen, tdPreparePaintScreen);
 
-    cs->paintAllViewports |= tds->active | tds->tdWindowExists;
+    cs->paintAllViewports |= tds->active;
 }
 
 /* forward declaration */
@@ -427,7 +428,7 @@ tdPaintWindow (CompWindow              *w,
     TD_SCREEN (s);
     TD_WINDOW (w);
 
-    if (tdw->depth != 0.0f && !tds->painting3D && tds->basicScale != 1.0)
+    if (tdw->depth != 0.0f && !tds->painting3D && tds->active)
 	mask |= PAINT_WINDOW_NO_CORE_INSTANCE_MASK;
 
     if (tds->painting3D)
@@ -509,7 +510,7 @@ tdPostPaintViewport (CompScreen              *s,
     (*cs->postPaintViewport) (s, sAttrib, transform, output, region);
     WRAP (tds, cs, postPaintViewport, tdPostPaintViewport);
 
-    if (tds->active || tds->tdWindowExists)
+    if (tds->active)
     {
 	CompTransform sTransform = *transform;
 	CompWindow    *firstFTB = NULL;
@@ -653,7 +654,7 @@ tdPaintOutput (CompScreen              *s,
 
     TD_SCREEN (s);
 
-    if (tds->basicScale != 1.0)
+    if (tds->active)
     {
 	mask |= PAINT_SCREEN_TRANSFORMED_MASK |
 	        PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
@@ -671,7 +672,7 @@ tdDonePaintScreen (CompScreen *s)
 {
     TD_SCREEN (s);
 
-    if (tds->basicScale != 1.0f)
+    if (tds->active)
 	damageScreen (s);
 
     UNWRAP (tds, s, donePaintScreen);
@@ -718,8 +719,7 @@ tdInitWindowWalker (CompScreen *s,
     (*s->initWindowWalker) (s, walker);
     WRAP (tds, s, initWindowWalker, tdInitWindowWalker);
 
-    if ((tds->active || tds->tdWindowExists) &&
-	cs->paintOrder == BTF && tds->painting3D)
+    if (tds->active && cs->paintOrder == BTF && tds->painting3D)
     {
 	walker->first = tdWalkFirst;
 	walker->last =  tdWalkLast;
@@ -790,12 +790,11 @@ tdInitScreen (CompPlugin *p,
 	return FALSE;
     }
 
-    tds->active = tds->wasActive = FALSE;
+    tds->basicScale     = 1.0f;
+    tds->currentScale   = 1.0f;
 
-    tds->basicScale     = 1.0;
-    tds->currentScale   = 1.0;
-    tds->tdWindowExists = FALSE;
-    tds->painting3D     = FALSE;
+    tds->active     = FALSE;
+    tds->painting3D = FALSE;
 
     tds->first = NULL;
     tds->last  = NULL;
