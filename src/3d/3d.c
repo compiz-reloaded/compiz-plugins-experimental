@@ -593,6 +593,8 @@ tdPostPaintViewport (CompScreen              *s,
 	for (w = (*walk.first) (s); w; w = (*walk.next) (w))
 	{
 	    CompTransform mTransform = sTransform;
+	    int           offX, offY;
+	    unsigned int  newMask = PAINT_WINDOW_ON_TRANSFORMED_SCREEN_MASK;
 
 	    TD_WINDOW (w);
 
@@ -626,11 +628,23 @@ tdPostPaintViewport (CompScreen              *s,
 		transformToScreenSpace (s, output, -sAttrib->zTranslate,
 					&mTransform);
 
+		if ((s->windowOffsetX != 0 || s->windowOffsetY != 0) &&
+		    !windowOnAllViewports (w))
+		{
+		    getWindowMovementForOffset (w, s->windowOffsetX,
+						s->windowOffsetY, &offX, &offY);
+
+		    matrixTranslate (&mTransform, offX, offY, 0);
+		    matrixTranslate (&tds->bTransform, offX, offY, 0);
+
+		    newMask |= PAINT_WINDOW_WITH_OFFSET_MASK;
+		}
+
 		glPushMatrix ();
 		glLoadMatrixf (mTransform.m);
 
 		(*s->paintWindow) (w, &w->paint, &mTransform, &infiniteRegion,
-				   PAINT_WINDOW_ON_TRANSFORMED_SCREEN_MASK);
+				   newMask);
 		glPopMatrix ();
 
 		(*s->disableOutputClipping) (s);
