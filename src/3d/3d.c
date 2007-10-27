@@ -42,12 +42,6 @@
 
 #define PI 3.14159265359f
 
-#define MULTMV(m, v, w) { \
-w[0] = m[0]*v[0] + m[4]*v[1] + m[8]*v[2] + m[12]*v[3]; \
-w[1] = m[1]*v[0] + m[5]*v[1] + m[9]*v[2] + m[13]*v[3]; \
-w[2] = m[2]*v[0] + m[6]*v[1] + m[10]*v[2] + m[14]*v[3]; \
-w[3] = m[3]*v[0] + m[7]*v[1] + m[11]*v[2] + m[15]*v[3]; }
-
 static int displayPrivateIndex;
 static int cubeDisplayPrivateIndex = -1;
 
@@ -201,30 +195,30 @@ static Bool tdPaintWindow (CompWindow              *w,
 
 #define DOBEVEL(corner) (tdGetBevel##corner (s) ? bevel : 0)
 
-#define ADDQUAD(x1,y1,x2,y2)                       \
-	point[0] = x1; point[1] = y1;              \
-	MULTMV (transform->m, point, tPoint);      \
-	glVertex4dv (tPoint);                      \
-	point[0] = x2; point[1] = y2;              \
-	MULTMV (transform->m, point, tPoint);      \
-	glVertex4dv (tPoint);                      \
-	MULTMV (tds->bTransform.m, point, tPoint); \
-	glVertex4dv (tPoint);                      \
-	point[0] = x1; point[1] = y1;              \
-	MULTMV (tds->bTransform.m, point, tPoint); \
-	glVertex4dv (tPoint);                      \
+#define ADDQUAD(x1,y1,x2,y2)                                 \
+	point[0] = x1; point[1] = y1;                        \
+	matrixMultVector (tPoint, point, transform->m);      \
+	glVertex4fv (tPoint);                                \
+	point[0] = x2; point[1] = y2;                        \
+	matrixMultVector (tPoint, point, transform->m);      \
+	glVertex4fv (tPoint);                                \
+	matrixMultVector (tPoint, point, tds->bTransform.m); \
+	glVertex4fv (tPoint);                                \
+	point[0] = x1; point[1] = y1;                        \
+	matrixMultVector (tPoint, point, tds->bTransform.m); \
+	glVertex4fv (tPoint);                                \
 
-#define ADDBEVELQUAD(x1,y1,x2,y2,m1,m2)      \
-	point[0] = x1; point[1] = y1;        \
-	MULTMV (m1, point, tPoint);          \
-	glVertex4dv (tPoint);                \
-	MULTMV (m2, point, tPoint);          \
-	glVertex4dv (tPoint);                \
-	point[0] = x2; point[1] = y2;        \
-	MULTMV (m2, point, tPoint);          \
-	glVertex4dv (tPoint);                \
-	MULTMV (m1, point, tPoint);          \
-	glVertex4dv (tPoint);                \
+#define ADDBEVELQUAD(x1,y1,x2,y2,m1,m2)       \
+	point[0] = x1; point[1] = y1;         \
+	matrixMultVector (tPoint, point, m1); \
+	glVertex4fv (tPoint);                 \
+	matrixMultVector (tPoint, point, m2); \
+	glVertex4fv (tPoint);                 \
+	point[0] = x2; point[1] = y2;         \
+	matrixMultVector (tPoint, point, m2); \
+	glVertex4fv (tPoint);                 \
+	matrixMultVector (tPoint, point, m1); \
+	glVertex4fv (tPoint);                 \
 
 static Bool
 tdPaintWindowWithDepth (CompWindow              *w,
@@ -238,8 +232,8 @@ tdPaintWindowWithDepth (CompWindow              *w,
     int        wx, wy, ww, wh;
     int        bevel;
     CompScreen *s = w->screen;
-    GLdouble   point[4];
-    GLdouble   tPoint[4];
+    GLfloat    point[4];
+    GLfloat    tPoint[4];
 
     TD_SCREEN (s);
 
