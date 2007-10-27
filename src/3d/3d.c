@@ -510,10 +510,11 @@ tdPostPaintViewport (CompScreen              *s,
 	CompWindow    *w;
 	CompWalker    walk;
 	float         wDepth;
+	float         pointZ = cs->invert * cs->distance;
 
-	float vPoints[3][3] = {{ -0.5, 0.0, (cs->invert * cs->distance)},
-	                       { 0.0, 0.5, (cs->invert * cs->distance)},
-		               { 0.0, 0.0, (cs->invert * cs->distance)}};
+	CompVector vPoints[3] = { { .v = { -0.5, 0.0, pointZ, 1.0 } },
+	                          { .v = {  0.0, 0.5, pointZ, 1.0 } },
+				  { .v = {  0.0, 0.0, pointZ, 1.0 } } };
 
 	wDepth = -MIN((tdGetWidth (s)) / 30, (1.0 - tds->basicScale) /
 					       tds->maxDepth);
