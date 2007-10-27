@@ -195,30 +195,30 @@ static Bool tdPaintWindow (CompWindow              *w,
 
 #define DOBEVEL(corner) (tdGetBevel##corner (s) ? bevel : 0)
 
-#define ADDQUAD(x1,y1,x2,y2)                                 \
-	point[0] = x1; point[1] = y1;                        \
-	matrixMultVector (tPoint, point, transform->m);      \
-	glVertex4fv (tPoint);                                \
-	point[0] = x2; point[1] = y2;                        \
-	matrixMultVector (tPoint, point, transform->m);      \
-	glVertex4fv (tPoint);                                \
-	matrixMultVector (tPoint, point, tds->bTransform.m); \
-	glVertex4fv (tPoint);                                \
-	point[0] = x1; point[1] = y1;                        \
-	matrixMultVector (tPoint, point, tds->bTransform.m); \
-	glVertex4fv (tPoint);                                \
+#define ADDQUAD(x1,y1,x2,y2)                                      \
+	point.x = x1; point.y = y1;                               \
+	matrixMultiplyVector (&tPoint, &point, transform);        \
+	glVertex4fv (tPoint.v);                                   \
+	point.x = x2; point.y = y2;                               \
+	matrixMultiplyVector (&tPoint, &point, transform);        \
+	glVertex4fv (tPoint.v);                                   \
+	matrixMultiplyVector (&tPoint, &point, &tds->bTransform); \
+	glVertex4fv (tPoint.v);                                   \
+	point.x = x1; point.y = y1;                               \
+	matrixMultiplyVector (&tPoint, &point, &tds->bTransform); \
+	glVertex4fv (tPoint.v);                                   \
 
-#define ADDBEVELQUAD(x1,y1,x2,y2,m1,m2)       \
-	point[0] = x1; point[1] = y1;         \
-	matrixMultVector (tPoint, point, m1); \
-	glVertex4fv (tPoint);                 \
-	matrixMultVector (tPoint, point, m2); \
-	glVertex4fv (tPoint);                 \
-	point[0] = x2; point[1] = y2;         \
-	matrixMultVector (tPoint, point, m2); \
-	glVertex4fv (tPoint);                 \
-	matrixMultVector (tPoint, point, m1); \
-	glVertex4fv (tPoint);                 \
+#define ADDBEVELQUAD(x1,y1,x2,y2,m1,m2)             \
+	point.x = x1; point.y = y1;                 \
+	matrixMultiplyVector (&tPoint, &point, m1); \
+	glVertex4fv (tPoint.v);                     \
+	matrixMultiplyVector (&tPoint, &point, m2); \
+	glVertex4fv (tPoint.v);                     \
+	point.x = x2; point.y = y2;                 \
+	matrixMultiplyVector (&tPoint, &point, m2); \
+	glVertex4fv (tPoint.v);                     \
+	matrixMultiplyVector (&tPoint, &point, m1); \
+	glVertex4fv (tPoint.v);                     \
 
 static Bool
 tdPaintWindowWithDepth (CompWindow              *w,
@@ -232,8 +232,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
     int        wx, wy, ww, wh;
     int        bevel;
     CompScreen *s = w->screen;
-    GLfloat    point[4];
-    GLfloat    tPoint[4];
+    CompVector point, tPoint;
 
     TD_SCREEN (s);
 
@@ -281,8 +280,8 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	glBegin (GL_QUADS);
 	glColor4f (0.90f, 0.90f, 0.90f, w->paint.opacity / OPAQUE);
 
-	point[2] = 0.0f;
-	point[3] = 1.0f;
+	point.z = 0.0f;
+	point.w = 1.0f;
 
 	/* Top */
 	ADDQUAD (wx + DOBEVEL (Topleft), wy + 0.01,
@@ -307,13 +306,13 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	{
 	    ADDBEVELQUAD (wx, wy + bevel,
 			  wx + bevel / 2.0f, wy + bevel - bevel / 1.2f,
-			  tds->bTransform.m, transform->m);
+			  &tds->bTransform, transform);
 
 	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
 
 	    ADDBEVELQUAD (wx + bevel / 2.0f, wy + bevel - bevel / 1.2f,
 			  wx + bevel, wy,
-			  transform->m, tds->bTransform.m);
+			  transform, &tds->bTransform);
 
 	    glColor4f (0.95f, 0.95f, 0.95f,  w->paint.opacity / OPAQUE);
 	}
@@ -323,13 +322,13 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	{
 	    ADDBEVELQUAD (wx, wy + wh - bevel,
 			  wx + bevel / 2.0f, wy + wh - bevel + bevel / 1.2f,
-			  transform->m, tds->bTransform.m);
+			  transform, &tds->bTransform);
 
 	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
 
 	    ADDBEVELQUAD (wx + bevel / 2.0f, wy + wh - bevel + bevel / 1.2f,
 			  wx + bevel, wy + wh,
-			  tds->bTransform.m, transform->m);
+			  &tds->bTransform, transform);
 	}
 
 	glColor4f (0.95f, 0.95f, 0.95f,  w->paint.opacity / OPAQUE);
@@ -340,14 +339,14 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	    ADDBEVELQUAD (wx + ww - bevel, wy + wh,
 			  wx + ww - bevel / 2.0f,
 			  wy + wh - bevel + bevel / 1.2f,
-			  transform->m, tds->bTransform.m);
+			  transform, &tds->bTransform);
 
 	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
 
 	    ADDBEVELQUAD (wx + ww - bevel / 2.0f,
 			  wy + wh - bevel + bevel / 1.2f,
 			  wx + ww, wy + wh - bevel,
-			  tds->bTransform.m, transform->m);
+			  &tds->bTransform, transform);
 
 	    glColor4f (0.95f, 0.95f, 0.95f,  w->paint.opacity / OPAQUE);
 	}
@@ -357,13 +356,13 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	{
 	    ADDBEVELQUAD (wx + ww - bevel, wy,
 			  wx + ww - bevel / 2.0f, wy + bevel - bevel / 1.2f,
-			  transform->m, tds->bTransform.m);
+			  transform, &tds->bTransform);
 
 	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
 
 	    ADDBEVELQUAD (wx + ww - bevel / 2.0f, wy + bevel - bevel / 1.2f,
 			  wx + ww, wy + bevel,
-			  tds->bTransform.m, transform->m);
+			  &tds->bTransform, transform);
 	}
 	
 	glEnd ();
