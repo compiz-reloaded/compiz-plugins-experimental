@@ -507,8 +507,8 @@ snowInitScreen (CompPlugin *p,
     SNOW_DISPLAY (s->display);
 
     ss = calloc (1, sizeof(SnowScreen));
-    if (!ss) 
-        return FALSE;
+    if (!ss)
+	return FALSE;
 
     s->base.privates[sd->screenPrivateIndex].ptr = ss;
 
@@ -519,8 +519,9 @@ snowInitScreen (CompPlugin *p,
     ss->displayListNeedsUpdate = FALSE;
 
     ss->allSnowFlakes = snowFlake = malloc (numFlakes * sizeof (SnowFlake));
-    if (!snowFlake) {
-        free (ss);
+    if (!snowFlake)
+    {
+	free (ss);
 	return FALSE;
     }
 
@@ -662,7 +663,7 @@ snowInitDisplay (CompPlugin  *p,
 	return FALSE;
 
     sd = malloc (sizeof (SnowDisplay));
-    if (!sd) 
+    if (!sd)
 	return FALSE;
 
     sd->screenPrivateIndex = allocateScreenPrivateIndex (d);
