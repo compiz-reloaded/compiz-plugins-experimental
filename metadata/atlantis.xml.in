@@ -13,6 +13,107 @@
 		</requirement>
 		</deps>
 		<screen>
+			<group>
+				<short>Water / Ground</short>
+				<option name="show_water" type="bool">
+					<short>Render water</short>
+					<long>Render water inside the cube.</long>
+					<default>true</default>
+				</option>
+				<option name="show_water_wire" type="bool">
+					<short>Render water wireframe</short>
+					<long>Render water wireframe inside the cube.</long>
+					<default>false</default>
+				</option>
+				<option name="show_ground" type="bool">
+					<short>Render ground</short>
+					<long>Render ground inside the cube.</long>
+					<default>true</default>
+				</option>
+				<option name="water_height" type="float">
+					<short>Water surface height</short>
+					<long>Height of water surface in the cube.</long>
+					<default>0.85</default>
+					<min>0.2</min>
+					<max>1</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="water_color" type="color">
+					<short>Water opacity</short>
+					<long>Opacity of water in the cube.</long>
+					<default>
+						<red>0x0800</red>
+						<green>0x0800</green>
+						<blue>0x3000</blue>
+						<alpha>0xf00</alpha>
+					</default>
+				</option>
+				<option name="grid_quality" type="int">
+					<short>Water/Ground grid smoothnes</short>
+					<long>Number of subdivisions that create a finer grid.</long>
+					<default>3</default>
+					<min>1</min>
+					<max>10</max>
+				</option>
+
+				<subgroup>
+					<short>Waves</short>
+					<option name="render_waves" type="bool">
+						<short>Render waves</short>
+						<long>Render water waves inside the cube.</long>
+						<default>true</default>
+					</option>
+					<option name="wave_amplitude" type="float">
+						<short>Wave amplitude</short>
+						<long>Amplitude of water waves.</long>
+						<default>0.05</default>
+						<min>0</min>
+						<max>0.5</max>
+						<precision>0.01</precision>
+					</option>
+					<option name="wave_frequency" type="float">
+						<short>Wave frequency</short>
+						<long>Frequency of water waves.</long>
+						<default>20</default>
+						<min>0</min>
+						<max>100</max>
+						<precision>0.1</precision>
+					</option>
+					<option name="wave_speed" type="float">
+						<short>Wave speed</short>
+						<long>Speed of water waves.</long>
+						<default>1</default>
+						<min>0</min>
+						<max>10</max>
+						<precision>0.01</precision>
+					</option>
+					<option name="small_wave_amplitude" type="float">
+						<short>Small wave amplitude</short>
+						<long>Amplitude of small water waves on the bigger ones.</long>
+						<default>0.02</default>
+						<min>0</min>
+						<max>0.5</max>
+						<precision>0.01</precision>
+					</option>
+					<option name="small_wave_frequency" type="float">
+						<short>Small wave frequency</short>
+						<long>Frequency of small water waves on the bigger ones.</long>
+						<default>40</default>
+						<min>0</min>
+						<max>100</max>
+						<precision>0.1</precision>
+					</option>
+					<option name="small_wave_speed" type="float">
+						<short>Wave Speed</short>
+						<long>Speed of small water waves.</long>
+						<default>1</default>
+						<min>0</min>
+						<max>10</max>
+						<precision>0.01</precision>
+					</option>
+				</subgroup>
+				
+			</group>
 			<option name="num_fish" type="int">
 				<_short>Number of fish</_short>
 				<_long>Number of fish inside the cube</_long>

@@ -1,3 +1,27 @@
+/*
+ * Compiz cube atlantis plugin
+ *
+ * atlantis.c
+ *
+ * This is an example plugin to show how to render something inside
+ * of the transparent cube
+ *
+ * Copyright : (C) 2007 by Dennis Kasprzyk
+ * E-mail    : onestone@opencompositing.org
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
 /* atlantis --- Shows moving 3D sea animals */
 
 /* Copyright (c) E. Lassauge, 1998. */
@@ -88,6 +112,19 @@
 #include <compiz-core.h>
 #include <compiz-cube.h>
 
+extern int atlantisDisplayPrivateIndex;
+extern int cubeDisplayPrivateIndex;
+
+#define GET_ATLANTIS_DISPLAY(d) \
+    ((AtlantisDisplay *) (d)->base.privates[atlantisDisplayPrivateIndex].ptr)
+#define ATLANTIS_DISPLAY(d) \
+    AtlantisDisplay *ad = GET_ATLANTIS_DISPLAY(d);
+
+#define GET_ATLANTIS_SCREEN(s, ad) \
+    ((AtlantisScreen *) (s)->base.privates[(ad)->screenPrivateIndex].ptr)
+#define ATLANTIS_SCREEN(s) \
+    AtlantisScreen *as = GET_ATLANTIS_SCREEN(s, GET_ATLANTIS_DISPLAY(s->display))
+
 #define SHARK     0
 #define WHALE     1
 #define DOLPHIN   2
@@ -108,6 +145,48 @@ typedef struct _fishRec
 }
 fishRec;
 
+typedef struct _Vertex
+{
+    float v[3];
+    float n[3];
+}
+Vertex;
+
+typedef struct _Water
+{
+    int      size;
+    float    distance;
+    int      sDiv;
+
+    float  bh;
+    float  wa;
+    float  swa;
+    float  wf;
+    float  swf;
+
+    Vertex       *vertices;
+    unsigned int *indices;
+
+    unsigned int nVertices;
+    unsigned int nIndices;
+
+    unsigned int nSVer;
+    unsigned int nSIdx;
+    unsigned int nWVer;
+    unsigned int nWIdx;
+
+    float    wave1;
+    float    wave2;
+}
+Water;
+
+typedef struct _AtlantisDisplay
+{
+    int screenPrivateIndex;
+}
+AtlantisDisplay;
+
+
 typedef struct _AtlantisScreen
 {
     DonePaintScreenProc donePaintScreen;
@@ -121,6 +200,8 @@ typedef struct _AtlantisScreen
     int         numFish;
     fishRec    *fish;
 
+    Water *water;
+    Water *ground;
 }
 AtlantisScreen;
 
@@ -130,5 +211,32 @@ void FishMiss (AtlantisScreen *, int);
 void DrawWhale (fishRec *, int);
 void DrawShark (fishRec *, int);
 void DrawDolphin (fishRec *, int);
+
+void
+updateWater (CompScreen *s, float time);
+
+void
+updateGround (CompScreen *s, float time);
+
+void
+updateHeight (Water *w);
+
+void
+freeWater (Water *w);
+
+void
+drawWater (Water *w, Bool full, Bool wire);
+
+void
+drawGround (Water *w, Water *g);
+
+void
+drawBottomGround (int size, float distance, float bottom);
+
+Bool
+isInside (CompScreen *s, float x, float y, float z);
+
+float
+getHeight (Water *w, float x, float z);
 
 #endif

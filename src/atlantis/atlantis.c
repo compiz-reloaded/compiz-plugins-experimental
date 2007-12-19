@@ -108,34 +108,49 @@
 #include "atlantis-internal.h"
 #include "atlantis_options.h"
 
-static int displayPrivateIndex;
+int atlantisDisplayPrivateIndex;
 
-static int cubeDisplayPrivateIndex;
+int cubeDisplayPrivateIndex;
 
-typedef struct _AtlantisDisplay
+Bool
+isInside (CompScreen *s,
+          float      x,
+          float      y,
+          float      z)
 {
-    int screenPrivateIndex;
+    CUBE_SCREEN (s);
 
+    int   hsize, i;
+    float ang;
+    float n[4];
+
+    if (y > 0.5 || y < -0.5) return FALSE;
+
+    hsize = s->hsize * cs->nOutput;
+    for (i = 0; i < hsize; i++)
+    {
+	ang = (360.0 / hsize);
+	ang *= i;
+	ang *= M_PI;
+	ang /= 180.0;
+	n[0] = sin (ang) * cs->distance;
+	n[2] = cos (ang) * cs->distance;
+	n[3] = - ((n[0] * n[0]) + (n[2] * n[2]));
+	
+	if ((x * n[0]) + (z * n[2]) + n[3] > 0)
+	    return FALSE;
+    }
+    return TRUE;
 }
-
-AtlantisDisplay;
-
-
-#define GET_ATLANTIS_DISPLAY(d) \
-    ((AtlantisDisplay *) (d)->base.privates[displayPrivateIndex].ptr)
-#define ATLANTIS_DISPLAY(d) \
-    AtlantisDisplay *ad = GET_ATLANTIS_DISPLAY(d);
-
-#define GET_ATLANTIS_SCREEN(s, ad) \
-    ((AtlantisScreen *) (s)->base.privates[(ad)->screenPrivateIndex].ptr)
-#define ATLANTIS_SCREEN(s) \
-    AtlantisScreen *as = GET_ATLANTIS_SCREEN(s, GET_ATLANTIS_DISPLAY(s->display))
 
 static void
 initAtlantis (CompScreen *s)
 {
     ATLANTIS_SCREEN (s);
     int         i;
+
+    as->water  = NULL;
+    as->ground = NULL;
 
     as->numFish = atlantisGetNumFish (s);
     as->fish = calloc (as->numFish, sizeof (fishRec) );
@@ -224,6 +239,9 @@ freeAtlantis (CompScreen *s)
     if (as->fish)
 	free (as->fish);
 
+    freeWater (as->water);
+    freeWater (as->ground);
+
     as->fish = NULL;
 }
 
@@ -269,7 +287,7 @@ static void atlantisPaintInside (CompScreen              *s,
     int i;
     float scale;
 
-    static const float mat_shininess[]      = { 90.0 };
+    static const float mat_shininess[]      = { 60.0 };
     static const float mat_specular[]       = { 0.8, 0.8, 0.8, 1.0 };
     static const float mat_diffuse[]        = { 0.46, 0.66, 0.795, 1.0 };
     static const float mat_ambient[]        = { 0.0, 0.1, 0.2, 1.0 };
@@ -279,7 +297,11 @@ static void atlantisPaintInside (CompScreen              *s,
     ScreenPaintAttrib sA = *sAttrib;
     CompTransform mT = *transform;
 
-    sA.yRotate += (360.0f / size) * (cs->xRotations - (s->x * cs->nOutput));
+    if (atlantisGetShowWater (s) || atlantisGetShowWaterWire (s))
+	updateHeight (as->water);
+
+    sA.yRotate += cs->invert * (360.0f / size) *
+		  (cs->xRotations - (s->x * cs->nOutput));
 
     (*s->applyScreenTransform) (s, &sA, output, &mT);
 
@@ -300,13 +322,33 @@ static void atlantisPaintInside (CompScreen              *s,
     if (glIsEnabled (GL_CULL_FACE))
     {
 	enabledCull = TRUE;
-	glEnable (GL_CULL_FACE);
     }
 
+    if (atlantisGetShowWater (s))
+    {
+	int cull;
+	glGetIntegerv (GL_CULL_FACE_MODE, &cull);
+
+	glEnable (GL_CULL_FACE);
+	
+	glCullFace (~cull & (GL_FRONT | GL_BACK));
+	glColor4usv (atlantisGetWaterColor (s));
+	drawWater (as->water, TRUE, FALSE);
+
+	glCullFace (cull);
+    }
+
+    if (atlantisGetShowGround (s))
+    {
+	glColor4f (0.4, 0.3, 0.0, 1.0);
+	if (atlantisGetRenderWaves (s))
+	    drawGround (as->water, as->ground);
+	else
+	    drawGround (NULL, as->ground);
+    }
 
     glPushMatrix();
 
-    glScalef (0.00001, 0.00001, 0.00001);
     glColor4usv (defaultColor);
 
     glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
@@ -319,16 +361,22 @@ static void atlantisPaintInside (CompScreen              *s,
     glEnable (GL_NORMALIZE);
     glEnable (GL_LIGHTING);
     glEnable (GL_LIGHT1);
-    glEnable (GL_LIGHT0);
+    glDisable (GL_LIGHT0);
 
     if (atlantisGetColors (s))
 	glEnable (GL_COLOR_MATERIAL);
     else
 	glDisable (GL_COLOR_MATERIAL);
 
+    glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+
+
+    glScalef (0.00001, 0.00001, 0.00001);
+
+
     glEnable (GL_DEPTH_TEST);
 
-    glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     for (i = 0; i < as->numFish; i++)
     {
@@ -363,8 +411,24 @@ static void atlantisPaintInside (CompScreen              *s,
 
 	glPopMatrix();
     }
+    
 
     glPopMatrix();
+
+
+    if (atlantisGetShowWater (s) || atlantisGetShowWaterWire (s))
+    {
+	glEnable (GL_CULL_FACE);
+	glColor4usv (atlantisGetWaterColor (s));
+	drawWater (as->water, atlantisGetShowWater (s),
+		   atlantisGetShowWaterWire (s));
+    }
+
+    if (atlantisGetShowGround (s))
+    {
+	glColor4f (0.4, 0.3, 0.0, 1.0);
+	drawBottomGround (s->hsize * cs->nOutput, cs->distance, -0.5);
+    }
 
     glDisable (GL_LIGHT1);
     glDisable (GL_NORMALIZE);
@@ -375,7 +439,7 @@ static void atlantisPaintInside (CompScreen              *s,
     glDisable (GL_DEPTH_TEST);
 
     if (enabledCull)
-	glDisable (GL_CULL_FACE);
+	glEnable (GL_CULL_FACE);
 
     glPopMatrix();
 
@@ -403,6 +467,9 @@ atlantisPreparePaintScreen (CompScreen *s,
 	FishPilot (& (as->fish[i]), as->fish[i].speed);
 	FishMiss (as, i);
     }
+
+    updateWater (s, (float)ms / 1000.0);
+    updateGround (s, (float)ms / 1000.0);
 
     UNWRAP (as, s, preparePaintScreen);
     (*s->preparePaintScreen) (s, ms);
@@ -452,7 +519,7 @@ atlantisInitDisplay (CompPlugin  *p,
 	return FALSE;
     }
 
-    d->base.privates[displayPrivateIndex].ptr = ad;
+    d->base.privates[atlantisDisplayPrivateIndex].ptr = ad;
 
     return TRUE;
 }
@@ -473,7 +540,8 @@ atlantisInitScreen (CompPlugin *p,
 {
     static const float ambient[]  = { 0.1, 0.1, 0.1, 1.0 };
     static const float diffuse[]  = { 1.0, 1.0, 1.0, 1.0 };
-    static const float position[] = { 0.0, 1.0, 0.0, 0.0 };
+    static const float position[] = { 0.0, 1.0, -0.5, 0.0 };
+    static const float specular[] = { 0.8, 0.8, 0.8, 1.0 };
 
     AtlantisScreen *as;
     
@@ -491,8 +559,12 @@ atlantisInitScreen (CompPlugin *p,
 
     glLightfv (GL_LIGHT1, GL_AMBIENT, ambient);
     glLightfv (GL_LIGHT1, GL_DIFFUSE, diffuse);
+    glLightfv (GL_LIGHT1, GL_SPECULAR, specular);
+    glPushMatrix ();
+    glLoadIdentity ();
     glLightfv (GL_LIGHT1, GL_POSITION, position);
-
+    glPopMatrix();
+    
     initAtlantis (s);
 
     atlantisSetNumFishNotify (s, atlantisScreenOptionChange);
@@ -529,9 +601,9 @@ atlantisFiniScreen (CompPlugin *p,
 static Bool
 atlantisInit (CompPlugin * p)
 {
-    displayPrivateIndex = allocateDisplayPrivateIndex();
+    atlantisDisplayPrivateIndex = allocateDisplayPrivateIndex();
 
-    if (displayPrivateIndex < 0)
+    if (atlantisDisplayPrivateIndex < 0)
 	return FALSE;
 
     return TRUE;
@@ -540,8 +612,8 @@ atlantisInit (CompPlugin * p)
 static void
 atlantisFini (CompPlugin * p)
 {
-    if (displayPrivateIndex >= 0)
-	freeDisplayPrivateIndex (displayPrivateIndex);
+    if (atlantisDisplayPrivateIndex >= 0)
+	freeDisplayPrivateIndex (atlantisDisplayPrivateIndex);
 }
 
 static CompBool
