@@ -230,7 +230,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
     Bool       wasCulled;
     Bool       status;
     int        wx, wy, ww, wh;
-    int        bevel;
+    int        bevel, cull;
     CompScreen *s = w->screen;
     CompVector point, tPoint;
 
@@ -245,6 +245,8 @@ tdPaintWindowWithDepth (CompWindow              *w,
     wh = w->height + w->input.top + w->input.bottom;
 
     bevel = tdGetBevel (s);
+
+    glGetIntegerv (GL_CULL_FACE_MODE, &cull);
 
     if (ww && wh && !(mask & PAINT_WINDOW_OCCLUSION_DETECTION_MASK))
     {
@@ -400,7 +402,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	WRAP (tds, s, paintWindow, tdPaintWindow);
     }
 
-    glCullFace (GL_BACK);
+    glCullFace (cull);
 
     if (!wasCulled)
 	glDisable (GL_CULL_FACE);
