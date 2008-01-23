@@ -10,7 +10,8 @@ libatlantis_la_SOURCES = atlantis_options.c  \
 		         dolphin.c           \
 		         shark.c             \
 		         swim.c              \
-		         whale.c
+		         whale.c             \
+			 water.c
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \
