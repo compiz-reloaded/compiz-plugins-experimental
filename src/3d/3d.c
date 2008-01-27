@@ -228,12 +228,13 @@ tdPaintWindowWithDepth (CompWindow              *w,
 			Region                  region,
 			unsigned int            mask)
 {
-    Bool       wasCulled;
-    Bool       status;
-    int        wx, wy, ww, wh;
-    int        bevel, cull;
-    CompScreen *s = w->screen;
-    CompVector point, tPoint;
+    Bool           wasCulled;
+    Bool           status;
+    int            wx, wy, ww, wh;
+    int            bevel, cull, temp;
+    CompScreen     *s = w->screen;
+    CompVector     point, tPoint;
+    unsigned short *c;
 
     TD_SCREEN (s);
 
@@ -279,19 +280,21 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	
 	glDisable (GL_CULL_FACE);
 	glEnable (GL_BLEND);
-    	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBegin (GL_QUADS);
-	unsigned short *c;
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 	if (w->id == s->display->activeWindow)
 	    c = tdGetWidthColor(s);
 	else
 	    c = tdGetWidthColorInactive(s);
-	int temp = c[3] * w->paint.opacity;
+
+	temp = c[3] * w->paint.opacity;
 	temp /= 0xffff;
 	glColor4us(c[0],c[1],c[2],temp);
 
 	point.z = 0.0f;
 	point.w = 1.0f;
+
+	glBegin (GL_QUADS);
 
 	/* Top */
 	ADDQUAD (wx + DOBEVEL (Topleft), wy + 0.01,
@@ -360,9 +363,10 @@ tdPaintWindowWithDepth (CompWindow              *w,
 			  wx + ww, wy + bevel,
 			  &tds->bTransform, transform);
 	}
-	glColor4usv (defaultColor);
-    	glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	glEnd ();
+
+	glColor4usv (defaultColor);
+	glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	glPopMatrix ();
 
 	if (tdw->ftb)
