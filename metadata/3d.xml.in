@@ -65,6 +65,26 @@
 					<min>0</min>
 					<max>20</max>
 				</option>
+				<option name="width_color" type="color">
+	    				<_short>Window Color (Active)</_short>
+	    				<_long>Color of the active window's depth</_long>
+	    				<default>
+	      					<red>0x3333</red>
+	      					<green>0x3333</green>
+	      					<blue>0x3333</blue>
+	      					<alpha>0xffff</alpha>
+	    				</default>
+	  			</option>
+	  			<option name="width_color_inactive" type="color">
+	  				<_short>Window Color (Inactive)</_short>
+	  				<_long>Color of an inactive window's depth</_long>
+	  				<default>
+	      					<red>0x3333</red>
+	      					<green>0x3333</green>
+	      					<blue>0x3333</blue>
+	      					<alpha>0xffff</alpha>
+	    				</default>
+	  			</option>
 				<subgroup>
 					<_short>Bevel Corners</_short>
 					<option name="bevel_topleft" type="bool">

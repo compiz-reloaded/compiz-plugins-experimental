@@ -11,6 +11,7 @@
  *               Danny Baumann <maniac@opencompositing.org>
  *               Robert Carr <racarr@beryl-project.org>
  *               Diogo Ferreira <diogo@underdev.org>
+ *		 Kevin Lange <klange@ogunderground.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -278,9 +279,16 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	
 	glDisable (GL_CULL_FACE);
 	glEnable (GL_BLEND);
-
+    	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBegin (GL_QUADS);
-	glColor4f (0.90f, 0.90f, 0.90f, w->paint.opacity / OPAQUE);
+	unsigned short *c;
+	if (w->id == s->display->activeWindow)
+	    c = tdGetWidthColor(s);
+	else
+	    c = tdGetWidthColorInactive(s);
+	int temp = c[3] * w->paint.opacity;
+	temp /= 0xffff;
+	glColor4us(c[0],c[1],c[2],temp);
 
 	point.z = 0.0f;
 	point.w = 1.0f;
@@ -299,10 +307,8 @@ tdPaintWindowWithDepth (CompWindow              *w,
 
 	/* Right */
 	ADDQUAD (wx + ww - 0.01, wy + DOBEVEL (Topright),
-		 wx + ww - 0.01, wy + wh - DOBEVEL (Bottomright));
-
-	glColor4f (0.95f, 0.95f, 0.95f,  w->paint.opacity / OPAQUE);
-
+		 wx + ww - 0.01, wy + wh - DOBEVEL (Bottomright));\
+		 
 	/* Top left bevel */
 	if (tdGetBevelTopleft (s))
 	{
@@ -310,13 +316,10 @@ tdPaintWindowWithDepth (CompWindow              *w,
 			  wx + bevel / 2.0f, wy + bevel - bevel / 1.2f,
 			  &tds->bTransform, transform);
 
-	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
-
 	    ADDBEVELQUAD (wx + bevel / 2.0f, wy + bevel - bevel / 1.2f,
 			  wx + bevel, wy,
 			  transform, &tds->bTransform);
 
-	    glColor4f (0.95f, 0.95f, 0.95f,  w->paint.opacity / OPAQUE);
 	}
 
 	/* Bottom left bevel */
@@ -326,14 +329,10 @@ tdPaintWindowWithDepth (CompWindow              *w,
 			  wx + bevel / 2.0f, wy + wh - bevel + bevel / 1.2f,
 			  transform, &tds->bTransform);
 
-	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
-
 	    ADDBEVELQUAD (wx + bevel / 2.0f, wy + wh - bevel + bevel / 1.2f,
 			  wx + bevel, wy + wh,
 			  &tds->bTransform, transform);
 	}
-
-	glColor4f (0.95f, 0.95f, 0.95f,  w->paint.opacity / OPAQUE);
 
 	/* Bottom right bevel */
 	if (tdGetBevelBottomright (s))
@@ -343,14 +342,11 @@ tdPaintWindowWithDepth (CompWindow              *w,
 			  wy + wh - bevel + bevel / 1.2f,
 			  transform, &tds->bTransform);
 
-	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
-
 	    ADDBEVELQUAD (wx + ww - bevel / 2.0f,
 			  wy + wh - bevel + bevel / 1.2f,
 			  wx + ww, wy + wh - bevel,
 			  &tds->bTransform, transform);
 
-	    glColor4f (0.95f, 0.95f, 0.95f,  w->paint.opacity / OPAQUE);
 	}
 
 	/* Top right bevel */
@@ -360,13 +356,12 @@ tdPaintWindowWithDepth (CompWindow              *w,
 			  wx + ww - bevel / 2.0f, wy + bevel - bevel / 1.2f,
 			  transform, &tds->bTransform);
 
-	    glColor4f (1.0f, 1.0f, 1.0f,  w->paint.opacity / OPAQUE);
-
 	    ADDBEVELQUAD (wx + ww - bevel / 2.0f, wy + bevel - bevel / 1.2f,
 			  wx + ww, wy + bevel,
 			  &tds->bTransform, transform);
 	}
-	
+	glColor4usv (defaultColor);
+    	glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	glEnd ();
 	glPopMatrix ();
 
@@ -401,7 +396,6 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	status = (*s->paintWindow) (w, attrib, transform, region, mask);
 	WRAP (tds, s, paintWindow, tdPaintWindow);
     }
-
     glCullFace (cull);
 
     if (!wasCulled)
