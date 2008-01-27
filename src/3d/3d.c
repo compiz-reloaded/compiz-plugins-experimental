@@ -283,13 +283,13 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	if (w->id == s->display->activeWindow)
-	    c = tdGetWidthColor(s);
+	    c = tdGetWidthColor (s);
 	else
-	    c = tdGetWidthColorInactive(s);
+	    c = tdGetWidthColorInactive (s);
 
 	temp = c[3] * w->paint.opacity;
 	temp /= 0xffff;
-	glColor4us(c[0],c[1],c[2],temp);
+	glColor4us (c[0], c[1], c[2], temp);
 
 	point.z = 0.0f;
 	point.w = 1.0f;
