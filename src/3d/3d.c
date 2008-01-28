@@ -231,7 +231,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
     Bool           wasCulled;
     Bool           status;
     int            wx, wy, ww, wh;
-    int            bevel, cull, temp;
+    int            bevel, cull, cullInv, temp;
     CompScreen     *s = w->screen;
     CompVector     point, tPoint;
     unsigned short *c;
@@ -249,6 +249,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
     bevel = tdGetBevel (s);
 
     glGetIntegerv (GL_CULL_FACE_MODE, &cull);
+    cullInv = (cull == GL_BACK)? GL_FRONT : GL_BACK;
 
     if (ww && wh && !(mask & PAINT_WINDOW_OCCLUSION_DETECTION_MASK))
     {
@@ -257,7 +258,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	if (!tdw->ftb)
 	{
 	    glEnable (GL_CULL_FACE);
-	    glCullFace (GL_FRONT);
+	    glCullFace (cullInv);
 
 	    UNWRAP (tds, s, paintWindow);
 	    status = (*s->paintWindow) (w, attrib, &tds->bTransform, region,
@@ -267,7 +268,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	else
 	{
 	    glEnable (GL_CULL_FACE);
-	    glCullFace (GL_BACK);
+	    glCullFace (cull);
 
 	    UNWRAP (tds, s, paintWindow);
 	    status = (*s->paintWindow) (w, attrib, transform, region, mask);
@@ -372,7 +373,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	if (tdw->ftb)
 	{
 	    glEnable (GL_CULL_FACE);
-	    glCullFace (GL_FRONT);
+	    glCullFace (cullInv);
 
 	    glPushMatrix ();
 	    glLoadMatrixf (tds->bTransform.m);
@@ -387,7 +388,7 @@ tdPaintWindowWithDepth (CompWindow              *w,
 	else
 	{
 	    glEnable (GL_CULL_FACE);
-	    glCullFace (GL_BACK);
+	    glCullFace (cull);
 
 	    UNWRAP(tds, s, paintWindow);
 	    status = (*s->paintWindow) (w, attrib, transform, region, mask);
