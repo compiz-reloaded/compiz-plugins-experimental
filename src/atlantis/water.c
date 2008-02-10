@@ -45,8 +45,6 @@ genTriMesh (Vertex       *vertices,
 
     float    vab[3], vac[3], rb[3], re[3], ri[3];
 
-    if (subdiv < 0)
-	return;
     if (!vertices || !indices)
 	return;
 
