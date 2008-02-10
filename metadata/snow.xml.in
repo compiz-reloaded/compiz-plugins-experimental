@@ -112,7 +112,7 @@
 				</option>
 				<option name="use_textures" type="bool">
 					<_short>Enable Textures</_short>
-					<_long>Enables textures snowflakes. If not selected, color gradients are used.</_long>
+					<_long>Enables textured snowflakes. If not selected, color gradients are used.</_long>
 					<default>true</default>
 				</option>
 			</group>
