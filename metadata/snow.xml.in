@@ -33,7 +33,7 @@
 					<_short>Snow Speed</_short>
 					<_long>Speed of falling snow</_long>
 					<default>85</default>
-					<min>0</min>
+					<min>1</min>
 					<max>100</max>
 				</option>
 				<option name="snow_update_delay" type="int">

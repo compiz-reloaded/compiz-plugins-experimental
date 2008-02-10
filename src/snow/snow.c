@@ -125,9 +125,9 @@ static void
 snowMove (CompDisplay *d,
 	  SnowFlake   *sf)
 {
-    float tmp = 1.0f / (100.0f - snowGetSnowSpeed (d));
+    float tmp = 1.0f / (101.0f - snowGetSnowSpeed (d));
     int   snowUpdateDelay = snowGetSnowUpdateDelay (d);
-
+    
     sf->x += (sf->xs * (float) snowUpdateDelay) * tmp;
     sf->y += (sf->ys * (float) snowUpdateDelay) * tmp;
     sf->z += (sf->zs * (float) snowUpdateDelay) * tmp;
