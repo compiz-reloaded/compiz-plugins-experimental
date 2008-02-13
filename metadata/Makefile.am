@@ -1,6 +1,5 @@
 xmldir       = $(metadatadir)
 xml_in_files =		  \
-	3d.xml.in         \
 	atlantis.xml.in   \
 	fakeargb.xml.in	  \
 	mswitch.xml.in    \

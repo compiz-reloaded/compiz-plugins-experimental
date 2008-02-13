@@ -153,7 +153,6 @@ Makefile
 images/Makefile
 metadata/Makefile
 src/Makefile
-src/3d/Makefile
 src/atlantis/Makefile
 src/fakeargb/Makefile
 src/mswitch/Makefile
