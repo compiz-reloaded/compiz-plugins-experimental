@@ -1,6 +1,8 @@
 AC_PREREQ(2.57)
 
-AC_INIT([compiz-fusion-plugins-unsupported],esyscmd(. ./VERSION;echo -n $VERSION), [maniac@opencompositing.org])
+m4_define([plugins_unsupported_version], [esyscmd(. ./VERSION;echo -n $VERSION)])
+
+AC_INIT([compiz-fusion-plugins-unsupported], [plugins_unsupported_version], [maniac@opencompositing.org])
 
 #AC_CONFIG_AUX_DIR(config)
 
