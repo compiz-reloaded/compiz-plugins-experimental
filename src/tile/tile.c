@@ -704,6 +704,7 @@ static Bool
 tileSetNewWindowSize (CompWindow *w)
 {
     XWindowChanges xwc;
+    unsigned int   mask = CWX | CWY | CWWidth | CWHeight;
 
     TILE_WINDOW (w);
     TILE_SCREEN (w->screen);
@@ -721,7 +722,16 @@ tileSetNewWindowSize (CompWindow *w)
     else
 	maximizeWindow (w, 0);
 
-    configureXWindow (w, CWX | CWY | CWWidth | CWHeight, &xwc);
+    if (xwc.width == w->serverWidth)
+	mask &= ~CWWidth;
+
+    if (xwc.height == w->serverHeight)
+	mask &= ~CWHeight;
+
+    if (w->mapNum && (mask & (CWWidth | CWHeight)))
+	sendSyncRequest (w);
+
+    configureXWindow (w, mask, &xwc);
     tw->needConfigure = FALSE;
 
     return TRUE;
