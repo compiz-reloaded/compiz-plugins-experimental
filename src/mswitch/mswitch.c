@@ -22,7 +22,7 @@
 #include "mswitch_options.h"
 
 static int x,y;
-static CompScreen *s;
+static CompScreen *s = NULL;
 
 
 static void mswitchMove(CompScreen *s, int dx, int dy)
@@ -51,7 +51,8 @@ static Bool mswitchBegin(CompDisplay *d, CompAction * action,
 	Window xid;
 
 	xid = getIntOptionNamed(option, nOption, "root", 0);
-	s = findScreenAtDisplay(d, xid);
+	if (xid)
+	    s = findScreenAtDisplay(d, xid);
 
 	if (state & CompActionStateInitButton)
 		action->state |= CompActionStateTermButton;
@@ -68,7 +69,8 @@ static Bool mswitchTerminate(CompDisplay *d, CompAction * action,
 		        CompActionState state, CompOption * option,
 			int nOption)
 {
-	
+	Window xid;
+
 	int mx = MAX(pointerX,x)-MIN(pointerX,x);
 	int my = MAX(pointerY,y)-MIN(pointerY,y);
 	
@@ -92,8 +94,12 @@ static Bool mswitchTerminate(CompDisplay *d, CompAction * action,
 		dx *= -1;
 	if (pointerY < y)
 		dy *= -1;
-
-	mswitchMove(s, dx, dy);
+	
+	xid = getIntOptionNamed(option, nOption, "root", 0);
+	if (xid && s == findScreenAtDisplay(d, xid))
+	    mswitchMove(s, dx, dy);
+	
+	s = NULL;
 	
 	action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
 	
