@@ -539,6 +539,9 @@ snowInitScreen (CompPlugin *p,
     WRAP (ss, s, drawWindow, snowDrawWindow);
 
     ss->timeoutHandle = compAddTimeout (snowGetSnowUpdateDelay (s->display),
+					(float)
+					snowGetSnowUpdateDelay (s->display) *
+					1.2,
 					stepSnowPositions, s);
 
     return TRUE;
@@ -606,6 +609,7 @@ snowDisplayOptionChanged (CompDisplay        *d,
 		    compRemoveTimeout (ss->timeoutHandle);
 		ss->timeoutHandle =
 		    compAddTimeout (snowGetSnowUpdateDelay (d),
+				    (float) snowGetSnowUpdateDelay (d) * 1.2,
 				    stepSnowPositions, s);
 	    }
 	}
