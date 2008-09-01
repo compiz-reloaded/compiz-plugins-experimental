@@ -455,11 +455,11 @@ updateSnowTextures (CompScreen *s)
 				&ss->snowTex[count].height);
 	if (!ss->snowTex[count].loaded)
 	{
-	    compLogMessage (s->display, "snow", CompLogLevelWarn,
+	    compLogMessage ("snow", CompLogLevelWarn,
 			    "Texture not found : %s", sd->snowTexFiles[i].s);
 	    continue;
 	}
-	compLogMessage (s->display, "snow", CompLogLevelInfo,
+	compLogMessage ("snow", CompLogLevelInfo,
 			"Loaded Texture %s", sd->snowTexFiles[i].s);
 	
 	mat = &ss->snowTex[count].tex.matrix;
