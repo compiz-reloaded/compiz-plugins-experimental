@@ -2,17 +2,8 @@
 SUBDIRS = metadata src po images
 
 EXTRA_DIST =            \
-    VERSION             \
-    intltool-extract.in \
-    intltool-merge.in   \
-    intltool-update.in \
-    intltool-extract \
-    intltool-merge \
-    intltool-update 
+    VERSION
 
 DISTCLEANFILES =     \
-    intltool-extract \
-    intltool-merge   \
-    intltool-update  \
     po/stamp-it \
     po/.intltool-merge-cache
