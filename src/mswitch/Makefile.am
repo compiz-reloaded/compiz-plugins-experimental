@@ -3,7 +3,10 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libmswitch_la_LDFLAGS = $(PFLAGS)
 libmswitch_la_LIBADD = @COMPIZ_LIBS@
-libmswitch_la_SOURCES = mswitch_options.c mswitch_options.h mswitch.c
+nodist_libmswitch_la_SOURCES = mswitch_options.c mswitch_options.h
+dist_libmswitch_la_SOURCES = mswitch.c
+
+BUILT_SOURCES = $(nodist_libmswitch_la_SOURCES)
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \
@@ -19,8 +22,8 @@ module_LTLIBRARIES = libmswitch.la
 
 CLEANFILES = *_options.c *_options.h
 
-%_options.h: ../../metadata/%.xml
+mswitch_options.h: ../../metadata/mswitch.xml.in
 		$(BCOP_BIN) --header $@ $<
 
-%_options.c: ../../metadata/%.xml %_options.h
+mswitch_options.c: ../../metadata/mswitch.xml.in mswitch_options.h
 		$(BCOP_BIN) --source $@ $<
