@@ -3,7 +3,10 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libtile_la_LDFLAGS = $(PFLAGS)
 libtile_la_LIBADD = @COMPIZ_LIBS@
-libtile_la_SOURCES = tile_options.c tile_options.h tile.c
+nodist_libtile_la_SOURCES = tile_options.c tile_options.h
+dist_libtile_la_SOURCES = tile.c
+
+BUILT_SOURCES = $(nodist_libtile_la_SOURCES)
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \
@@ -20,8 +23,8 @@ module_LTLIBRARIES = libtile.la
 
 CLEANFILES = *_options.c *_options.h
 
-%_options.h: ../../metadata/%.xml
+tile_options.h: ../../metadata/tile.xml.in
 		$(BCOP_BIN) --header $@ $<
 
-%_options.c: ../../metadata/%.xml %_options.h
+tile_options.c: ../../metadata/tile.xml.in tile_options.h
 		$(BCOP_BIN) --source $@ $<

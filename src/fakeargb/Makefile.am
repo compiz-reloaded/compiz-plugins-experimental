@@ -3,7 +3,10 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libfakeargb_la_LDFLAGS = $(PFLAGS)
 libfakeargb_la_LIBADD = @COMPIZ_LIBS@
-libfakeargb_la_SOURCES = fakeargb_options.c fakeargb_options.h fakeargb.c
+nodist_libfakeargb_la_SOURCES = fakeargb_options.c fakeargb_options.h
+dist_libfakeargb_la_SOURCES = fakeargb.c
+
+BUILT_SOURCES = $(nodist_libfakeargb_la_SOURCES)
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \
@@ -20,8 +23,8 @@ module_LTLIBRARIES = libfakeargb.la
 
 CLEANFILES = *_options.c *_options.h
 
-%_options.h: ../../metadata/%.xml
+fakeargb_options.h: ../../metadata/fakeargb.xml.in
 		$(BCOP_BIN) --header $@ $<
 
-%_options.c: ../../metadata/%.xml %_options.h
+fakeargb_options.c: ../../metadata/fakeargb.xml.in fakeargb_options.h
 		$(BCOP_BIN) --source $@ $<

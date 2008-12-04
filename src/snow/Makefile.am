@@ -3,7 +3,10 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libsnow_la_LDFLAGS = $(PFLAGS)
 libsnow_la_LIBADD = @COMPIZ_LIBS@
-libsnow_la_SOURCES = snow_options.c snow_options.h snow.c
+nodist_libsnow_la_SOURCES = snow_options.c snow_options.h
+dist_libsnow_la_SOURCES = snow.c
+
+BUILT_SOURCES = $(nodist_libsnow_la_SOURCES)
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \
@@ -20,8 +23,8 @@ module_LTLIBRARIES = libsnow.la
 
 CLEANFILES = *_options.c *_options.h
 
-%_options.h: ../../metadata/%.xml
+snow_options.h: ../../metadata/snow.xml.in
 		$(BCOP_BIN) --header $@ $<
 
-%_options.c: ../../metadata/%.xml %_options.h
+snow_options.c: ../../metadata/snow.xml.in snow_options.h
 		$(BCOP_BIN) --source $@ $<

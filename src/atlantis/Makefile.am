@@ -3,15 +3,17 @@ PFLAGS=-module -avoid-version -no-undefined
 
 libatlantis_la_LDFLAGS = $(PFLAGS)
 libatlantis_la_LIBADD = @COMPIZ_LIBS@
-libatlantis_la_SOURCES = atlantis_options.c  \
-			 atlantis_options.h  \
-			 atlantis.c          \
+nodist_libatlantis_la_SOURCES = atlantis_options.c  \
+			 atlantis_options.h
+dist_libatlantis_la_SOURCES = atlantis.c  \
 		         atlantis-internal.h \
 		         dolphin.c           \
 		         shark.c             \
 		         swim.c              \
 		         whale.c             \
 			 water.c
+
+BUILT_SOURCES = $(nodist_libatlantis_la_SOURCES)
 
 INCLUDES =                              \
 	@COMPIZ_CFLAGS@                  \
@@ -28,8 +30,8 @@ module_LTLIBRARIES = libatlantis.la
 
 CLEANFILES = *_options.c *_options.h
 
-%_options.h: ../../metadata/%.xml
+atlantis_options.h: ../../metadata/atlantis.xml.in
 		$(BCOP_BIN) --header $@ $<
 
-%_options.c: ../../metadata/%.xml %_options.h
+atlantis_options.c: ../../metadata/atlantis.xml.in atlantis_options.h
 		$(BCOP_BIN) --source $@ $<
