@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="cubemodel" useBcop="true">
+		<short>Cube 3D Models</short>
+		<long>Render still/animated 3D mesh models inside of the transparent cube</long>
+		<category>Effects</category>
+		<deps>
+		<relation type="after">
+			<plugin>cube</plugin>
+			<plugin>cubeaddon</plugin>
+		</relation>
+		<requirement>
+			<plugin>cube</plugin>
+		</requirement>
+		</deps>
+		<screen>
+			<option name="global_model_scale_factor" type="float">
+				<short>Scale all factor</short>
+				<long>Scale all the 3D models by this factor.</long>
+				<min>0.01</min>
+				<max>100</max>
+				<default>1.0</default>
+				<precision>0.01</precision>
+			</option>
+			<subgroup>
+				<short>3D Models</short>
+				<option name="model_filename" type="list">
+					<short>Model</short>
+					<long>Full path to 3D wavefront (.obj) model file.</long>
+					<type>string</type>
+					<hints>file;</hints>
+				</option>
+				<option name="model_scale_factor" type="list">
+					<short>Scale factor</short>
+					<long>Scale the 3D model by this factor.</long>
+					<type>float</type>
+					<min>0.01</min>
+					<max>100</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="model_x_offset" type="list">
+					<short>X</short>
+					<long>X coordinate offset from the centre of the cube.</long>
+					<type>float</type>
+					<min>-1</min>
+					<max>1</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="model_y_offset" type="list">
+					<short>Y</short>
+					<long>Y coordinate offset from the centre of the cube.</long>
+					<type>float</type>
+					<min>-1</min>
+					<max>1</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="model_z_offset" type="list">
+					<short>Z</short>
+					<long>Z coordinate offset from the centre of the cube.</long>
+					<type>float</type>
+					<min>-1</min>
+					<max>1</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="model_rotation_plane" type="list">
+					<short>Rotation plane</short>
+					<long>Plane of rotation for the 3D model.</long>
+					<type>int</type>
+					<min>0</min>
+					<max>5</max>
+					<desc>
+						<value>0</value>
+						<name>XY</name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<name>YZ</name>
+					</desc>
+					<desc>
+						<value>2</value>
+						<name>ZX</name>
+					</desc>
+					<desc>
+						<value>3</value>
+						<name>XY - reverse rotation</name>
+					</desc>
+					<desc>
+						<value>4</value>
+						<name>YZ - reverse rotation</name>
+					</desc>
+					<desc>
+						<value>5</value>
+						<name>ZX - reverse rotation</name>
+					</desc>
+				</option>
+				<option name="model_rotation_rate" type="list">
+					<short>Rotation rate</short>
+					<long>Rate of rotation of 3D model (in rotations per second).</long>
+					<type>float</type>
+					<min>0</min>
+					<max>2</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="model_animation" type="list">
+					<short>Model type</short>
+					<long>Type of 3D model (still or animated).</long>
+					<type>int</type>
+					<min>0</min>
+					<max>2</max>
+					<desc>
+						<value>0</value>
+						<name>Still</name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<name>Animated</name>
+					</desc>
+					<desc>
+						<value>2</value>
+						<name>Animated - play in reverse</name>
+					</desc>
+				</option>
+				<option name="model_fps" type="list">
+					<short>Frames per second</short>
+					<long>Framerate (per second) for the animated series of obj files.</long>
+					<type>int</type>
+					<min>0</min>
+					<max>60</max>
+				</option>
+			</subgroup>
+
+			<group>
+				<short>Display</short>
+				<option name="rescale_width" type="bool">
+					<short>Rescale for screen ratio</short>
+					<long>Rescale along the sides of the cube by the ratio of screen width to height.</long>
+					<default>true</default>
+				</option>
+				<option name="render_front_and_back" type="bool">
+					<short>Render front and back sides</short>
+					<long>Renders the front surface and then the back surface. This can be useful for models which show black spots but can cause a performance hit.</long>
+					<default>false</default>
+				</option>
+				<subgroup>
+					<short>Lighting</short>
+				<option name="rotate_lighting" type="bool">
+					<short>Rotate lighting</short>
+					<long>Preserve light direction when rotating the cube.</long>
+					<default>true</default>
+				</option>
+				<option name="light_inclination" type="float">
+					<short>Light inclination</short>
+					<long>The angle of light rays from the horizon in degrees (0 is from the viewer's perspective, 90 is from on top).  Only has effect when Rotate Lighting is false.</long>
+					<default>90</default>
+					<min>0</min>
+					<max>180</max>
+					<precision>0.1</precision>
+				</option>
+			<option name="light_ambient" type="float">
+					<short>Ambient light intensity</short>
+					<long>Component of light coming from all directions equally.</long>
+					<default>0.3</default>
+					<min>0.0</min>
+					<max>1.0</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="light_diffuse" type="float">
+					<short>Diffuse light intensity</short>
+					<long>Component of light coming from the direction set by inclination or from the viewer if Rotate Lighting is true.</long>
+					<default>1.0</default>
+					<min>0.0</min>
+					<max>1.0</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="light_specular" type="float">
+					<short>Specular light intensity</short>
+					<long>Highly directional component of light coming from the direction set by inclination or from the viewer if Rotate Lighting is true.</long>
+					<default>0.6</default>
+					<min>0.0</min>
+					<max>1.0</max>
+					<precision>0.01</precision>
+				</option>
+				</subgroup>
+			</group>
+
+			<group>
+				<short>Loading</short>
+				<option name="concurrent_load" type="bool">
+					<short>Use separate threads</short>
+					<long>Use separate threads to load each model faster and allow other interaction whilst loading.</long>
+					<default>true</default>
+				</option>
+			</group>
+		</screen>
+	</plugin>
+</compiz>
