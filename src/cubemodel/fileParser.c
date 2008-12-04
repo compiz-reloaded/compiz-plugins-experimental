@@ -331,7 +331,8 @@ getLineToken (fileParser * fParser)
 		    {
 			if (buf[i + 1] == '\0')
 			{
-			    strline= realloc (*oldStrline, sizeof (char) * (size + i + 1));
+			    strline= realloc (*oldStrline, sizeof (char) *
+			                      (size + i + 1));
 			    *oldStrline = strline;
 
 			    memcpy (&strline[size], buf, sizeof (char) * i);

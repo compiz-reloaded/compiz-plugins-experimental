@@ -204,8 +204,6 @@ loadMaterials (CompScreen      *s,
 
     /* getLine stuff */
     char *strline    = NULL;
-    char *tmpType;
-
     int tempBufferSize = 2048; /* get character data from files
 				  in these size chunks */
     fileParser *fParser = NULL;
@@ -215,8 +213,6 @@ loadMaterials (CompScreen      *s,
 
     char *mtlFilename;
     FILE *mtlfp;
-
-    char delim[] = { ' ', '\t', '\0' };
 
     int nMaterial = *nMat;
 
@@ -243,21 +239,20 @@ loadMaterials (CompScreen      *s,
 
     /* now read all the materials in the mtllib referenced file */
 
-    while ((strline = getLine (fParser)))
+    while ((strline = getLineToken2 (fParser, FALSE)))
     {
 	char *tmpPtr[3] = { NULL, NULL, NULL }; /* used to check numerical
 						   parameters*/
 	float tmpNum[3] = {0, 0, 0 };
 	float tmpIllum = 100;
 
-	tmpType = strsep2 (&strline, delim);
-	if (!strline || !tmpType)
+	if (strline[0] == '\0')
 	    continue;
 
-	if (!strcmp (tmpType, "newmtl"))
+	if (!strcmp (strline, "newmtl"))
 	{
-	    tmpType = strsep2 (&strline, delim);
-	    if (!tmpType)
+	    strline = getLineToken2 (fParser, TRUE);
+	    if (!strline)
 		continue;
 
 	    *material = realloc (*material, sizeof (mtlStruct) *
@@ -266,7 +261,7 @@ loadMaterials (CompScreen      *s,
 
 	    nMaterial++;
 
-	    currentMaterial->name = strdup (tmpType);
+	    currentMaterial->name = strdup (strline);
 
 	    /* set defaults */
 	    currentMaterial->Ns[0] = 100;
@@ -296,7 +291,7 @@ loadMaterials (CompScreen      *s,
 
 	for (i = 0; i < 3; i++)
 	{
-	    tmpPtr[i] = strsep2 (&strline, delim);
+	    tmpPtr[i] = getLineToken2 (fParser, TRUE);
 	    if (!tmpPtr[i])
 		break;
 
@@ -306,41 +301,41 @@ loadMaterials (CompScreen      *s,
 		tmpIllum = atoi (tmpPtr[i]);
 	}
 
-	if (!strcmp (tmpType, "Ns"))
+	if (!strcmp (strline, "Ns"))
 	{
 	    currentMaterial->Ns[0] = tmpNum[0];
 	}
-	else if (!strcmp (tmpType, "Ka"))
+	else if (!strcmp (strline, "Ka"))
 	{
 	    for (i = 0; i < 3; i++)
 		currentMaterial->Ka[i] = tmpNum[i];
 	}
-	else if (!strcmp (tmpType, "Kd"))
+	else if (!strcmp (strline, "Kd"))
 	{
 	    for (i = 0; i < 3; i++)
 		currentMaterial->Kd[i] = tmpNum[i];
 	}
-	else if (!strcmp (tmpType, "Ks"))
+	else if (!strcmp (strline, "Ks"))
 	{
 	    for (i = 0; i < 3; i++)
 		currentMaterial->Ks[i] = tmpNum[i];
 	}
-	else if (!strcmp (tmpType, "Ni"))
+	else if (!strcmp (strline, "Ni"))
 	{
 	    currentMaterial->Ni[0] = tmpNum[0];
 	}
-	else if (!strcmp (tmpType, "d") || !strcmp(tmpType,"Tr"))
+	else if (!strcmp (strline, "d") || !strcmp(strline,"Tr"))
 	{
 	    currentMaterial->Ka[3] = tmpNum[0];
 	    currentMaterial->Kd[3] = tmpNum[0];
 	    currentMaterial->Ks[3] = tmpNum[0];
 	}
-	else if (!strcmp (tmpType, "illum"))
+	else if (!strcmp (strline, "illum"))
 	{
 	    currentMaterial->illum = tmpIllum;
 	}
-	else if (!strcmp (tmpType, "map_Ka") || !strcmp (tmpType, "map_Kd") ||
-		 !strcmp (tmpType, "map_Ks") || !strcmp (tmpType, "map_d" ) )
+	else if (!strcmp (strline, "map_Ka") || !strcmp (strline, "map_Kd") ||
+		 !strcmp (strline, "map_Ks") || !strcmp (strline, "map_d" ) )
 	{
 	    char *tmpName = NULL;
 
@@ -387,13 +382,13 @@ loadMaterials (CompScreen      *s,
 
 		    if (!strcmp (tmpPtr[0], data->texName[i]))
 		    {
-			if (!strcmp (tmpType, "map_Ka"))
+			if (!strcmp (strline, "map_Ka"))
 			    currentMaterial->map_Ka = i;
-			else if (!strcmp (tmpType, "map_Kd"))
+			else if (!strcmp (strline, "map_Kd"))
 			    currentMaterial->map_Kd = i;
-			else if (!strcmp (tmpType, "map_Ks"))
+			else if (!strcmp (strline, "map_Ks"))
 			    currentMaterial->map_Ks = i;
-			else if (!strcmp (tmpType, "map_d"))
+			else if (!strcmp (strline, "map_d"))
 			    currentMaterial->map_d = i;
 
 			currentMaterial->width  = data->texWidth[i];
@@ -449,13 +444,13 @@ loadMaterials (CompScreen      *s,
 
 		    data->texName[data->nTex] = strdup (tmpPtr[0]);
 
-		    if (!strcmp (tmpType, "map_Ka"))
+		    if (!strcmp (strline, "map_Ka"))
 			currentMaterial->map_Ka = data->nTex;
-		    else if (!strcmp (tmpType, "map_Kd"))
+		    else if (!strcmp (strline, "map_Kd"))
 			currentMaterial->map_Kd = data->nTex;
-		    else if (!strcmp (tmpType, "map_Ks"))
+		    else if (!strcmp (strline, "map_Ks"))
 			currentMaterial->map_Ks = data->nTex;
-		    else if (!strcmp (tmpType, "map_d"))
+		    else if (!strcmp (strline, "map_d"))
 			currentMaterial->map_d = data->nTex;
 
 		    data->texWidth[data->nTex]  = currentMaterial->width;
@@ -471,6 +466,9 @@ loadMaterials (CompScreen      *s,
 		free (tmpName);
 	    tmpName = NULL;
 	}
+
+	if (!fParser->lastTokenOnLine)
+	    skipLine (fParser);
     }
 
     freeFileParser(fParser);
@@ -494,8 +492,6 @@ initLoadModelObject (CompScreen      *s,
 
     /* getLine stuff */
     char *strline    = NULL;
-    char *tmpType;
-
     int tempBufferSize = 4 * 1024; /* get character data from files
 				      in these size chunks */
     fileParser *fParser = NULL;
@@ -504,8 +500,6 @@ initLoadModelObject (CompScreen      *s,
     int nNormal = 0;
     int nTexture = 0;
     int nIndices = 0;
-
-    const char delim[] = { ' ', '\t', '\0' };
 
     FILE *fp;
 
@@ -530,36 +524,35 @@ initLoadModelObject (CompScreen      *s,
 
     fParser = initFileParser (fp, tempBufferSize);
 
-    while ((strline = getLine (fParser)))
+    while ((strline = getLineToken2 (fParser, FALSE)))
     {
-	tmpType = strsep2 (&strline, delim);
-	if (!strline || !tmpType)
+	if (strline[0] == '\0')
 	    continue;
 
-	if (!strcmp (tmpType, "v"))
+	if (!strcmp (strline, "v"))
 	    nVertex++;
-	else if (!strcmp (tmpType, "vn"))
+	else if (!strcmp (strline, "vn"))
 	    nNormal++;
-	else if (!strcmp (tmpType, "vt"))
+	else if (!strcmp (strline, "vt"))
 	    nTexture++;
-	else if (!strcmp (tmpType, "f") || !strcmp (tmpType, "fo") ||
-		 !strcmp (tmpType, "p") || !strcmp (tmpType, "l") )
+	else if (!strcmp (strline, "f") || !strcmp (strline, "fo") ||
+		 !strcmp (strline, "p") || !strcmp (strline, "l") )
 	{
-	    while ((tmpType = strsep2 (&strline, delim)))
+	    while (getLineToken2 (fParser, TRUE))
 		nIndices++;
 	}
-	else if (!strcmp (tmpType, "mtllib"))
+	else if (!strcmp (strline, "mtllib"))
 	{
-	    while ((tmpType = strsep2 (&strline, delim)))
+	    while ((strline = getLineToken2 (fParser, TRUE)))
 	    {
-		if (tmpType[0] == '\0') /*skip "" as it can't be a valid file*/
-		    break;
-
-		loadMaterials (s, modelData, filename, tmpType,
+		loadMaterials (s, modelData, filename, strline,
 		               &(modelData->material[0]),
 		               &(modelData->nMaterial[0]));
 	    }
 	}
+
+	if (!fParser->lastTokenOnLine)
+	    skipLine (fParser);
     }
 
     modelData->reorderedVertex[0]  = malloc (sizeof (vect3d) * nIndices);
@@ -596,8 +589,6 @@ loadModelObject (CubemodelObject *modelData)
 
     /* getLine stuff */
     char *strline    = NULL;
-    char *tmpType;
-
     int tempBufferSize = 4 * 1024; /* get character data from files
 				      in these size chunks */
     fileParser *fParser = NULL;
@@ -616,8 +607,6 @@ loadModelObject (CubemodelObject *modelData)
     vect3d *vertex  = NULL;
     vect3d *normal  = NULL;
     vect2d *texture = NULL;
-
-    const char delim[]= { ' ', '\t', '\0' };
 
     FILE *fp;
 
@@ -725,7 +714,7 @@ loadModelObject (CubemodelObject *modelData)
 	 * 		 buffers
 	 */
 
-	while ((strline = getLine (fParser)))
+	while ((strline = getLineToken2 (fParser, FALSE)))
 	{
 	    int complexity = 0;
 	    int polyCount  = 0;
@@ -733,11 +722,10 @@ loadModelObject (CubemodelObject *modelData)
 	    Bool usingNormal  = FALSE;
 	    Bool usingTexture = FALSE;
 
-	    tmpType = strsep2 (&strline, delim);
-	    if (!strline || !tmpType)
+	    if (strline[0] == '\0')
 		continue;
 
-	    if (!strcmp (tmpType, "v"))
+	    if (!strcmp (strline, "v"))
 	    {
 		if (sVertex <= nVertex)
 		{
@@ -750,19 +738,20 @@ loadModelObject (CubemodelObject *modelData)
 
 		for (i = 0; i < 3; i++)
 		{
-		    tmpType = strsep2 (&strline, delim);
-		    if (!tmpType)
+		    strline = getLineToken2 (fParser, TRUE);
+
+		    if (!strline)
 		    {
 			vertex[nVertex].r[0] = 0;
 			vertex[nVertex].r[1] = 0;
 			vertex[nVertex].r[2] = 0;
 			break;
 		    }
-		    vertex[nVertex].r[i] = atof (tmpType);
+		    vertex[nVertex].r[i] = atof (strline);
 		}
 		nVertex++;
 	    }
-	    else if (!strcmp (tmpType, "vn"))
+	    else if (!strcmp (strline, "vn"))
 	    {
 		if (sNormal <= nNormal)
 		{
@@ -772,19 +761,20 @@ loadModelObject (CubemodelObject *modelData)
 
 		for (i = 0; i < 3; i++)
 		{
-		    tmpType = strsep2 (&strline, delim);
-		    if (!tmpType)
+		    strline = getLineToken2 (fParser, TRUE);
+
+		    if (!strline)
 		    {
 			normal[nNormal].r[0] = 0;
 			normal[nNormal].r[1] = 0;
 			normal[nNormal].r[2] = 1;
 			break;
 		    }
-		    normal[nNormal].r[i] = atof(tmpType);
+		    normal[nNormal].r[i] = atof(strline);
 		}
 		nNormal++;
 	    }
-	    else if (!strcmp (tmpType, "vt"))
+	    else if (!strcmp (strline, "vt"))
 	    {
 		if (sTexture <= nTexture)
 		{
@@ -795,8 +785,8 @@ loadModelObject (CubemodelObject *modelData)
 		/* load the 1D/2D coordinates for textures */
 		for (i = 0; i < 2; i++)
 		{
-		    tmpType = strsep2 (&strline, delim);
-		    if (!tmpType)
+		    strline = getLineToken2 (fParser, TRUE);
+		    if (!strline)
 		    {
 			if (i == 0)
 			    texture[nTexture].r[0] = 0;
@@ -804,20 +794,20 @@ loadModelObject (CubemodelObject *modelData)
 			texture[nTexture].r[1] = 0;
 			break;
 		    }
-		    texture[nTexture].r[i] = atof (tmpType);
+		    texture[nTexture].r[i] = atof (strline);
 		}
 		nTexture++;
 	    }
-	    else if (!strcmp (tmpType, "usemtl") && fc == 0)
+	    else if (!strcmp (strline, "usemtl") && fc == 0)
 	    {
 		/* parse mtl file(s) and load specified material */
-		tmpType = strsep2 (&strline, delim);
-		if (!tmpType)
+		strline = getLineToken2 (fParser, TRUE);
+		if (!strline)
 		    continue;
 
 		for (j = 0; j < modelData->nMaterial[fc]; j++)
 		{
-		    if (!strcmp (tmpType, modelData->material[fc][j].name))
+		    if (!strcmp (strline, modelData->material[fc][j].name))
 		    {
 			lastLoadedMaterial = j;
 			updateGroup = TRUE;
@@ -825,24 +815,25 @@ loadModelObject (CubemodelObject *modelData)
 		    }
 		}
 	    }
-	    else if (!strcmp (tmpType, "f") || !strcmp (tmpType, "fo") ||
-		     !strcmp (tmpType, "p") || !strcmp (tmpType, "l"))
+	    else if (!strcmp (strline, "f") || !strcmp (strline, "fo") ||
+		     !strcmp (strline, "p") || !strcmp (strline, "l"))
 	    {
 		char *tmpPtr; /* used to check value of vertex/texture/normal */
 
-		if (!strcmp (tmpType, "l"))
+		if (!strcmp (strline, "l"))
 		    complexity = 1;
-		else if (!strcmp (tmpType, "f") || !strcmp (tmpType, "fo"))
+		else if (!strcmp (strline, "f") || !strcmp (strline, "fo"))
 		    complexity = 2;
 
-		while ((tmpType = strsep2 (&strline, delim)))
+		while ((strline = getLineToken2 (fParser, TRUE)))
 		{
 		    int vertexIndex  = -1;
 		    int textureIndex = -1;
 		    int normalIndex  = -1;
 		    int tmpInd;
 
-		    tmpPtr = strsep (&tmpType, "/");
+
+		    tmpPtr = strsep (&strline, "/");
 		    if (tmpPtr)
 		    {
 			vertexIndex = atoi (tmpPtr);
@@ -867,12 +858,12 @@ loadModelObject (CubemodelObject *modelData)
 		    else
 			break;
 
-		    tmpPtr = strsep (&tmpType, "/");
+		    tmpPtr = strsep (&strline, "/");
 		    if (tmpPtr && complexity != 0)
 		    {
 			/* texture */
 
-			if (strcmp (tmpPtr, ""))
+			if (tmpPtr[0] != '\0')
 			{
 			    textureIndex = atoi (tmpPtr);
 
@@ -897,32 +888,35 @@ loadModelObject (CubemodelObject *modelData)
 			    usingTexture = TRUE;
 			}
 
-			tmpPtr = strsep (&tmpType, "/");
-			if (tmpPtr && strcmp (tmpPtr, "") && complexity == 2)
+			tmpPtr = strsep (&strline, "/");
+			if (tmpPtr)
 			{
-			    /* normal */
-
-			    normalIndex = atoi (tmpPtr);
-
-			    if (normalIndex > 0)
+			    if (tmpPtr[0]!='\0' && complexity == 2)
 			    {
-				/* skip normal index past last in obj file */
-				if (normalIndex > modelData->nNormal)
-				    break;
-				normalIndex--;
-			    }
-			    else if (normalIndex < 0)
-			    {
-				normalIndex += nNormal;
+				/* normal */
 
-				/* skip normal index < 0 in obj file */
-				if (normalIndex < 0)
-				    break;
-			    }
-			    else /* skip normal index of 0 in obj file */
-				break;
+				normalIndex = atoi (tmpPtr);
 
-			    usingNormal = TRUE;
+				if (normalIndex > 0)
+				{
+				    /* skip normal index past last in obj file */
+				    if (normalIndex > modelData->nNormal)
+					break;
+				    normalIndex--;
+				}
+				else if (normalIndex < 0)
+				{
+				    normalIndex += nNormal;
+
+				    /* skip normal index < 0 in obj file */
+				    if (normalIndex < 0)
+					break;
+				}
+				else /* skip normal index of 0 in obj file */
+				    break;
+
+				usingNormal = TRUE;
+			    }
 			}
 		    }
 
@@ -1033,6 +1027,9 @@ loadModelObject (CubemodelObject *modelData)
 
 		updateGroup = TRUE;
 	    }
+
+	    if (!fParser->lastTokenOnLine)
+		skipLine (fParser);
 
 	    if (updateGroup && fc == 0)
 	    {
@@ -1823,5 +1820,3 @@ cubemodelDrawVBOModel (CompScreen      *s,
 
     return TRUE;
 }
-
-
