@@ -1258,13 +1258,8 @@ cubemodelAddModelObject (CompScreen      *s,
 	{
 	    if (*start >= '0' && *start <= '9')
 	    {
-		if (!numbers)
-		    numbers = start;
-	    }
-	    else if (numbers)
-	    {
-		post = start;
-		break;
+		numbers = start;
+		post = numbers + 1;
 	    }
 	    start++;
 	}
