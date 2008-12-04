@@ -1254,13 +1254,22 @@ cubemodelAddModelObject (CompScreen      *s,
 	    start = modelData->filename;
 
 	start++;
+
+	Bool lastCharANumber = FALSE;
+
 	while (*start)
 	{
 	    if (*start >= '0' && *start <= '9')
 	    {
-		numbers = start;
-		post = numbers + 1;
+		if (!numbers || !lastCharANumber)
+		    numbers = start;
+		post = start + 1;
+
+		lastCharANumber = TRUE;
 	    }
+	    else
+		lastCharANumber = FALSE;
+
 	    start++;
 	}
 
