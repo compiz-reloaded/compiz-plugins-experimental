@@ -1,18 +1,241 @@
 <?xml version="1.0"?>
 <compiz>
 	<plugin name="atlantis" useBcop="true">
-		<_short>Cube Atlantis</_short>
-		<_long>Render some fish inside of the transparent cube</_long>
+		<short>Cube Atlantis</short>
+		<long>Render some sea animals inside of the transparent cube</long>
 		<category>Effects</category>
 		<deps>
 		<relation type="after">
 			<plugin>cube</plugin>
+			<plugin>cubeaddon</plugin>
 		</relation>
 		<requirement>
 			<plugin>cube</plugin>
 		</requirement>
 		</deps>
 		<screen>
+				<option name="speed_factor" type="float">
+					<short>Speed factor</short>
+					<long>Multiply the speed of the fish by this factor.</long>
+					<default>1</default>
+					<min>0.5</min>
+					<max>3</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="start_crabs_bottom" type="bool">
+					<short>Start crabs on bottom</short>
+					<long>Start crabs on the bottom of the cube.</long>
+					<default>false</default>
+				</option>
+				<option name="school_similar_groups" type="bool">
+					<short>School similar groups</short>
+					<long>Fish in different groups, but of the same type, swim together.</long>
+					<default>true</default>
+				</option>
+				<option name="low_poly" type="bool">
+					<short>Low detail models</short>
+					<long>Use less detailed models for increased performance.</long>
+					<default>false</default>
+				</option>
+				<subgroup>
+					<short>Creature Selection</short>
+					<option type="list" name="creature_type">
+						<short>Type</short>
+						<long>Type of sea creature.</long>
+						<type>int</type>
+						<min>0</min>
+						<max>9</max>
+						<default>
+						<value>0</value>
+						<value>1</value>
+						<value>3</value>
+						<value>4</value>
+						<value>9</value>
+						</default>
+						<desc>
+							<value>0</value>
+							<name>Fish - Butterflyfish</name>
+						</desc>
+						<desc>
+							<value>1</value>
+							<name>Fish - Chromis 1</name>
+						</desc>
+						<desc>
+							<value>2</value>
+							<name>Fish - Chromis 2</name>
+						</desc>
+						<desc>
+							<value>3</value>
+							<name>Fish - Chromis 3</name>
+						</desc>
+						<desc>
+							<value>4</value>
+							<name>Fish - Type 1</name>
+						</desc>
+						<desc>
+							<value>5</value>
+							<name>Fish - Type 2</name>
+						</desc>
+
+						<desc>
+							<value>6</value>
+							<name>Dolphin</name>
+						</desc>
+						<desc>
+							<value>7</value>
+							<name>Shark</name>
+						</desc>
+						<desc>
+							<value>8</value>
+							<name>Whale</name>
+						</desc>
+						<desc>
+							<value>9</value>
+							<name>Crab</name>
+						</desc>
+					</option>
+					<option type="list" name="creature_color">
+						<short>Color</short>
+						<long>The color of the sea creature.</long>
+						<type>color</type>
+						<default>
+						<value>
+							<red>0xFFFF</red>
+							<green>0xFFFF</green>
+							<blue>0xFFFF</blue>
+							<alpha>0xFFFF</alpha>
+						</value>
+						<value>
+							<red>0x6000</red>
+							<green>0xA000</green>
+							<blue>0xFFFF</blue>
+							<alpha>0xFFFF</alpha>
+						</value>
+						<value>
+							<red>0xFFFF</red>
+							<green>0x7000</green>
+							<blue>0x0000</blue>
+							<alpha>0xFFFF</alpha>
+						</value>
+						<value>
+							<red>0xFFFF</red>
+							<green>0xFFFF</green>
+							<blue>0x0000</blue>
+							<alpha>0xFFFF</alpha>
+						</value>
+						<value>
+							<red>0xFFFF</red>
+							<green>0x0000</green>
+							<blue>0x0000</blue>
+							<alpha>0xFFFF</alpha>
+						</value>
+						</default>
+					</option>
+					<option type="list" name="creature_number">
+						<short>Number</short>
+						<long>The number of the sea creature.</long>
+						<type>int</type>
+						<min>1</min>
+						<max>50</max>
+						<default>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+						</default>
+					</option>
+					<option type="list" name="creature_size">
+						<short>Size</short>
+						<long>The size of the sea creature.</long>
+						<type>int</type>
+						<min>100</min>
+						<max>20000</max>
+						<default>
+						<value>4000</value>
+						<value>3500</value>
+						<value>3500</value>
+						<value>3500</value>
+						<value>4000</value>
+						</default>
+					</option>
+				</subgroup>
+				<subgroup>
+					<short>Miscellaneous Selection</short>
+					<option type="list" name="plant_type">
+						<short>Type</short>
+						<long>Type of sea plant.</long>
+						<type>int</type>
+						<min>0</min>
+						<max>2</max>
+						<default>
+						<value>0</value>
+						<value>1</value>
+						<value>2</value>
+						</default>
+						<desc>
+							<value>0</value>
+							<name>Coral - 1</name>
+						</desc>
+						<desc>
+							<value>1</value>
+							<name>Coral - 2</name>
+						</desc>
+						<desc>
+							<value>2</value>
+							<name>Aerator</name>
+						</desc>
+					</option>
+					<option type="list" name="plant_color">
+						<short>Color</short>
+						<long>The color of the sea plant.</long>
+						<type>color</type>
+						<default>
+						<value>
+							<red>0x0000</red>
+							<green>0xD000</green>
+							<blue>0x1000</blue>
+							<alpha>0xFFFF</alpha>
+						</value>
+						<value>
+							<red>0x0000</red>
+							<green>0xD000</green>
+							<blue>0x1000</blue>
+							<alpha>0xFFFF</alpha>
+						</value>
+						<value>
+							<red>0x8000</red>
+							<green>0x9000</green>
+							<blue>0xFFFF</blue>
+							<alpha>0x0C00</alpha>
+						</value>
+						</default>
+					</option>
+					<option type="list" name="plant_number">
+						<short>Number</short>
+						<long>The number of the sea plants.</long>
+						<type>int</type>
+						<min>1</min>
+						<max>200</max>
+						<default>
+						<value>8</value>
+						<value>8</value>
+						<value>1</value>
+						</default>
+					</option>
+					<option type="list" name="plant_size">
+						<short>Size</short>
+						<long>The size of the sea plant.</long>
+						<type>int</type>
+						<min>100</min>
+						<max>20000</max>
+						<default>
+						<value>5000</value>
+						<value>5000</value>
+						<value>800</value>
+						</default>
+					</option>
+				</subgroup>
 			<group>
 				<short>Water / Ground</short>
 				<option name="show_water" type="bool">
@@ -30,6 +253,16 @@
 					<long>Render ground inside the cube.</long>
 					<default>true</default>
 				</option>
+				<option name="ground_color" type="color">
+					<short>Ground color</short>
+					<long>Color of ground in the cube.</long>
+					<default>
+						<red>0x8500</red>
+						<green>0x5E00</green>
+						<blue>0x0000</blue>
+						<alpha>0xFFFF</alpha>
+					</default>
+				</option>
 				<option name="water_height" type="float">
 					<short>Water surface height</short>
 					<long>Height of water surface in the cube.</long>
@@ -39,23 +272,22 @@
 					<precision>0.01</precision>
 				</option>
 				<option name="water_color" type="color">
-					<short>Water opacity</short>
-					<long>Opacity of water in the cube.</long>
+					<short>Water color</short>
+					<long>Color of water in the cube.</long>
 					<default>
 						<red>0x0800</red>
-						<green>0x0800</green>
+						<green>0x0900</green>
 						<blue>0x3000</blue>
-						<alpha>0xf00</alpha>
+						<alpha>0x0800</alpha>
 					</default>
 				</option>
 				<option name="grid_quality" type="int">
-					<short>Water/Ground grid smoothnes</short>
+					<short>Water/Ground grid smoothness</short>
 					<long>Number of subdivisions that create a finer grid.</long>
 					<default>3</default>
 					<min>1</min>
-					<max>10</max>
+					<max>7</max>
 				</option>
-
 				<subgroup>
 					<short>Waves</short>
 					<option name="render_waves" type="bool">
@@ -63,10 +295,15 @@
 						<long>Render water waves inside the cube.</long>
 						<default>true</default>
 					</option>
+					<option name="wave_ripple" type="bool">
+						<short>Ripple effect</short>
+						<long>Semi-randomize light scattering off water waves.</long>
+						<default>false</default>
+					</option>
 					<option name="wave_amplitude" type="float">
 						<short>Wave amplitude</short>
 						<long>Amplitude of water waves.</long>
-						<default>0.05</default>
+						<default>0.02</default>
 						<min>0</min>
 						<max>0.5</max>
 						<precision>0.01</precision>
@@ -79,18 +316,10 @@
 						<max>100</max>
 						<precision>0.1</precision>
 					</option>
-					<option name="wave_speed" type="float">
-						<short>Wave speed</short>
-						<long>Speed of water waves.</long>
-						<default>1</default>
-						<min>0</min>
-						<max>10</max>
-						<precision>0.01</precision>
-					</option>
 					<option name="small_wave_amplitude" type="float">
 						<short>Small wave amplitude</short>
 						<long>Amplitude of small water waves on the bigger ones.</long>
-						<default>0.02</default>
+						<default>0.01</default>
 						<min>0</min>
 						<max>0.5</max>
 						<precision>0.01</precision>
@@ -103,57 +332,40 @@
 						<max>100</max>
 						<precision>0.1</precision>
 					</option>
-					<option name="small_wave_speed" type="float">
-						<short>Wave Speed</short>
-						<long>Speed of small water waves.</long>
-						<default>1</default>
-						<min>0</min>
-						<max>10</max>
-						<precision>0.01</precision>
-					</option>
 				</subgroup>
-				
 			</group>
-			<option name="num_fish" type="int">
-				<_short>Number of fish</_short>
-				<_long>Number of fish inside the cube</_long>
-				<default>20</default>
-				<min>5</min>
-				<max>100</max>
-			</option>
-			<option name="colors" type="bool">
-				<_short>Colors</_short>
-				<_long>Enable colors</_long>
-				<default>true</default>
-			</option>
-			<option name="fish_size" type="int">
-				<_short>Fish size</_short>
-				<_long>Fish size</_long>
-				<default>1500</default>
-				<min>100</min>
-				<max>10000</max>
-			</option>
-			<option name="shark_size" type="int">
-				<_short>Shark size</_short>
-				<_long>Shark size</_long>
-				<default>5000</default>
-				<min>100</min>
-				<max>10000</max>
-			</option>
-			<option name="dolphin_size" type="int">
-				<_short>Dolphin size</_short>
-				<_long>Dolphin size.</_long>
-				<default>5000</default>
-				<min>100</min>
-				<max>10000</max>
-			</option>
-			<option name="whale_size" type="int">
-				<_short>Whale size</_short>
-				<_long>Whale size.</_long>
-				<default>8000</default>
-				<min>100</min>
-				<max>10000</max>
-			</option>
+			<group>
+				<short>Display</short>
+				<option name="rescale_width" type="bool">
+					<short>Rescale for screen ratio</short>
+					<long>Rescale along the sides of the cube by the ratio of screen width to height.</long>
+					<default>true</default>
+				</option>
+				<subgroup>
+					<short>Lighting</short>
+				<option name="rotate_lighting" type="bool">
+					<short>Rotate lighting</short>
+					<long>Preserve light direction when rotating the cube.</long>
+					<default>false</default>
+				</option>
+				<option name="light_inclination" type="float">
+					<short>Light inclination</short>
+					<long>The angle of light rays from the horizon in degrees (0 is from the viewer's perspective, 90 is from on top).  Only has effect when Rotate Lighting is false.</long>
+					<default>90</default>
+					<min>0</min>
+					<max>180</max>
+					<precision>0.1</precision>
+				</option>
+				<option name="light_ambient" type="float">
+					<short>Ambient light</short>
+					<long>Component of light coming from all directions equally.</long>
+					<default>0.3</default>
+					<min>0.0</min>
+					<max>0.6</max>
+					<precision>0.01</precision>
+				</option>
+				</subgroup>
+			</group>
 		</screen>
 	</plugin>
 </compiz>

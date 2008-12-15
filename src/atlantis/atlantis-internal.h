@@ -3,8 +3,11 @@
  *
  * atlantis.c
  *
- * This is an example plugin to show how to render something inside
- * of the transparent cube
+ * This plugin renders a fish tank inside of the transparent cube,
+ * replete with fish, crabs, sand, bubbles, and coral.
+ *
+ * Copyright : (C) 2007-2008 by David Mikos
+ * Email     : infiniteloopcounter@gmail.com
  *
  * Copyright : (C) 2007 by Dennis Kasprzyk
  * E-mail    : onestone@opencompositing.org
@@ -95,20 +98,27 @@
 #ifndef _ATLANTIS_INTERNAL_H
 #define _ATLANTIS_INTERNAL_H
 
-#define RAD 57.295
-#define RRAD 0.01745
-
 #define LRAND()                 ((long) (random() & 0x7fffffff))
 #define NRAND(n)                ((int) (LRAND() % (n)))
 #define MAXRAND                 (2147483648.0) /* unsigned 1<<31 as a float */
 
-
-/* default values */
-#define NUM_SHARKS 4
-#define SHARKSPEED 100
-#define SHARKSIZE 6000
-
 #include <math.h>
+#include <float.h>
+
+/* some constants */
+#define PI     M_PI
+#define PIdiv2 M_PI_2
+#define toDegrees (180.0f * M_1_PI)
+#define toRadians (M_PI / 180.0f)
+
+/* for original atlantis screensaver models */
+#define RAD toDegrees
+#define RRAD toRadians
+
+/* return random number in range [0,x) */
+#define randf(x) ((float) (rand()/(((double)RAND_MAX + 1)/(x))))
+
+
 #include <compiz-core.h>
 #include <compiz-cube.h>
 
@@ -125,25 +135,98 @@ extern int cubeDisplayPrivateIndex;
 #define ATLANTIS_SCREEN(s) \
     AtlantisScreen *as = GET_ATLANTIS_SCREEN(s, GET_ATLANTIS_DISPLAY(s->display))
 
-#define SHARK     0
-#define WHALE     1
-#define DOLPHIN   2
-#define FISH      3
+
+/* matching value from atlantis.xml.in */
+#define BUTTERFLYFISH	0
+#define CHROMIS		1
+#define CHROMIS2	2
+#define CHROMIS3	3
+#define FISH		4
+#define FISH2		5
+#define DOLPHIN		6
+#define SHARK		7
+#define WHALE		8
+#define CRAB		9
+
+
+/*
+ * groups to separate fish for calculating boidsAngles
+ * at each time slice only one of the groups will have the boidsAngles updated
+*/
+#define NUM_GROUPS 6
+
+
+/* matching values from cubeaddon plugin */
+#define DeformationNone		0
+#define DeformationCylinder	1
+#define DeformationSphere	2
+
 
 typedef struct _fishRec
 {
-    float       x, y, z, phi, theta, psi, v;
-    float       xt, yt, zt;
-    float       htail, vtail;
-    float       dtheta;
-    int         spurt, attack;
-    int         sign;
-    int         size;
-    float       speed;
-    int         type;
-    float       color[3];
+    float x, y, z, theta, psi, v;
+    float htail, vtail;
+    float dtheta;
+    int spurt, attack;
+    int size;
+    float speed;
+    int type;
+    float color[4];
+    int group;
+    int boidsCounter; /* so that boidsAngles aren't computed every time step */
+    float boidsPsi;
+    float boidsTheta;
+    int smoothTurnCounter;
+    float smoothTurnAmount; /* psi direction */
+    float smoothTurnTh;     /* theta direction */
+    float prevRandPsi;
+    float prevRandTh;
 }
 fishRec;
+
+typedef struct _crabRec
+{
+    float x, y, z, theta, psi;
+    int size;
+    float speed;
+    float color[4];
+    int scuttleAmount;
+    float scuttlePsi;
+    float scuttleTheta;
+    Bool isFalling;
+}
+crabRec;
+
+typedef struct _coralRec
+{
+    float x, y, z, psi;
+    int size;
+    int type;
+    float color[4];
+}
+coralRec;
+
+typedef struct _Bubble
+{
+    float x, y, z;
+    float size;
+    float speed;
+    float counter;
+    float offset;
+}
+Bubble;
+
+typedef struct _aeratorRec
+{
+    float x, y, z;
+    int size;
+    int type;
+    float color[4];
+    Bubble *bubbles;
+
+    int numBubbles;
+}
+aeratorRec;
 
 typedef struct _Vertex
 {
@@ -154,18 +237,24 @@ Vertex;
 
 typedef struct _Water
 {
-    int      size;
-    float    distance;
-    int      sDiv;
+    int size;
+    float distance;
+    int sDiv;
 
-    float  bh;
-    float  wa;
-    float  swa;
-    float  wf;
-    float  swf;
+    float bh;
+    float wa;
+    float swa;
+    float wf;
+    float swf;
 
-    Vertex       *vertices;
+    Vertex *vertices;
     unsigned int *indices;
+
+    Vertex *vertices2; /* for extra side wall detail in sphere deformation */
+    unsigned int *indices2;
+
+    int *rippleFactor;
+    int rippleTimer;
 
     unsigned int nVertices;
     unsigned int nIndices;
@@ -174,9 +263,14 @@ typedef struct _Water
     unsigned int nSIdx;
     unsigned int nWVer;
     unsigned int nWIdx;
+    unsigned int nBIdx;
 
-    float    wave1;
-    float    wave2;
+    unsigned int nWVer2;
+    unsigned int nWIdx2;
+    unsigned int nBIdx2;
+
+    float wave1;
+    float wave2;
 }
 Water;
 
@@ -186,57 +280,251 @@ typedef struct _AtlantisDisplay
 }
 AtlantisDisplay;
 
-
 typedef struct _AtlantisScreen
 {
     DonePaintScreenProc donePaintScreen;
     PreparePaintScreenProc preparePaintScreen;
 
     CubeClearTargetOutputProc clearTargetOutput;
-    CubePaintInsideProc       paintInside;
+    CubePaintInsideProc paintInside;
 
     Bool damage;
 
-    int         numFish;
-    fishRec    *fish;
+    int numFish;
+    int numCrabs;
+    int numCorals;
+    int numAerators;
+
+    fishRec *fish;
+    crabRec *crab;
+    coralRec *coral;
+    aeratorRec *aerator;
 
     Water *water;
     Water *ground;
+
+    float waterHeight;  /* water surface height */
+
+    int hsize;
+    float sideDistance; /* perpendicular distance to side wall from centre */
+    float topDistance;  /* perpendicular distance to top wall from centre */
+    float radius;       /* radius on which the hSize points lie */
+    float arcAngle;   	/* 360 degrees / horizontal size */
+    float ratio;        /* screen width to height */
+
+    float speedFactor;  /* multiply fish/crab speeds by this value */
+
+    float oldProgress;
+
+    GLuint crabDisplayList;
+    GLuint coralDisplayList;
+    GLuint coral2DisplayList;
+    GLuint bubbleDisplayList;
 }
 AtlantisScreen;
 
-void FishTransform (fishRec *);
-void FishPilot (fishRec *, float);
-void FishMiss (AtlantisScreen *, int);
-void DrawWhale (fishRec *, int);
-void DrawShark (fishRec *, int);
-void DrawDolphin (fishRec *, int);
+void
+updateWater(CompScreen *s, float time);
 
 void
-updateWater (CompScreen *s, float time);
+updateGround(CompScreen *s, float time);
 
 void
-updateGround (CompScreen *s, float time);
+updateDeformation (CompScreen *s, int currentDeformation);
 
 void
-updateHeight (Water *w);
+updateHeight(Water *w, Water *w2, Bool, int currentDeformation);
 
 void
-freeWater (Water *w);
+freeWater(Water *w);
 
 void
-drawWater (Water *w, Bool full, Bool wire);
+drawWater(Water *w, Bool full, Bool wire, int currentDeformation);
 
 void
-drawGround (Water *w, Water *g);
+drawGround(Water *w, Water *g, int currentDeformation);
 
 void
-drawBottomGround (int size, float distance, float bottom);
+drawBottomGround(Water *w, float distance, float bottom, int currentDeformation);
+
+void
+drawBottomWater(Water *w, float distance, float bottom, int currentDeformation);
+
+void
+setWaterMaterial (unsigned short *);
+
+void
+setGroundMaterial (unsigned short *);
 
 Bool
-isInside (CompScreen *s, float x, float y, float z);
+isInside(CompScreen *s, float x, float y, float z);
 
 float
-getHeight (Water *w, float x, float z);
+getHeight(Water *w, float x, float z);
+
+float
+getGroundHeight (CompScreen *s, float x, float z);
+
+void
+FishTransform(fishRec *);
+
+void
+FishPilot(CompScreen *, int);
+
+void
+CrabTransform(crabRec *);
+
+void
+CrabPilot(CompScreen *, int);
+
+void
+BubbleTransform(Bubble *);
+
+void
+BubblePilot(CompScreen *, int, int);
+
+void
+BoidsAngle(CompScreen *, int);
+
+void
+RenderWater(int, float, Bool, Bool);
+
+void
+DrawWhale(fishRec *, int);
+
+void
+DrawShark(fishRec *, int);
+
+void
+DrawDolphin(fishRec *, int);
+
+void
+AnimateBFish(float);
+
+void
+DrawAnimatedBFish(void);
+
+void
+initDrawBFish(float *);
+
+void
+finDrawBFish(void);
+
+void
+AnimateChromis(float);
+
+void
+DrawAnimatedChromis(void);
+
+void
+initDrawChromis(float *);
+
+void
+initDrawChromis2(float *);
+
+void
+initDrawChromis3(float *);
+
+void
+finDrawChromis(void);
+
+void
+DrawAnimatedFish(void);
+
+void
+AnimateFish(float);
+
+void
+initDrawFish(float *);
+
+void
+finDrawFish(void);
+
+void
+DrawAnimatedFish2(void);
+
+void
+AnimateFish2(float);
+
+void
+initDrawFish2(float *);
+
+void
+finDrawFish2(void);
+
+void
+DrawCrab(int);
+
+void
+initDrawCrab(void);
+
+void
+finDrawCrab(void);
+
+void
+DrawCoral(int);
+
+void
+DrawCoralLow(int);
+
+void
+initDrawCoral(void);
+
+void
+finDrawCoral(void);
+
+void
+DrawCoral2(int);
+
+void
+DrawCoral2Low(int);
+
+void
+initDrawCoral2(void);
+
+void
+finDrawCoral2(void);
+
+void
+DrawBubble(int, int);
+
+
+/* utility methods */
+int
+getCurrentDeformation(CompScreen *s);
+
+int
+getDeformationMode(CompScreen *s);
+
+float
+symmDistr(void); /* symmetric distribution */
+
+void
+setColor(float *, float, float, float, float, float, float);
+
+void
+setSimilarColor(float *, float*, float, float);
+
+void
+setSimilarColor4us(float *, unsigned short *, float, float);
+
+void
+setSpecifiedColor(float *, int);
+
+void
+setRandomLocation(CompScreen *, float *, float *, float);
+
+void
+setMaterialAmbientDiffuse (float *, float, float);
+
+void
+setMaterialAmbientDiffuse4us (unsigned short *, float, float);
+
+void
+copyColor (float *, float *, float);
+
+void
+convert4usTof (unsigned short *, float *);
+
 
 #endif

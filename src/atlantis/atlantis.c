@@ -3,8 +3,11 @@
  *
  * atlantis.c
  *
- * This is an example plugin to show how to render something inside
- * of the transparent cube
+ * This plugin renders a fish tank inside of the transparent cube,
+ * replete with fish, crabs, sand, bubbles, and coral.
+ *
+ * Copyright : (C) 2007-2008 by David Mikos
+ * Email     : infiniteloopcounter@gmail.com
  *
  * Copyright : (C) 2007 by Dennis Kasprzyk
  * E-mail    : onestone@opencompositing.org
@@ -23,7 +26,13 @@
  */
 
 /*
- * Based on atlatins xscreensaver http://www.jwz.org/xscreensaver/
+ * Detailed fish/fish2 and coral 3D models made by Biswajyoti Mahanta.
+ *
+ * Butterflyfish and Chromis 3D models/auto-generated code by "unpush"
+ */
+
+/*
+ * Based on atlantis xscreensaver http://www.jwz.org/xscreensaver/
  */
 
 /* atlantis --- Shows moving 3D sea animals */
@@ -96,6 +105,14 @@
  * OpenGL(TM) is a trademark of Silicon Graphics, Inc.
  */
 
+
+/*
+ * Coordinate system:
+ * clockwise from top
+ * with x=radius, y=0 the "top" (towards 1st desktop from above view)
+ * and the z coordinate as height.
+*/
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -103,132 +120,337 @@
 #include <unistd.h>
 #include <math.h>
 
-
-
 #include "atlantis-internal.h"
 #include "atlantis_options.h"
+
+
+static void initWorldVariables (CompScreen *);
+static void loadModels (CompScreen *);
+static void freeModels (CompScreen *s);
+static void setLightPosition (CompScreen *, GLenum light);
+static void atlantisInitLightPosition (CompScreen *);
 
 int atlantisDisplayPrivateIndex;
 
 int cubeDisplayPrivateIndex;
 
-Bool
-isInside (CompScreen *s,
-          float      x,
-          float      y,
-          float      z)
-{
-    CUBE_SCREEN (s);
-
-    int   hsize, i;
-    float ang;
-    float n[4];
-
-    if (y > 0.5 || y < -0.5) return FALSE;
-
-    hsize = s->hsize * cs->nOutput;
-    for (i = 0; i < hsize; i++)
-    {
-	ang = (360.0 / hsize);
-	ang *= i;
-	ang *= M_PI;
-	ang /= 180.0;
-	n[0] = sin (ang) * cs->distance;
-	n[2] = cos (ang) * cs->distance;
-	n[3] = - ((n[0] * n[0]) + (n[2] * n[2]));
-	
-	if ((x * n[0]) + (z * n[2]) + n[3] > 0)
-	    return FALSE;
-    }
-    return TRUE;
-}
 
 static void
 initAtlantis (CompScreen *s)
 {
     ATLANTIS_SCREEN (s);
-    int         i;
 
-    as->water  = NULL;
+    int i = 0, i2 = 0;
+    int j, k;
+    int num;
+
+    CompListValue * cType   = atlantisGetCreatureType (s);
+    CompListValue * cNumber = atlantisGetCreatureNumber (s);
+    CompListValue * cSize   = atlantisGetCreatureSize (s);
+    CompListValue * cColor  = atlantisGetCreatureColor (s);
+
+    num = MIN (cType->nValue, cNumber->nValue);
+    num = MIN (num, cSize->nValue);
+    num = MIN (num, cColor->nValue);
+
+    as->water = NULL;
     as->ground = NULL;
 
-    as->numFish = atlantisGetNumFish (s);
-    as->fish = calloc (as->numFish, sizeof (fishRec) );
+    as->numFish = 0;
+    as->numCrabs = 0;
 
-    for (i = 0; i < as->numFish; i++)
+    for (k = 0; k < num; k++)
     {
-	as->fish[i].type = NRAND (20);
-	as->fish[i].type = MIN ( 3, as->fish[i].type);
+	if (cSize->value[k].i == 0)
+	    continue;
 
-	switch (as->fish[i].type)
+	if (cType->value[k].i != CRAB)
+	    as->numFish += cNumber->value[k].i;
+	else
+	    as->numCrabs += cNumber->value[k].i;
+    }
+
+    as->fish = calloc (as->numFish,  sizeof(fishRec));
+    as->crab = calloc (as->numCrabs, sizeof(crabRec));
+
+    if (atlantisGetShowWater (s))
+	as->waterHeight = atlantisGetWaterHeight (s) * 100000 - 50000;
+    else
+	as->waterHeight = 50000;
+
+    as->oldProgress = 0;
+
+    for (k = 0; k < num; k++)
+    {
+	for (j = 0; j < cNumber->value[k].i; j++)
 	{
+	    int size = cSize->value[k].i;
+	    int type = cType->value[k].i;
 
-	case SHARK:
-	    as->fish[i].size = NRAND (atlantisGetSharkSize (s) ) +
-			       atlantisGetSharkSize (s);
+	    if (size==0)
+		break;
 
-	    as->fish[i].speed = NRAND (150) + 50;
-	    as->fish[i].color[0] = ( (float) NRAND (100) / 200.0) + 0.25;
-	    as->fish[i].color[1] = as->fish[i].color[0];
-	    as->fish[i].color[2] = as->fish[i].color[0];
-	    break;
-
-	case WHALE:
-	    as->fish[i].size = NRAND (atlantisGetWhaleSize (s) ) +
-			       atlantisGetWhaleSize (s);
-	    as->fish[i].size /= 4;
-
-	    as->fish[i].speed = NRAND (100) + 50;
-	    as->fish[i].color[0] = ( (float) NRAND (100) / 500.0) + 0.80;
-	    as->fish[i].color[1] = as->fish[i].color[0];
-	    as->fish[i].color[2] = as->fish[i].color[0];
-	    break;
-
-	case DOLPHIN:
-	    as->fish[i].size = NRAND (atlantisGetDolphinSize (s) ) +
-			       atlantisGetDolphinSize (s);
-
-	    as->fish[i].speed = NRAND (150) + 50;
-	    as->fish[i].color[0] = ( (float) NRAND (100) / 200.0) + 0.50;
-	    as->fish[i].color[1] = as->fish[i].color[0];
-	    as->fish[i].color[2] = as->fish[i].color[0];
-	    break;
-
-	case FISH:
-	    as->fish[i].size = NRAND (atlantisGetFishSize (s) ) +
-			       atlantisGetFishSize (s);
-
-	    as->fish[i].speed = NRAND (150) + 50;
-
-	    if (NRAND (10) < 7)
+	    if (type != CRAB)
 	    {
-		as->fish[i].color[0] = ( (float) NRAND (100) / 200.0) + 0.50;
-		as->fish[i].color[1] = as->fish[i].color[0];
-		as->fish[i].color[2] = as->fish[i].color[0];
+		fishRec * fish = &(as->fish[i]);
+
+		fish->type = type;
+
+		if (type == WHALE)
+		    size /= 2;
+		if (type == DOLPHIN)
+		    size *= 2;
+		if (type == SHARK)
+		    size *= 3;
+
+		fish->size = randf (sqrtf (size) ) + size;
+		fish->speed = randf (150) + 50;
+
+		if (j == 0)
+		    setSimilarColor4us (fish->color, cColor->value[k].c,
+		                        0.2, 0.1);
+		else
+		    setSimilarColor (fish->color, as->fish[i-j].color,
+		                     0.2, 0.1);
+
+		fish->x = randf (size);
+		fish->y = randf (size);
+		fish->z = (as->waterHeight - 50000) / 2 +
+			  randf (size * 0.02) - size * 0.01;
+		fish->psi = randf (360) - 180.0;
+		fish->theta = randf (100) - 50;
+		fish->v = 1.0;
+
+		fish->group = k;
+
+		fish->boidsCounter = i % NUM_GROUPS;
+		fish->boidsPsi = fish->psi;
+		fish->boidsTheta = fish->theta;
+
+		fish->smoothTurnCounter = NRAND (3);
+		fish->smoothTurnAmount = NRAND (3) - 1;
+
+		fish->prevRandPsi = 0;
+		fish->prevRandTh = 0;
+
+		i++;
 	    }
 	    else
 	    {
-		as->fish[i].color[0] = ( (float) NRAND (100) / 100.0);
-		as->fish[i].color[1] = ( (float) NRAND (100) / 100.0);
-		as->fish[i].color[2] = ( (float) NRAND (100) / 100.0);
-	    }
+		crabRec * crab = &(as->crab[i2]);
 
+		crab->size = randf (sqrtf (size)) + size;
+		crab->speed = randf (100) + 50;
+
+		if (j == 0)
+		    setSimilarColor4us (crab->color, cColor->value[k].c,
+		                        0.2, 0.1);
+		else
+		    setSimilarColor (crab->color, as->crab[i2 - j].color,
+		                     0.2, 0.1);
+
+		crab->x = randf (2 * size) - size;
+		crab->y = randf (2 * size) - size;
+
+		if (atlantisGetStartCrabsBottom (s))
+		{
+		    crab->z = 50000;
+		    crab->isFalling = FALSE;
+		}
+		else
+		{
+		    crab->z = (as->waterHeight - 50000)/2;
+		    crab->isFalling = TRUE;
+		}
+
+		crab->psi = randf (360);
+		crab->theta= 0;
+
+		crab->scuttlePsi = 0;
+		crab->scuttleAmount = NRAND (3) - 1;
+
+		i2++;
+	    }
+	}
+    }
+
+    as->numCorals = 0;
+    as->numAerators = 0;
+
+    cType = atlantisGetPlantType (s);
+    cNumber = atlantisGetPlantNumber (s);
+    cSize = atlantisGetPlantSize (s);
+    cColor = atlantisGetPlantColor (s);
+
+    num = MIN (cType->nValue, cNumber->nValue);
+    num = MIN (num, cSize->nValue);
+    num = MIN (num, cColor->nValue);
+
+    for (k = 0; k < num; k++)
+    {
+	switch (cType->value[k].i) {
+	case 0:
+	case 1:
+	    as->numCorals += cNumber->value[k].i;
 	    break;
 
-	default:
+	case 2:
+	    as->numAerators += cNumber->value[k].i;
 	    break;
 	}
-
-	as->fish[i].x = NRAND (as->fish[i].size);
-	as->fish[i].y = NRAND (as->fish[i].size);
-	as->fish[i].z = NRAND (as->fish[i].size / 100);
-	as->fish[i].xt = NRAND (30000) - 15000;
-	as->fish[i].yt = NRAND (30000) - 15000;
-	as->fish[i].zt = NRAND (30000) - 15000;
-	as->fish[i].psi = NRAND (360) - 180.0;
-	as->fish[i].v = 1.0;
-	as->fish[i].sign = (NRAND (2) == 0) ? 1 : -1;
     }
+
+    as->coral   = calloc (as->numCorals,   sizeof(coralRec));
+    as->aerator = calloc (as->numAerators, sizeof(aeratorRec));
+
+    for (k = 0; k < as->numAerators; k++)
+    {
+	as->aerator[k].numBubbles = 20;
+	as->aerator[k].bubbles = calloc (as->aerator[k].numBubbles,
+		sizeof (Bubble));
+    }
+
+    initWorldVariables(s);
+
+    updateWater (s, 0); /* make sure normals are initialized */
+    updateGround (s, 0);
+
+    loadModels(s);
+}
+
+static void
+loadModels (CompScreen *s)
+{
+    ATLANTIS_SCREEN (s);
+
+    as->crabDisplayList = glGenLists (1);
+    glNewList (as->crabDisplayList, GL_COMPILE);
+    DrawCrab (0);
+    glEndList ();
+
+    as->coralDisplayList = glGenLists (1);
+    glNewList (as->coralDisplayList, GL_COMPILE);
+    atlantisGetLowPoly (s) ? DrawCoralLow (0) : DrawCoral (0);
+    glEndList ();
+
+    as->coral2DisplayList = glGenLists (1);
+    glNewList (as->coral2DisplayList, GL_COMPILE);
+    atlantisGetLowPoly (s) ? DrawCoral2Low (0) : DrawCoral2 (0);
+    glEndList ();
+
+    as->bubbleDisplayList = glGenLists (1);
+    glNewList (as->bubbleDisplayList, GL_COMPILE);
+    atlantisGetLowPoly (s) ? DrawBubble (0, 6) : DrawBubble (0, 9);
+    glEndList ();
+}
+
+static void
+freeModels (CompScreen *s)
+{
+    ATLANTIS_SCREEN (s);
+
+    glDeleteLists (as->crabDisplayList, 1);
+    glDeleteLists (as->coralDisplayList, 1);
+    glDeleteLists (as->coral2DisplayList, 1);
+    glDeleteLists (as->bubbleDisplayList, 1);
+}
+
+static void
+initWorldVariables (CompScreen *s)
+{
+    ATLANTIS_SCREEN (s);
+    CUBE_SCREEN (s);
+
+    int i = 0, i2 = 0;
+    int j, k;
+    int bi, num;
+
+    coralRec * coral;
+    aeratorRec * aerator;
+
+    CompListValue * cType = atlantisGetPlantType (s);
+    CompListValue * cNumber = atlantisGetPlantNumber (s);
+    CompListValue * cSize = atlantisGetPlantSize (s);
+    CompListValue * cColor = atlantisGetPlantColor (s);
+
+    as->speedFactor = atlantisGetSpeedFactor (s);
+
+    as->hsize = s->hsize * cs->nOutput;
+
+    as->arcAngle = 360.0f / as->hsize;
+    as->radius = (100000 - 1) * cs->distance /
+		 cosf (0.5 * (as->arcAngle * toRadians));
+    as->topDistance = (100000 - 1) * cs->distance;
+    as->ratio = (atlantisGetRescaleWidth (s) ? ((float) s->width) /
+		((float) s->height) : 1);
+    as->sideDistance = as->topDistance * as->ratio;
+    /* the 100000 comes from scaling by 0.00001 ( = (1/0.00001) ) */
+
+    num = MIN (cType->nValue, cNumber->nValue);
+    num = MIN (num, cSize->nValue);
+    num = MIN (num, cColor->nValue);
+
+    for (k = 0; k < num; k++)
+    {
+	for (j = 0; j < cNumber->value[k].i; j++)
+	{
+	    int size = cSize->value[k].i;
+
+	    switch (cType->value[k].i) {
+	    case 0:
+	    case 1:
+		coral = &(as->coral[i]);
+
+		coral->size = (randf (sqrtf(size)) + size);
+		coral->type = cType->value[k].i;
+
+		if (j == 0)
+		    setSimilarColor4us (coral->color, cColor->value[k].c,
+		                        0.2, 0.2);
+		else
+		    setSimilarColor (coral->color, as->coral[i - j].color,
+		                     0.2, 0.2);
+
+		coral->psi = randf (360);
+
+		setRandomLocation (s, &(coral->x), &(coral->y), 3 * size);
+		coral->z = -50000;
+		i++;
+		break;
+
+	    case 2:
+		aerator = &(as->aerator[i2]);
+
+		aerator->size = randf (sqrtf (size)) + size;
+		aerator->type = cType->value[k].i;
+
+		if (j == 0)
+		    setSimilarColor4us (aerator->color, cColor->value[k].c,
+		                        0, 0);
+		else
+		    setSimilarColor (aerator->color, as->aerator[i2-j].color,
+		                     0.0, 0.0);
+
+		setRandomLocation (s, &(aerator->x), &(aerator->y), size);
+		aerator->z = -50000;
+
+		for (bi = 0; bi < aerator->numBubbles; bi++)
+		{
+		    aerator->bubbles[bi].size = size;
+		    aerator->bubbles[bi].x = aerator->x;
+		    aerator->bubbles[bi].y = aerator->y;
+		    aerator->bubbles[bi].z = aerator->z;
+		    aerator->bubbles[bi].speed = 100 + randf (150);
+		    aerator->bubbles[bi].offset = randf (2 * PI);
+		    aerator->bubbles[bi].counter = 0;
+		}
+
+		i2++;
+		break;
+	    }
+	}
+    }
+
 }
 
 static void
@@ -236,13 +458,35 @@ freeAtlantis (CompScreen *s)
 {
     ATLANTIS_SCREEN (s);
 
+    int i;
+
     if (as->fish)
 	free (as->fish);
+    if (as->crab)
+	free (as->crab);
+    if (as->coral)
+	free (as->coral);
+
+    if (as->aerator)
+    {
+	for (i = 0; i < as->numAerators; i++)
+	{
+	    if (as->aerator[i].bubbles)
+		free (as->aerator[i].bubbles);
+	}
+
+	free (as->aerator);
+    }
 
     freeWater (as->water);
     freeWater (as->ground);
 
     as->fish = NULL;
+    as->crab = NULL;
+    as->coral= NULL;
+    as->aerator = NULL;
+
+    freeModels(s);
 }
 
 static void
@@ -251,63 +495,141 @@ updateAtlantis (CompScreen *s)
     freeAtlantis (s);
     initAtlantis (s);
 }
-
 static void
-atlantisScreenOptionChange (CompScreen            *s,
-			    CompOption            *opt,
-			    AtlantisScreenOptions num)
+atlantisScreenOptionChange (CompScreen *s,
+                            CompOption *opt,
+                            AtlantisScreenOptions num)
 {
     updateAtlantis (s);
+}
+static void
+atlantisSpeedFactorOptionChange (CompScreen *s,
+                                 CompOption *opt,
+                                 AtlantisScreenOptions num)
+{
+    ATLANTIS_SCREEN (s);
+    as->speedFactor = atlantisGetSpeedFactor (s);
+}
+
+static void
+atlantisLightingOptionChange (CompScreen *s,
+                              CompOption *opt,
+                              AtlantisScreenOptions num)
+{
+    atlantisInitLightPosition (s);
+}
+
+static void
+atlantisLowPolyOptionChange (CompScreen *s,
+                             CompOption *opt,
+                             AtlantisScreenOptions num)
+{
+    freeModels (s);
+    loadModels (s);
 }
 
 static void
 atlantisClearTargetOutput (CompScreen *s,
-			   float      xRotate,
-			   float      vRotate)
+                           float xRotate,
+                           float vRotate)
 {
     ATLANTIS_SCREEN (s);
     CUBE_SCREEN (s);
 
     UNWRAP (as, cs, clearTargetOutput);
-    (*cs->clearTargetOutput) (s, xRotate, vRotate);
+    (*cs->clearTargetOutput)(s, xRotate, vRotate);
     WRAP (as, cs, clearTargetOutput, atlantisClearTargetOutput);
 
     glClear (GL_DEPTH_BUFFER_BIT);
 }
 
-static void atlantisPaintInside (CompScreen              *s,
-				 const ScreenPaintAttrib *sAttrib,
-				 const CompTransform     *transform,
-				 CompOutput              *output,
-				 int                     size)
+static void
+setLightPosition (CompScreen *s,
+                  GLenum light)
+{
+    float position[] = { 0.0, 0.0, 1.0, 0.0 };
+    float angle = atlantisGetLightInclination(s) * toRadians;
+
+    if (atlantisGetRotateLighting (s))
+	angle = 0;
+
+    position[1] = sinf (angle);
+    position[2] = cosf (angle);
+
+    glLightfv (light, GL_POSITION, position);
+}
+
+static void
+atlantisInitLightPosition(CompScreen *s)
+{
+    glPushMatrix ();
+    glLoadIdentity ();
+    setLightPosition (s, GL_LIGHT1);
+    glPopMatrix();
+}
+
+static void
+atlantisPaintInside(CompScreen *s,
+		    const ScreenPaintAttrib *sAttrib,
+		    const CompTransform *transform,
+		    CompOutput *output,
+		    int size)
 {
     ATLANTIS_SCREEN (s);
     CUBE_SCREEN (s);
 
-    int i;
+    int i, j;
+
     float scale;
 
-    static const float mat_shininess[]      = { 60.0 };
-    static const float mat_specular[]       = { 0.8, 0.8, 0.8, 1.0 };
-    static const float mat_diffuse[]        = { 0.46, 0.66, 0.795, 1.0 };
-    static const float mat_ambient[]        = { 0.0, 0.1, 0.2, 1.0 };
-    static const float lmodel_ambient[]     = { 0.4, 0.4, 0.4, 1.0 };
+    static const float mat_shininess[] = { 60.0 };
+    static const float mat_specular[] = { 0.6, 0.6, 0.6, 1.0 };
+    static const float mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    static const float mat_ambient[] = { 0.8, 0.8, 0.9, 1.0 };
+
     static const float lmodel_localviewer[] = { 0.0 };
+    static const float lmodel_twoside[] = { 0.0 };
+    static       float lmodel_ambient[] = { 0.4, 0.4, 0.4, 0.4 };
 
     ScreenPaintAttrib sA = *sAttrib;
     CompTransform mT = *transform;
 
-    if (atlantisGetShowWater (s) || atlantisGetShowWaterWire (s))
-	updateHeight (as->water);
+    int new_hsize = s->hsize * cs->nOutput;
 
-    sA.yRotate += cs->invert * (360.0f / size) *
-		  (cs->xRotations - (s->x * cs->nOutput));
+    int drawDeformation = (as->oldProgress == 0.0f ? getCurrentDeformation(s) :
+						     getDeformationMode (s));
 
-    (*s->applyScreenTransform) (s, &sA, output, &mT);
+    if (atlantisGetShowWater(s))
+	as->waterHeight = atlantisGetWaterHeight(s) * 100000 - 50000;
+    else
+	as->waterHeight = 50000;
+
+    if (new_hsize < as->hsize)
+	updateAtlantis (s);
+    else if (new_hsize > as->hsize)
+    { /* let fish swim in their expanded enclosure without fully resetting */
+	initWorldVariables (s);
+    }
+
+    if (atlantisGetShowWater (s) || atlantisGetShowWaterWire (s) ||
+	atlantisGetShowGround (s))
+    {
+	updateDeformation (s, drawDeformation);
+	updateHeight (as->water, atlantisGetShowGround (s) ? as->ground : NULL,
+	              atlantisGetWaveRipple(s), drawDeformation);
+    }
+
+    sA.yRotate += cs->invert * (360.0f / size) * (cs->xRotations -
+	          (s->x * cs->nOutput));
+
+    (*s->applyScreenTransform)(s, &sA, output, &mT);
 
     glPushMatrix();
 
     glLoadMatrixf (mT.m);
+
+    if (!atlantisGetRotateLighting (s))
+	setLightPosition(s, GL_LIGHT1);
 
     glTranslatef (cs->outputXOffset, -cs->outputYOffset, 0.0f);
 
@@ -318,6 +640,14 @@ static void atlantisPaintInside (CompScreen              *s,
     glPushAttrib (GL_COLOR_BUFFER_BIT | GL_TEXTURE_BIT | GL_LIGHTING_BIT);
 
     glEnable (GL_BLEND);
+    glColorMaterial (GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
+    for (i=0; i<4; i++)
+	lmodel_ambient[i] = atlantisGetLightAmbient(s);
+
+    glLightModelfv (GL_LIGHT_MODEL_LOCAL_VIEWER, lmodel_localviewer);
+    glLightModelfv (GL_LIGHT_MODEL_TWO_SIDE, lmodel_twoside);
+    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
 
     if (glIsEnabled (GL_CULL_FACE))
     {
@@ -327,27 +657,30 @@ static void atlantisPaintInside (CompScreen              *s,
     if (atlantisGetShowWater (s))
     {
 	int cull;
+
 	glGetIntegerv (GL_CULL_FACE_MODE, &cull);
-
 	glEnable (GL_CULL_FACE);
-	
-	glCullFace (~cull & (GL_FRONT | GL_BACK));
-	glColor4usv (atlantisGetWaterColor (s));
-	drawWater (as->water, TRUE, FALSE);
 
+	glCullFace (~cull & (GL_FRONT | GL_BACK));
+	setWaterMaterial (atlantisGetWaterColor (s));
+	drawWater (as->water, TRUE, FALSE, drawDeformation);
 	glCullFace (cull);
     }
 
     if (atlantisGetShowGround (s))
     {
-	glColor4f (0.4, 0.3, 0.0, 1.0);
-	if (atlantisGetRenderWaves (s))
-	    drawGround (as->water, as->ground);
+	setGroundMaterial (atlantisGetGroundColor (s));
+
+	if (atlantisGetRenderWaves (s) && atlantisGetShowWater (s) &&
+	    !atlantisGetWaveRipple (s))
+	    drawGround (as->water, as->ground, drawDeformation);
 	else
-	    drawGround (NULL, as->ground);
+	    drawGround (NULL, as->ground, drawDeformation);
     }
 
     glPushMatrix();
+
+    glScalef (1.0f / as->ratio, 1.0f, 1.0f / as->ratio);
 
     glColor4usv (defaultColor);
 
@@ -355,37 +688,74 @@ static void atlantisPaintInside (CompScreen              *s,
     glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
     glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
     glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
-    glLightModelfv (GL_LIGHT_MODEL_LOCAL_VIEWER, lmodel_localviewer);
 
-    glEnable (GL_NORMALIZE);
-    glEnable (GL_LIGHTING);
-    glEnable (GL_LIGHT1);
+    glEnable  (GL_NORMALIZE);
+    glEnable  (GL_DEPTH_TEST);
+    glEnable  (GL_COLOR_MATERIAL);
+    glEnable  (GL_LIGHTING);
+    glEnable  (GL_LIGHT1);
     glDisable (GL_LIGHT0);
 
-    if (atlantisGetColors (s))
-	glEnable (GL_COLOR_MATERIAL);
-    else
-	glDisable (GL_COLOR_MATERIAL);
+    glShadeModel(GL_SMOOTH);
 
     glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+    glScalef (0.00001f, 0.00001f, 0.00001f);
 
+    for (i = 0; i < as->numCrabs; i++)
+    {
+	glPushMatrix ();
 
-    glScalef (0.00001, 0.00001, 0.00001);
+	CrabTransform (& (as->crab[i]));
 
+	scale = as->crab[i].size;
+	scale /= 6000.0f;
+	glScalef (scale, scale, scale);
+	glColor4fv (as->crab[i].color);
 
-    glEnable (GL_DEPTH_TEST);
+	initDrawCrab ();
+	glCallList (as->crabDisplayList);
+	finDrawCrab ();
 
+	glPopMatrix ();
+    }
+
+    for (i = 0; i < as->numCorals; i++)
+    {
+	glPushMatrix ();
+
+	glTranslatef (as->coral[i].y, as->coral[i].z, as->coral[i].x);
+	glRotatef (-as->coral[i].psi, 0.0, 1.0, 0.0);
+
+	scale = as->coral[i].size;
+	scale /= 6000.0f;
+	glScalef (scale, scale, scale);
+	glColor4fv (as->coral[i].color);
+
+	switch (as->coral[i].type) {
+	case 0:
+	    initDrawCoral ();
+	    glCallList (as->coralDisplayList);
+	    finDrawCoral ();
+	    break;
+	case 1:
+	    initDrawCoral2 ();
+	    glCallList (as->coral2DisplayList);
+	    finDrawCoral2 ();
+	    break;
+	}
+
+	glPopMatrix ();
+    }
 
     for (i = 0; i < as->numFish; i++)
     {
-	glPushMatrix();
-	FishTransform (& (as->fish[i]) );
+	glPushMatrix ();
+	FishTransform (& (as->fish[i]));
 	scale = as->fish[i].size;
-	scale /= 6000.0;
+	scale /= 6000.0f;
 	glScalef (scale, scale, scale);
-	glColor3fv (as->fish[i].color);
+	glColor4fv (as->fish[i].color);
 
 	switch (as->fish[i].type)
 	{
@@ -401,8 +771,46 @@ static void atlantisPaintInside (CompScreen              *s,
 	    DrawDolphin (& (as->fish[i]), 0);
 	    break;
 
+	case BUTTERFLYFISH:
+	    initDrawBFish (as->fish[i].color);
+	    AnimateBFish  (as->fish[i].htail);
+	    DrawAnimatedBFish ();
+	    finDrawBFish ();
+	    break;
+
+	case CHROMIS:
+	    initDrawChromis (as->fish[i].color);
+	    AnimateChromis (as->fish[i].htail);
+	    DrawAnimatedChromis ();
+	    finDrawChromis ();
+	    break;
+
+	case CHROMIS2:
+	    initDrawChromis2 (as->fish[i].color);
+	    AnimateChromis   (as->fish[i].htail);
+	    DrawAnimatedChromis ();
+	    finDrawChromis ();
+	    break;
+
+	case CHROMIS3:
+	    initDrawChromis3 (as->fish[i].color);
+	    AnimateChromis   (as->fish[i].htail);
+	    DrawAnimatedChromis ();
+	    finDrawChromis ();
+	    break;
+
 	case FISH:
-	    DrawDolphin (& (as->fish[i]), 0);
+	    initDrawFish (as->fish[i].color);
+	    AnimateFish  (as->fish[i].htail);
+	    DrawAnimatedFish ();
+	    finDrawFish ();
+	    break;
+
+	case FISH2:
+	    initDrawFish2 (as->fish[i].color);
+	    AnimateFish2  (as->fish[i].htail);
+	    DrawAnimatedFish2 ();
+	    finDrawFish2 ();
 	    break;
 
 	default:
@@ -411,24 +819,49 @@ static void atlantisPaintInside (CompScreen              *s,
 
 	glPopMatrix();
     }
-    
 
-    glPopMatrix();
+    glEnable(GL_CULL_FACE);
 
+    for (i = 0; i < as->numAerators; i++)
+    {
+	for (j = 0; j < as->aerator[i].numBubbles; j++)
+	{
+	    glPushMatrix ();
+
+	    BubbleTransform (&(as->aerator[i].bubbles[j]));
+	    scale = as->aerator[i].bubbles[j].size;
+
+	    glScalef (scale, scale, scale);
+	    glColor4fv (as->aerator[i].color);
+
+	    glCallList (as->bubbleDisplayList);
+
+	    glPopMatrix ();
+	}
+    }
+
+    glPopMatrix ();
 
     if (atlantisGetShowWater (s) || atlantisGetShowWaterWire (s))
     {
 	glEnable (GL_CULL_FACE);
-	glColor4usv (atlantisGetWaterColor (s));
+	setWaterMaterial (atlantisGetWaterColor (s));
 	drawWater (as->water, atlantisGetShowWater (s),
-		   atlantisGetShowWaterWire (s));
+		atlantisGetShowWaterWire (s), drawDeformation);
     }
+
 
     if (atlantisGetShowGround (s))
     {
-	glColor4f (0.4, 0.3, 0.0, 1.0);
-	drawBottomGround (s->hsize * cs->nOutput, cs->distance, -0.5);
+	setGroundMaterial (atlantisGetGroundColor (s));
+	drawBottomGround (as->ground, cs->distance, -0.5, drawDeformation);
     }
+    else if (atlantisGetShowWater (s))
+    {
+	setWaterMaterial (atlantisGetWaterColor (s));
+	drawBottomWater (as->water, cs->distance, -0.5, drawDeformation);
+    }
+
 
     glDisable (GL_LIGHT1);
     glDisable (GL_NORMALIZE);
@@ -439,40 +872,97 @@ static void atlantisPaintInside (CompScreen              *s,
     glDisable (GL_DEPTH_TEST);
 
     if (enabledCull)
-	glEnable (GL_CULL_FACE);
+	glDisable (GL_CULL_FACE);
 
-    glPopMatrix();
+    glPopMatrix ();
 
-    glPopAttrib();
+    glPopAttrib ();
 
     as->damage = TRUE;
 
-    glColor4usv (defaultColor);
-
     UNWRAP (as, cs, paintInside);
-    (*cs->paintInside) (s, sAttrib, transform, output, size);
+    (*cs->paintInside)(s, sAttrib, transform, output, size);
     WRAP (as, cs, paintInside, atlantisPaintInside);
 }
 
 static void
 atlantisPreparePaintScreen (CompScreen *s,
-			    int        ms)
+                            int ms)
 {
     ATLANTIS_SCREEN (s);
 
-    int         i;
+    int i, j;
+
+    Bool currentDeformation = getCurrentDeformation (s);
+    int oldhsize = as->hsize;
+
+    updateWater (s, (float) ms / 1000.0f);
+    updateGround (s, (float) ms / 1000.0f);
+
+    /* temporary change for animals inside */
+    if (currentDeformation == DeformationCylinder && as->oldProgress > 0.9)
+    {
+	as->hsize *= 32 / as->hsize;
+	as->arcAngle = 360.0f / as->hsize;
+	as->sideDistance = as->radius * as->ratio;
+    }
+    else if (currentDeformation == DeformationSphere)
+    {
+	/* treat enclosure as a cylinder */
+	as->hsize *= 32 / as->hsize;
+	as->arcAngle = 360.0f / as->hsize;
+	as->sideDistance = as->radius * as->ratio;
+
+    }
 
     for (i = 0; i < as->numFish; i++)
     {
-	FishPilot (& (as->fish[i]), as->fish[i].speed);
-	FishMiss (as, i);
+	FishPilot (s, i);
+
+	/* animate fish tails */
+	if (as->fish[i].type <= FISH2)
+	{
+	    as->fish[i].htail = fmodf (as->fish[i].htail + 0.00025 *
+	                               as->fish[i].speed * as->speedFactor, 1);
+	}
     }
 
-    updateWater (s, (float)ms / 1000.0);
-    updateGround (s, (float)ms / 1000.0);
+    for (i = 0; i < as->numCrabs; i++)
+    {
+	CrabPilot (s, i);
+    }
+
+    for (i = 0; i < as->numCorals; i++)
+    {
+	as->coral[i].z = getGroundHeight (s, as->coral[i].x, as->coral[i].y);
+    }
+
+    for (i = 0; i < as->numAerators; i++)
+    {
+	aeratorRec * aerator = &(as->aerator[i]);
+	float bottom = getGroundHeight (s, aerator->x, aerator->y);
+
+	if (aerator->z < bottom)
+	{
+	    for (j = 0; j < aerator->numBubbles; j++)
+	    {
+		if (aerator->bubbles[j].counter == 0)
+		    aerator->bubbles[j].z = bottom;
+	    }
+	}
+	aerator->z = bottom;
+	for (j = 0; j < aerator->numBubbles; j++)
+	{
+	    BubblePilot(s, i, j);
+	}
+    }
+
+    as->hsize = oldhsize;
+    as->arcAngle = 360.0f / as->hsize;
+    as->sideDistance = as->topDistance * as->ratio;
 
     UNWRAP (as, s, preparePaintScreen);
-    (*s->preparePaintScreen) (s, ms);
+    (*s->preparePaintScreen)(s, ms);
     WRAP (as, s, preparePaintScreen, atlantisPreparePaintScreen);
 }
 
@@ -488,25 +978,24 @@ atlantisDonePaintScreen (CompScreen * s)
     }
 
     UNWRAP (as, s, donePaintScreen);
-    (*s->donePaintScreen) (s);
+    (*s->donePaintScreen)(s);
     WRAP (as, s, donePaintScreen, atlantisDonePaintScreen);
 }
 
-
 static Bool
-atlantisInitDisplay (CompPlugin  *p,
-		     CompDisplay *d)
+atlantisInitDisplay (CompPlugin *p,
+                     CompDisplay *d)
 {
     AtlantisDisplay *ad;
 
-    if (!checkPluginABI ("core", CORE_ABIVERSION) ||
-	!checkPluginABI ("cube", CUBE_ABIVERSION))
+    if (!checkPluginABI ("core", CORE_ABIVERSION) ||!checkPluginABI ("cube",
+	    CUBE_ABIVERSION))
 	return FALSE;
 
     if (!getPluginDisplayIndex (d, "cube", &cubeDisplayPrivateIndex))
 	return FALSE;
 
-    ad = malloc (sizeof (AtlantisDisplay));
+    ad = malloc (sizeof(AtlantisDisplay));
 
     if (!ad)
 	return FALSE;
@@ -525,8 +1014,8 @@ atlantisInitDisplay (CompPlugin  *p,
 }
 
 static void
-atlantisFiniDisplay (CompPlugin  *p,
-		     CompDisplay *d)
+atlantisFiniDisplay (CompPlugin *p,
+                     CompDisplay *d)
 {
     ATLANTIS_DISPLAY (d);
 
@@ -536,19 +1025,18 @@ atlantisFiniDisplay (CompPlugin  *p,
 
 static Bool
 atlantisInitScreen (CompPlugin *p,
-		    CompScreen *s)
+                    CompScreen *s)
 {
-    static const float ambient[]  = { 0.1, 0.1, 0.1, 1.0 };
+    static const float ambient[]  = { 0.0, 0.0, 0.0, 0.0 };
     static const float diffuse[]  = { 1.0, 1.0, 1.0, 1.0 };
-    static const float position[] = { 0.0, 1.0, -0.5, 0.0 };
-    static const float specular[] = { 0.8, 0.8, 0.8, 1.0 };
+    static const float specular[] = { 0.6, 0.6, 0.6, 1.0 };
 
     AtlantisScreen *as;
-    
+
     ATLANTIS_DISPLAY (s->display);
     CUBE_SCREEN (s);
 
-    as = malloc (sizeof (AtlantisScreen) );
+    as = malloc (sizeof (AtlantisScreen));
 
     if (!as)
 	return FALSE;
@@ -560,18 +1048,29 @@ atlantisInitScreen (CompPlugin *p,
     glLightfv (GL_LIGHT1, GL_AMBIENT, ambient);
     glLightfv (GL_LIGHT1, GL_DIFFUSE, diffuse);
     glLightfv (GL_LIGHT1, GL_SPECULAR, specular);
-    glPushMatrix ();
-    glLoadIdentity ();
-    glLightfv (GL_LIGHT1, GL_POSITION, position);
-    glPopMatrix();
-    
+    atlantisInitLightPosition (s);
+
     initAtlantis (s);
 
-    atlantisSetNumFishNotify (s, atlantisScreenOptionChange);
-    atlantisSetSharkSizeNotify (s, atlantisScreenOptionChange);
-    atlantisSetWhaleSizeNotify (s, atlantisScreenOptionChange);
-    atlantisSetDolphinSizeNotify (s, atlantisScreenOptionChange);
-    atlantisSetFishSizeNotify (s, atlantisScreenOptionChange);
+    atlantisSetSpeedFactorNotify  (s, atlantisSpeedFactorOptionChange);
+
+    atlantisSetLowPolyNotify (s, atlantisLowPolyOptionChange);
+
+    atlantisSetCreatureNumberNotify (s, atlantisScreenOptionChange);
+    atlantisSetCreatureSizeNotify   (s, atlantisScreenOptionChange);
+    atlantisSetCreatureColorNotify  (s, atlantisScreenOptionChange);
+    atlantisSetCreatureTypeNotify   (s, atlantisScreenOptionChange);
+
+    atlantisSetPlantNumberNotify (s, atlantisScreenOptionChange);
+    atlantisSetPlantSizeNotify   (s, atlantisScreenOptionChange);
+    atlantisSetPlantColorNotify  (s, atlantisScreenOptionChange);
+    atlantisSetPlantTypeNotify   (s, atlantisScreenOptionChange);
+
+    atlantisSetRescaleWidthNotify (s, atlantisScreenOptionChange);
+
+    atlantisSetRotateLightingNotify   (s, atlantisLightingOptionChange);
+    atlantisSetLightInclinationNotify (s, atlantisLightingOptionChange);
+
 
     WRAP (as, s, donePaintScreen, atlantisDonePaintScreen);
     WRAP (as, s, preparePaintScreen, atlantisPreparePaintScreen);
@@ -583,7 +1082,7 @@ atlantisInitScreen (CompPlugin *p,
 
 static void
 atlantisFiniScreen (CompPlugin *p,
-		    CompScreen *s)
+                    CompScreen *s)
 {
     ATLANTIS_SCREEN (s);
     CUBE_SCREEN (s);
@@ -601,7 +1100,7 @@ atlantisFiniScreen (CompPlugin *p,
 static Bool
 atlantisInit (CompPlugin * p)
 {
-    atlantisDisplayPrivateIndex = allocateDisplayPrivateIndex();
+    atlantisDisplayPrivateIndex = allocateDisplayPrivateIndex ();
 
     if (atlantisDisplayPrivateIndex < 0)
 	return FALSE;
@@ -618,7 +1117,7 @@ atlantisFini (CompPlugin * p)
 
 static CompBool
 atlantisInitObject (CompPlugin *p,
-		 CompObject *o)
+                    CompObject *o)
 {
     static InitPluginObjectProc dispTab[] = {
 	(InitPluginObjectProc) 0, /* InitCore */
@@ -631,7 +1130,7 @@ atlantisInitObject (CompPlugin *p,
 
 static void
 atlantisFiniObject (CompPlugin *p,
-		 CompObject *o)
+                    CompObject *o)
 {
     static FiniPluginObjectProc dispTab[] = {
 	(FiniPluginObjectProc) 0, /* FiniCore */
@@ -659,4 +1158,3 @@ getCompPluginInfo (void)
 {
     return &atlantisVTable;
 }
-
