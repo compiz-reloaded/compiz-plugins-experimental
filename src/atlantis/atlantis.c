@@ -355,6 +355,48 @@ freeModels (CompScreen *s)
     glDeleteLists (as->bubbleDisplayList, 1);
 }
 
+static float calculateScreenRatio (CompScreen *s)
+{
+    CUBE_SCREEN (s);
+
+    float temp, ratio;
+    int i;
+
+    if (!atlantisGetRescaleWidth (s))
+	return 1.0f;
+
+    ratio = (float) s->width / (float) s->height;
+
+    if (s->nOutputDev <= 1)
+	return ratio;
+
+    temp = 0;
+
+    if (cs->moMode == CUBE_MOMODE_AUTO && cs->nOutput < s->nOutputDev)
+    {
+	return ratio;
+    }
+    else if (cs->moMode == CUBE_MOMODE_ONE)
+    {
+	/* this doesn't seem right, but it works */
+	for (i = 0; i < s->nOutputDev; i++)
+	    temp += (float) s->width / (float) s->outputDev->height;;
+
+	if (temp != 0)
+	    ratio = temp / s->nOutputDev;
+    }
+    else
+    {
+	for (i = 0; i < s->nOutputDev; i++)
+	    temp += (float) s->outputDev->width / (float) s->outputDev->height;
+
+	if (temp != 0)
+	    ratio = temp / s->nOutputDev;
+    }
+
+    return ratio;
+}
+
 static void
 initWorldVariables (CompScreen *s)
 {
@@ -381,8 +423,9 @@ initWorldVariables (CompScreen *s)
     as->radius = (100000 - 1) * cs->distance /
 		 cosf (0.5 * (as->arcAngle * toRadians));
     as->topDistance = (100000 - 1) * cs->distance;
-    as->ratio = (atlantisGetRescaleWidth (s) ? ((float) s->width) /
-		((float) s->height) : 1);
+
+    as->ratio = calculateScreenRatio (s);
+
     as->sideDistance = as->topDistance * as->ratio;
     /* the 100000 comes from scaling by 0.00001 ( = (1/0.00001) ) */
 
@@ -580,7 +623,7 @@ atlantisPaintInside(CompScreen *s,
 
     int i, j;
 
-    float scale;
+    float scale, ratio;
 
     static const float mat_shininess[] = { 60.0 };
     static const float mat_specular[] = { 0.6, 0.6, 0.6, 1.0 };
@@ -604,7 +647,9 @@ atlantisPaintInside(CompScreen *s,
     else
 	as->waterHeight = 50000;
 
-    if (new_hsize < as->hsize)
+    ratio = calculateScreenRatio (s);
+
+    if (new_hsize < as->hsize || fabsf (ratio - as->ratio) > 0.0001)
 	updateAtlantis (s);
     else if (new_hsize > as->hsize)
     { /* let fish swim in their expanded enclosure without fully resetting */
@@ -680,8 +725,6 @@ atlantisPaintInside(CompScreen *s,
 
     glPushMatrix();
 
-    glScalef (1.0f / as->ratio, 1.0f, 1.0f / as->ratio);
-
     glColor4usv (defaultColor);
 
     glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
@@ -700,7 +743,7 @@ atlantisPaintInside(CompScreen *s,
 
     glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    glScalef (0.00001f, 0.00001f, 0.00001f);
+    glScalef (0.00001f / as->ratio, 0.00001f, 0.00001f / as->ratio);
 
     for (i = 0; i < as->numCrabs; i++)
     {
