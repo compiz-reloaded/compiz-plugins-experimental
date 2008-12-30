@@ -51,10 +51,12 @@ initWorldVariables (CompScreen *s)
     cms->arcAngle = 360.0f / cms->hsize;
     cms->radius = cs->distance / cosf (0.5 * (cms->arcAngle * toRadians));
     cms->topDistance = cs->distance;
+
     if (cubemodelGetRescaleWidth (s))
 	cms->ratio = (float) s->width / (float) s->height;
     else
 	cms->ratio = 1;
+
     cms->sideDistance = cms->topDistance * cms->ratio;
 }
 
@@ -424,12 +426,12 @@ cubemodelPaintInside (CompScreen              *s,
     CompTransform      mT = *transform;
     Bool               enabledCull;
     int                cull;
-    float              scale;
+    float              scale, outputRatio = 1.0f;
 
     CUBEMODEL_SCREEN (s);
     CUBE_SCREEN (s);
 
-    if (cms->hsize != s->hsize * s->hsize * cs->nOutput)
+    if (cms->hsize != s->hsize * cs->nOutput)
     {
 	initWorldVariables (s);
 	updateModel (s, 0, cms->numModels);
@@ -510,7 +512,16 @@ cubemodelPaintInside (CompScreen              *s,
     glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     scale = cs->distance;
-    glScalef (scale / cms->ratio, scale, scale / cms->ratio);
+
+    if (cubemodelGetRescaleWidth (s))
+    {
+	if (cs->moMode == CUBE_MOMODE_AUTO && cs->nOutput < s->nOutputDev)
+	    outputRatio = (float) s->width / (float) s->height;
+	else
+	    outputRatio = (float) output->width / (float) output->height;
+    }
+
+    glScalef (scale / outputRatio, scale, scale / outputRatio);
 
     glPushMatrix ();
 
