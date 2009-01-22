@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="elements" useBcop="true">
+		<_short>Elements</_short>
+		<_long>Draw elements on screen</_long>
+		<category>Extras</category>		
+		<deps>
+			<relation type="after">
+				<plugin>png</plugin>
+				<plugin>svg</plugin>
+				<plugin>jpeg</plugin>
+				<plugin>text</plugin>
+			</relation>
+		</deps>
+
+		<display>
+		    <option name="abi" type="int" read_only="true"/>
+		    <option name="index" type="int" read_only="true"/>
+			<group>
+				<_short>General</_short>
+				<option name="next_element_key" type="key">
+					<_short>Next Element</_short>
+					<_long>Select the Next Element in the list</_long>
+				</option>
+				<option name="prev_element_key" type="key">
+					<_short>Previous Element</_short>
+					<_long>Select the Next Element in the list</_long>
+				</option>
+				<option name="toggle_selected_key" type="key">
+					<_short>Toggle Selected Element</_short>
+					<_long>Select the Next Element in the list</_long>
+				</option>
+			</group>
+		</display>
+		<screen>
+			<group>
+			<_short>General</_short>
+				<option name="update_delay" type="int">
+					<_short>Update Delay</_short>
+					<_long>Delay (in ms) between screen updates. Decreasing this value may make snow fall more smoothly, but will also increase CPU usage.</_long>
+					<default>40</default>
+					<min>10</min>
+					<max>200</max>
+				</option>
+				<option name="screen_depth" type="int">
+					<_short>Screen Depth</_short>
+					<_long>How deep into the screen snowflakes can be drawn before being removed</_long>
+					<default>1000</default>
+					<min>0</min>
+					<max>2000</max>
+				</option>
+				<option name="screen_boxing" type="int">
+					<_short>Screen Boxing</_short>
+					<_long>How far from the screen snowflakes can be drawn before being removed</_long>
+					<default>1000</default>
+					<min>0</min>
+					<max>2000</max>
+				</option>
+				<option name="over_windows" type="bool">
+					<_short>Draw Over Windows</_short>
+					<_long>Elements drawn above windows</_long>
+					<default>false</default>
+				</option>
+				<subgroup>
+				    <_short>Elements List</_short>
+				    <option type="list" name="element_type">
+					<_short>Element Type</_short>
+					<_long>Element Movement Type</_long>
+				        <type>string</type>
+				        <extensible/>
+				    </option>
+				    <option type="list" name="element_iter">
+					<_short>Element Iter</_short>
+					<_long>Settings for one particular element configuration. Separate element definitions have different iters. This is a workaround to have multiple-textures per element until we can get cascading options</_long>
+				        <type>int</type>
+					<min>1</min>
+					<max>100</max>
+				    </option>
+				    <option type="list" name="element_image">
+					<type>string</type>
+					<_short>Element Image</_short>
+					<_long>Image file for this Element</_long>
+					<hints>file;image;</hints>
+				    </option>
+				    <option type="list" name="element_cap">
+					<type>int</type>
+					<_short>Number of elements</_short>
+					<_long>Total number of allowed element</_long>
+					<min>0</min>
+					<max>1000</max>
+				    </option>
+				    <option type="list" name="element_size">
+					<type>int</type>
+					<_short>Element size</_short>
+					<_long>Size of these elements</_long>
+					<min>0</min>
+					<max>100</max>
+				    </option>
+				    <option type="list" name="element_speed">
+					<type>int</type>
+					<_short>Element speed</_short>
+					<_long>Speed of these elements</_long>
+					<min>0</min>
+					<max>100</max>
+				    </option>
+				    <option type="list" name="element_rotate">
+					<type>bool</type>
+					<_short>Element rotation</_short>
+					<_long>Allow rotation of this element</_long>
+				    </option>
+				</subgroup>
+			</group>
+			<group>
+				<short>Element Settings</short>
+				<subgroup>
+					<_short>Snow</_short>
+					<option name="snow_sway" type="int">
+						<_short>Snow sway</_short>
+						<_long>Side-to-side movement of Snow.</_long>
+						<default>3</default>
+						<min>0</min>
+						<max>10</max>
+					</option>
+					<option name="wind_direction" type="int">
+						<_short>Snow Direction</_short>
+						<_long>Select snow flake movement direction</_long>
+						<default>0</default>
+						<min>0</min>
+						<max>3</max>
+						<desc>
+							<value>0</value>
+							<_name>None</_name>
+						</desc>
+						<desc>
+							<value>1</value>
+							<_name>Up</_name>
+						</desc>
+						<desc>
+							<value>2</value>
+							<_name>Left</_name>
+						</desc>
+						<desc>
+							<value>3</value>
+							<_name>Right</_name>
+						</desc>
+					</option>
+				</subgroup>
+				<subgroup>
+					<_short>Autumn</_short>
+					<option name="autumn_sway" type="float">
+						<_short>Sway Of leaves</_short>
+						<_long>sway of leaves</_long>
+						<default>35.0</default>
+						<min>0.0</min>
+						<max>100.0</max>
+						<precision>1</precision>
+					</option>
+					<option name="autumn_y_sway" type="int">
+						<_short>Y Sway Gravity</_short>
+						<_long>Speed of falling leaves</_long>
+						<default>60</default>
+						<min>0</min>
+						<max>100</max>
+					</option>
+				</subgroup>
+
+				<subgroup>
+					<_short>Bubbles</_short>
+					<option name="viscosity" type="float">
+						<_short>Viscosity of liquid</_short>
+						<_long>Viscosity of liquid</_long>
+						<default>80.0</default>
+						<min>0.0</min>
+						<max>100.0</max>
+						<precision>1</precision>
+					</option>
+				</subgroup>
+				<subgroup>
+					<_short>Stars</_short>
+					<option name="star_offset_x" type="int">
+						<_short>Star X Offset</_short>
+						<_long>The X point on the screen where stars should start</_long>
+						<default>0</default>
+						<min>-1000</min>
+						<max>1000</max>
+					</option>
+					<option name="star_offset_y" type="int">
+						<_short>Star Y Offset</_short>
+						<_long>The Y point on the screen where stars should start</_long>
+						<default>0</default>
+						<min>-1000</min>
+						<max>1000</max>
+					</option>
+				</subgroup>
+			</group>
+			    <group>
+				<_short>Element Title Display</_short>
+				<option name="title_font_color" type="color">
+				    <_short>Font Color</_short>
+				    <_long>Font color for the window title</_long>
+				    <default>
+					<red>0xffff</red>
+					<green>0xffff</green>
+					<blue>0xffff</blue>
+					<alpha>0xffff</alpha>
+				    </default>
+				</option>
+				<option name="title_font_size" type="int">
+				    <_short>Font Size</_short>
+				    <_long>Font size for the window title</_long>
+				    <default>16</default>
+				    <min>6</min>
+				    <max>96</max>
+				</option>
+				<option name="title_bold_font" type="bool">
+				    <_short>Bold Font</_short>
+				    <_long>Use a bold font</_long>
+				    <default>true</default>
+				</option>
+				<option name="title_back_color" type="color">
+				    <_short>Background Color</_short>
+				    <_long>Background color for the window title</_long>
+				    <default>
+					<red>0x0000</red>
+					<green>0x0000</green>
+					<blue>0x0000</blue>
+					<alpha>0x9999</alpha>
+				    </default>
+				</option>
+				<option name="title_display_time" type="int">
+				    <_short>Display Time</_short>
+				    <_long>How long to display the title (in ms)</_long>
+				    <default>1000</default>
+				    <min>50</min>
+				    <max>5000</max>
+				</option>
+				<option name="title_on_toggle" type="bool">
+				    <_short>Show Title on Toggle</_short>
+				    <_long>Show the element type when toggling the currently selected element</_long>
+				    <default>true</default>
+				</option>
+			    </group>
+		</screen>
+
+      <extension base_plugin="elements" screen="true">
+	<base_option>element_type</base_option>
+	<restriction>
+	  <value>autumn</value>
+	  <_name>Autumn</_name>
+	</restriction>
+	<restriction>
+	  <value>fireflies</value>
+	  <_name>Fireflies</_name>
+	</restriction>
+	<restriction>
+	  <value>snow</value>
+	  <_name>Snow</_name>
+	</restriction>
+	<restriction>
+	  <value>stars</value>
+	  <_name>Stars</_name>
+	</restriction>
+	<restriction>
+	  <value>bubbles</value>
+	  <_name>Bubbles</_name>
+	</restriction>
+      </extension>
+
+    </plugin>
+</compiz>
+
