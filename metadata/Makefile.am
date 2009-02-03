@@ -1,6 +1,8 @@
 xmldir       = $(metadatadir)
 xml_in_files =		  \
 	atlantis.xml.in   \
+	cubemodel.xml.in  \
+	elements.xml.in   \
 	fakeargb.xml.in	  \
 	mswitch.xml.in    \
 	snow.xml.in       \
