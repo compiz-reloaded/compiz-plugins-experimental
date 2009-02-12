@@ -67,12 +67,22 @@
 					<_short>Element Type</_short>
 					<_long>Element Movement Type</_long>
 				        <type>string</type>
+					<default>snow</default>
+					<default>fireflies</default>
+					<default>stars</default>
+					<default>autumn</default>
+					<default>bubbles</default>
 				        <extensible/>
 				    </option>
 				    <option type="list" name="element_iter">
 					<_short>Element Iter</_short>
-					<_long>Settings for one particular element configuration. Separate element definitions have different iters. This is a workaround to have multiple-textures per element until we can get cascading options</_long>
+					<_long>Settings for one particular element configuration. Separate element definitions have different iters. This is a workaround to have multiple-textures per element until we can get cascading lists</_long>
 				        <type>int</type>
+					<default>1</default>
+					<default>2</default>
+					<default>3</default>
+					<default>4</default>
+					<default>5</default>
 					<min>1</min>
 					<max>100</max>
 				    </option>
@@ -81,11 +91,21 @@
 					<_short>Element Image</_short>
 					<_long>Image file for this Element</_long>
 					<hints>file;image;</hints>
+					<default>snow2.png</default>
+					<default>fireflies1.png</default>
+					<default>stars1.png</default>
+					<default>autumn1.png</default>
+					<default>bubbles1.png</default>
 				    </option>
 				    <option type="list" name="element_cap">
 					<type>int</type>
 					<_short>Number of elements</_short>
 					<_long>Total number of allowed element</_long>
+					<default>600</default>
+					<default>100</default>
+					<default>500</default>
+					<default>100</default>
+					<default>400</default>
 					<min>0</min>
 					<max>1000</max>
 				    </option>
@@ -93,6 +113,11 @@
 					<type>int</type>
 					<_short>Element size</_short>
 					<_long>Size of these elements</_long>
+					<default>25</default>
+					<default>50</default>
+					<default>20</default>
+					<default>35</default>
+					<default>20</default>
 					<min>0</min>
 					<max>100</max>
 				    </option>
@@ -100,6 +125,11 @@
 					<type>int</type>
 					<_short>Element speed</_short>
 					<_long>Speed of these elements</_long>
+					<default>30</default>
+					<default>10</default>
+					<default>60</default>
+					<default>30</default>
+					<default>70</default>
 					<min>0</min>
 					<max>100</max>
 				    </option>
@@ -107,6 +137,11 @@
 					<type>bool</type>
 					<_short>Element rotation</_short>
 					<_long>Allow rotation of this element</_long>
+					<default>true</default>
+					<default>false</default>
+					<default>false</default>
+					<default>true</default>
+					<default>false</default>
 				    </option>
 				</subgroup>
 			</group>

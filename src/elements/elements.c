@@ -45,6 +45,7 @@
  **/
 
 #include <compiz-core.h>
+#include <compiz-text.h>
 #include <string.h>
 #include <math.h>
 #include "elements-internal.h"
@@ -160,14 +161,14 @@ static void
 elementsFreeTitle (CompScreen *s)
 {
     ELEMENTS_SCREEN (s);
-    ELEMENTS_DISPLAY (s->display);
 
-    if (!es->textData)
+    if (!es->textPixmap)
 	return;
 
-    (ed->textFunc->finiTextData) (s, es->textData);
-    es->textData = NULL;
-
+    releasePixmapFromTexture (s, &es->textTexture);
+    initTexture (s, &es->textTexture);
+    XFreePixmap (s->display->display, es->textPixmap);
+    es->textPixmap = None;
     damageScreen (s);
 }
 
@@ -176,10 +177,11 @@ elementsRenderTitle (CompScreen *s,
 		     char       *stringData)
 {
     CompTextAttrib tA;
+    int            stride;
+    void           *data;
     int            ox1, ox2, oy1, oy2;
 
     ELEMENTS_SCREEN (s);
-    ELEMENTS_DISPLAY (s->display);
 
     elementsFreeTitle (s);
 
@@ -188,24 +190,43 @@ elementsRenderTitle (CompScreen *s,
     /* 75% of the output device es maximum width */
     tA.maxWidth = (ox2 - ox1) * 3 / 4;
     tA.maxHeight = 100;
-
-    tA.family = "Sans";
+    tA.screen = s;
     tA.size = elementsGetTitleFontSize (s);
     tA.color[0] = elementsGetTitleFontColorRed (s);
     tA.color[1] = elementsGetTitleFontColorGreen (s);
     tA.color[2] = elementsGetTitleFontColorBlue (s);
     tA.color[3] = elementsGetTitleFontColorAlpha (s);
 
-    tA.flags = CompTextFlagWithBackground | CompTextFlagEllipsized;
+    tA.style = TEXT_STYLE_NORMAL | TEXT_STYLE_BACKGROUND;
+    tA.backgroundHMargin = 10.0f;
+    tA.backgroundVMargin = 10.0f;
+    tA.backgroundColor[0] = elementsGetTitleBackColorRed (s);
+    tA.backgroundColor[1] = elementsGetTitleBackColorGreen (s);
+    tA.backgroundColor[2] = elementsGetTitleBackColorBlue (s);
+    tA.backgroundColor[3] = elementsGetTitleBackColorAlpha (s);
+    tA.family = "Sans";
+    tA.ellipsize = FALSE;
 
-    tA.bgHMargin = 10.0f;
-    tA.bgVMargin = 10.0f;
-    tA.bgColor[0] = elementsGetTitleBackColorRed (s);
-    tA.bgColor[1] = elementsGetTitleBackColorGreen (s);
-    tA.bgColor[2] = elementsGetTitleBackColorBlue (s);
-    tA.bgColor[3] = elementsGetTitleBackColorAlpha (s);
+    tA.renderMode = TextRenderNormal;
 
-    es->textData = (ed->textFunc->renderText) (s, stringData, &tA);
+    tA.data = (void *) stringData;
+
+    initTexture (s, &es->textTexture);
+
+    if ((*s->display->fileToImage) (s->display, TEXT_ID, (char *)&tA,
+			 	    &es->textWidth, &es->textHeight,
+				    &stride, &data))
+    {
+	es->textPixmap = (Pixmap)data;
+	bindPixmapToTexture (s, &es->textTexture, es->textPixmap,
+			     es->textWidth, es->textHeight, 32);
+    }
+    else 
+    {
+	es->textPixmap = None;
+	es->textWidth  = 0;
+	es->textHeight = 0;
+    }
 }
 
 /* Taken from ring.c */
@@ -221,8 +242,8 @@ elementsDrawTitle (CompScreen *s)
 
     ELEMENTS_SCREEN(s);
 
-    width  = es->textData->width;
-    height = es->textData->height;
+    width  = es->textWidth;
+    height = es->textHeight;
 
     getCurrentOutputExtents (s, &ox1, &oy1, &ox2, &oy2);
 
@@ -239,9 +260,9 @@ elementsDrawTitle (CompScreen *s)
 
     glColor4f(1.0f, 1.0f, 1.0f, 0.7f);
 
-    enableTexture (s, es->textData->texture, COMP_TEXTURE_FILTER_GOOD);
+    enableTexture (s, &es->textTexture, COMP_TEXTURE_FILTER_GOOD);
 
-    m = &es->textData->texture->matrix;
+    m = &es->textTexture.matrix;
 
     if (es->renderTexture && es->eTexture)
     {
@@ -275,7 +296,7 @@ elementsDrawTitle (CompScreen *s)
 
 	glEnd ();
     }
-    disableTexture (s, es->textData->texture);
+    disableTexture (s, &es->textTexture);
 
     if (es->renderTexture && es->eTexture)
     {
@@ -290,7 +311,7 @@ elementsDrawTitle (CompScreen *s)
 		   (float) elementsGetTitleBackColorBlue (s) / OPAQUE,
 		   (float) elementsGetTitleBackColorAlpha (s) / OPAQUE);
 
-	glTranslatef (x + es->textData->width - width,
+	glTranslatef (x + es->textWidth - width,
 		      y - height + (border / 2),
 		      0.0f);
 	glRectf (0.0f, height, width, 0.0f);
@@ -926,7 +947,7 @@ elementsNextElement (CompDisplay     *d,
 	    es->animIter = lowest;
 	}
 
-	if (ed->textFunc && cType->nValue > 0)
+	if (ed->textAvailable && cType->nValue > 0)
 	{
 	    for (info = ed->elementTypes; info; info = info->next)
 	    {
@@ -939,21 +960,16 @@ elementsNextElement (CompDisplay     *d,
 
 	    if (string)
 	    {
-		int height;
-
 		elementsRenderTitle (s, string);
-
-		height = es->textData ? es->textData->height : 0;
-
 		es->renderText    = TRUE;
 		es->renderTexture =
 		    createTemporaryTexture (s, cPath, cIter,
-					    es->animIter, height);
+					    es->animIter, es->textHeight);
 		addDisplayTimeouts (s, es->ntTextures > 1);
 		damageScreen (s);
 	    }
 	}
-	else if (ed->textFunc)
+	else if (ed->textAvailable)
 	{
 	    elementsRenderTitle (s, "No elements have been defined");
 	    es->renderText = TRUE;
@@ -1028,7 +1044,7 @@ elementsPrevElement (CompDisplay     *d,
 	    es->listIter = i;
 	}
 
-	if (ed->textFunc && cType->nValue > 0)
+	if (ed->textAvailable && cType->nValue > 0)
 	{
 	    for (info = ed->elementTypes; info; info = info->next)
 	    {
@@ -1041,22 +1057,17 @@ elementsPrevElement (CompDisplay     *d,
 
 	    if (string)
 	    {
-		int height;
-
 		elementsRenderTitle (s, string);
-
-		height = es->textData ? es->textData->height : 0;
-
 		es->renderText    = TRUE;
 		es->renderTexture =
 		    createTemporaryTexture (s, cPath, cIter,
-					    es->animIter, height);
+					    es->animIter, es->textHeight);
 		addDisplayTimeouts (s, es->ntTextures > 1);
 		damageScreen (s);
 		
 	    }
 	}
-	else if (ed->textFunc)
+	else if (ed->textAvailable)
 	{
 	    elementsRenderTitle (s, "No elements have been defined");
 	    es->renderText = TRUE;
@@ -1111,7 +1122,7 @@ elementsToggleSelected (CompDisplay     *d,
 
 	if (cType->nValue < 1)
 	{
-	    if (ed->textFunc)
+	    if (ed->textAvailable)
 	    {
 		elementsRenderTitle (s, "No elements have been defined\n");
 		es->renderText = TRUE;
@@ -1138,7 +1149,7 @@ elementsToggleSelected (CompDisplay     *d,
 					      es->animIter);
 	}
 	
-	if (ed->textFunc && elementsGetTitleOnToggle (s) && success)
+	if (ed->textAvailable && elementsGetTitleOnToggle (s) && success)
 	{
 	    for (info = ed->elementTypes; info; info = info->next)
 	    {
@@ -1151,22 +1162,17 @@ elementsToggleSelected (CompDisplay     *d,
 
 	    if (string)
 	    {
-		int height;
-
 		elementsRenderTitle (s, string);
-
-		height = es->textData ? es->textData->height : 0;
-
 		es->renderText    = TRUE;
 		es->renderTexture =
 		    createTemporaryTexture (s, cPath, cIter,
-					    es->animIter, height);
+					    es->animIter, es->textHeight);
 		addDisplayTimeouts (s, es->ntTextures > 1);
 		damageScreen (s);
 		
 	    }
 	}
-	else if (ed->textFunc && elementsGetTitleOnToggle (s) && anim)
+	else if (ed->textAvailable && elementsGetTitleOnToggle (s) && anim)
 	{
 	    elementsRenderTitle (s, "Error - Element image was not found"
 				    " or is invalid");
@@ -1557,7 +1563,9 @@ elementsInitScreen (CompPlugin *p,
     es->needUpdate    = FALSE;
     es->listIter      = 0;
     es->animations    = NULL;
-    es->textData      = NULL;
+    es->textPixmap    = None;
+    es->textWidth     = 0;
+    es->textHeight    = 0;
     es->renderText    = FALSE;
     es->renderTexture = FALSE;
     es->renderTimeout = 0;
@@ -1577,6 +1585,8 @@ elementsInitScreen (CompPlugin *p,
     elementsSetElementRotateNotify (s, elementsScreenOptionChanged);
     elementsSetUpdateDelayNotify (s, elementsScreenOptionChanged);
 
+    initTexture (s, &es->textTexture);
+
     es->displayList = setupDisplayList ();
 
     delay             = elementsGetUpdateDelay (s);
@@ -1586,7 +1596,7 @@ elementsInitScreen (CompPlugin *p,
     WRAP (es, s, paintOutput, elementsPaintOutput);
     WRAP (es, s, drawWindow, elementsDrawWindow);
 
-    s->base.privates[ed->screenPrivateIndex].ptr = es;
+    s->base.privates[ed->privateIndex].ptr = es;
 
     updateElementTextures (s, TRUE);
 
@@ -1636,7 +1646,6 @@ elementsInitDisplay (CompPlugin  *p,
 {
     ElementsDisplay *ed;
     CompOption      *abi, *index;
-    int             idx;
 
     if (!checkPluginABI ("core", CORE_ABIVERSION))
 	return FALSE;
@@ -1645,24 +1654,17 @@ elementsInitDisplay (CompPlugin  *p,
     if (!ed)
 	return FALSE;
 
-    ed->screenPrivateIndex = allocateScreenPrivateIndex (d);
-    if (ed->screenPrivateIndex < 0)
+    ed->privateIndex = allocateScreenPrivateIndex (d);
+    if (ed->privateIndex < 0)
     {
 	free (ed);
 	return FALSE;
     }
 
-    if (checkPluginABI ("text", TEXT_ABIVERSION) &&
-	getPluginDisplayIndex (d, "text", &idx))
-    {
-	ed->textFunc = d->base.privates[idx].ptr;
-    }
-    else
-    {
+    ed->textAvailable = checkPluginABI ("text", TEXT_ABIVERSION);
+    if (!ed->textAvailable)
 	compLogMessage ("elements", CompLogLevelWarn,
 			"No compatible text plugin found.");
-	ed->textFunc = NULL;
-    }
 
     ed->elementTypes = NULL;
 
@@ -1714,7 +1716,7 @@ elementsFiniDisplay (CompPlugin  *p,
 {
     ELEMENTS_DISPLAY (d);
 
-    freeScreenPrivateIndex (d, ed->screenPrivateIndex);
+    freeScreenPrivateIndex (d, ed->privateIndex);
     free (ed);
 }
 
