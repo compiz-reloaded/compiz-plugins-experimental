@@ -153,9 +153,12 @@ fi
 AC_OUTPUT([
 Makefile
 images/Makefile
+include/Makefile
 metadata/Makefile
 src/Makefile
 src/atlantis/Makefile
+src/cubemodel/Makefile
+src/elements/Makefile
 src/fakeargb/Makefile
 src/mswitch/Makefile
 src/snow/Makefile
