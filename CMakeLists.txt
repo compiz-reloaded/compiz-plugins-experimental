@@ -1,4 +1,4 @@
-project (compiz-fusion-plugins-unsupported)
+project (compiz-plugins-unsupported)
 
 cmake_minimum_required (VERSION 2.4)
 
