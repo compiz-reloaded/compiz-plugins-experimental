@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: compiz-fusion-plugins\n"
 "Report-Msgid-Bugs-To: http://bugs.opencompositing.org\n"
-"POT-Creation-Date: 2009-02-06 11:31+0530\n"
-"PO-Revision-Date: 2009-02-05 00:08+0900\n"
+"POT-Creation-Date: 2009-03-24 12:51+0530\n"
+"PO-Revision-Date: 2009-02-18 19:46+0100\n"
 "Last-Translator: jiro kawada <jiro.kawada@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -828,6 +828,198 @@ msgstr "ズームアニメーション時に中心からズーム"
 msgid "Zoom to TaskBar on Minimize"
 msgstr "最小化時にタスクバーにズーム"
 
+msgid "Ambient light"
+msgstr "環境光"
+
+msgid "Amplitude of small water waves on the bigger ones."
+msgstr "より大きな波の上に描画される小さな波の高さ"
+
+msgid "Amplitude of water waves."
+msgstr "波の高さ"
+
+msgid "Color"
+msgstr "色"
+
+msgid "Color of ground in the cube."
+msgstr "キューブ内の海底面の色"
+
+msgid "Color of water in the cube."
+msgstr "キューブ内の海水の色"
+
+msgid "Component of light coming from all directions equally."
+msgstr "あらゆる方向から均等に来る光"
+
+msgid "Creature Selection"
+msgstr "生物の選択"
+
+msgid "Cube Atlantis"
+msgstr "キューブ・アトランティス"
+
+msgid "Display"
+msgstr "表示"
+
+msgid "Fish in different groups, but of the same type, swim together."
+msgstr "同種異グループの魚同士を一緒に泳がせる"
+
+msgid "Frequency of small water waves on the bigger ones."
+msgstr "より大きな波の上に描画される小さな波の数"
+
+msgid "Frequency of water waves."
+msgstr "波の数"
+
+msgid "Ground color"
+msgstr "海底面の色"
+
+msgid "Height of water surface in the cube."
+msgstr "キューブ内の水面の高さ"
+
+msgid "Light inclination"
+msgstr "光の傾斜角度"
+
+msgid "Lighting"
+msgstr "照明"
+
+msgid "Low detail models"
+msgstr "低詳細モデル"
+
+msgid "Miscellaneous Selection"
+msgstr "その他の選択"
+
+msgid "Multiply the speed of the fish by this factor."
+msgstr "この値によって魚の動く速さを乗ずる"
+
+msgid "Number"
+msgstr "数"
+
+msgid "Number of subdivisions that create a finer grid."
+msgstr "よりきめ細かなグリッドを作成する細分区画の数"
+
+msgid "Preserve light direction when rotating the cube."
+msgstr "キューブ回転時に照明方向を保持"
+
+msgid "Render ground"
+msgstr "地面を描画"
+
+msgid "Render ground inside the cube."
+msgstr "キューブ内に地面を描画"
+
+msgid "Render some sea animals inside of the transparent cube"
+msgstr "透明なキューブ内に海洋生物を描画"
+
+msgid "Render water"
+msgstr "海水を描画"
+
+msgid "Render water inside the cube."
+msgstr "キューブ内に海水を描画"
+
+msgid "Render water waves inside the cube."
+msgstr "キューブ内に波を描画"
+
+msgid "Render water wireframe"
+msgstr "海水のワイヤーフレームを描画"
+
+msgid "Render water wireframe inside the cube."
+msgstr "キューブ内に海水のワイヤーフレームを描画"
+
+msgid "Render waves"
+msgstr "波を描画"
+
+msgid ""
+"Rescale along the sides of the cube by the ratio of screen width to height."
+msgstr "画面の高さに対する幅の割合に合わせキューブの側面に沿ったサイズ変更"
+
+msgid "Rescale for screen ratio"
+msgstr "画面の縦横比に合わせたサイズ変更"
+
+msgid "Ripple effect"
+msgstr "波紋効果"
+
+msgid "Rotate lighting"
+msgstr "照明を回転"
+
+msgid "School similar groups"
+msgstr "似たグループ同士を群れで泳がせる"
+
+msgid "Semi-randomize light scattering off water waves."
+msgstr "セミ・ランダムに光を波に拡散させて当てる"
+
+msgid "Size"
+msgstr "大きさ"
+
+msgid "Small wave amplitude"
+msgstr "さざ波の高さ"
+
+msgid "Small wave frequency"
+msgstr "さざ波の数"
+
+msgid "Speed factor"
+msgstr "速度"
+
+msgid "Start crabs on bottom"
+msgstr "カニを底面上で開始"
+
+msgid "Start crabs on the bottom of the cube."
+msgstr "カニの配置をキューブの底面から開始"
+
+msgid ""
+"The angle of light rays from the horizon in degrees (0 is from the viewer's "
+"perspective, 90 is from on top). Only has effect when Rotate Lighting is "
+"false."
+msgstr ""
+"光線の水平からの傾斜角度（0 を指定するとちょうど観覧側の視点から、90 では真上"
+"から）。照明の回転が無効のときにのみ働きます。"
+
+msgid "The color of the sea creature."
+msgstr "海洋生物の色"
+
+msgid "The color of the sea plant."
+msgstr "海洋植物の色"
+
+msgid "The number of the sea creature."
+msgstr "海洋生物の数"
+
+msgid "The number of the sea plants."
+msgstr "海洋植物の数"
+
+msgid "The size of the sea creature."
+msgstr "海洋生物の大きさ"
+
+msgid "The size of the sea plant."
+msgstr "海洋植物の大きさ"
+
+msgid "Type"
+msgstr "種類"
+
+msgid "Type of sea creature."
+msgstr "海洋生物の種類"
+
+msgid "Type of sea plant."
+msgstr "海洋植物の種類"
+
+msgid "Use less detailed models for increased performance."
+msgstr "パフォーマンス向上のため、モデルの描画詳細度を下げる"
+
+msgid "Water / Ground"
+msgstr "海水 / 海底"
+
+msgid "Water color"
+msgstr "海水の色"
+
+msgid "Water surface height"
+msgstr "水面の高さ"
+
+msgid "Water/Ground grid smoothness"
+msgstr "海水/海底のグリッドの滑らかさ"
+
+msgid "Wave amplitude"
+msgstr "波の高さ"
+
+msgid "Wave frequency"
+msgstr "波の数"
+
+msgid "Waves"
+msgstr "波"
+
 msgid "A simple benchmark plugin"
 msgstr "簡単なベンチマークプラグイン"
 
@@ -1215,11 +1407,126 @@ msgstr "マウス回転時のみ自動的なズームアウト"
 msgid "Zoom out automatically to make the cube fit to the screen."
 msgstr "キューブを画面に合わせるための自動的なズームアウト"
 
+msgid "3D Models"
+msgstr "3D モデル"
+
+msgid "Ambient light intensity"
+msgstr "環境光の強さ"
+
+msgid ""
+"Component of light coming from the direction set by inclination or from the "
+"viewer if Rotate Lighting is true."
+msgstr ""
+"傾斜角度によって設定された方向または照明の回転が有効な場合は視点方向から来る"
+"光"
+
+msgid "Cube 3D Models"
+msgstr "キューブ 3D モデル"
+
+msgid "Diffuse light intensity"
+msgstr "拡散光の強さ"
+
+msgid "Framerate (per second) for the animated series of obj files."
+msgstr "obj ファイル動画群の 1 秒当たりのフレームレート"
+
+msgid "Frames per second"
+msgstr "フレーム/秒"
+
+msgid "Full path to 3D wavefront (.obj) model file."
+msgstr "3D wavefront (.obj) モデル・ファイルへのフル・パス"
+
+msgid ""
+"Highly directional component of light coming from the direction set by "
+"inclination or from the viewer if Rotate Lighting is true."
+msgstr ""
+"傾斜角度によって設定された方向または照明の回転が有効な場合は視点方向から来る"
+"指向性の強い光"
+
+msgid "Loading"
+msgstr "読み込み"
+
+msgid "Model"
+msgstr "モデル"
+
+msgid "Model type"
+msgstr "モデルの種類"
+
+msgid "Plane of rotation for the 3D model."
+msgstr "3D モデルの回転面"
+
+msgid "Rate of rotation of 3D model (in rotations per second)."
+msgstr "3D モデルの回転の割合（1秒当たりの回転数）"
+
+msgid "Render front and back sides"
+msgstr "前と後ろ側を描画"
+
+msgid "Render still/animated 3D mesh models inside of the transparent cube"
+msgstr "透明なキューブの内側に、静止画/動画 3D メッシュ・モデルを描画"
+
+msgid ""
+"Renders the front surface and then the back surface. This can be useful for "
+"models which show black spots but can cause a performance hit."
+msgstr ""
+"前面を描画してから後面を描画。これは黒い点を表示するモデルに有用ですが、パ"
+"フォーマンスに影響する可能性があります。"
+
+msgid "Rotation plane"
+msgstr "回転面"
+
+msgid "Rotation rate"
+msgstr "回転割合"
+
+msgid "Scale all factor"
+msgstr "すべて縮尺"
+
+msgid "Scale all the 3D models by this factor."
+msgstr "すべての 3D モデルをこの値に縮尺"
+
+msgid "Scale factor"
+msgstr "拡縮率"
+
+msgid "Scale the 3D model by this factor."
+msgstr "3D モデルをこの値に縮尺"
+
+msgid "Specular light intensity"
+msgstr "鏡面光の強さ"
+
+msgid "Type of 3D model (still or animated)."
+msgstr "3Dモデルの種類（静止画または動画）"
+
+msgid "Use separate threads"
+msgstr "個別のスレッドを使用"
+
+msgid ""
+"Use separate threads to load each model faster and allow other interaction "
+"whilst loading."
+msgstr ""
+"各モデルをより速く読み込むために個別のスレッドを使用して、読み込み中に他のや"
+"り取りができるようにする"
+
+msgid "X"
+msgstr "X"
+
+msgid "X coordinate offset from the centre of the cube."
+msgstr "キューブの中心からの X 座標オフセット"
+
+msgid "Y"
+msgstr "Y"
+
+msgid "Y coordinate offset from the centre of the cube."
+msgstr "キューブの中心からの Y 座標オフセット"
+
+msgid "Z"
+msgstr "Z"
+
+msgid "Z coordinate offset from the centre of the cube."
+msgstr "キューブの中心からの Z 座標オフセット"
+
 msgid "Allow rotation of this element"
 msgstr "このエレメントを回転させる"
 
 msgid "Autumn"
-msgstr "オータム"
+msgstr "秋"
 
 msgid "Background Color"
 msgstr "背景色"
@@ -1231,7 +1538,7 @@ msgid "Bold Font"
 msgstr "太字"
 
 msgid "Bubbles"
-msgstr "バブル"
+msgstr "泡"
 
 msgid ""
 "Delay (in ms) between screen updates. Decreasing this value may make snow "
@@ -1250,7 +1557,7 @@ msgid "Draw elements on screen"
 msgstr "画面にエレメントを描画"
 
 msgid "Element Image"
-msgstr "エレメント画像"
+msgstr "エレメントの画像"
 
 msgid "Element Iter"
 msgstr "エレメント反復子"
@@ -1336,12 +1643,12 @@ msgstr "リストに登録されている次のエレメントを選択"
 msgid ""
 "Settings for one particular element configuration. Separate element "
 "definitions have different iters. This is a workaround to have multiple-"
-"textures per element until we can get cascading options"
+"textures per element until we can get cascading lists"
 msgstr ""
 "特定の１つのエレメントを指定するための設定項目。別個に分かれたエレメント同士"
 "は、それぞれ異なる反復子を持ちます。１つのエレメントに対して複数のテクスチャ"
-"を持たせるための次善策です。（同じ数値を持つもの同士が１つのエレメントグルー"
-"プを形成するようなもの。）"
+"を持たせるためのものです。（同じ数値を持つもの同士が１つのエレメントグループ"
+"を形成するようなもの。分かり易く設定の構造を改良するまでの次善策。）"
 
 msgid "Show Title on Toggle"
 msgstr "切り替え時のタイトル表示"
@@ -1371,22 +1678,22 @@ msgid "Speed of these elements"
 msgstr "エレメントの速度"
 
 msgid "Star X Offset"
-msgstr "スターの X オフセット"
+msgstr "星の X オフセット"
 
 msgid "Star Y Offset"
-msgstr "スターの Y オフセット"
+msgstr "星の Y オフセット"
 
 msgid "Stars"
-msgstr "スター"
+msgstr "星"
 
 msgid "Sway Of leaves"
 msgstr "葉の揺れ動く大きさ"
 
 msgid "The X point on the screen where stars should start"
-msgstr "スターの始点となる画面上の X 点"
+msgstr "星の始点となる画面上の X 点"
 
 msgid "The Y point on the screen where stars should start"
-msgstr "スターの始点となる画面上の Y 点"
+msgstr "星の始点となる画面上の Y 点"
 
 msgid "Toggle Selected Element"
 msgstr "選択エレメントの切り替え"
@@ -3057,8 +3364,8 @@ msgid ""
 "higher."
 msgstr ""
 "アクティブ・ウィンドウ（マウスを置いているウィンドウ）に保持させる最低限の不"
-"透明度。このウィンドウには、この不透明度またはプリセットの不透明度（一般オプ"
-"ションで設定しているマウスボタンによって変更した不透明度）のどちらか高いほう"
+"透明度。このウィンドウには、この不透明度またはプリセットの不透明度（「不透明"
+"度・明度・彩度」プラグインの機能によって変更した不透明度）のどちらか高いほう"
 "が割り当てられます。"
 
 msgid ""
@@ -5339,6 +5646,15 @@ msgstr "様々な Java ウィンドウのウィンドウタイプの修正"
 msgid "Fix window type of various Qt windows."
 msgstr "様々な Qt ウィンドウのウィンドウタイプの修正"
 
+msgid "Force synchronization between X and GLX"
+msgstr ""
+
+msgid ""
+"Force synchronization between X and GLX, which may help for window parts not "
+"redrawing correctly when using Nvidia drivers, but also may decrease "
+"performance."
+msgstr ""
+
 msgid "Java Window Fix"
 msgstr "Java ウィンドウの修正"
 
@@ -5382,88 +5698,3 @@ msgstr "スティッキー属性を与える「全てのデスクトップに配
 
 msgid "Workarounds"
 msgstr "次善策"
-
-#~ msgid "Move Window To Next Output"
-#~ msgstr "ウィンドウを次の出力に移動"
-
-#~ msgid "Move the selected window to the next output device."
-#~ msgstr "選択ウィンドウを次の出力デバイスに移動"
-
-#~ msgid "Cube Caps"
-#~ msgstr "キューブのふた"
-
-#~ msgid "Render images on top and bottom of the cube"
-#~ msgstr "キューブの上面と下面に画像を描画"
-
-#~ msgid "Compiz cube reflection"
-#~ msgstr "Compiz キューブの反射"
-
-#~ msgid "Cube Reflection"
-#~ msgstr "キューブの反射"
-
-#~ msgid ""
-#~ "Embeds a Guile scheme interpreter and provides bindings for meaningful "
-#~ "Compiz integration."
-#~ msgstr ""
-#~ "Guile スキーム・インタプリタを組み込み、有意義な Compiz 統合のためのバイン"
-#~ "ディングを提供"
-
-#~ msgid "Scheme Interpreter"
-#~ msgstr "スキーム・インタプリタ"
-
-#~ msgid "Toggle Prompt Visible"
-#~ msgstr "プロンプト表示のオンオフ"
-
-#~ msgid "Toggle prompt visible."
-#~ msgstr "プロンプト表示のオンオフ"
-
-#~ msgid "Directory"
-#~ msgstr "ディレクトリ"
-
-#~ msgid "Initiate screencasting"
-#~ msgstr "スクリーンキャスト開始"
-
-#~ msgid "Put screenshot images in this directory"
-#~ msgstr "このディレクトリにスクリーンショット画像を保存"
-
-#~ msgid "ScreenCast plugin"
-#~ msgstr "スクリーンキャスト・プラグイン"
-
-#~ msgid "ScreenCasting"
-#~ msgstr "スクリーンキャスティング"
-
-#~ msgid "Cube Atlantis"
-#~ msgstr "キューブ・アトランティス"
-
-#~ msgid "Dolphin size"
-#~ msgstr "イルカの大きさ"
-
-#~ msgid "Dolphin size."
-#~ msgstr "イルカの大きさ"
-
-#~ msgid "Enable colors"
-#~ msgstr "色付けを有効化"
-
-#~ msgid "Fish size"
-#~ msgstr "魚の大きさ"
-
-#~ msgid "Number of fish"
-#~ msgstr "魚の数"
-
-#~ msgid "Number of fish inside the cube"
-#~ msgstr "キューブ内の魚の数"
-
-#~ msgid "Render some fish inside of the transparent cube"
-#~ msgstr "透明なキューブ内に魚を描画"
-
-#~ msgid "Shark size"
-#~ msgstr "サメの大きさ"
-
-#~ msgid "Whale size."
-#~ msgstr "クジラの大きさ"
-
-#~ msgid "Focus Widget Layer"
-#~ msgstr "ウィジェット・レイヤにフォーカス"
-
-#~ msgid "Focus a window in the widget layer when activating the layer"
-#~ msgstr "ウィジェット・レイヤ表示時にレイヤにあるウィンドウにフォーカス"
