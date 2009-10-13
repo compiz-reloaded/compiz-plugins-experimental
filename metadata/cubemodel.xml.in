@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <compiz>
 	<plugin name="cubemodel" useBcop="true">
-		<short>Cube 3D Models</short>
-		<long>Render still/animated 3D mesh models inside of the transparent cube</long>
+		<_short>Cube 3D Models</_short>
+		<_long>Render still/animated 3D mesh models inside of the transparent cube</_long>
 		<category>Effects</category>
 		<deps>
 		<relation type="after">
@@ -15,56 +15,56 @@
 		</deps>
 		<screen>
 			<option name="global_model_scale_factor" type="float">
-				<short>Scale all factor</short>
-				<long>Scale all the 3D models by this factor.</long>
+				<_short>Scale all factor</_short>
+				<_long>Scale all the 3D models by this factor.</_long>
 				<min>0.01</min>
 				<max>100</max>
 				<default>1.0</default>
 				<precision>0.01</precision>
 			</option>
 			<subgroup>
-				<short>3D Models</short>
+				<_short>3D Models</_short>
 				<option name="model_filename" type="list">
-					<short>Model</short>
-					<long>Full path to 3D wavefront (.obj) model file.</long>
+					<_short>Model</_short>
+					<_long>Full path to 3D wavefront (.obj) model file.</_long>
 					<type>string</type>
 					<hints>file;</hints>
 				</option>
 				<option name="model_scale_factor" type="list">
-					<short>Scale factor</short>
-					<long>Scale the 3D model by this factor.</long>
+					<_short>Scale factor</_short>
+					<_long>Scale the 3D model by this factor.</_long>
 					<type>float</type>
 					<min>0.01</min>
 					<max>100</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="model_x_offset" type="list">
-					<short>X</short>
-					<long>X coordinate offset from the centre of the cube.</long>
+					<_short>X</_short>
+					<_long>X coordinate offset from the centre of the cube.</_long>
 					<type>float</type>
 					<min>-1</min>
 					<max>1</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="model_y_offset" type="list">
-					<short>Y</short>
-					<long>Y coordinate offset from the centre of the cube.</long>
+					<_short>Y</_short>
+					<_long>Y coordinate offset from the centre of the cube.</_long>
 					<type>float</type>
 					<min>-1</min>
 					<max>1</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="model_z_offset" type="list">
-					<short>Z</short>
-					<long>Z coordinate offset from the centre of the cube.</long>
+					<_short>Z</_short>
+					<_long>Z coordinate offset from the centre of the cube.</_long>
 					<type>float</type>
 					<min>-1</min>
 					<max>1</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="model_rotation_plane" type="list">
-					<short>Rotation plane</short>
-					<long>Plane of rotation for the 3D model.</long>
+					<_short>Rotation plane</_short>
+					<_long>Plane of rotation for the 3D model.</_long>
 					<type>int</type>
 					<min>0</min>
 					<max>5</max>
@@ -94,16 +94,16 @@
 					</desc>
 				</option>
 				<option name="model_rotation_rate" type="list">
-					<short>Rotation rate</short>
-					<long>Rate of rotation of 3D model (in rotations per second).</long>
+					<_short>Rotation rate</_short>
+					<_long>Rate of rotation of 3D model (in rotations per second).</_long>
 					<type>float</type>
 					<min>0</min>
 					<max>2</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="model_animation" type="list">
-					<short>Model type</short>
-					<long>Type of 3D model (still or animated).</long>
+					<_short>Model type</_short>
+					<_long>Type of 3D model (still or animated).</_long>
 					<type>int</type>
 					<min>0</min>
 					<max>2</max>
@@ -121,8 +121,8 @@
 					</desc>
 				</option>
 				<option name="model_fps" type="list">
-					<short>Frames per second</short>
-					<long>Framerate (per second) for the animated series of obj files.</long>
+					<_short>Frames per second</_short>
+					<_long>Framerate (per second) for the animated series of obj files.</_long>
 					<type>int</type>
 					<min>0</min>
 					<max>60</max>
@@ -130,51 +130,51 @@
 			</subgroup>
 
 			<group>
-				<short>Display</short>
+				<_short>Display</_short>
 				<option name="rescale_width" type="bool">
-					<short>Rescale for screen ratio</short>
-					<long>Rescale along the sides of the cube by the ratio of screen width to height.</long>
+					<_short>Rescale for screen ratio</_short>
+					<_long>Rescale along the sides of the cube by the ratio of screen width to height.</_long>
 					<default>true</default>
 				</option>
 				<option name="render_front_and_back" type="bool">
-					<short>Render front and back sides</short>
-					<long>Renders the front surface and then the back surface. This can be useful for models which show black spots but can cause a performance hit.</long>
+					<_short>Render front and back sides</_short>
+					<_long>Renders the front surface and then the back surface. This can be useful for models which show black spots but can cause a performance hit.</_long>
 					<default>false</default>
 				</option>
 				<subgroup>
-					<short>Lighting</short>
+					<_short>Lighting</_short>
 				<option name="rotate_lighting" type="bool">
-					<short>Rotate lighting</short>
-					<long>Preserve light direction when rotating the cube.</long>
+					<_short>Rotate lighting</_short>
+					<_long>Preserve light direction when rotating the cube.</_long>
 					<default>true</default>
 				</option>
 				<option name="light_inclination" type="float">
-					<short>Light inclination</short>
-					<long>The angle of light rays from the horizon in degrees (0 is from the viewer's perspective, 90 is from on top).  Only has effect when Rotate Lighting is false.</long>
+					<_short>Light inclination</_short>
+					<_long>The angle of light rays from the horizon in degrees (0 is from the viewer's perspective, 90 is from on top).  Only has effect when Rotate Lighting is false.</_long>
 					<default>90</default>
 					<min>0</min>
 					<max>180</max>
 					<precision>0.1</precision>
 				</option>
 			<option name="light_ambient" type="float">
-					<short>Ambient light intensity</short>
-					<long>Component of light coming from all directions equally.</long>
+					<_short>Ambient light intensity</_short>
+					<_long>Component of light coming from all directions equally.</_long>
 					<default>0.3</default>
 					<min>0.0</min>
 					<max>1.0</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="light_diffuse" type="float">
-					<short>Diffuse light intensity</short>
-					<long>Component of light coming from the direction set by inclination or from the viewer if Rotate Lighting is true.</long>
+					<_short>Diffuse light intensity</_short>
+					<_long>Component of light coming from the direction set by inclination or from the viewer if Rotate Lighting is true.</_long>
 					<default>1.0</default>
 					<min>0.0</min>
 					<max>1.0</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="light_specular" type="float">
-					<short>Specular light intensity</short>
-					<long>Highly directional component of light coming from the direction set by inclination or from the viewer if Rotate Lighting is true.</long>
+					<_short>Specular light intensity</_short>
+					<_long>Highly directional component of light coming from the direction set by inclination or from the viewer if Rotate Lighting is true.</_long>
 					<default>0.6</default>
 					<min>0.0</min>
 					<max>1.0</max>
@@ -184,10 +184,10 @@
 			</group>
 
 			<group>
-				<short>Loading</short>
+				<_short>Loading</_short>
 				<option name="concurrent_load" type="bool">
-					<short>Use separate threads</short>
-					<long>Use separate threads to load each model faster and allow other interaction whilst loading.</long>
+					<_short>Use separate threads</_short>
+					<_long>Use separate threads to load each model faster and allow other interaction whilst loading.</_long>
 					<default>true</default>
 				</option>
 			</group>
