@@ -64,7 +64,7 @@ findPath (char *object,
 	return NULL;
 
     if (file[0] == '/')
-	return strdup (filePath);
+	return strdup (file);
 
     filePath = strdup (object);
     if (!filePath)
