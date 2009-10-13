@@ -489,6 +489,7 @@ deformCylinder(CompScreen *s,
 
     subdiv = w->sDiv;
     nRow = (subdiv)?(2 << (subdiv - 1)) : 1;
+    nVer = size * ((nRow * (nRow + 1)) / 2) + 1;
 
     nWVer = pow (2, subdiv + 1) + 2;
 
