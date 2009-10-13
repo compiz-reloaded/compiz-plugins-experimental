@@ -97,7 +97,7 @@
 					<hints>file;image;</hints>
 					<default>
 						<value>snow2.png</value>
-						<value>fireflies1.png</value>
+						<value>fireflies1.svg</value>
 						<value>stars1.png</value>
 						<value>autumn1.png</value>
 						<value>bubbles1.png</value>
