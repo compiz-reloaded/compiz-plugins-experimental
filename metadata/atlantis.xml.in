@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <compiz>
 	<plugin name="atlantis" useBcop="true">
-		<short>Cube Atlantis</short>
-		<long>Render some sea animals inside of the transparent cube</long>
+		<_short>Cube Atlantis</_short>
+		<_long>Render some sea animals inside of the transparent cube</_long>
 		<category>Effects</category>
 		<deps>
 		<relation type="after">
@@ -15,33 +15,33 @@
 		</deps>
 		<screen>
 				<option name="speed_factor" type="float">
-					<short>Speed factor</short>
-					<long>Multiply the speed of the fish by this factor.</long>
+					<_short>Speed factor</_short>
+					<_long>Multiply the speed of the fish by this factor.</_long>
 					<default>1</default>
 					<min>0.5</min>
 					<max>3</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="start_crabs_bottom" type="bool">
-					<short>Start crabs on bottom</short>
-					<long>Start crabs on the bottom of the cube.</long>
+					<_short>Start crabs on bottom</_short>
+					<_long>Start crabs on the bottom of the cube.</_long>
 					<default>false</default>
 				</option>
 				<option name="school_similar_groups" type="bool">
-					<short>School similar groups</short>
-					<long>Fish in different groups, but of the same type, swim together.</long>
+					<_short>School similar groups</_short>
+					<_long>Fish in different groups, but of the same type, swim together.</_long>
 					<default>true</default>
 				</option>
 				<option name="low_poly" type="bool">
-					<short>Low detail models</short>
-					<long>Use less detailed models for increased performance.</long>
+					<_short>Low detail models</_short>
+					<_long>Use less detailed models for increased performance.</_long>
 					<default>false</default>
 				</option>
 				<subgroup>
-					<short>Creature Selection</short>
+					<_short>Creature Selection</_short>
 					<option type="list" name="creature_type">
-						<short>Type</short>
-						<long>Type of sea creature.</long>
+						<_short>Type</_short>
+						<_long>Type of sea creature.</_long>
 						<type>int</type>
 						<min>0</min>
 						<max>9</max>
@@ -95,8 +95,8 @@
 						</desc>
 					</option>
 					<option type="list" name="creature_color">
-						<short>Color</short>
-						<long>The color of the sea creature.</long>
+						<_short>Color</_short>
+						<_long>The color of the sea creature.</_long>
 						<type>color</type>
 						<default>
 						<value>
@@ -132,8 +132,8 @@
 						</default>
 					</option>
 					<option type="list" name="creature_number">
-						<short>Number</short>
-						<long>The number of the sea creature.</long>
+						<_short>Number</_short>
+						<_long>The number of the sea creature.</_long>
 						<type>int</type>
 						<min>1</min>
 						<max>50</max>
@@ -146,8 +146,8 @@
 						</default>
 					</option>
 					<option type="list" name="creature_size">
-						<short>Size</short>
-						<long>The size of the sea creature.</long>
+						<_short>Size</_short>
+						<_long>The size of the sea creature.</_long>
 						<type>int</type>
 						<min>100</min>
 						<max>20000</max>
@@ -161,10 +161,10 @@
 					</option>
 				</subgroup>
 				<subgroup>
-					<short>Miscellaneous Selection</short>
+					<_short>Miscellaneous Selection</_short>
 					<option type="list" name="plant_type">
-						<short>Type</short>
-						<long>Type of sea plant.</long>
+						<_short>Type</_short>
+						<_long>Type of sea plant.</_long>
 						<type>int</type>
 						<min>0</min>
 						<max>2</max>
@@ -187,8 +187,8 @@
 						</desc>
 					</option>
 					<option type="list" name="plant_color">
-						<short>Color</short>
-						<long>The color of the sea plant.</long>
+						<_short>Color</_short>
+						<_long>The color of the sea plant.</_long>
 						<type>color</type>
 						<default>
 						<value>
@@ -212,8 +212,8 @@
 						</default>
 					</option>
 					<option type="list" name="plant_number">
-						<short>Number</short>
-						<long>The number of the sea plants.</long>
+						<_short>Number</_short>
+						<_long>The number of the sea plants.</_long>
 						<type>int</type>
 						<min>1</min>
 						<max>200</max>
@@ -224,8 +224,8 @@
 						</default>
 					</option>
 					<option type="list" name="plant_size">
-						<short>Size</short>
-						<long>The size of the sea plant.</long>
+						<_short>Size</_short>
+						<_long>The size of the sea plant.</_long>
 						<type>int</type>
 						<min>100</min>
 						<max>20000</max>
@@ -237,25 +237,25 @@
 					</option>
 				</subgroup>
 			<group>
-				<short>Water / Ground</short>
+				<_short>Water / Ground</_short>
 				<option name="show_water" type="bool">
-					<short>Render water</short>
-					<long>Render water inside the cube.</long>
+					<_short>Render water</_short>
+					<_long>Render water inside the cube.</_long>
 					<default>true</default>
 				</option>
 				<option name="show_water_wire" type="bool">
-					<short>Render water wireframe</short>
-					<long>Render water wireframe inside the cube.</long>
+					<_short>Render water wireframe</_short>
+					<_long>Render water wireframe inside the cube.</_long>
 					<default>false</default>
 				</option>
 				<option name="show_ground" type="bool">
-					<short>Render ground</short>
-					<long>Render ground inside the cube.</long>
+					<_short>Render ground</_short>
+					<_long>Render ground inside the cube.</_long>
 					<default>true</default>
 				</option>
 				<option name="ground_color" type="color">
-					<short>Ground color</short>
-					<long>Color of ground in the cube.</long>
+					<_short>Ground color</_short>
+					<_long>Color of ground in the cube.</_long>
 					<default>
 						<red>0x8500</red>
 						<green>0x5E00</green>
@@ -264,16 +264,16 @@
 					</default>
 				</option>
 				<option name="water_height" type="float">
-					<short>Water surface height</short>
-					<long>Height of water surface in the cube.</long>
+					<_short>Water surface height</_short>
+					<_long>Height of water surface in the cube.</_long>
 					<default>0.85</default>
 					<min>0.2</min>
 					<max>1</max>
 					<precision>0.01</precision>
 				</option>
 				<option name="water_color" type="color">
-					<short>Water color</short>
-					<long>Color of water in the cube.</long>
+					<_short>Water color</_short>
+					<_long>Color of water in the cube.</_long>
 					<default>
 						<red>0x0800</red>
 						<green>0x0900</green>
@@ -282,51 +282,51 @@
 					</default>
 				</option>
 				<option name="grid_quality" type="int">
-					<short>Water/Ground grid smoothness</short>
-					<long>Number of subdivisions that create a finer grid.</long>
+					<_short>Water/Ground grid smoothness</_short>
+					<_long>Number of subdivisions that create a finer grid.</_long>
 					<default>3</default>
 					<min>1</min>
 					<max>7</max>
 				</option>
 				<subgroup>
-					<short>Waves</short>
+					<_short>Waves</_short>
 					<option name="render_waves" type="bool">
-						<short>Render waves</short>
-						<long>Render water waves inside the cube.</long>
+						<_short>Render waves</_short>
+						<_long>Render water waves inside the cube.</_long>
 						<default>true</default>
 					</option>
 					<option name="wave_ripple" type="bool">
-						<short>Ripple effect</short>
-						<long>Semi-randomize light scattering off water waves.</long>
+						<_short>Ripple effect</_short>
+						<_long>Semi-randomize light scattering off water waves.</_long>
 						<default>false</default>
 					</option>
 					<option name="wave_amplitude" type="float">
-						<short>Wave amplitude</short>
-						<long>Amplitude of water waves.</long>
+						<_short>Wave amplitude</_short>
+						<_long>Amplitude of water waves.</_long>
 						<default>0.02</default>
 						<min>0</min>
 						<max>0.5</max>
 						<precision>0.01</precision>
 					</option>
 					<option name="wave_frequency" type="float">
-						<short>Wave frequency</short>
-						<long>Frequency of water waves.</long>
+						<_short>Wave frequency</_short>
+						<_long>Frequency of water waves.</_long>
 						<default>20</default>
 						<min>0</min>
 						<max>100</max>
 						<precision>0.1</precision>
 					</option>
 					<option name="small_wave_amplitude" type="float">
-						<short>Small wave amplitude</short>
-						<long>Amplitude of small water waves on the bigger ones.</long>
+						<_short>Small wave amplitude</_short>
+						<_long>Amplitude of small water waves on the bigger ones.</_long>
 						<default>0.01</default>
 						<min>0</min>
 						<max>0.5</max>
 						<precision>0.01</precision>
 					</option>
 					<option name="small_wave_frequency" type="float">
-						<short>Small wave frequency</short>
-						<long>Frequency of small water waves on the bigger ones.</long>
+						<_short>Small wave frequency</_short>
+						<_long>Frequency of small water waves on the bigger ones.</_long>
 						<default>40</default>
 						<min>0</min>
 						<max>100</max>
@@ -335,30 +335,30 @@
 				</subgroup>
 			</group>
 			<group>
-				<short>Display</short>
+				<_short>Display</_short>
 				<option name="rescale_width" type="bool">
-					<short>Rescale for screen ratio</short>
-					<long>Rescale along the sides of the cube by the ratio of screen width to height.</long>
+					<_short>Rescale for screen ratio</_short>
+					<_long>Rescale along the sides of the cube by the ratio of screen width to height.</_long>
 					<default>true</default>
 				</option>
 				<subgroup>
-					<short>Lighting</short>
+					<_short>Lighting</_short>
 				<option name="rotate_lighting" type="bool">
-					<short>Rotate lighting</short>
-					<long>Preserve light direction when rotating the cube.</long>
+					<_short>Rotate lighting</_short>
+					<_long>Preserve light direction when rotating the cube.</_long>
 					<default>false</default>
 				</option>
 				<option name="light_inclination" type="float">
-					<short>Light inclination</short>
-					<long>The angle of light rays from the horizon in degrees (0 is from the viewer's perspective, 90 is from on top).  Only has effect when Rotate Lighting is false.</long>
+					<_short>Light inclination</_short>
+					<_long>The angle of light rays from the horizon in degrees (0 is from the viewer's perspective, 90 is from on top).  Only has effect when Rotate Lighting is false.</_long>
 					<default>90</default>
 					<min>0</min>
 					<max>180</max>
 					<precision>0.1</precision>
 				</option>
 				<option name="light_ambient" type="float">
-					<short>Ambient light</short>
-					<long>Component of light coming from all directions equally.</long>
+					<_short>Ambient light</_short>
+					<_long>Component of light coming from all directions equally.</_long>
 					<default>0.3</default>
 					<min>0.0</min>
 					<max>0.6</max>
