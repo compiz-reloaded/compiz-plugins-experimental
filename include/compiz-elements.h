@@ -81,8 +81,6 @@ struct _ElementTexture
 
 struct _Element
 {
-    char *type;		/* Follows the usual pattern, alphabetic
-			   except for bubbles, which is 4. */
     float x, y, z;
     float dx, dy, dz;
     float rSpeed;

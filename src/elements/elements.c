@@ -529,6 +529,7 @@ elementsRemoveElementType (CompScreen *s,
 
 	    free (anim->elements);
 	    free (anim->texture);
+	    free (anim->type);
 	    elementsDeleteAnimation (s, anim);
 	}
     }
@@ -672,7 +673,7 @@ createElementAnimation (CompScreen *s,
     anim->size      = size;
     anim->speed     = speed;
     anim->id        = iter;
-    anim->type      = type;
+    anim->type      = strdup (type);
     anim->nTextures = 0;
 
     if (textureToAnimation (s, anim, paths, iters, size, iter) &&
@@ -687,7 +688,6 @@ createElementAnimation (CompScreen *s,
 	e = anim->elements;
 	while (nElement--)
 	{
-	    e->type = type;
 	    initiateElement (s, anim, e);
 	    e++;
 	}
@@ -1419,6 +1419,8 @@ updateElementTextures (CompScreen *s,
 	CompListValue *cSize  = elementsGetElementSize  (s);
 	CompListValue *cSpeed = elementsGetElementSpeed (s);
 	CompListValue *cIter  = elementsGetElementIter  (s);
+	Element *e;
+	Bool    initiate = FALSE;
 
 	if (!((cType->nValue  == cIter->nValue) &&
 	      (cPath->nValue  == cIter->nValue) &&
@@ -1444,32 +1446,47 @@ updateElementTextures (CompScreen *s,
 	    glDeleteLists (anim->texture[i].dList, 1);
 	}
 
-	if (textureToAnimation (s, anim, cPath, cIter, size, iter))
+	if (strcmp (type, anim->type))
 	{
-	    Element *e;
-	    Bool    initiate = FALSE;
+	    int i;
 
-	    anim->type = type;
+	    /* discard old memory and create new one for anim's type */
+	    free (anim->type);
+	    anim->type = strdup (type);
 
-	    if (nElement != anim->nElement)
+	    if (!elementsPropertiesForAnimation (s->display, anim, type))
 	    {
-		anim->nElement = nElement;
-		anim->elements = realloc (anim->elements,
-					  sizeof (Element) * nElement);
-		/* FIXME: NULL check? */
-		initiate = TRUE;
+		compLogMessage ("elements", CompLogLevelWarn,
+				"Could not find element movement pattern %s",
+				type);
 	    }
 
-	    if (strcmp (type, anim->type))
+	    if (anim->properties->fini)
 	    {
-		int i;
+		e = anim->elements;
 
-		anim->type = type;
-		for (i = 0; i < anim->nElement; i++)
+		for (i = 0; i < anim->nElement; i++, e++)
+		    (*anim->properties->fini) (s, e);
+	    }
+	    initiate = TRUE;
+	}
+
+	if (textureToAnimation (s, anim, cPath, cIter, size, iter))
+	{
+	    if (nElement != anim->nElement)
+	    {
+		Element *newElements;
+
+		newElements = realloc (anim->elements,
+						sizeof (Element) * nElement);
+		if (newElements)
 		{
-		    if (anim->properties->fini)
-			(*anim->properties->fini) (s, e);
+		    anim->elements = newElements;
+		    anim->nElement = nElement;
 		}
+		else
+		    nElement = anim->nElement;
+
 		initiate = TRUE;
 	    }
 
@@ -1477,14 +1494,9 @@ updateElementTextures (CompScreen *s,
 	    anim->speed = speed;
 	    e = anim->elements;
 
-	    while (nElement--)
-	    {
-		e->type = type;
-		if (initiate)
+	    if (initiate)
+		for (; nElement--; e++)
 		    initiateElement (s, anim, e);
-
-		e++;
-	    }
 	}
     }
 }
