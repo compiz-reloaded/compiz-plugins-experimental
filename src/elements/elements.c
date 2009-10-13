@@ -1433,10 +1433,10 @@ updateElementTextures (CompScreen *s,
 	}
 
 	iter     = anim->id;
-	nElement = cCap->value[anim->id].i;
-	type     = cType->value[anim->id].s;
-	size     = cSize->value[anim->id].i;
-	speed    = cSpeed->value[anim->id].i;
+	nElement = cCap->value[anim->id - 1].i;
+	type     = cType->value[anim->id - 1].s;
+	size     = cSize->value[anim->id - 1].i;
+	speed    = cSpeed->value[anim->id - 1].i;
 
 	for (i = 0; i < anim->nTextures; i++)
 	{
