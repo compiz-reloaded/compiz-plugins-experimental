@@ -104,6 +104,8 @@ struct _ElementAnimation
     int speed;
     int id;		/* Uniquely idenitifies this animation */
 
+    Bool rotate;
+
     Bool active;
 
     ElementTexture *texture;
@@ -118,7 +120,8 @@ struct _ElementAnimation
 /* Resets an animation to defaults */
 void initiateElement (CompScreen       *s,
 		      ElementAnimation *anim,
-		      Element          *ele);
+		      Element          *ele,
+		      Bool             rotate);
 
 /* Calls the movement function pointer for an element in an element animation */
 void elementMove (CompScreen       *s,

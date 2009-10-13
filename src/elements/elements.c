@@ -96,7 +96,7 @@ elementTestCreate (CompScreen       *s,
 	{
 	    if (anim->properties->fini)
 		(*anim->properties->fini) (s, ele);
-	    initiateElement(s, anim, ele);
+	    initiateElement(s, anim, ele, FALSE);
 	}
     }
 
@@ -658,7 +658,8 @@ createElementAnimation (CompScreen *s,
 			char       *type,
 			int        size,
 			int        speed,
-			int        iter)
+			int        iter,
+			Bool       rotate)
 {
     ElementAnimation *anim = elementsCreateAnimation (s, type);
     CompListValue    *paths, *iters;
@@ -673,6 +674,7 @@ createElementAnimation (CompScreen *s,
     anim->size      = size;
     anim->speed     = speed;
     anim->id        = iter;
+    anim->rotate    = rotate;
     anim->type      = strdup (type);
     anim->nTextures = 0;
 
@@ -688,7 +690,7 @@ createElementAnimation (CompScreen *s,
 	e = anim->elements;
 	while (nElement--)
 	{
-	    initiateElement (s, anim, e);
+	    initiateElement (s, anim, e, rotate);
 	    e++;
 	}
 	anim->active = TRUE;
@@ -1092,6 +1094,7 @@ elementsToggleSelected (CompDisplay     *d,
 	CompListValue    *cCap   = elementsGetElementCap   (s);
 	CompListValue    *cSize  = elementsGetElementSize  (s);
 	CompListValue    *cSpeed = elementsGetElementSpeed (s);
+	CompListValue    *cRot   = elementsGetElementRotate(s);
 	ElementAnimation *anim;
 
 	ELEMENTS_DISPLAY (d);
@@ -1101,7 +1104,8 @@ elementsToggleSelected (CompDisplay     *d,
 	      (cPath->nValue  == cIter->nValue) &&
 	      (cCap->nValue   == cIter->nValue) &&
 	      (cSize->nValue  == cIter->nValue) &&
-	      (cSpeed->nValue == cIter->nValue)))
+	      (cSpeed->nValue == cIter->nValue) &&
+	      (cRot->nValue   == cIter->nValue)))
 	{
 	    compLogMessage ("elements", CompLogLevelWarn,
 			    "Options are not set correctly,"
@@ -1135,7 +1139,8 @@ elementsToggleSelected (CompDisplay     *d,
 					      cType->value[es->listIter].s,
 					      cSize->value[es->listIter].i,
 					      cSpeed->value[es->listIter].i,
-					      es->animIter);
+					      es->animIter,
+					      cRot->value[es->listIter].b);
 	}
 	
 	if (ed->textFunc && elementsGetTitleOnToggle (s) && success)
@@ -1317,14 +1322,15 @@ elementsDrawWindow (CompWindow           *w,
 void
 initiateElement (CompScreen       *s,
 		 ElementAnimation *anim,
-		 Element          *e)
+		 Element          *e,
+		 Bool             rotate)
 {
     e->x  = 0;
     e->y  = 0;
     e->z  = elementsMmRand (-elementsGetScreenDepth (s), 0.1, 5000);
     e->dz = elementsMmRand (-500, 500, 500000);
     e->rAngle = elementsMmRand (-1000, 1000, 50);
-    e->rSpeed = elementsMmRand (-2100, 2100, 700);
+    e->rSpeed = rotate ? elementsMmRand (-2100, 2100, 700) : 0;
 
     e->opacity  = 1.0f;
     e->nTexture = 0;
@@ -1412,6 +1418,7 @@ updateElementTextures (CompScreen *s,
     for (anim = es->animations; anim; anim = anim->next)
     {
 	int           i, iter, nElement, size,speed;
+	Bool          rotate;
 	char          *type;
 	CompListValue *cType  = elementsGetElementType  (s);
 	CompListValue *cPath  = elementsGetElementImage (s);
@@ -1419,6 +1426,7 @@ updateElementTextures (CompScreen *s,
 	CompListValue *cSize  = elementsGetElementSize  (s);
 	CompListValue *cSpeed = elementsGetElementSpeed (s);
 	CompListValue *cIter  = elementsGetElementIter  (s);
+	CompListValue *cRot   = elementsGetElementRotate(s);
 	Element *e;
 	Bool    initiate = FALSE;
 
@@ -1426,7 +1434,8 @@ updateElementTextures (CompScreen *s,
 	      (cPath->nValue  == cIter->nValue) &&
 	      (cCap->nValue   == cIter->nValue) &&
 	      (cSize->nValue  == cIter->nValue) &&
-	      (cSpeed->nValue == cIter->nValue)))
+	      (cSpeed->nValue == cIter->nValue) &&
+	      (cRot->nValue   == cIter->nValue)))
 	{
 	    compLogMessage ("elements", CompLogLevelWarn,
 			    "Options are not set correctly,"
@@ -1439,6 +1448,7 @@ updateElementTextures (CompScreen *s,
 	type     = cType->value[anim->id - 1].s;
 	size     = cSize->value[anim->id - 1].i;
 	speed    = cSpeed->value[anim->id - 1].i;
+	rotate   = cRot->value[anim->id - 1].b;
 
 	for (i = 0; i < anim->nTextures; i++)
 	{
@@ -1490,13 +1500,17 @@ updateElementTextures (CompScreen *s,
 		initiate = TRUE;
 	    }
 
+	    if (anim->rotate != rotate)
+		initiate = TRUE;
+
+	    anim->rotate = rotate;
 	    anim->size  = size;
 	    anim->speed = speed;
 	    e = anim->elements;
 
 	    if (initiate)
 		for (; nElement--; e++)
-		    initiateElement (s, anim, e);
+		    initiateElement (s, anim, e, rotate);
 	}
     }
 }
