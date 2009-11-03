@@ -40,12 +40,12 @@ dist_libatlantis_la_SOURCES = \
 BUILT_SOURCES = $(nodist_libatlantis_la_SOURCES)
 
 INCLUDES =                              \
-	@COMPIZ_CFLAGS@                  \
+	-I$(top_srcdir)/include             \
+	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \
 	-DLIBDIR='"$(libdir)"'              \
 	-DLOCALEDIR="\"@datadir@/locale\""  \
-	-DIMAGEDIR='"$(imagedir)"'          \
-	-I$(top_srcdir)/include
+	-DIMAGEDIR='"$(imagedir)"'
 
 moduledir = $(plugindir)
 

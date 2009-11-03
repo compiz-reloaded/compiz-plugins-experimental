@@ -9,12 +9,12 @@ dist_libtile_la_SOURCES = tile.c
 BUILT_SOURCES = $(nodist_libtile_la_SOURCES)
 
 INCLUDES =                              \
-	@COMPIZ_CFLAGS@                  \
+	-I$(top_srcdir)/include             \
+	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \
 	-DLIBDIR='"$(libdir)"'              \
 	-DLOCALEDIR="\"@datadir@/locale\""  \
-	-DIMAGEDIR='"$(imagedir)"'          \
-	-I$(top_srcdir)/include
+	-DIMAGEDIR='"$(imagedir)"'
 
 moduledir = $(plugindir)
 
