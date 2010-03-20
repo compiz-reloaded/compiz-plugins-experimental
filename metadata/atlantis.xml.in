@@ -13,7 +13,7 @@
 			<plugin>cube</plugin>
 		</requirement>
 		</deps>
-		<screen>
+		<options>
 				<option name="speed_factor" type="float">
 					<_short>Speed factor</_short>
 					<_long>Multiply the speed of the fish by this factor.</_long>
@@ -366,6 +366,6 @@
 				</option>
 				</subgroup>
 			</group>
-		</screen>
+		</options>
 	</plugin>
 </compiz>

@@ -1,3 +1,5 @@
-include (CompizFusion)
+find_package (Compiz REQUIRED)
 
-compiz_fusion_plugin (atlantis PLUGINDEPS cube)
+include (CompizPlugin)
+
+compiz_plugin (atlantis PLUGINDEPS opengl composite cube)
