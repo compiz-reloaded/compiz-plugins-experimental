@@ -8,7 +8,7 @@ dist_libmswitch_la_SOURCES = mswitch.c
 
 BUILT_SOURCES = $(nodist_libmswitch_la_SOURCES)
 
-INCLUDES =                              \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \

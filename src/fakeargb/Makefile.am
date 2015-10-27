@@ -8,7 +8,7 @@ dist_libfakeargb_la_SOURCES = fakeargb.c
 
 BUILT_SOURCES = $(nodist_libfakeargb_la_SOURCES)
 
-INCLUDES =                              \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \
