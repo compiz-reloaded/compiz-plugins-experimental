@@ -1,19 +1,17 @@
 ## Process this file with automake to produce Makefile.in
 PFLAGS=-module -avoid-version -no-undefined
 
-libcubemodel_la_LDFLAGS = $(PFLAGS)
+libcubemodel_la_LDFLAGS = $(PFLAGS) -pthread
 libcubemodel_la_LIBADD = @COMPIZ_LIBS@
-nodist_libcubemodel_la_SOURCES = cubemodel_options.c  \
-			         cubemodel_options.h
-dist_libcubemodel_la_SOURCES = \
-	cubemodel.c  \
-	cubemodel-internal.h \
-	fileParser.c \
-	loadModel.c
+nodist_libcubemodel_la_SOURCES = cubemodel_options.c cubemodel_options.h
+dist_libcubemodel_la_SOURCES = cubemodel.c \
+			cubemodel-internal.h       \
+			fileParser.c               \
+			loadModel.c
 
 BUILT_SOURCES = $(nodist_libcubemodel_la_SOURCES)
 
-AM_CPPFLAGS =                              \
+AM_CFLAGS =                                \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \
@@ -22,7 +20,6 @@ AM_CPPFLAGS =                              \
 	-DIMAGEDIR='"$(imagedir)"'
 
 moduledir = $(plugindir)
-
 
 module_LTLIBRARIES = libcubemodel.la
 

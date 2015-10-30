@@ -196,5 +196,3 @@ finDrawChromis()
 {
     glDisable(GL_CULL_FACE);
 }
-
-

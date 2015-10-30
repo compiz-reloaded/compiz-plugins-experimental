@@ -521,4 +521,3 @@ strsep2 (char       **strPtr,
 
     return tmpStr;
 }
-

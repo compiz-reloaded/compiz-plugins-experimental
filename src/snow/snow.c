@@ -127,7 +127,7 @@ snowMove (CompDisplay *d,
 {
     float tmp = 1.0f / (101.0f - snowGetSnowSpeed (d));
     int   snowUpdateDelay = snowGetSnowUpdateDelay (d);
-    
+
     sf->x += (sf->xs * (float) snowUpdateDelay) * tmp;
     sf->y += (sf->ys * (float) snowUpdateDelay) * tmp;
     sf->z += (sf->zs * (float) snowUpdateDelay) * tmp;
@@ -174,7 +174,7 @@ static Bool
 snowToggle (CompDisplay     *d,
 	    CompAction      *action,
 	    CompActionState state,
- 	    CompOption      *option,
+	    CompOption      *option,
 	    int             nOption)
 {
     CompScreen *s;
@@ -269,12 +269,12 @@ beginRendering (SnowScreen *ss,
 		if (snowFlake->tex == &ss->snowTex[j])
 		{
 		    glTranslatef (snowFlake->x, snowFlake->y, snowFlake->z);
-	    	    if (snowRotate)
+		    if (snowRotate)
 			glRotatef (snowFlake->ra, 0, 0, 1);
-	    	    glCallList (ss->snowTex[j].dList);
-    		    if (snowRotate)
+		    glCallList (ss->snowTex[j].dList);
+		    if (snowRotate)
 			glRotatef (-snowFlake->ra, 0, 0, 1);
-	    	    glTranslatef (-snowFlake->x, -snowFlake->y, -snowFlake->z);
+		    glTranslatef (-snowFlake->x, -snowFlake->y, -snowFlake->z);
 		}
 		snowFlake++;
 	    }
@@ -312,7 +312,7 @@ snowPaintOutput (CompScreen              *s,
 		 const ScreenPaintAttrib *sa,
 		 const CompTransform	 *transform,
 		 Region                  region,
-		 CompOutput              *output, 
+		 CompOutput              *output,
 		 unsigned int            mask)
 {
     Bool status;
@@ -358,7 +358,7 @@ snowDrawWindow (CompWindow           *w,
     WRAP (ss, w->screen, drawWindow, snowDrawWindow);
 
     /* Check whether this is the Desktop Window */
-    if (ss->active && (w->type & CompWindowTypeDesktopMask) && 
+    if (ss->active && (w->type & CompWindowTypeDesktopMask) &&
 	!snowGetSnowOverWindows (w->screen->display))
     {
 	beginRendering (ss, w->screen);
@@ -461,7 +461,7 @@ updateSnowTextures (CompScreen *s)
 	}
 	compLogMessage ("snow", CompLogLevelInfo,
 			"Loaded Texture %s", sd->snowTexFiles[i].s);
-	
+
 	mat = &ss->snowTex[count].tex.matrix;
 	sTex = &ss->snowTex[count];
 
@@ -604,7 +604,7 @@ snowDisplayOptionChanged (CompDisplay        *d,
 	    for (s = d->screens; s; s = s->next)
 	    {
 		SNOW_SCREEN (s);
-					
+
 		if (ss->timeoutHandle)
 		    compRemoveTimeout (ss->timeoutHandle);
 		ss->timeoutHandle =
@@ -622,7 +622,7 @@ snowDisplayOptionChanged (CompDisplay        *d,
 
 	    numFlakes = snowGetNumSnowflakes (d);
 	    for (s = d->screens; s; s = s->next)
-    	    {
+	    {
 		SNOW_SCREEN (s);
 		ss->allSnowFlakes = realloc (ss->allSnowFlakes,
 					     numFlakes * sizeof (SnowFlake));
@@ -631,8 +631,8 @@ snowDisplayOptionChanged (CompDisplay        *d,
 		for (i = 0; i < numFlakes; i++)
 		{
 		    initiateSnowFlake (ss, snowFlake);
-    		    setSnowflakeTexture (ss, snowFlake);
-	    	    snowFlake++;
+		    setSnowflakeTexture (ss, snowFlake);
+		    snowFlake++;
 		}
 	    }
 	}
@@ -645,7 +645,7 @@ snowDisplayOptionChanged (CompDisplay        *d,
 	    texOpt = snowGetSnowTexturesOption (d);
 
 	    sd->snowTexFiles = texOpt->value.list.value;
-    	    sd->snowTexNFiles = texOpt->value.list.nValue;
+	    sd->snowTexNFiles = texOpt->value.list.nValue;
 
 	    for (s = d->screens; s; s = s->next)
 		updateSnowTextures (s);
@@ -676,7 +676,7 @@ snowInitDisplay (CompPlugin  *p,
 	free (sd);
 	return FALSE;
     }
-	
+
     snowSetToggleKeyInitiate (d, snowToggle);
     snowSetNumSnowflakesNotify (d, snowDisplayOptionChanged);
     snowSetSnowSizeNotify (d, snowDisplayOptionChanged);

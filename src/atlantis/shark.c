@@ -259,4 +259,3 @@ DrawShark(fishRec * fish, int wire)
 
     glPopMatrix();
 }
-

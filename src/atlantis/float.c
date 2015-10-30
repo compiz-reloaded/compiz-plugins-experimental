@@ -56,8 +56,8 @@ BubblePilot(CompScreen * s,
     float z = bubble->z;
 
     float top = (atlantisGetRenderWaves (s) ? 100000*
-	    	 getHeight(as->water, x / (100000 * as->ratio),
-	    	           y / (100000 * as->ratio)) : as->waterHeight);
+		 getHeight(as->water, x / (100000 * as->ratio),
+		           y / (100000 * as->ratio)) : as->waterHeight);
 
     float perpDist = (as->sideDistance - bubble->size);
     float tempAng;

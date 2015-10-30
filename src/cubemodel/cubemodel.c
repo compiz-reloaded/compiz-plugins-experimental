@@ -104,17 +104,17 @@ updateModel (CompScreen *s,
 		cms->models[i]->rotate[1] = 0;
 		cms->models[i]->rotate[2] = 1;
 		cms->models[i]->rotate[3] = 0;
-	    	break;
+		break;
 	    case 1:
 		cms->models[i]->rotate[1] = 1;
 		cms->models[i]->rotate[2] = 0;
 		cms->models[i]->rotate[3] = 0;
-	    	break;
+		break;
 	    case 2:
 		cms->models[i]->rotate[1] = 0;
 		cms->models[i]->rotate[2] = 0;
 		cms->models[i]->rotate[3] = 1;
-	    	break;
+		break;
 	    }
 
 	    if (rot / 3 != 0)

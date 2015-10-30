@@ -8,7 +8,7 @@ dist_libtile_la_SOURCES = tile.c
 
 BUILT_SOURCES = $(nodist_libtile_la_SOURCES)
 
-AM_CPPFLAGS =                              \
+AM_CFLAGS =                                \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \
@@ -17,7 +17,6 @@ AM_CPPFLAGS =                              \
 	-DIMAGEDIR='"$(imagedir)"'
 
 moduledir = $(plugindir)
-
 
 module_LTLIBRARIES = libtile.la
 

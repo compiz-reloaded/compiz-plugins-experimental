@@ -182,7 +182,7 @@ setRandomLocation (CompScreen *s,
     float r = as->ratio*as->radius - size / 2;
     float d = randf (1);
     float factor = cosf (0.5 * (as->arcAngle * toRadians)) /
-    		   cosf (0.5 * (as->arcAngle * toRadians) - fabsf (ang));
+		   cosf (0.5 * (as->arcAngle * toRadians) - fabsf (ang));
 
     ang += (0.5 + ((float) sector)) * as->arcAngle * toRadians;
     ang = fmodf (ang, 2 * PI);

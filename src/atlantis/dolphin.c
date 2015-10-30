@@ -230,4 +230,3 @@ DrawDolphin(fishRec * fish, int wire)
 
     glPopMatrix();
 }
-

@@ -222,5 +222,3 @@ finDrawBFish()
 {
     glDisable(GL_CULL_FACE);
 }
-
-

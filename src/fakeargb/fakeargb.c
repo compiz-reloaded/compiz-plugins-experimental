@@ -127,15 +127,15 @@ getFakeFragmentFunction (CompScreen  *s,
 
 	ok &= addFetchOpToFunctionData (data, "output", NULL, target);
 	ok &= addDataOpToFunctionData (data, "RCP neg.a, output.a;");
- 		
+
 	ok &= addDataOpToFunctionData (data,
 				       "MUL output.rgb, output.a, output;");
-	 		
+
 	ok &= addDataOpToFunctionData(data, "MOV temp, output;");
-		
+
 	if (!fs->black)
-    	    ok &= addDataOpToFunctionData(data, "SUB temp.rgb, 1.0, temp;");
-		
+	    ok &= addDataOpToFunctionData(data, "SUB temp.rgb, 1.0, temp;");
+
 	ok &= addDataOpToFunctionData(data, "ADD output.a, 0, temp.r;");
 	ok &= addDataOpToFunctionData(data, "ADD output.a, output.a, temp.g;");
 	ok &= addDataOpToFunctionData(data, "ADD output.a, output.a, temp.b;");
@@ -172,7 +172,7 @@ fakeDrawWindowTexture (CompWindow           *w,
 
     FAKE_SCREEN (s);
     FAKE_WINDOW (w);
-	
+
     if (fw->isFaked && (texture->name == w->texture->name) &&
 	s->fragmentProgram)
     {
@@ -272,7 +272,7 @@ fakeFiniScreen (CompPlugin *p,
     freeWindowPrivateIndex (s, fs->windowPrivateIndex);
 
     UNWRAP (fs, s, drawWindowTexture);
-	
+
     free (fs);
 }
 
@@ -364,4 +364,3 @@ getCompPluginInfo (void)
 {
     return &fakeVTable;
 }
-

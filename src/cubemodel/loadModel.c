@@ -81,7 +81,7 @@ findPath (char *object,
     }
 
     filePath = realloc (filePath,
-  			sizeof (char) *
+			sizeof (char) *
 			(strlen (filePath) + strlen (file) + 1));
     if (!filePath)
 	return NULL;

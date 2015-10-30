@@ -142,7 +142,7 @@ tilePaintWindow(CompWindow              *w,
 		break;
 
 	    /*
-    	       Slide animation
+	       Slide animation
 	       */
 	    case AnimateTypeSlide:
 		if (progress < 0.75f)
@@ -150,7 +150,7 @@ tilePaintWindow(CompWindow              *w,
 		else
 		    wAttrib.opacity *= (0.5f + 2 * (progress - 0.75f));
 
-		if (ts->msResizing > tw->animationNum * ts->oneDuration) 
+		if (ts->msResizing > tw->animationNum * ts->oneDuration)
 		{
 		    /* animation finished */
 		    tw->animationType = AnimationDone;
@@ -178,14 +178,14 @@ tilePaintWindow(CompWindow              *w,
 		    dontDraw = TRUE;
 		break;
 	    /*
-    	       Outline animation
+	       Outline animation
 	       */
 	    case AnimateTypeFilledOutline:
 		dontDraw = TRUE;
 		break;
 
 	    /*
-    	       Fade animation
+	       Fade animation
 	       */
 	    case AnimateTypeFade:
 		// first half of the animation, fade out
@@ -207,7 +207,7 @@ tilePaintWindow(CompWindow              *w,
 		}
 		break;
 
-    	    default:
+	    default:
 		break;
 	}
 
@@ -237,7 +237,7 @@ tilePreparePaintScreen (CompScreen *s,
     // add spent time
     if (ts->grabIndex)
 	ts->msResizing += msSinceLastPaint;
-	
+
     UNWRAP (ts, s, preparePaintScreen);
     (*s->preparePaintScreen) (s, msSinceLastPaint);
     WRAP (ts, s, preparePaintScreen, tilePreparePaintScreen);
@@ -246,7 +246,7 @@ tilePreparePaintScreen (CompScreen *s,
 static void
 tilePaintScreen (CompScreen   *s,
 		 CompOutput   *outputs,
-     		 int          numOutputs,
+		 int          numOutputs,
 		 unsigned int mask)
 {
     TILE_SCREEN (s);
@@ -272,13 +272,13 @@ tileDonePaintScreen (CompScreen *s)
 	if (ts->msResizing > tileGetAnimationDuration (s->display))
 	{
 	    CompWindow *w;
-    	    for (w = s->windows; w; w = w->next)
-    	    {
-    		TILE_WINDOW (w);
-    		tw->animationType = NoAnimation;
-    	    }
+	    for (w = s->windows; w; w = w->next)
+	    {
+		TILE_WINDOW (w);
+		tw->animationType = NoAnimation;
+	    }
 
-    	    ts->msResizing = 0;
+	    ts->msResizing = 0;
 
 	    removeScreenGrab (s, ts->grabIndex, NULL);
 	    ts->grabIndex = 0;
@@ -422,7 +422,7 @@ tileResizeNotify (CompWindow *w,
 	    }
 	}
 
-    	switch (ts->tileType)
+	switch (ts->tileType)
 	{
 	case TileToggleTypeTile:
 	    if (prev)
@@ -452,7 +452,7 @@ tileResizeNotify (CompWindow *w,
 			  w->input.top - prev->input.bottom);
 
 	    if (next)
-    	    {
+	    {
 		int currentY;
 		currentY = w->attrib.y + w->height +
 		           w->input.bottom + next->input.top;
@@ -694,7 +694,7 @@ placeWin (CompWindow *w,
 	tw->animationType = Animating;
 	break;
     default:
-     	break;
+	break;
     }
 
     return TRUE;
@@ -804,7 +804,7 @@ applyTiling (CompScreen *s)
 
     if (count > 1)
     {
-    	int               countX = 0, countY = 0;
+	int               countX = 0, countY = 0;
 	int               currentX = 0, currentY = 0;
 	int               winWidth = 0, winHeight = 0;
 	int               x = 0, y = 0;
@@ -816,8 +816,8 @@ applyTiling (CompScreen *s)
 
 	memset (&border, 0, sizeof (CompWindowExtents));
 	/* first get the largest border of the windows on this
-	   screen - some of the windows in our list might be 
-	   maximized now and not be maximized later, so 
+	   screen - some of the windows in our list might be
+	   maximized now and not be maximized later, so
 	   their border information may be inaccurate */
 	for (w = s->windows; w; w = w->next)
 	{
@@ -836,7 +836,7 @@ applyTiling (CompScreen *s)
 	switch (ts->tileType)
 	{
 	case TileToggleTypeTile:
-    	    countX = ceil (sqrt (count));
+	    countX = ceil (sqrt (count));
 	    countY = ceil ((float)count / countX);
 	    currentX = workArea.x;
 	    currentY = workArea.y;
@@ -844,11 +844,11 @@ applyTiling (CompScreen *s)
 	    winHeight = workArea.height / countY;
 	    break;
 	case TileToggleTypeLeft:
-    	    height = workArea.height / (count - 1);
+	    height = workArea.height / (count - 1);
 	    occupancy = tileGetTileLeftOccupancy (s->display);
 	    break;
 	case TileToggleTypeTileVertically:
-    	    winWidth = workArea.width / count;
+	    winWidth = workArea.width / count;
 	    winHeight = workArea.height;
 	    y = workArea.y;
 	    break;
@@ -865,7 +865,7 @@ applyTiling (CompScreen *s)
 	    winWidth = workArea.width - delta * (count - 1);
 	    break;
 	default:
-    	    break;
+	    break;
 	}
 
 	for (w = s->windows; w; w = w->next)
@@ -873,7 +873,7 @@ applyTiling (CompScreen *s)
 	    if (!isTileWindow (w))
 		continue;
 
-    	    TILE_WINDOW (w);
+	    TILE_WINDOW (w);
 
 	    if (!tw->savedValid)
 		saveCoords (w);
@@ -881,17 +881,17 @@ applyTiling (CompScreen *s)
 	    switch (ts->tileType)
 	    {
 	    case TileToggleTypeTile:
-    		placeWin(w,
+		placeWin(w,
 			 currentX + border.left, currentY + border.top,
 			 winWidth - (border.left + border.right),
 			 winHeight - (border.top + border.bottom));
 		tw->isTiled = TRUE;
 		break;
 	    case TileToggleTypeLeft:
-	      	if (first)
+		if (first)
 		{
-	    	    x = workArea.x;
-    		    y = workArea.y;
+		    x = workArea.x;
+		    y = workArea.y;
 		    winWidth = workArea.width * occupancy / 100;
 		    winHeight = workArea.height;
 		    first = FALSE;
@@ -1207,7 +1207,7 @@ tileInitWindow (CompPlugin *p,
     tw->savedMaxState = 0;
     tw->isTiled = FALSE;
     tw->needConfigure = FALSE;
-	
+
     /* random color, from group.c thanks to the author for doing it */
     tw->outlineColor[0] = rand() % 0xFFFF;
     tw->outlineColor[1] = rand() % 0xFFFF;

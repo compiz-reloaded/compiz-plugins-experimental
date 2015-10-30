@@ -701,8 +701,8 @@ deformSphere(CompScreen *s,
     if (!w->indices2)
     {
 	w->indices2 = calloc (1, sizeof (int) * (w->nWIdx2 + w->nBIdx2));
-    	if (!w->indices2)
-    	    return;
+	if (!w->indices2)
+	    return;
     }
 
     v = w->vertices;
@@ -869,7 +869,7 @@ updateHeight (Water *w,
     rippleEffect = (rippleEffect && w->rippleFactor);
 
     useOtherWallVertices = (currentDeformation == DeformationSphere &&
-	    		    w->vertices2);
+			    w->vertices2);
     vertices = (useOtherWallVertices ? w->vertices2 - w->nSVer : w->vertices);
 
     for (i = 0; i < w->nSVer; i++)
@@ -877,7 +877,7 @@ updateHeight (Water *w,
 	             w->swa, w->wf, w->swf,
 	             (rippleEffect ? w->rippleFactor[i] : 0),
 	             (rippleEffect ? w->rippleFactor[(i + offset) % w->nSVer] :
-	             		     0));
+				     0));
 
     for (i = w->nSVer; i < w->nSVer + (w->nWVer / 2); i++)
         setAmplitude(&vertices[i], w->bh, w->wave1, w->wave2, w->wa,
@@ -1037,14 +1037,14 @@ updateWater (CompScreen *s,
     {
 	as->water->wa  = atlantisGetWaveAmplitude (s);
 	as->water->swa = atlantisGetSmallWaveAmplitude (s);
- 	as->water->wf  = atlantisGetWaveFrequency (s);
+	as->water->wf  = atlantisGetWaveFrequency (s);
 	as->water->swf = atlantisGetSmallWaveFrequency (s);
     }
     else
     {
 	as->water->wa  = 0.0;
 	as->water->swa = 0.0;
- 	as->water->wf  = 0.0;
+	as->water->wf  = 0.0;
 	as->water->swf = 0.0;
     }
 
