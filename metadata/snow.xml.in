@@ -99,7 +99,7 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-						<value>snowflake.png</value>
+						<value>snow/snowflake.png</value>
 					</default>
 				</option>
 			</group>
@@ -127,4 +127,3 @@
 		</display>
 	</plugin>
 </compiz>
-

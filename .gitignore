@@ -1,0 +1,30 @@
+# outputs
+Makefile
+Makefile.in
+*.so
+*.o
+*.lo
+*.la
+*.a
+.libs
+.deps
+*_options.c
+*_options.h
+*.xml
+
+# automake stuff
+config.h*
+config.log
+config.status
+config.sub
+configure
+config.guess
+compile
+autom4te.cache
+aclocal.m4
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
+stamp-h1

@@ -8,6 +8,7 @@ AM_MAINTAINER_MODE
 AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h sys/time.h unistd.h])
@@ -85,9 +86,9 @@ AC_SUBST(compdatadir)
 dnl ============================================================
 dnl Check for the pkg-config path.
 if test x"$PKG_CONFIG_PATH" = x; then
-    PKG_CONFIG_PATH=${prefix}/lib/pkgconfig
+    PKG_CONFIG_PATH=${prefix}/lib/pkgconfig:${prefix}/share/pkgconfig
         else
-    PKG_CONFIG_PATH=${prefix}/lib/pkgconfig:${PKG_CONFIG_PATH}
+    PKG_CONFIG_PATH=${prefix}/lib/pkgconfig:${prefix}/share/pkgconfig:${PKG_CONFIG_PATH}
 fi
 export PKG_CONFIG_PATH
 AC_SUBST(PKG_CONFIG_PATH)
@@ -123,6 +124,8 @@ AC_SUBST(GL_LIBS)
 AC_OUTPUT([
 Makefile
 images/Makefile
+images/elements/Makefile
+images/snow/Makefile
 include/Makefile
 metadata/Makefile
 src/Makefile

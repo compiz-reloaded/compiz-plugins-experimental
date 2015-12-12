@@ -1,5 +1,6 @@
 xmldir       = $(metadatadir)
-xml_in_files =		  \
+
+xml_in_files =		 \
 	atlantis.xml.in   \
 	cubemodel.xml.in  \
 	elements.xml.in   \
