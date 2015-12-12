@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="stackswitch" useBcop="true">
+		<_short>Stack Window Switcher</_short>
+		<_long>Stack Window Switcher</_long>
+		<category>Window Management</category>
+		<deps>
+			<relation type="after">
+				<plugin>text</plugin>
+			</relation>
+		</deps>
+		<display>
+			<group>
+				<_short>Key bindings</_short>
+				<option name="next_key" type="key">
+					<_short>Next Window</_short>
+					<_long>Show switcher if not visible and select next window.</_long>
+					<default>&lt;Super&gt;Tab</default>
+				</option>
+				<option name="next_button" type="button">
+					<_short>Next Window</_short>
+					<_long>Show switcher if not visible and select next window.</_long>
+				</option>
+				<option name="prev_key" type="key">
+					<_short>Previous Window</_short>
+					<_long>Show switcher if not visible and select previous window.</_long>
+					<default>&lt;Super&gt;&lt;Shift&gt;Tab</default>
+				</option>
+				<option name="prev_button" type="button">
+					<_short>Previous Window</_short>
+					<_long>Show switcher if not visible and select previous window.</_long>
+				</option>
+				<option name="next_all_key" type="key">
+					<_short>Next Window (All Workspaces)</_short>
+					<_long>Show switcher if not visible and select next window out of all windows.</_long>
+					<default>&lt;Super&gt;&lt;Alt&gt;Tab</default>
+				</option>
+				<option name="next_all_button" type="button">
+					<_short>Next Window (All Workspaces)</_short>
+					<_long>Show switcher if not visible and select next window out of all windows.</_long>
+				</option>
+				<option name="prev_all_key" type="key">
+					<_short>Previous Window (All Workspaces)</_short>
+					<_long>Show switcher if not visible and select previous window out of all windows.</_long>
+					<default>&lt;Super&gt;&lt;Shift&gt;&lt;Alt&gt;Tab</default>
+				</option>
+				<option name="prev_all_button" type="button">
+					<_short>Previous Window (All Workspaces)</_short>
+					<_long>Show switcher if not visible and select previous window out of all windows.</_long>
+				</option>
+				<option name="next_group_key" type="key">
+					<_short>Next Window (Group)</_short>
+					<_long>Show switcher if not visible and select next window of the current application.</_long>
+				</option>
+				<option name="next_group_button" type="button">
+					<_short>Next Window (Group)</_short>
+					<_long>Show switcher if not visible and select next window of the current application.</_long>
+				</option>
+				<option name="prev_group_key" type="key">
+					<_short>Previous Window (Group)</_short>
+					<_long>Show switcher if not visible and select previous window of the current application.</_long>
+				</option>
+				<option name="prev_group_button" type="button">
+					<_short>Previous Window (Group)</_short>
+					<_long>Show switcher if not visible and select previous window of the current application.</_long>
+				</option>
+			</group>
+		</display>
+		<screen>
+			<group>
+				<_short>Behavior</_short>
+				<option name="speed" type="float">
+					<_short>Speed</_short>
+					<_long>Animation speed</_long>
+					<default>1.5</default>
+					<min>0.1</min>
+					<max>50.0</max>
+					<precision>0.1</precision>
+				</option>
+				<option name="timestep" type="float">
+					<_short>Timestep</_short>
+					<_long>Animation timestep</_long>
+					<default>1.2</default>
+					<min>0.1</min>
+					<max>50.0</max>
+					<precision>0.1</precision>
+				</option>
+				<option name="inactive_opacity" type="int">
+					<_short>Inactive Window Opacity</_short>
+					<_long>Amount of opacity (in percent) for windows in the switcher which are not selected</_long>
+					<default>100</default>
+					<min>1</min>
+					<max>100</max>
+				</option>
+				<option name="inactive_rotate" type="bool">
+					<_short>Rotate inactive windows</_short>
+					<_long>Should not selected windows be rotated</_long>
+					<default>true</default>
+				</option>
+				<option name="window_match" type="match">
+					<_short>Windows</_short>
+					<_long>Windows that should be shown in the switcher</_long>
+					<default>Normal | Dialog | ModalDialog | Utility | Unknown</default>
+				</option>
+				<option name="darken_back" type="bool">
+					<_short>Darken Background</_short>
+					<_long>Darken background when showing the stack</_long>
+					<default>true</default>
+				</option>
+				<option name="minimized" type="bool">
+					<_short>Show Minimized</_short>
+					<_long>Show windows that are minimized, shaded or in show desktop mode.</_long>
+					<default>true</default>
+				</option>
+				<option name="tilt" type="int">
+					<_short>Tilt</_short>
+					<_long>Tilt angle of the background.</_long>
+					<default>30</default>
+					<min>0</min>
+					<max>90</max>
+				</option>
+			</group>
+			<group>
+				<_short>Window title display</_short>
+				<option name="window_title" type="bool">
+					<_short>Show Window Title</_short>
+					<_long>Show window title of currently selected window.</_long>
+					<default>true</default>
+				</option>
+				<option name="title_font_bold" type="bool">
+					<_short>Bold Font</_short>
+					<_long>Selects if the window title should be displayed in bold font or not.</_long>
+					<default>false</default>
+				</option>
+				<option name="title_font_size" type="int">
+					<_short>Font Size</_short>
+					<_long>Font size for the window title</_long>
+					<default>16</default>
+					<min>6</min>
+					<max>96</max>
+				</option>
+				<option name="title_back_color" type="color">
+					<_short>Background Color</_short>
+					<_long>Background color for the window title</_long>
+					<default>
+						<red>0x0000</red>
+						<green>0x0000</green>
+						<blue>0x0000</blue>
+						<alpha>0x9999</alpha>
+					</default>
+				</option>
+				<option name="title_font_color" type="color">
+					<_short>Font Color</_short>
+					<_long>Font color for the window title</_long>
+					<default>
+						<red>0xffff</red>
+						<green>0xffff</green>
+						<blue>0xffff</blue>
+						<alpha>0xffff</alpha>
+					</default>
+				</option>
+				<option name="title_text_placement" type="int">
+					<_short>Text Placement</_short>
+					<_long>Selects where to place the window title.</_long>
+					<default>0</default>
+					<min>0</min>
+					<max>3</max>
+					<desc>
+						<value>0</value>
+						<_name>On Thumbnail</_name>
+					</desc>
+
+					<desc>
+						<value>1</value>
+						<_name>Centered on screen</_name>
+					</desc>
+					<desc>
+						<value>2</value>
+						<_name>Above</_name>
+					</desc>
+					<desc>
+						<value>3</value>
+						<_name>Below</_name>
+					</desc>
+				</option>
+			</group>
+		</screen>
+	</plugin>
+</compiz>

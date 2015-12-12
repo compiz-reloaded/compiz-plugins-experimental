@@ -1,0 +1,855 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="wizard" useBcop="true">
+		<_short>Wizard</_short>
+		<_long>Wastes resources to create fancy particle systems for wizard-wannabes :)</_long>
+		<category>Effects</category>
+		<deps>
+			<relation type="after">
+				<plugin>cube</plugin>
+			</relation>
+			<requirement>
+				<plugin>mousepoll</plugin>
+			</requirement>
+		</deps>
+		<display>
+			<group>
+				<_short>General</_short>
+				<option name="initiate" type="key">
+					<_short>Initiate</_short>
+				    <_long>Toggle all particle effects.</_long>
+					<default>&lt;Super&gt;w</default>
+				</option>
+			</group>
+		</display>
+		<screen>
+			<group>
+				<_short>Gravity</_short>
+				<subgroup>
+					<_short>Global gravity</_short>
+					<option name="gx" type="float">
+						<_short>Gravity X</_short>
+						<_long>Global horizontal gravity</_long>
+						<default>0.0</default>
+						<min>-0.01</min>
+						<max>0.01</max>
+						<precision>0.00001</precision>
+					</option>
+					<option name="gy" type="float">
+						<_short>Gravity Y</_short>
+						<_long>Global vertical gravity</_long>
+						<default>0.0005</default>
+						<min>-0.01</min>
+						<max>0.01</max>
+						<precision>0.00001</precision>
+					</option>
+				</subgroup>
+				<subgroup>
+					<_short>Point gravity sources</_short>
+					<option name="g_strength" type="list">
+						<_short>Strength</_short>
+						<_long>The strength of this gravity source. Use negative values for a repulsing effect.</_long>
+						<type>int</type>
+						<min>-1000</min>
+						<max>1000</max>
+						<default>
+							<value>200</value>
+						</default>
+					</option>
+					<option name="g_posx" type="list">
+						<_short>Position X</_short>
+						<_long>The horizontal position of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<type>int</type>
+						<min>0</min>
+						<max>3000</max>
+						<default>
+							<value>0</value>
+						</default>
+					</option>
+					<option name="g_posy" type="list">
+						<_short>Position Y</_short>
+						<_long>The vertical position of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<type>int</type>
+						<min>0</min>
+						<max>2000</max>
+						<default>
+							<value>0</value>
+						</default>
+					</option>
+					<option name="g_speed" type="list">
+						<_short>Speed</_short>
+						<_long>The speed of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<type>int</type>
+						<min>0</min>
+						<max>1000</max>
+						<default>
+							<value>100</value>
+						</default>
+					</option>
+					<option name="g_angle" type="list">
+						<_short>Angle</_short>
+						<_long>The angle for the movement of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<type>int</type>
+						<min>0</min>
+						<max>360</max>
+						<default>
+							<value>20</value>
+						</default>
+					</option>
+					<option name="g_movement" type="list">
+						<_short>Movement Type</_short>
+						<_long>The movement type of this source: Fixed (not moving at all), Mouse Position (exactly on the core pointer), Follow Mouse (moving towards core pointer at set speed), Bounce (moving at constant speed, bouncing off the walls) or Wrap (moving at constant speed, jumping to the opposite side at a wall).</_long>
+						<type>int</type>
+						<min>0</min>
+						<max>4</max>
+						<default>
+							<value>2</value>
+						</default>
+						<desc>
+							<value>0</value>
+							<_name>Mouse Position</_name>
+						</desc>
+						<desc>
+							<value>1</value>
+							<_name>Follow Mouse</_name>
+						</desc>
+						<desc>
+							<value>2</value>
+							<_name>Bounce</_name>
+						</desc>
+						<desc>
+							<value>3</value>
+							<_name>Wrap</_name>
+						</desc>
+					</option>
+				</subgroup>
+			</group>
+			<group>
+				<_short>Emitters</_short>
+				<option name="e_active" type="list">
+					<_short>Active</_short>
+					<_long>Since emitters have a lot of options, you can simply deactivate and name them instead of deleting them.</_long>
+					<type>bool</type>
+					<default>
+						<value>false</value>
+						<value>false</value>
+						<value>true</value>
+						<value>true</value>
+						<value>false</value>
+						<value>true</value>
+						<value>true</value>
+						<value>true</value>
+						<value>true</value>
+						<value>true</value>
+					</default>
+				</option>
+				<option name="e_name" type="list">
+					<_short>Name</_short>
+					<_long>Since emitters have a lot of options, you can simply deactivate and name them instead of deleting them.</_long>
+					<type>string</type>
+					<default>
+						<value>Fire Ball</value>
+						<value>Flame Pointer</value>
+						<value>Magic Pointer</value>
+						<value>Magic Rain (On/Off)</value>
+						<value>Magic Rain with Gravity Particles</value>
+						<value>Random Red Explosion</value>
+						<value>Random Yellow Explosion</value>
+						<value>Random Green Explosion</value>
+						<value>Random Blue Explosion</value>
+						<value>Random Purple Explosion</value>
+					</default>
+				</option>
+				<option name="e_trigger" type="list">
+					<_short>Trigger</_short>
+					<_long>The trigger to create particles: Persitent (create particles all the time), Mouse Movement (create particles when the mouse is being moved), Random Shot (a single particle burst once in a while), Random Period (randomly turning on and off particle production) or Notification (a single particle burst on notification events).</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>5</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>1</value>
+						<value>3</value>
+						<value>0</value>
+						<value>2</value>
+						<value>2</value>
+						<value>2</value>
+						<value>2</value>
+						<value>2</value>
+					</default>
+					<desc>
+						<value>0</value>
+						<_name>Persistent</_name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<_name>Mouse Movement</_name>
+					</desc>
+					<desc>
+						<value>2</value>
+						<_name>Random Shot</_name>
+					</desc>
+					<desc>
+						<value>3</value>
+						<_name>Random Period</_name>
+					</desc>
+				</option>
+				<option name="e_posx" type="list">
+					<_short>Position X</_short>
+					<_long>The horizontal position of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>3000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>1000</value>
+						<value>1000</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_posy" type="list">
+					<_short>Position Y</_short>
+					<_long>The vertical position of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>2000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_speed" type="list">
+					<_short>Emitter Speed</_short>
+					<_long>The speed of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>100</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>1000</value>
+						<value>1000</value>
+						<value>1000</value>
+						<value>1000</value>
+						<value>1000</value>
+					</default>
+				</option>
+				<option name="e_angle" type="list">
+					<_short>Emitter Angle</_short>
+					<_long>The angle for the movement of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>360</max>
+					<default>
+						<value>326</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>13</value>
+						<value>33</value>
+						<value>53</value>
+						<value>73</value>
+						<value>93</value>
+					</default>
+				</option>
+				<option name="e_movement" type="list">
+					<_short>Movement Type</_short>
+					<_long>The movement type of this emitter: Mouse Position (exactly on the core pointer), Follow Mouse (moving towards core pointer at set speed), Bounce (moving at constant speed, bouncing off the walls) or Wrap (moving at constant speed, jumping to the opposite side at a wall).</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>3</max>
+					<default>
+						<value>2</value>
+						<value>0</value>
+						<value>0</value>
+						<value>3</value>
+						<value>3</value>
+						<value>3</value>
+						<value>3</value>
+						<value>3</value>
+						<value>3</value>
+						<value>3</value>
+					</default>
+					<desc>
+						<value>0</value>
+						<_name>Mouse Position</_name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<_name>Follow Mouse</_name>
+					</desc>
+					<desc>
+						<value>2</value>
+						<_name>Bounce</_name>
+					</desc>
+					<desc>
+						<value>3</value>
+						<_name>Wrap</_name>
+					</desc>
+				</option>
+				<option name="e_count" type="list">
+					<_short>Particle count</_short>
+					<_long>The amount of particles generated each time this emitter is triggered.</_long>
+					<type>int</type>
+					<min>1</min>
+					<max>1000</max>
+					<default>
+						<value>50</value>
+						<value>20</value>
+						<value>40</value>
+						<value>20</value>
+						<value>20</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+					</default>
+				</option>
+				<option name="e_h" type="list">
+					<_short>Color hue</_short>
+					<_long>The color of the particles. This is hue like in HSL colors. It is the center of the range given below.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>67</value>
+						<value>100</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>167</value>
+						<value>333</value>
+						<value>667</value>
+						<value>833</value>
+					</default>
+				</option>
+				<option name="e_dh" type="list">
+					<_short>Color hue range</_short>
+					<_long>The color of the particles can be any value from the hue (given above) plus/minus this range. A range of 500 means any color.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>500</max>
+					<default>
+						<value>100</value>
+						<value>150</value>
+						<value>500</value>
+						<value>500</value>
+						<value>500</value>
+						<value>133</value>
+						<value>133</value>
+						<value>133</value>
+						<value>133</value>
+						<value>133</value>
+					</default>
+				</option>
+				<option name="e_l" type="list">
+					<_short>Color lightness</_short>
+					<_long>The color of the particles. This is lightness like in HSL colors. It is the center of the range given below.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>450</value>
+						<value>600</value>
+						<value>650</value>
+						<value>650</value>
+						<value>650</value>
+						<value>650</value>
+						<value>650</value>
+						<value>650</value>
+						<value>650</value>
+						<value>650</value>
+					</default>
+				</option>
+				<option name="e_dl" type="list">
+					<_short>Color lightness range</_short>
+					<_long>The color of the particles can be any value from the lightness (given above) plus/minus this range.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>250</value>
+						<value>100</value>
+						<value>150</value>
+						<value>150</value>
+						<value>150</value>
+						<value>150</value>
+						<value>150</value>
+						<value>150</value>
+						<value>150</value>
+						<value>150</value>
+					</default>
+				</option>
+				<option name="e_a" type="list">
+					<_short>Alpha</_short>
+					<_long>The alpha (opacity) of the particles. This is the center of the range given below.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>500</value>
+						<value>400</value>
+						<value>700</value>
+						<value>700</value>
+						<value>700</value>
+						<value>700</value>
+						<value>700</value>
+						<value>700</value>
+						<value>700</value>
+						<value>700</value>
+					</default>
+				</option>
+				<option name="e_da" type="list">
+					<_short>Alpha range</_short>
+					<_long>The alpha (opacity) of the particles can be any value from the alpha (given above) plus/minus this range.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+						<value>200</value>
+					</default>
+				</option>
+				<option name="e_dx" type="list">
+					<_short>X range</_short>
+					<_long>The horizontal range of the particles.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1500</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>1000</value>
+						<value>1000</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_dy" type="list">
+					<_short>Y range</_short>
+					<_long>The vertical range of the particles.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_dcirc" type="list">
+					<_short>Circular range</_short>
+					<_long>The circular range of the particles.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>30</value>
+						<value>5</value>
+						<value>20</value>
+						<value>0</value>
+						<value>0</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+					</default>
+				</option>
+				<option name="e_vx" type="list">
+					<_short>X speed</_short>
+					<_long>The horizontal speed of the particles.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_vy" type="list">
+					<_short>Y speed</_short>
+					<_long>The vertical speed of the particles.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>-200</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_vt" type="list">
+					<_short>Aging speed</_short>
+					<_long>The more negative the sooner particles disappear.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>-1</max>
+					<default>
+						<value>-30</value>
+						<value>-30</value>
+						<value>-5</value>
+						<value>-5</value>
+						<value>-5</value>
+						<value>-10</value>
+						<value>-10</value>
+						<value>-10</value>
+						<value>-10</value>
+						<value>-10</value>
+					</default>
+				</option>
+				<option name="e_vphi" type="list">
+					<_short>Rotation speed</_short>
+					<_long>The rotation of the particles can probably only be seen on the really big ones.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_dvx" type="list">
+					<_short>X speed range</_short>
+					<_long>The horizontal speed range of the particles.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>50</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_dvy" type="list">
+					<_short>Y speed range</_short>
+					<_long>The vertical speed range of the particles.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>200</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_dvcirc" type="list">
+					<_short>Circular speed range</_short>
+					<_long>The circular speed range of the particles.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>50</value>
+						<value>0</value>
+						<value>100</value>
+						<value>50</value>
+						<value>50</value>
+						<value>500</value>
+						<value>500</value>
+						<value>500</value>
+						<value>500</value>
+						<value>500</value>
+					</default>
+				</option>
+				<option name="e_dvt" type="list">
+					<_short>Aging speed range</_short>
+					<_long>The range of aging speeds</_long>
+					<type>int</type>
+					<min>1</min>
+					<max>1000</max>
+					<default>
+						<value>30</value>
+						<value>10</value>
+						<value>4</value>
+						<value>3</value>
+						<value>3</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+						<value>5</value>
+					</default>
+				</option>
+				<option name="e_dvphi" type="list">
+					<_short>Rotation speed range</_short>
+					<_long>The rotation of the particles can probably only be seen on the really big ones.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+					</default>
+				</option>
+				<option name="e_s" type="list">
+					<_short>Particle Size</_short>
+					<_long>The size of the particles.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>50</value>
+						<value>20</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+					</default>
+				</option>
+				<option name="e_ds" type="list">
+					<_short>Particle Size Range</_short>
+					<_long>The size range of the particles.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>25</value>
+						<value>10</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+					</default>
+				</option>
+				<option name="e_snew" type="list">
+					<_short>New Size</_short>
+					<_long>The size of the particles when they are new.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>300</value>
+						<value>50</value>
+						<value>100</value>
+						<value>125</value>
+						<value>125</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+						<value>50</value>
+					</default>
+				</option>
+				<option name="e_dsnew" type="list">
+					<_short>New Size Range</_short>
+					<_long>The size range of the particles when they are new.</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>1000</max>
+					<default>
+						<value>150</value>
+						<value>30</value>
+						<value>25</value>
+						<value>50</value>
+						<value>50</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+						<value>25</value>
+					</default>
+				</option>
+				<option name="e_g" type="list">
+					<_short>Gravity</_short>
+					<_long>The strength of the gravity effect, these particles have. (See gravity probability. May be especially resource consuming.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_dg" type="list">
+					<_short>Gravity Range</_short>
+					<_long>The strength range of the gravity effect, these particles have. (See gravity probability. May be especially resource consuming.</_long>
+					<type>int</type>
+					<min>-1000</min>
+					<max>1000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>200</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+				<option name="e_gp" type="list">
+					<_short>Gravity Probability</_short>
+					<_long>The probability that a particle has the gravity effect, that has been set up above. This value represents gravity particles out of 10000 particles. (Using gravity on too many particles may be very resource consuming)</_long>
+					<type>int</type>
+					<min>0</min>
+					<max>10000</max>
+					<default>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>10</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</default>
+				</option>
+			</group>
+			<group>
+				<_short>General</_short>
+				<subgroup>
+					<_short>Advanced</_short>
+					<option name="hard_limit" type="int">
+						<_short>Hard limit for particles</_short>
+						<_long>If this hard limit is reached, no new particles are created</_long>
+						<default>3000</default>
+						<min>100</min>
+						<max>5000</max>
+					</option>
+					<option name="soft_limit" type="int">
+						<_short>Soft limit for particles</_short>
+						<_long>This soft limit can be exceeded. If this happens, particles will die faster</_long>
+						<default>2000</default>
+						<min>100</min>
+						<max>5000</max>
+					</option>
+					<option name="darken" type="float">
+						<_short>Darken backgound</_short>
+						<_long>Darken background under particles</_long>
+						<default>0.9</default>
+						<min>0.0</min>
+						<max>1.0</max>
+						<precision>0.1</precision>
+					</option>
+					<option name="blend" type="bool">
+						<_short>Additive blending</_short>
+						<_long>Additive blending of particles</_long>
+						<default>true</default>
+					</option>
+					<option name="tnew" type="float">
+						<_short>New particle time</_short>
+						<_long>If the age of a particle is above this value, it is regarded as new and is especially bright and large. Particles are born at the age of 1.0 and die at the age of 0.0</_long>
+						<default>0.98</default>
+						<min>0.0</min>
+						<max>1.0</max>
+						<precision>0.01</precision>
+					</option>
+					<option name="told" type="float">
+						<_short>Old particle time</_short>
+						<_long>If the age of a particle is below this value, it is regarded as old and starts to fade. Particles are born at the age of 1.0 and die at the age of 0.0</_long>
+						<default>0.4</default>
+						<min>0.0</min>
+						<max>1.0</max>
+						<precision>0.01</precision>
+					</option>
+				</subgroup>
+			</group>
+		</screen>
+	</plugin>
+</compiz>

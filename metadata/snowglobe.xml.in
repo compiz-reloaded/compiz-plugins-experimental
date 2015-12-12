@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="snowglobe" useBcop="true">
+		<short>Cube Snow Globe</short>
+		<long>Render snow falling inside of the transparent cube</long>
+		<category>Effects</category>
+		<deps>
+		<relation type="after">
+			<plugin>cube</plugin>
+			<plugin>rotate</plugin>
+			<plugin>vpswitch</plugin>
+		</relation>
+		<requirement>
+			<plugin>cube</plugin>
+		</requirement>
+		</deps>
+		<screen>
+				<option name="speed_factor" type="float">
+					<short>Speed factor</short>
+					<long>Multiply the speed of the snowflakes by this factor.</long>
+					<default>1</default>
+					<min>0.5</min>
+					<max>10</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="num_snowflakes" type="int">
+					<_short>Number of snowflakes</_short>
+					<_long>Maximum number of snowflakes.</_long>
+					<default>100</default>
+					<min>0</min>
+					<max>1000</max>
+				</option>
+				<option name="snowflake_size" type="float">
+					<_short>Size of snowflakes</_short>
+					<_long>Size of snowflakes.</_long>
+					<default>1</default>
+					<min>0.1</min>
+					<max>5</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="show_snowman" type="bool">
+					<short>Render snowman</short>
+					<long>Render a snowman inside the cube.</long>
+					<default>false</default>
+				</option>
+				<option name="snowman_size" type="float">
+					<_short>Size of snowman</_short>
+					<_long>Size of snowman inside the cube.</_long>
+					<default>0.6</default>
+					<min>0.1</min>
+					<max>1</max>
+					<precision>0.01</precision>
+				</option>
+				<option name="shake_cube" type="bool">
+					<short>Interaction</short>
+					<long>Snowflakes fall according to cube orientation.</long>
+					<default>true</default>
+				</option>
+			<group>
+				<short>Water / Ground</short>
+				<option name="show_water" type="bool">
+					<short>Render water</short>
+					<long>Render water inside the cube.</long>
+					<default>true</default>
+				</option>
+				<option name="show_ground" type="bool">
+					<short>Render ground</short>
+					<long>Render ground inside the cube.</long>
+					<default>true</default>
+				</option>
+				<option name="water_color" type="color">
+					<short>Water opacity</short>
+					<long>Opacity of water in the cube.</long>
+					<default>
+						<red>0x0800</red>
+						<green>0x0800</green>
+						<blue>0x3000</blue>
+						<alpha>0xf00</alpha>
+					</default>
+				</option>
+				<option name="grid_quality" type="int">
+					<short>Ground grid smoothnes</short>
+					<long>Number of subdivisions that create a finer grid.</long>
+					<default>3</default>
+					<min>1</min>
+					<max>10</max>
+				</option>
+			</group>
+
+		</screen>
+	</plugin>
+</compiz>

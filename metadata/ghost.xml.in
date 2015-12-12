@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="ghost" useBcop="true">
+		<short>Ghost</short>
+		<long>Makes clicks pass through windows</long>
+		<category>Extras</category>
+		<deps>
+			<relation type="after">
+			    <plugin>regex</plugin>
+			</relation>
+			<requirement>
+			    <plugin>regex</plugin>
+			</requirement>
+		</deps>
+		<display>
+			<group>
+				<option name="ghost_toggle_key" type="key">
+					<_short>Toggle Ghost</_short>
+					<_long>Toggle ghost for all matching windows</_long>
+					<default>none</default>
+				</option>
+				<option name="ghost_toggle_button" type="button">
+					<_short>Toggle Ghost</_short>
+					<_long>Toggle ghost for all matching windows</_long>
+					<default>none</default>
+				</option>
+				<option name="ghost_toggle_window_key" type="key">
+					<_short>Toggle Ghost Window</_short>
+					<_long>Toggle ghosting of individual window</_long>
+					<default>none</default>
+				</option>
+				<option name="ghost_toggle_window_button" type="button">
+					<_short>Toggle Ghost Window</_short>
+					<_long>Toggle ghosting of individual window</_long>
+					<default>none</default>
+				</option>
+				<option name="window_types" type="match">
+					<_short>Window Types</_short>
+					<_long>Windows which should become ghosts</_long>
+					<default>state=above &amp; type=normal</default>
+				</option>
+				<option name="ghost_active" type="bool">
+					<_short>Ghost Active Window</_short>
+					<_long>Whether a ghosted active window will accept input or not</_long>
+					<default>True</default>
+				</option>
+				<option name="fade_on_mouseover" type="bool">
+					<_short>Fade windows only on mousover</_short>
+					<_long>Whether a ghosted window will always be faded or only when the cursor is over it</_long>
+				        <default>False</default>
+				</option>
+				<option name="speed" type="float">
+					<_short>Speed</_short>
+					<_long>The speed of the animation</_long>
+					<default>16</default>
+					<min>1</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+				<option name="opacity" type="float">
+					<_short>Opacity</_short>
+					<_long>The Opacity of Ghosted Windows</_long>
+					<default>30</default>
+					<min>0</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+				<option name="saturation" type="float">
+					<_short>Saturation</_short>
+					<_long>The Saturation of Ghosted Windows</_long>
+					<default>30</default>
+					<min>0</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+				<option name="brightness" type="float">
+					<_short>Brightness</_short>
+					<_long>The Brightness of Ghosted Windows</_long>
+					<default>80</default>
+					<min>0</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+			</group>
+		</display>
+	</plugin>
+</compiz>

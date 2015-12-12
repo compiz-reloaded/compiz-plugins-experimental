@@ -1,0 +1,182 @@
+<compiz>
+  <!-- animationplus metadata -->
+  <plugin name="animationplus">
+    <_short>Animations Plus</_short>
+    <_long>More window animations</_long>
+    <category>Effects</category>
+    <deps>
+      <requirement>
+	<plugin>animationaddon</plugin>
+      </requirement>
+      <relation type="after">
+	<plugin>animationaddon</plugin>
+      </relation>
+    </deps>
+
+    <screen>
+
+      <group>
+	<_short>Effect Settings</_short>
+
+        <subgroup>
+          <_short>Helix</_short>
+          <option name="helix_num_twists" type="int">
+            <_short>Helix Number of Twists</_short>
+            <_long>Number of twists to do in the animation</_long>
+            <default>2</default>
+            <min>1</min>
+            <max>10</max>
+          </option>
+          <option name="helix_gridy" type="int">
+            <_short>Helix Gridsize Y</_short>
+            <_long>Number of blocks in the animation</_long>
+            <default>90</default>
+            <min>5</min>
+            <max>300</max>
+          </option>
+          <option name="helix_thickness" type="float">
+            <_short>Helix Thickness</_short>
+            <_long>Thickness of blocks in the animation</_long>
+            <default>0</default>
+            <min>0</min>
+            <max>50</max>
+          </option>
+          <option name="helix_spin_direction" type="int">
+            <_short>Spin Direction</_short>
+            <_long>Direction the strips spin.</_long>
+            <default>1</default>
+            <min>0</min>
+            <max>1</max>
+            <desc>
+              <value>0</value>
+              <_name>Counter-Clockwise</_name>
+            </desc>
+            <desc>
+              <value>1</value>
+              <_name>Clockwise</_name>
+            </desc>
+          </option>
+          <option name="helix_direction" type="bool">
+            <_short>Vertical Helix</_short>
+            <_long>Whether Helix should rotate with its axis up/down or in/out of the screen</_long>
+            <default>false</default>
+          </option>
+        </subgroup>
+
+
+	<subgroup>
+	  <_short>Blinds</_short>
+	  <option name="blinds_num_halftwists" type="int">
+	    <_short>Blinds Number of Half Twists</_short>
+	    <_long>Number of half twists to do in the animation</_long>
+	    <default>2</default>
+	    <min>1</min>
+	    <max>10</max>
+	  </option>
+	  <option name="blinds_gridx" type="int">
+	    <_short>Helix Gridsize Y</_short>
+	    <_long>Number of blocks in the animation</_long>
+	    <default>20</default>
+	    <min>1</min>
+	    <max>100</max>
+	  </option>
+	  <option name="blinds_thickness" type="float">
+	    <_short>Blinds Thickness</_short>
+	    <_long>Thickness of blocks in the animation</_long>
+	    <default>0</default>
+	    <min>0</min>
+	    <max>50</max>
+	  </option>
+	</subgroup>
+
+	<subgroup>
+	  <_short>Shatter</_short>
+	  <option name="shatter_num_spokes" type="int">
+	    <_short>Shatter number of spokes</_short>
+	    <_long>Number of spokes (divided by 4) in the animation</_long>
+	    <default>2</default>
+	    <min>1</min>
+	    <max>100</max>
+	  </option>
+	  <option name="shatter_num_tiers" type="int">
+	    <_short>Shatter Number of Tiers</_short>
+	    <_long>Number of concentric circles in the animation</_long>
+	    <default>2</default>
+	    <min>1</min>
+	    <max>100</max>
+	  </option>
+	</subgroup>
+
+	<subgroup>
+	  <_short>Bonanza</_short>
+	  <option name="bonanza_particles" type="int">
+	    <_short>Number Of Fire Particles</_short>
+	    <_long>Number of fire particles.</_long>
+	    <default>1000</default>
+	    <min>100</min>
+	    <max>10000</max>
+	  </option>
+	  <option name="bonanza_size" type="float">
+	    <_short>Fire Particle Size</_short>
+	    <_long>Fire particle size.</_long>
+	    <default>5</default>
+	    <min>0.1</min>
+	    <max>20</max>
+	    <precision>0.1</precision>
+	  </option>
+	  <option name="bonanza_life" type="float">
+	    <_short>Fire Particle Life</_short>
+	    <_long>Fire particle life.</_long>
+	    <default>0.7</default>
+	    <min>0.1</min>
+	    <max>1</max>
+	    <precision>0.1</precision>
+	  </option>
+	  <option name="bonanza_color" type="color">
+	    <_short>Fire Particle Color</_short>
+	    <_long>Fire particle color.</_long>
+	    <default>
+	      <red>0xffff</red>
+	      <green>0x3333</green>
+	      <blue>0x0555</blue>
+	      <alpha>0xffff</alpha>
+	    </default>
+	  </option>
+	  <option name="bonanza_mystical" type="bool">
+	    <_short>Randomly Colored Fire</_short>
+	    <_long>Have random colors for the fire effect, also known as Mystical Fire.</_long>
+	    <default>false</default>
+	  </option>
+	</subgroup>
+
+      </group>
+
+    </screen>
+
+    <extension base_plugin="animation">
+      <base_option>open_effects</base_option>
+      <base_option>open_random_effects</base_option>
+      <base_option>close_effects</base_option>
+      <base_option>close_random_effects</base_option>
+      <base_option>minimize_effects</base_option>
+      <base_option>minimize_random_effects</base_option>
+      <restriction>
+	<value>animationplus:Blinds</value>
+	<_name>Blinds</_name>
+      </restriction>
+      <restriction>
+	<value>animationplus:Helix</value>
+	<_name>Helix</_name>
+      </restriction>
+      <restriction>
+	<value>animationplus:Bonanza</value>
+	<_name>Bonanza</_name>
+      </restriction>
+      <restriction>
+	<value>animationplus:Shatter</value>
+	<_name>Shatter</_name>
+      </restriction>
+    </extension>
+
+  </plugin>
+</compiz>

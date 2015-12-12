@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<compiz>
+  <plugin name="static" useBcop="true">
+    <_short>Static Windows</_short>
+    <_long>Keep windows such as dock or panels static</_long>
+    <category>Desktop</category>
+    <deps>
+      <relation type="after">
+        <plugin>3d</plugin>
+      </relation>
+      <relation type="before">
+        <plugin>expo</plugin>
+        <plugin>zoom</plugin>
+        <plugin>ezoom</plugin>
+      </relation>
+    </deps>
+    <display>
+    </display>
+    <screen>
+      <group>
+        <_short>General</_short>
+        <option name="window_match" type="match">
+          <_short>Window Match</_short>
+          <_long>Windows that should be kept static during transformations.</_long>
+          <default>Dock</default>
+        </option>
+      </group>
+    </screen>
+  </plugin>
+</compiz>

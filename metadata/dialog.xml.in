@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="dialog" useBcop="true">
+		<short>ADDialog</short>
+		<long>Fades windows with open dialogs</long>
+		<category>Extras</category>
+		<deps>
+		    <requirement> regex </requirement>
+		</deps>
+		<display>
+			<group>
+				<option name="dialogtypes" type="match">
+					<_short>Dialog Match</_short>
+					<_long>Dialogs which will trigger fading</_long>
+				    <default>(override_redirect=0) &amp; !(type=Menu | class=Gimp | class=Inkscape | (class=Firefox &amp; type=Tooltip))</default>
+				</option>
+				<option name="speed" type="float">
+					<_short>Speed</_short>
+					<_long>The speed of the animation</_long>
+					<default>16</default>
+					<min>1</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+				<option name="opacity" type="float">
+					<_short>Opacity</_short>
+					<_long>The Opacity of windows with open dialogs</_long>
+					<default>80</default>
+					<min>0</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+				<option name="saturation" type="float">
+					<_short>Saturation</_short>
+					<_long>The Saturation of windows with open dialogs</_long>
+					<default>18</default>
+					<min>0</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+				<option name="brightness" type="float">
+					<_short>Brightness</_short>
+					<_long>The Brightness of windows with open dialogs</_long>
+					<default>60</default>
+					<min>0</min>
+					<max>100</max>
+					<precision>1</precision>
+				</option>
+			</group>
+		</display>
+	</plugin>
+</compiz>

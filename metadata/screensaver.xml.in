@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="screensaver" useBcop="true">
+	<_short>Screen Saver</_short>
+	<_long>Screen Saver</_long>
+	<deps>
+		<relation type="after">
+			<plugin>cube</plugin>
+		</relation>
+	</deps>
+    <category>Extras</category>
+	<display>
+		<group>
+			<_short>Bindings</_short>
+			<option name="initiate_key" type="key">
+				<_short>Initiate</_short>
+				<_long>Start and stop the screensaver</_long>
+			</option>
+			<option name="initiate_button" type="button">
+				<_short>Initiate</_short>
+				<_long>Start and stop the screensaver</_long>
+			</option>
+			<option name="initiate_edge" type="edge">
+				<_short>Initiate</_short>
+				<_long>Start and stop the screensaver</_long>
+			</option>
+		</group>
+
+			<option name="mode" type="int">
+				<_short>Screensaver mode</_short>
+				<_long>Screensaver mode.</_long>
+				<default>0</default>
+				<min>0</min>
+				<max>1</max>
+				<desc>
+					<value>0</value>
+					<name>Flying windows</name>
+				</desc>
+				<desc>
+					<value>1</value>
+					<name>Rotating cube</name>
+				</desc>
+			</option>
+			<option name="start_automatically" type="bool">
+				<_short>Start Automatically</_short>
+				<_long>Start Automatically.</_long>
+				<default>true</default>
+			</option>
+			<option name="after" type="float">
+				<_short>After (min)</_short>
+				<_long>After (min).</_long>
+				<default>5.0</default>
+				<min>0.1</min>
+				<max>1000.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="fade_in_duration" type="float">
+				<_short>Fade In duration (sec)</_short>
+				<_long>Fade In duration (sec).</_long>
+				<default>3.0</default>
+				<min>0.0</min>
+				<max>10.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="fade_out_duration" type="float">
+				<_short>Fade Out duration (sec)</_short>
+				<_long>Fade Out duration (sec).</_long>
+				<default>1.0</default>
+				<min>0.0</min>
+				<max>10.0</max>
+				<precision>0.01</precision>
+			</option>
+		<group>
+			<_short>Flying windows</_short>
+			<option name="window_match" type="match">
+				<_short>ScreenSaver Windows</_short>
+				<_long>:)</_long>
+				<default>type=Normal | Dialog | ModalDialog | Utility | Unknown</default>
+			</option>
+			<option name="mipmaps" type="bool">
+				<_short>Mipmaps</_short>
+				<_long>Generate mipmaps</_long>
+				<default>false</default>
+			</option>
+			<option name="attraction_depth" type="float">
+				<_short>Attraction Depth</_short>
+				<_long>Attraction Depth.</_long>
+				<default>1.5</default>
+				<min>0.0</min>
+				<max>10.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="attraction_repulsion_ratio" type="float">
+				<_short>Attraction/Repulsion ratio</_short>
+				<_long>Attraction/Repulsion ratio.</_long>
+				<default>50.0</default>
+				<min>0.0</min>
+				<max>100.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="bounce" type="bool">
+				<_short>Bounce</_short>
+				<_long>Make windows bounce on the floor, still buggy, but essential with cube reflexion.</_long>
+				<default>true</default>
+			</option>
+		</group>
+		<group>
+			<_short>Rotating cube</_short>
+			<option name="cube_rotation_speed" type="float">
+				<_short>Cube rotation speed</_short>
+				<_long>Cube rotation speed</_long>
+				<default>1.0</default>
+				<min>-10.0</min>
+				<max>10.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="cube_zoom" type="float">
+				<_short>Zoom</_short>
+				<_long>Zoom</_long>
+				<default>0.5</default>
+				<min>0.0</min>
+				<max>2.0</max>
+				<precision>0.1</precision>
+			</option>
+		</group>
+	</display>
+    </plugin>
+</compiz>

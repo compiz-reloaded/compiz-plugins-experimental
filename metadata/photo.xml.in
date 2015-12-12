@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="photo" useBcop="true">
+		<_short>Photowheel</_short>
+		<_long>Render photo turn wheel inside of the transparent cube</_long>
+		<category>Effects</category>
+		<deps>
+		<relation type="after">
+			<plugin>cube</plugin>
+		</relation>
+		<requirement>
+			<plugin>cube</plugin>
+		</requirement>
+		</deps>
+		<screen>
+			<option name="photo_textures" type="list">
+				<_short>Photo Textures</_short>
+				<_long>Photo textures</_long>
+				<hints>file;image;</hints>
+				<type>string</type>
+				<default>
+				</default>
+			</option>
+			<option name="height" type="float">
+				<_short>Height</_short>
+				<_long>Height</_long>
+				<default>1.0</default>
+				<min>0.0</min>
+				<max>2.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="width" type="float">
+				<_short>Width</_short>
+				<_long>Width</_long>
+				<default>1.0</default>
+				<min>0.0</min>
+				<max>3.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="speed" type="float">
+				<_short>Speed</_short>
+				<_long>Speed</_long>
+				<default>0.5</default>
+				<min>0.0</min>
+				<max>5.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="xpos" type="float">
+				<_short>X Offset</_short>
+				<_long>X Offset (this is width)</_long>
+				<default>0</default>
+				<min>-2.0</min>
+				<max>2.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="ypos" type="float">
+				<_short>Y Offset</_short>
+				<_long>Y Offset (this is height)</_long>
+				<default>0</default>
+				<min>-2.0</min>
+				<max>2.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="zpos" type="float">
+				<_short>Z Offset</_short>
+				<_long>Z Offset (this is depth)</_long>
+				<default>0</default>
+				<min>-2.0</min>
+				<max>2.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="order" type="bool">
+				<_short>Rotate Around Axis</_short>
+				<_long>Otherwise rotate around its center of cube</_long>
+				<default>true</default>
+			</option>
+			<option name="top_colour" type="color">
+				<_short>Top Color</_short>
+				<_long>Color of top face of the photo wheel</_long>
+				<default>
+					<red>0xffff</red>
+					<green>0xffff</green>
+					<blue>0xffff</blue>
+				</default>
+			</option>
+			<option name="bottom_colour" type="color">
+				<_short>Bottom Color</_short>
+				<_long>Color of bottom face of the photo wheel</_long>
+				<default>
+					<red>0xffff</red>
+					<green>0xffff</green>
+					<blue>0xffff</blue>
+				</default>
+			</option>
+			<option name="cull" type="bool">
+				<_short>Backface Culling</_short>
+				<_long>Enable backface culling</_long>
+				<default>true</default>
+			</option>
+		</screen>
+	</plugin>
+</compiz>

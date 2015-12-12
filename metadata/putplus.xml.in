@@ -1,0 +1,353 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="putplus" useBcop="true">
+		<_short>Put Plus</_short>
+		<_long>Put Plus window</_long>
+		<category>Window Management</category>
+		<display>
+			<option name="putplus_viewport" type="action">
+				<_short>Put On Viewport</_short>
+				<_long>Move window to a certain viewport</_long>
+				<allowed/>
+				<default/>
+			</option>
+			<group>
+				<_short>Bindings</_short>
+				<subgroup>
+					<_short>Put to arbitrary viewport</_short>
+					<option name="putplus_viewport_1_key" type="key">
+						<_short>Put On Viewport 1</_short>
+						<_long>Move window to viewport 1</_long>
+					</option>
+					<option name="putplus_viewport_2_key" type="key">
+						<_short>Put On Viewport 2</_short>
+						<_long>Move window to viewport 2</_long>
+					</option>
+					<option name="putplus_viewport_3_key" type="key">
+						<_short>Put On Viewport 3</_short>
+						<_long>Move window to viewport 3</_long>
+					</option>
+					<option name="putplus_viewport_4_key" type="key">
+						<_short>Put On Viewport 4</_short>
+						<_long>Move window to viewport 4</_long>
+					</option>
+					<option name="putplus_viewport_5_key" type="key">
+						<_short>Put On Viewport 5</_short>
+						<_long>Move window to viewport 5</_long>
+					</option>
+					<option name="putplus_viewport_6_key" type="key">
+						<_short>Put On Viewport 6</_short>
+						<_long>Move window to viewport 6</_long>
+					</option>
+					<option name="putplus_viewport_7_key" type="key">
+						<_short>Put On Viewport 7</_short>
+						<_long>Move window to viewport 7</_long>
+					</option>
+					<option name="putplus_viewport_8_key" type="key">
+						<_short>Put On Viewport 8</_short>
+						<_long>Move window to viewport 8</_long>
+					</option>
+					<option name="putplus_viewport_9_key" type="key">
+						<_short>Put On Viewport 9</_short>
+						<_long>Move window to viewport 9</_long>
+					</option>
+					<option name="putplus_viewport_10_key" type="key">
+						<_short>Put On Viewport 10</_short>
+						<_long>Move window to viewport 10</_long>
+					</option>
+					<option name="putplus_viewport_11_key" type="key">
+						<_short>Put On Viewport 11</_short>
+						<_long>Move window to viewport 11</_long>
+					</option>
+					<option name="putplus_viewport_12_key" type="key">
+						<_short>Put On Viewport 12</_short>
+						<_long>Move window to viewport 12</_long>
+					</option>
+				</subgroup>
+				<subgroup>
+					<_short>Put to adjacent viewport</_short>
+					<option name="putplus_viewport_left_key" type="key">
+						<_short>Viewport Left</_short>
+						<_long>Move window to the viewport on the left</_long>
+					</option>
+					<option name="putplus_viewport_right_key" type="key">
+						<_short>Viewport Right</_short>
+						<_long>Move window to the viewport on the right</_long>
+					</option>
+					<option name="putplus_viewport_up_key" type="key">
+						<_short>Viewport Top</_short>
+						<_long>Move window to the viewport on the top</_long>
+					</option>
+					<option name="putplus_viewport_down_key" type="key">
+						<_short>Viewport Bottom</_short>
+						<_long>Move window to the viewport on the bottom</_long>
+					</option>
+				</subgroup>
+				<subgroup>
+					<_short>Put within viewport</_short>
+					<option name="putplus_center_key" type="key">
+						<_short>Put Center</_short>
+						<_long>Move window to the center</_long>
+						<default>&lt;Super&gt;KP_Begin</default>
+					</option>
+					<option name="putplus_center_button" type="button">
+						<_short>Put Center</_short>
+						<_long>Move window to the center</_long>
+					</option>
+					<option name="putplus_left_key" type="key">
+						<_short>Put Left</_short>
+						<_long>Move window to the left edge</_long>
+						<default>&lt;Super&gt;KP_Left</default>
+					</option>
+					<option name="putplus_left_button" type="button">
+						<_short>Put Left</_short>
+						<_long>Move window to the left edge</_long>
+					</option>
+					<option name="putplus_right_key" type="key">
+						<_short>Put Right</_short>
+						<_long>Move window to the right edge</_long>
+						<default>&lt;Super&gt;KP_Right</default>
+					</option>
+					<option name="putplus_right_button" type="button">
+						<_short>Put Right</_short>
+						<_long>Move window to the right edge</_long>
+					</option>
+					<option name="putplus_top_key" type="key">
+						<_short>Put Top</_short>
+						<_long>Move window to the top edge</_long>
+						<default>&lt;Super&gt;KP_Up</default>
+					</option>
+					<option name="putplus_top_button" type="button">
+						<_short>Put Top</_short>
+						<_long>Move window to the top edge</_long>
+					</option>
+					<option name="putplus_bottom_key" type="key">
+						<_short>Put Bottom</_short>
+						<_long>Move window to the bottom edge</_long>
+						<default>&lt;Super&gt;KP_Down</default>
+					</option>
+					<option name="putplus_bottom_button" type="button">
+						<_short>Put Bottom</_short>
+						<_long>Move window to the bottom edge</_long>
+						<default>&lt;Super&gt;KP_Down</default>
+					</option>
+					<option name="putplus_topleft_key" type="key">
+						<_short>Put Top Left</_short>
+						<_long>Move window to the top left corner</_long>
+						<default>&lt;Super&gt;KP_Home</default>
+					</option>
+					<option name="putplus_topleft_button" type="button">
+						<_short>Put Top Left</_short>
+						<_long>Move window to the top left corner</_long>
+					</option>
+					<option name="putplus_topright_key" type="key">
+						<_short>Put Top Right</_short>
+						<_long>Move window to the top right corner</_long>
+						<default>&lt;Super&gt;KP_Prior</default>
+					</option>
+					<option name="putplus_topright_button" type="button">
+						<_short>Put Top Right</_short>
+						<_long>Move window to the top right corner</_long>
+					</option>
+					<option name="putplus_bottomleft_key" type="key">
+						<_short>Put Bottom Left</_short>
+						<_long>Move window to the bottom left corner</_long>
+						<default>&lt;Super&gt;KP_End</default>
+					</option>
+					<option name="putplus_bottomleft_button" type="button">
+						<_short>Put Bottom Left</_short>
+						<_long>Move window to the bottom left corner</_long>
+					</option>
+					<option name="putplus_bottomright_key" type="key">
+						<_short>Put Bottom Right</_short>
+						<_long>Move window to the bottom right corner</_long>
+						<default>&lt;Super&gt;KP_Next</default>
+					</option>
+					<option name="putplus_bottomright_button" type="button">
+						<_short>Put Bottom Right</_short>
+						<_long>Move window to the bottom right corner</_long>
+					</option>
+				</subgroup>
+				<subgroup>
+					<_short>Put on empty regions</_short>
+					<option name="putplus_empty_center_key" type="key">
+						<_short>Put Center</_short>
+						<_long>Move window to the center</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Begin</default>
+					</option>
+					<option name="putplus_empty_center_button" type="button">
+						<_short>Put Center</_short>
+						<_long>Move window to the center</_long>
+					</option>
+					<option name="putplus_empty_left_key" type="key">
+						<_short>Put Left</_short>
+						<_long>Move window to the left edge</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Left</default>
+					</option>
+					<option name="putplus_empty_left_button" type="button">
+						<_short>Put Left</_short>
+						<_long>Move window to the left edge</_long>
+					</option>
+					<option name="putplus_empty_right_key" type="key">
+						<_short>Put Right</_short>
+						<_long>Move window to the right edge</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Right</default>
+					</option>
+					<option name="putplus_empty_right_button" type="button">
+						<_short>Put Right</_short>
+						<_long>Move window to the right edge</_long>
+					</option>
+					<option name="putplus_empty_top_key" type="key">
+						<_short>Put Top</_short>
+						<_long>Move window to the top edge</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Up</default>
+					</option>
+					<option name="putplus_empty_top_button" type="button">
+						<_short>Put Top</_short>
+						<_long>Move window to the top edge</_long>
+					</option>
+					<option name="putplus_empty_bottom_key" type="key">
+						<_short>Put Bottom</_short>
+						<_long>Move window to the bottom edge</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Down</default>
+					</option>
+					<option name="putplus_empty_bottom_button" type="button">
+						<_short>Put Bottom</_short>
+						<_long>Move window to the bottom edge</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Down</default>
+					</option>
+					<option name="putplus_empty_topleft_key" type="key">
+						<_short>Put Top Left</_short>
+						<_long>Move window to the top left corner</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Home</default>
+					</option>
+					<option name="putplus_empty_topleft_button" type="button">
+						<_short>Put Top Left</_short>
+						<_long>Move window to the top left corner</_long>
+					</option>
+					<option name="putplus_empty_topright_key" type="key">
+						<_short>Put Top Right</_short>
+						<_long>Move window to the top right corner</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Prior</default>
+					</option>
+					<option name="putplus_empty_topright_button" type="button">
+						<_short>Put Top Right</_short>
+						<_long>Move window to the top right corner</_long>
+					</option>
+					<option name="putplus_empty_bottomleft_key" type="key">
+						<_short>Put Bottom Left</_short>
+						<_long>Move window to the bottom left corner</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_End</default>
+					</option>
+					<option name="putplus_empty_bottomleft_button" type="button">
+						<_short>Put Bottom Left</_short>
+						<_long>Move window to the bottom left corner</_long>
+					</option>
+					<option name="putplus_empty_bottomright_key" type="key">
+						<_short>Put Bottom Right</_short>
+						<_long>Move window to the bottom right corner</_long>
+						<default>&lt;Super&gt;&lt;Alt&gt;KP_Next</default>
+					</option>
+					<option name="putplus_empty_bottomright_button" type="button">
+						<_short>Put Bottom Right</_short>
+						<_long>Move window to the bottom right corner</_long>
+					</option>
+				</subgroup>
+				<option name="putplus_restore_key" type="key">
+					<_short>Restore Position</_short>
+					<_long>Move window to the last position</_long>
+					<default>&lt;Super&gt;KP_Insert</default>
+				</option>
+				<option name="putplus_restore_button" type="button">
+					<_short>Restore Position</_short>
+					<_long>Move window to the last position</_long>
+				</option>
+				<option name="putplus_pointer_key" type="key">
+					<_short>Put Pointer</_short>
+					<_long>Move window to the pointer position</_long>
+					<default>&lt;Super&gt;z</default>
+				</option>
+				<option name="putplus_pointer_button" type="button">
+					<_short>Put Pointer</_short>
+					<_long>Move window to the pointer position</_long>
+				</option>
+				<option name="putplus_put" type="action">
+					<_short>Put</_short>
+					<_long>Move window arbitrarily by passing x, y and type.</_long>
+					<allowed/>
+					<default/>
+				</option>
+			</group>
+		</display>
+		<screen>
+			<group>
+				<_short>Misc. Options</_short>
+				<subgroup>
+					<_short>Padding</_short>
+					<option name="pad_left" type="int">
+						<_short>Pad Left</_short>
+						<_long>Number of pixels from the left edge where the window will come to rest</_long>
+						<default>0</default>
+						<min>0</min>
+						<max>500</max>
+					</option>
+					<option name="pad_right" type="int">
+						<_short>Pad Right</_short>
+						<_long>Number of pixels from the right edge where the window will come to rest</_long>
+						<default>0</default>
+						<min>0</min>
+						<max>500</max>
+					</option>
+					<option name="pad_top" type="int">
+						<_short>Pad Top</_short>
+						<_long>Number of pixels from the top edge where the window will come to rest</_long>
+						<default>0</default>
+						<min>0</min>
+						<max>500</max>
+					</option>
+					<option name="pad_bottom" type="int">
+						<_short>Pad Bottom</_short>
+						<_long>Number of pixels from the bottom edge where the window will come to rest</_long>
+						<default>0</default>
+						<min>0</min>
+						<max>500</max>
+					</option>
+				</subgroup>
+				<option name="unfocus_window" type="bool">
+					<_short>Unfocus Window</_short>
+					<_long>Unfocus windows that are moved off the viewport</_long>
+					<default>false</default>
+				</option>
+				<option name="window_center" type="bool">
+					<_short>Window Center</_short>
+					<_long>Put pointer uses the center of the window</_long>
+					<default>false</default>
+				</option>
+				<option name="avoid_offscreen" type="bool">
+					<_short>Avoid Offscreen</_short>
+					<_long>Avoids putting window borders offscreen</_long>
+					<default>false</default>
+				</option>
+			</group>
+			<group>
+				<_short>Animation</_short>
+				<option name="speed" type="float">
+					<_short>Speed</_short>
+					<_long>Animation speed</_long>
+					<default>2.5</default>
+					<min>0.1</min>
+					<max>50.0</max>
+					<precision>0.1</precision>
+				</option>
+				<option name="timestep" type="float">
+					<_short>Timestep</_short>
+					<_long>Animation timestep</_long>
+					<default>0.5</default>
+					<min>0.1</min>
+					<max>50.0</max>
+					<precision>0.1</precision>
+				</option>
+			</group>
+		</screen>
+	</plugin>
+</compiz>

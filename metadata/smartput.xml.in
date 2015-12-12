@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<compiz>
+  <plugin name="smartput" useBcop="true">
+    <_short>Smart Put</_short>
+	<_long>Smart way to fit windows.</_long>
+	<category>Window Management</category>
+    <display>
+      <group>
+        <_short>Bindings</_short>
+        <option name="trigger_key" type="key">
+          <_short>Apply Smart Put on current window.</_short>
+          <_long>Apply Smart Put on current window.</_long>
+          <default>&lt;Super&gt;&lt;Shift&gt;KP_Multiply</default>
+        </option>
+        <option name="trigger_button" type="button">
+          <_short>Initiate Smartput on current window.</_short>
+          <_long>Initiate Smart Put on current window.</_long>
+          <default>Button8</default>
+        </option>
+        <option name="trigger_all_button" type="button">
+          <_short>Initiate Smartput on current viewport</_short>
+          <_long>Smart Put!!!</_long>
+          <default>Button9</default>
+        </option>
+        <option name="undo_key" type="key">
+          <_short>Undo Smart Put on last "smartputed" window</_short>
+          <_long>Undo!!!</_long>
+          <default>&lt;Super&gt;&lt;Control&gt;KP_Multiply</default>
+        </option>
+        <option name="use_triggerkey_forundo" type="bool">
+          <_short>Also use apply-key to undo</_short>
+          <_long>If set, you can also use the same key for undo as you use for applying.</_long>
+          <default>false</default>
+        </option>
+     </group>
+      <group>
+        <_short>Options</_short>
+        <option name="allow_windows_stack" type="bool">
+          <_short>Allow stack windows</_short>
+          <_long>Stack windows on each other if there is no place left to place them.</_long>
+          <default>false</default>
+        </option>
+        <option name="allow_windows_shrink" type="bool">
+          <_short>Allow windows shrink</_short>
+          <_long>Just place the window when the new size is larger than the old one.</_long>
+          <default>false</default>
+        </option>
+        <option name="window_minheight" type="int">
+          <_short>Minimal window height</_short>
+          <_long>Minimal height that the new window must have at least.</_long>
+          <default>50</default>
+          <min>5</min>
+          <max>6000</max>
+        </option>
+        <option name="window_minwidth" type="int">
+          <_short>Minimal window width</_short>
+          <_long>Minimal width that the new window must have at least.</_long>
+          <default>50</default>
+          <min>5</min>
+          <max>6000</max>
+        </option>
+        <option name="window_margin" type="int">
+          <_short>Window margin</_short>
+          <_long>The distance between windows.</_long>
+          <default>0</default>
+          <min>0</min>
+          <max>500</max>
+        </option>
+     </group>
+    </display>
+  </plugin>
+</compiz>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="anaglyph" useBcop="true">
+		<_short>Anaglyph</_short>
+		<_long>Anaglyph window and Desktop</_long>
+		<category>Effects</category>
+		<deps>
+			<relation type="after">
+				<plugin>ring</plugin>
+				<plugin>shift</plugin>
+				<plugin>scale</plugin>
+			</relation>
+		</deps>
+		<display>
+			<option name="window_toggle_key" type="key">
+				<_short>Initiate Window</_short>
+				<_long>Start anaglyph window</_long>
+			</option>
+			<option name="screen_toggle_key" type="key">
+				<_short>Initiate Screen</_short>
+				<_long>Start anaglyph screen</_long>
+			</option>
+			<option name="window_toggle_button" type="button">
+				<_short>Initiate Window Button</_short>
+				<_long>Start anaglyph active window</_long>
+			</option>
+			<option name="screen_toggle_button" type="button">
+				<_short>Initiate Screen Button</_short>
+				<_long>Start anaglyph screen</_long>
+			</option>
+		</display>
+		<screen>
+			<option name="anaglyph_match" type="match">
+				<_short>Anaglyph Windows</_short>
+				<_long>Windows to be anaglyph by default</_long>
+				<default>any</default>
+			</option>
+			<option name="exclude_match" type="match">
+				<_short>Exclude Windows</_short>
+				<_long>Windows to exclude from anaglyph</_long>
+				<default></default>
+			</option>
+			<option name="offset" type="float" >
+				<_short>Offset</_short>
+				<_long>offset anaglyph</_long>
+				<default>2.0</default>
+				<min>-8.0</min>
+				<max>8.0</max>
+				<precision>0.1</precision>
+			</option>
+			<option name="desktop_offset" type="float">
+				<_short>Increase Desktop deep</_short>
+				<_long>Increase Desktop deep</_long>
+				<default>2.0</default>
+				<min>1.0</min>
+				<max>2.0</max>
+				<precision>0.1</precision>
+			</option>
+			<option name="desaturate" type="bool">
+				<_short>Desaturate</_short>
+				<_long>Desaturate</_long>
+				<default>false</default>
+			</option>
+			<option name="mipmaps" type="bool">
+				<_short>Mipmaps</_short>
+				<_long>Mipmaps</_long>
+				<default>false</default>
+			</option>
+		</screen>
+	</plugin>
+</compiz>

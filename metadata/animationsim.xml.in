@@ -1,0 +1,216 @@
+<compiz>
+  <plugin name="animationsim">
+    <_short>Simple Animations</_short>
+    <_long>Animations that are simple on the eye</_long>
+    <category>Effects</category>
+    <deps>
+	<requirement>
+	    <plugin>animation</plugin>
+	</requirement>
+	<relation type="after">
+	    <plugin>animation</plugin>
+	</relation>
+    </deps>
+    <screen>
+
+      <group>
+	<_short>Effect Settings</_short>
+
+	<subgroup>
+	  <_short>Fly In</_short>
+	  <option name="flyin_direction" type="int">
+	    <_short>Fly In Direction</_short>
+	    <_long>The direction in which the fly in should take place</_long>
+	    <default>0</default>
+	    <desc>
+		<value>0</value>
+		<name>Up</name>
+	    </desc>
+	    <desc>
+		<value>1</value>
+		<name>Left</name>
+	    </desc>
+	    <desc>
+		<value>2</value>
+		<name>Down</name>
+	    </desc>
+	    <desc>
+		<value>3</value>
+		<name>Right</name>
+	    </desc>
+	    <desc>
+		<value>4</value>
+		<name>User Defined</name>
+	    </desc>
+	    <min>0</min>
+	    <max>4</max>
+	  </option>
+	  <option name="flyin_direction_x" type="float">
+	    <_short>UD Direction X</_short>
+	    <_long>Direction and Distance X for user defined fly in</_long>
+	    <default>0</default>
+	    <min>-1000</min>
+	    <max>1000</max>
+		<precision>0.01</precision>
+	  </option>
+	  <option name="flyin_direction_y" type="float">
+	    <_short>UD Direction Y</_short>
+	    <_long>Direction and Distance Y for user defined fly in</_long>
+	    <default>0</default>
+	    <min>-1000</min>
+	    <max>1000</max>
+		<precision>0.01</precision>
+	  </option>
+	  <option name="flyin_fade" type="bool">
+	    <_short>Fade</_short>
+	    <_long>Fade when flying in</_long>
+	    <default>True</default>
+	  </option>
+	  <option name="flyin_distance" type="float">
+	    <_short>Distance</_short>
+	    <_long>Distance to fly in</_long>
+	    <default>20</default>
+	    <min>5</min>
+	    <max>1000</max>
+		<precision>0.01</precision>
+	  </option>
+	</subgroup>
+	<subgroup>
+	  <_short>Rotate In</_short>
+	  <option name="rotatein_direction" type="int">
+	    <_short>Rotate In Direction</_short>
+	    <_long>The direction in which the window rotates</_long>
+	    <default>3</default>
+	    <desc>
+		<value>1</value>
+		<name>Up</name>
+	    </desc>
+	    <desc>
+		<value>2</value>
+		<name>Left</name>
+	    </desc>
+	    <desc>
+		<value>3</value>
+		<name>Down</name>
+	    </desc>
+	    <desc>
+		<value>4</value>
+		<name>Right</name>
+	    </desc>
+	    <min>1</min>
+	    <max>4</max>
+	  </option>
+	  <option name="rotatein_angle" type="float">
+	    <_short>Angle</_short>
+	    <_long>Angle to start from</_long>
+	    <default>90</default>
+	    <min>-720</min>
+	    <max>720</max>
+	  </option>
+	</subgroup>
+	<subgroup>
+	  <_short>Bounce</_short>
+	  <option name="bounce_max_size" type="float">
+	    <_short>Maximum Size</_short>
+	    <_long>Maximum scale factor of window when bouncing</_long>
+	    <default>1.2</default>
+	    <min>1.0</min>
+	    <max>3.0</max>
+	  </option>
+	  <option name="bounce_min_size" type="float">
+	    <_short>Minimum Size</_short>
+	    <_long>Minimum scale factor of window when bouncing</_long>
+	    <default>0.6</default>
+	    <min>0.1</min>
+	    <max>1.0</max>
+	  </option>
+	  <option name="bounce_number" type="int">
+	    <_short>Number of Bounces</_short>
+	    <_long>How many bounces during the animation</_long>
+	    <default>3</default>
+	    <min>0</min>
+	    <max>10</max>
+	  </option>
+	  <option name="bounce_fade" type="bool">
+	    <_short>Fade</_short>
+	    <_long>Fade when flying in</_long>
+	    <default>True</default>
+	  </option>
+	</subgroup>
+	<subgroup>
+	  <_short>Sheet</_short>
+	  <option name="sheet_start_percent" type="float">
+	    <_short>Starting Percent</_short>
+	    <_long>How wide the begginning of the sheet animation should be compared to the end</_long>
+	    <default>80.0</default>
+	    <min>1.0</min>
+	    <max>150.0</max>
+	  </option>
+	</subgroup>
+	<subgroup>
+	  <_short>Expand Piecewise</_short>
+	  <option name="expandpw_horiz_first" type="bool">
+	    <_short>First expand horizontally</_short>
+	    <_long>If checked, initially expand horizontally, then vertically</_long>
+	    <default>True</default>
+	  </option>
+	  <option name="expandpw_initial_horiz" type="int">
+	    <_short>Initial horizontal size</_short>
+	    <_long>Number of pixels initially in horizontal direction</_long>
+	    <default>20</default>
+	    <min>0</min>
+	    <max>50</max>
+	  </option>
+	  <option name="expandpw_initial_vert" type="int">
+	    <_short>Initial vertical size</_short>
+	    <_long>Number of pixels initially in vertical direction</_long>
+	    <default>20</default>
+	    <min>0</min>
+	    <max>50</max>
+	  </option>
+	  <option name="expandpw_delay" type="float">
+	    <_short>Delay</_short>
+	    <_long>Delay between expanding horizontally and vertically (expressed as a fraction)</_long>
+	    <default>0.25</default>
+	    <min>0.0</min>
+	    <max>1.0</max>
+	  </option>
+	</subgroup>
+
+      </group>
+
+    </screen>
+
+    <extension base_plugin="animation">
+      <base_option>open_effects</base_option>
+      <base_option>open_random_effects</base_option>
+      <base_option>close_effects</base_option>
+      <base_option>close_random_effects</base_option>
+      <restriction>
+	<value>animationsim:Fly In</value>
+	<_name>Fly In</_name>
+      </restriction>
+      <restriction>
+	<value>animationsim:Bounce</value>
+	<_name>Bounce</_name>
+      </restriction>
+      <restriction>
+	<value>animationsim:Rotate In</value>
+	<_name>Rotate In</_name>
+      </restriction>
+      <restriction>
+	<value>animationsim:Sheet</value>
+	<_name>Sheet</_name>
+      </restriction>
+      <restriction>
+	<value>animationsim:Expand</value>
+	<_name>Expand</_name>
+      </restriction>
+      <restriction>
+	<value>animationsim:Expand Piecewise</value>
+	<_name>Expand Piecewise</_name>
+      </restriction>
+    </extension>
+
+  </plugin>
+</compiz>

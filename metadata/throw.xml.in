@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<compiz>
+  <plugin name="throw" useBcop="true">
+    <_short>Throw Windows</_short>
+    <_long>Windows have a velocity once they are released after moving</_long>
+	<category>Utility</category>
+	<deps>
+		<relation type="after">
+			<plugin>resize</plugin>
+		</relation>
+	</deps>
+    <screen>
+     <group>
+	<option type="float" name="velocity_x">
+	    <_short>X Velocity Multiplier</_short>
+	    <_long>X Velocity Multipler</_long>
+	    <min>1.0</min>
+	    <max>100.0</max>
+	    <default>10.0</default>
+	</option>
+	<option type="float" name="velocity_y">
+	    <_short>Y Velocity Multiplier</_short>
+	    <_long>Y Velocity Multipler</_long>
+	    <min>1.0</min>
+	    <max>100.0</max>
+	    <default>10.0</default>
+	</option>
+	<option type="float" name="friction_constant">
+	    <_short>Friction constant</_short>
+	    <_long>How much friction the screen provides</_long>
+	    <min>1.0</min>
+	    <max>100.0</max>
+	    <default>10.0</default>
+	</option>
+	<option type="bool" name="constrain_x">
+	    <_short>Constrain X</_short>
+	    <_long>Constrain window in display width</_long>
+	    <default>false</default>
+	</option>
+	<option type="bool" name="constrain_y">
+	    <_short>Constrain Y</_short>
+	    <_long>Constrain window in display height</_long>
+	    <default>true</default>
+	</option>
+      </group>
+    </screen>
+  </plugin>
+</compiz>

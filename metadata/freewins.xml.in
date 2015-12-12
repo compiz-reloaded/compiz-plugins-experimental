@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compiz>
+    <plugin name="freewins" useBcop="true">
+	<_short>Freely Transformable Windows</_short>
+	<_long>Freely transform windows</_long>
+	<category>Effects</category>
+	<deps>
+		<relation type="after">
+			<plugin>scale</plugin>
+            <plugin>ring</plugin>
+            <plugin>shift</plugin>
+            <plugin>shelf</plugin>
+            <plugin>group</plugin>
+            <plugin>wobbly</plugin>
+            <plugin>animation</plugin>
+            <plugin>water</plugin>
+            <plugin>cubeaddon</plugin>
+            <plugin>3d</plugin>
+		</relation>
+	</deps>
+	<display>
+	<option name='rotate' type='action'/>
+	<option name='increment_rotate' type='action'/>
+	<option name='scale' type='action'/>
+	<group>
+	<_short>Free Transformation</_short>
+	    <option type="button" name="initiate_rotation_button">
+			<_short>Initiate Rotation</_short>
+			<_long>Start Free Rotation</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;Button1</default>
+	    </option>
+	    <option type="button" name="initiate_scale_button">
+			<_short>Initiate Scaling</_short>
+			<_long>Start Free Rotation</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;Button3
+			</default>
+	    </option>
+	    <option type="button" name="reset_button">
+			<_short>Reset</_short>
+			<_long>Reset Transformation</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;Button2
+			</default>
+	    </option>
+	    <option type="key" name="reset_key">
+			<_short>Reset</_short>
+			<_long>Reset Transformation</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;r</default>
+	    </option>
+	    <option type="key" name="toggle_axis_key">
+			<_short>Axis help toggle</_short>
+			<_long>Axis selection helper</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;h</default>
+	    </option>
+        <subgroup>
+        <_short>Transformation Behaviour</_short>
+        <option name="snap_mods" type="list">
+          <_short>Snap Modifier</_short>
+          <_long>Use this bindings to enable/disable snapping.</_long>
+		  <type>int</type>
+		  <min>0</min>
+		  <max>3</max>
+		  <desc>
+			  <value>0</value>
+			  <_name>Shift</_name>
+		  </desc>
+		  <desc>
+			  <value>1</value>
+			  <_name>Alt</_name>
+		  </desc>
+		  <desc>
+			  <value>2</value>
+			  <_name>Control</_name>
+		  </desc>
+		  <desc>
+			  <value>3</value>
+			  <_name>Meta</_name>
+		  </desc>
+        </option>
+        </subgroup>
+        <subgroup>
+        <_short>Rotation</_short>
+          <option name="invert_mods" type="list">
+          <_short>Invert Modifier</_short>
+          <_long>Use this bindings to invert the rotation mode.</_long>
+		  <type>int</type>
+		  <min>0</min>
+		  <max>3</max>
+		  <desc>
+			  <value>0</value>
+			  <_name>Shift</_name>
+		  </desc>
+		  <desc>
+			  <value>1</value>
+			  <_name>Alt</_name>
+		  </desc>
+		  <desc>
+			  <value>2</value>
+			  <_name>Control</_name>
+		  </desc>
+		  <desc>
+			  <value>3</value>
+			  <_name>Meta</_name>
+		  </desc>
+        </option>
+        </subgroup>
+    </group>
+    <group>
+    <_short>Manual Transformation</_short>
+	<subgroup>
+	    <_short>Scaling</_short>
+        <option type="button" name="scale_up_button">
+		    <_short>Scale Up</_short>
+		    <_long>Scale up by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;Button4
+			</default>
+        </option>
+        <option type="button" name="scale_down_button">
+		    <_short>Scale Down</_short>
+		    <_long>Scale down by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;Button5
+			</default>
+        </option>
+	    <_short>Scaling</_short>
+        <option type="key" name="scale_up_key">
+		    <_short>Scale Up</_short>
+		    <_long>Scale up by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;Page_Up
+			</default>
+        </option>
+        <option type="key" name="scale_down_key">
+		    <_short>Scale Down</_short>
+		    <_long>Scale down by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;Page_Down
+			</default>
+        </option>
+    </subgroup>
+    <subgroup>
+    <_short>Rotation</_short>
+	    <option type="key" name="rotate_up_key">
+			<_short>Rotate Up</_short>
+			<_long>Rotate up by one increment</_long>
+            <default>&lt;Control&gt;&lt;Shift&gt;w
+			</default>
+	    </option>
+	    <option type="key" name="rotate_down_key">
+			<_short>Rotate Down</_short>
+			<_long>Rotate down by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;s
+			</default>
+	    </option>
+	    <option type="key" name="rotate_left_key">
+			<_short>Rotate Left</_short>
+			<_long>Rotate left by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;d
+			</default>
+	    </option>
+	    <option type="key" name="rotate_right_key">
+			<_short>Rotate Right</_short>
+			<_long>Rotate right by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;a
+			</default>
+	    </option>
+	    <option type="key" name="rotate_c_key">
+			<_short>Rotate Clockwise</_short>
+			<_long>Rotate clockwise by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;e
+			</default>
+	    </option>
+	    <option type="key" name="rotate_cc_key">
+			<_short>Rotate Counter-Clockwise</_short>
+			<_long>Rotate counter-clockwise by one increment</_long>
+			<default>&lt;Control&gt;&lt;Shift&gt;q
+			</default>
+	    </option>
+	</subgroup>
+	</group>
+	</display>
+	<screen>
+	<group>
+	<_short>Free Transformation</_short>
+    <subgroup>
+    <_short>Transformation Behaviour</_short>
+	    <option type="bool" name="snap">
+			    <_short>Snap by default</_short>
+			    <_long>Snap to common points by default</_long>
+			    <default>False</default>
+	    </option>
+        <option type="int" name="snap_threshold">
+			    <_short>Snap Threshold</_short>
+			    <_long>Snap to every one of these angles</_long>
+			    <min>1</min>
+			    <max>100</max>
+	    </option>
+	    <option type="float" name="mouse_sensitivity">
+			<_short>Mouse sensitivity</_short>
+			<_long>How sensitive the mouse movement should be</_long>
+			<default>1.0</default>
+			<min>0.1</min>
+			<max>10.0</max>
+	    </option>
+    </subgroup>
+	    <subgroup>
+	    <_short>Scaling</_short>
+	        <option type="int" name="scale_mode">
+			    <_short>Scale Mode</_short>
+			    <!-- Comment out 'To Opposite Corner' for now as it is EXTREMELY BROKEN !-->
+			    <_long>How to scale windows</_long>
+			    <desc>
+                    <value>0</value><name>To Centre</name>
+                </desc>
+			    <desc>
+                    <value>1</value><name>To Opposite Corner</name>
+                </desc>
+                <min>0</min>
+                <max>0</max>
+                <default>0</default>
+	        </option>
+	        <option type="bool" name="allow_negative">
+			    <_short>Allow negative</_short>
+			    <_long>Allow negative scaling</_long>
+			    <default>True</default>
+	        </option>
+	        <option type="bool" name="scale_uniform">
+			    <_short>Maintain aspect ratio</_short>
+			    <_long>Keep aspect ratio constant when scaling</_long>
+			    <default>True</default>
+	        </option>
+	        <option type="float" name="min_scale">
+			    <_short>Minimum scale</_short>
+			    <_long>How small the scale is allowed to be when 'Allow Negative' is not toggled</_long>
+			    <default>0.1</default>
+			    <min>0.01</min>
+			    <max>1.0</max>
+	        </option>
+	    </subgroup>
+	    <subgroup>
+	    <_short>Rotation</_short>
+	        <option type="int" name="z_axis_rotation">
+			    <_short>Rotation Type</_short>
+			    <_long>2D/3D Rotation Type</_long>
+			    <desc>
+                    <value>0</value><name>Always 2D</name>
+                </desc>
+			    <desc>
+                    <value>1</value><name>Always 3D</name>
+                </desc>
+			    <desc>
+                    <value>2</value><name>Determine on Click</name>
+                </desc>
+			    <desc>
+                    <value>3</value><name>Interchangable</name>
+                </desc>
+			    <desc>
+                    <value>4</value><name>Switch</name>
+                </desc>
+			    <desc>
+                    <value>5</value><name>Trackball</name>
+                </desc>
+                <default>2</default>
+                <min>0</min><max>4</max>
+	        </option>
+	        <option type="int" name="rotation_axis">
+			    <_short>Rotation Axis</_short>
+			    <_long>How Freely Transformable Windows should determine the rotation axis</_long>
+			    <desc>
+                    <value>0</value><name>Always Centre</name>
+                </desc>
+			    <desc>
+                    <value>1</value><name>Click Point</name>
+                </desc>
+			    <desc>
+                    <value>2</value><name>Opposite to Click</name>
+                </desc>
+			    <desc>
+                    <value>3</value><name>Nearest Corner</name>
+                </desc>
+                <min>0</min>
+                <max>2</max>
+                <default>0</default>
+	        </option>
+            <option type="float" name="3D_percent">
+                <_short>3D Rotation Percentage</_short>
+                <_long>Percentage of the window area used for 3D rotation</_long>
+                <default>35.0</default>
+                <min>10.0</min>
+                <max>90.0</max>
+            </option>
+	        <option type="bool" name="auto_zoom">
+			    <_short>Auto-Zoom</_short>
+			    <_long>Auto-Zoom when rotating so that windows do not get too large</_long>
+			    <default>False</default>
+	        </option>
+	        <option type="bool" name="disable_on_transformed_screen">
+			    <_short>Disable on Transformed Screen</_short>
+			    <_long>Disable rotation on transformed screen. This prevents ugly looking clipped windows when the screen is transformed</_long>
+			    <default>False</default>
+	        </option>
+        </subgroup>
+        <subgroup>
+            <_short>Transformation Behaviour</_short>
+            <option type="float" name="speed">
+                <_short>Speed of window rotation</_short>
+                <_long>How fast the window should rotate</_long>
+                <default>5.0</default>
+                <min>0.1</min>
+                <max>15.0</max>
+            </option>
+        </subgroup>
+    </group>
+    <group>
+    <_short>Manual Transformation</_short>
+    <subgroup>
+        <_short>Rotation</_short>
+            <option type="float" name="rotate_increment_amount">
+			    <_short>Rotate increment amount</_short>
+			    <_long>How far to rotate a window when rotating an 'increment'</_long>
+			    <default>10.0</default>
+			    <min>1.0</min>
+			    <max>100.0</max>
+	        </option>
+    </subgroup>
+    <subgroup>
+    <_short>Scaling</_short>
+        <option type="float" name="scale_increment_amount">
+			<_short>Scale increment amount</_short>
+			<_long>How much to scale a window by when scaling by an 'increment'</_long>
+			<default>0.3</default>
+			<min>0.01</min>
+			<max>0.5</max>
+	    </option>
+	</subgroup>
+	</group>
+    <group>
+    <_short>Misc</_short>
+        <subgroup>
+        <_short>Input Prevention</_short>
+        <option name="shape_window_types" type="match">
+          <_short>Prevented Input Window Types</_short>
+          <_long>Window types that should be Shaped. Disable problematic windows here</_long>
+          <default>(Toolbar | Utility | Dialog | ModalDialog | Normal)</default>
+        </option>
+        <option type="bool" name="shape_input">
+		    <_short>Prevent input</_short>
+		    <_long>Prevent input in transformed windows</_long>
+		    <default>True</default>
+	    </option>
+        <option type="bool" name="immediate_moves">
+            <_short>Immediate Moves</_short>
+            <_long>Don't allow plugins like wobbly to transform the transformed window while it's being moved</_long>
+            <default>True</default>
+        </option>
+        </subgroup>
+       <subgroup>
+	   <_short>Helper Options</_short>
+	    <option type="color" name="circle_color" >
+					<_short>Helper Circle Color</_short>
+					<_long>Color of the circle.</_long>
+					<default>
+						<red>0x5400</red>
+						<green>0xHE00</green>
+						<blue>0xFB00</blue>
+						<alpha>0x8000</alpha>
+					</default>
+		</option>
+		<option type="color" name="line_color" >
+					<_short>Helper Line Color</_short>
+					<_long>Helper line color around the circle</_long>
+					<default>
+						<red>0x1800</red>
+						<green>0x0000</green>
+						<blue>0xFF00</blue>
+						<alpha>0xFFFF</alpha>
+					</default>
+		</option>
+		<option type="color" name="cross_line_color" >
+					<_short>Helper Cross Line Color</_short>
+					<_long>Color of the cross line</_long>
+					<default>
+						<red>0x1800</red>
+						<green>0x0000</green>
+						<blue>0xFF00</blue>
+						<alpha>0xFFFF</alpha>
+					</default>
+		</option>
+        <option type="bool" name="show_circle">
+		    <_short>Show 3D rotation circle</_short>
+		    <_long>Show click area for 3D rotation</_long>
+		    <default>True</default>
+	    </option>
+        <option type="bool" name="show_gizmo">
+		    <_short>Show rotation gizmo</_short>
+		    <_long>Show rotation axis info</_long>
+		    <default>True</default>
+	    </option>
+        <option type="bool" name="show_cross">
+		    <_short>Show crosshair</_short>
+		    <_long>Show crosshair (for scaling click regions)</_long>
+		    <default>True</default>
+	    </option>
+        <option type="bool" name="show_region">
+		    <_short>Show input regions</_short>
+		    <_long>Show input region rectangle</_long>
+		    <default>True</default>
+	    </option>
+	</subgroup>
+    </group>
+	   </screen>
+    </plugin>
+</compiz>

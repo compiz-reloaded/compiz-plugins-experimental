@@ -1,0 +1,4 @@
+You need the XScreenSaver extension.
+Ubuntu users, you need to install thoses packages: x11proto-scrnsaver-dev libxss-dev
+
+If you get a C/C++ conflict, you need to update bcop.

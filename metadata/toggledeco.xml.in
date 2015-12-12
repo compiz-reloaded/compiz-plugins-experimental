@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<compiz>
+  <plugin name="toggledeco" useBcop="true">
+    <_short>Toggle Decoration</_short>
+	<_long>Toggles decoration.</_long>
+	<category>Window Management</category>
+    <display>
+      <group>
+        <_short>Bindings</_short>
+        <option name="trigger_key" type="key">
+          <_short>Toggle decoration</_short>
+          <_long>Toggles decoration on/off.</_long>
+          <default>&lt;Shift&gt;d</default>
+        </option>
+        <option name="trigger_all_key" type="key">
+          <_short>Toggle decoration on desktop</_short>
+          <_long>Toggles decoration of every window on the desktop.</_long>
+          <default>&lt;Shift&gt;a</default>
+        </option>
+      </group>
+    </display>
+  </plugin>
+</compiz>
