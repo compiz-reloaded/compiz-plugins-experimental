@@ -121,6 +121,33 @@ AC_MSG_RESULT($GL_LIBS)
 AC_SUBST(GL_CFLAGS)
 AC_SUBST(GL_LIBS)
 
+
+PKG_CHECK_MODULES(CAIRO, cairo-xlib cairo >= 1.0, [have_cairo=yes], [have_cairo=no])
+AM_CONDITIONAL(FREEWINS_PLUGIN, test "x$have_cairo" = "xyes")
+
+PKG_CHECK_MODULES(COMPIZTEXT, compiz-text, [have_compiz_text=yes], [have_compiz_text=no])
+AM_CONDITIONAL(STACKSWITCH_PLUGIN, test "x$have_compiz_text" = "xyes")
+AM_CONDITIONAL(WORKSPACENAMES_PLUGIN, test "x$have_compiz_text" = "xyes")
+
+PKG_CHECK_MODULES(COMPIZCUBE, compiz-cube, [have_compiz_cube=yes], [have_compiz_cube=no])
+AM_CONDITIONAL(ATLANTIS_PLUGIN, test "x$have_compiz_cube" = "xyes")
+AM_CONDITIONAL(CUBEMODEL_PLUGIN, test "x$have_compiz_cube" = "xyes")
+AM_CONDITIONAL(PHOTOWHEEL_PLUGIN, test "x$have_compiz_cube" = "xyes")
+AM_CONDITIONAL(SNOWGLOBE_PLUGIN, test "x$have_compiz_cube" = "xyes")
+
+PKG_CHECK_MODULES(COMPIZMOUSEPOLL, compiz-mousepoll, [have_compiz_mousepoll=yes], [have_compiz_mousepoll=no])
+AM_CONDITIONAL(GHOST_PLUGIN, test "x$have_compiz_mousepoll" = "xyes")
+AM_CONDITIONAL(WIZARD_PLUGIN, test "x$have_compiz_mousepoll" = "xyes")
+
+PKG_CHECK_MODULES(XSCRNSAVER, xscrnsaver, [have_xscrnsaver=yes], [have_xscrnsaver=no])
+AM_CONDITIONAL(SCREENSAVER_PLUGIN, test "x$have_xscrnsaver" = "xyes")
+
+PKG_CHECK_MODULES(COMPIZANIMATION, compiz-animation, [have_compiz_animation=yes], [have_compiz_animation=no])
+AM_CONDITIONAL(ANIMATIONSIM_PLUGIN, test "x$have_compiz_animation" = "xyes")
+
+PKG_CHECK_MODULES(COMPIZANIMATIONADDON, compiz-animationaddon, [have_compiz_animationaddon=yes], [have_compiz_animationaddon=no])
+AM_CONDITIONAL(ANIMATIONPLUS_PLUGIN, test "x$have_compiz_animationaddon" = "xyes")
+
 AC_OUTPUT([
 Makefile
 images/Makefile
