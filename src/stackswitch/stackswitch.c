@@ -164,7 +164,7 @@ isStackswitchWin (CompWindow *w)
 		return FALSE;
 	}
 	else
-    	    return FALSE;
+	    return FALSE;
     }
 
     if (ss->type == StackswitchTypeNormal)
@@ -212,7 +212,7 @@ stackswitchFreeWindowTitle (CompScreen *s)
     ss->textData = NULL;
 }
 
-static void 
+static void
 stackswitchRenderWindowTitle (CompScreen *s)
 {
     CompTextAttrib tA;
@@ -236,7 +236,7 @@ stackswitchRenderWindowTitle (CompScreen *s)
     tA.maxWidth = (ox2 - ox1) * 3 / 4;
     tA.maxHeight = 100;
 
-    tA.family = "Sans";
+    tA.family = stackswitchGetTitleFontFamily (s);
     tA.size = stackswitchGetTitleFontSize (s);
     tA.color[0] = stackswitchGetTitleFontColorRed (s);
     tA.color[1] = stackswitchGetTitleFontColorGreen (s);
@@ -327,9 +327,9 @@ stackswitchDrawWindowTitle (CompScreen    *s,
 		XRectangle workArea;
 		getWorkareaForOutput (s, s->currentOutputDev, &workArea);
 
-	    	if (stackswitchGetTitleTextPlacement (s) ==
+		if (stackswitchGetTitleTextPlacement (s) ==
 		    TitleTextPlacementAbove)
-    		    y = oy1 + workArea.y + height;
+		    y = oy1 + workArea.y + height;
 		else
 		    y = oy1 + workArea.y + workArea.height - 96;
 	    }
@@ -386,7 +386,7 @@ stackswitchDrawWindowTitle (CompScreen    *s,
 
 	    glEnd ();
 	}
-	
+
 	glColor4f (1.0, 1.0, 1.0, 1.0);
 
 	glBegin (GL_QUADS);
@@ -450,7 +450,7 @@ stackswitchPaintWindow (CompWindow              *w,
 
 	STACKSWITCH_WINDOW (w);
 
-    	if (w->mapNum)
+	if (w->mapNum)
 	{
 	    if (!w->texture->pixmap && !w->bindFailed)
 		bindWindow (w);
@@ -537,7 +537,7 @@ stackswitchPaintWindow (CompWindow              *w,
 		scale *= sw->scale;
 
 		mask |= PAINT_WINDOW_BLEND_MASK;
-		
+
 		/* if we paint the icon for a minimized window, we need
 		   to force the usage of a good texture filter */
 		if (!w->texture->pixmap)
@@ -555,7 +555,7 @@ stackswitchPaintWindow (CompWindow              *w,
 
 		w->vCount = w->indexCount = 0;
 		(*w->screen->addWindowGeometry) (w, &matrix, 1,
-	    					 &iconReg, &infiniteRegion);
+						 &iconReg, &infiniteRegion);
 
 		if (w->vCount)
 		{
@@ -612,7 +612,7 @@ compareWindows (const void *elem1,
     return w2->activeNum - w1->activeNum;
 }
 
-static int 
+static int
 compareStackswitchWindowDepth (const void *elem1,
 			       const void *elem2)
 {
@@ -781,7 +781,7 @@ layoutThumbs (CompScreen *s)
 	    hasActive++;
     }
 
-    /* sort the draw list so that the windows with the 
+    /* sort the draw list so that the windows with the
        lowest Y value (the windows being farest away)
        are drawn first */
     qsort (ss->drawSlots, ss->nWindows, sizeof (StackswitchDrawSlot),
@@ -1015,7 +1015,7 @@ adjustStackswitchVelocity (CompWindow *w)
 	amount = 2.0f;
 
     sw->rotVelocity = (amount * sw->rotVelocity + adjust) / (amount + 1.0f);
-    
+
     if (fabs (dx) < 0.1f && fabs (sw->xVelocity) < 0.2f &&
 	fabs (dy) < 0.1f && fabs (sw->yVelocity) < 0.2f &&
 	fabs (ds) < 0.001f && fabs (sw->scaleVelocity) < 0.002f &&
@@ -1084,17 +1084,17 @@ stackswitchPaintOutput (CompScreen		*s,
 				   &infiniteRegion, 0);
 	    }
 	}
-	
+
 
 	CompTransform tTransform = *transform;
 	transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &tTransform);
 	glLoadMatrixf (tTransform.m);
-	
+
 	if (ss->textData && (ss->state != StackswitchStateIn) && aw)
 	    stackswitchDrawWindowTitle (s, &sTransform, aw);
-	
+
 	ss->paintingSwitcher = FALSE;
-	
+
 	glPopMatrix ();
     }
 
@@ -1116,7 +1116,7 @@ stackswitchPreparePaintScreen (CompScreen *s,
 	amount = msSinceLastPaint * 0.05f * stackswitchGetSpeed (s);
 	steps  = amount / (0.5f * stackswitchGetTimestep (s));
 
-	if (!steps) 
+	if (!steps)
 	    steps = 1;
 	chunk  = amount / (float) steps;
 
@@ -1144,8 +1144,8 @@ stackswitchPreparePaintScreen (CompScreen *s,
 		else if (sw->slot)
 		{
 		    sw->scale    = sw->slot->scale;
-	    	    sw->tx       = sw->slot->x;
-	    	    sw->ty       = sw->slot->y;
+		    sw->tx       = sw->slot->x;
+		    sw->ty       = sw->slot->y;
 		    if (w == ss->selectedWindow)
 			sw->rotation = ss->rotation;
 		    else
@@ -1214,30 +1214,30 @@ stackswitchTerminate (CompDisplay     *d,
 	    continue;
 
 	if (ss->grabIndex)
-    	{
-    	    removeScreenGrab (s, ss->grabIndex, 0);
-    	    ss->grabIndex = 0;
+	{
+	    removeScreenGrab (s, ss->grabIndex, 0);
+	    ss->grabIndex = 0;
 	}
 
 	if (ss->state != StackswitchStateNone)
-    	{
-    	    CompWindow *w;
+	{
+	    CompWindow *w;
 
-    	    for (w = s->windows; w; w = w->next)
-    	    {
-    		STACKSWITCH_WINDOW (w);
-    
+	    for (w = s->windows; w; w = w->next)
+	    {
+		STACKSWITCH_WINDOW (w);
+
 		if (sw->slot)
 		{
 		    free (sw->slot);
 		    sw->slot = NULL;
 
-    		    sw->adjust = TRUE;
+		    sw->adjust = TRUE;
 		}
 	    }
 	    ss->moreAdjust = TRUE;
-    	    ss->state = StackswitchStateIn;
-    	    damageScreen (s);
+	    ss->state = StackswitchStateIn;
+	    damageScreen (s);
 
 	    if (!(state & CompActionStateCancel) && ss->selectedWindow &&
 		    !ss->selectedWindow->destroyed)
@@ -1264,13 +1264,13 @@ stackswitchInitiate (CompScreen      *s,
 {
     CompWindow *w;
     CompMatch  *match;
-    int        count; 
+    int        count;
 
     STACKSWITCH_SCREEN (s);
 
     if (otherScreenGrabExist (s, "stackswitch", NULL))
 	return FALSE;
-	   
+
     ss->currentMatch = stackswitchGetWindowMatch (s);
 
     match = getMatchOptionNamed (option, nOption, "match", NULL);
@@ -1313,7 +1313,7 @@ stackswitchInitiate (CompScreen      *s,
 	    sw->tx = w->attrib.x - w->input.left;
 	    sw->ty = w->attrib.y + w->attrib.height + w->input.bottom;
 	}
-    	ss->moreAdjust = TRUE;
+	ss->moreAdjust = TRUE;
 	damageScreen (s);
     }
 
@@ -1344,13 +1344,13 @@ stackswitchDoSwitch (CompDisplay     *d,
 	{
 	    if (type == StackswitchTypeGroup)
 	    {
-    		CompWindow *w;
-    		w = findWindowAtDisplay (d, getIntOptionNamed (option, nOption,
-    							       "window", 0));
-    		if (w)
-    		{
-    		    ss->type = StackswitchTypeGroup;
-    		    ss->clientLeader =
+		CompWindow *w;
+		w = findWindowAtDisplay (d, getIntOptionNamed (option, nOption,
+							       "window", 0));
+		if (w)
+		{
+		    ss->type = StackswitchTypeGroup;
+		    ss->clientLeader =
 			(w->clientLeader) ? w->clientLeader : w->id;
 		    ret = stackswitchInitiate (s, action, state, option, nOption);
 		}
@@ -1371,7 +1371,7 @@ stackswitchDoSwitch (CompDisplay     *d,
 	}
 
 	if (ret)
-    	    switchToWindow (s, nextWindow);
+	    switchToWindow (s, nextWindow);
     }
 
     return ret;
@@ -1444,7 +1444,7 @@ stackswitchPrevGroup (CompDisplay     *d,
 }
 
 
-static void 
+static void
 stackswitchWindowRemove (CompDisplay *d,
 			 CompWindow  *w)
 {
@@ -1460,7 +1460,7 @@ stackswitchWindowRemove (CompDisplay *d,
 	    return;
 
 	if (isStackswitchWin (w))
-    	    return;
+	    return;
 
 	selected = ss->selectedWindow;
 
@@ -1474,7 +1474,7 @@ stackswitchWindowRemove (CompDisplay *d,
 		{
 		    if (i < (ss->nWindows - 1))
 			selected = ss->windows[i + 1];
-    		    else
+		    else
 			selected = ss->windows[0];
 
 		    ss->selectedWindow = selected;
@@ -1549,11 +1549,11 @@ stackswitchHandleEvent (CompDisplay *d,
 	    w = findWindowAtDisplay (d, event->xproperty.window);
 	    if (w)
 	    {
-    		STACKSWITCH_SCREEN (w->screen);
-    		if (ss->grabIndex && (w == ss->selectedWindow))
-    		{
-    		    stackswitchRenderWindowTitle (w->screen);
-    		    damageScreen (w->screen);
+		STACKSWITCH_SCREEN (w->screen);
+		if (ss->grabIndex && (w == ss->selectedWindow))
+		{
+		    stackswitchRenderWindowTitle (w->screen);
+		    damageScreen (w->screen);
 		}
 	    }
 	}

@@ -132,6 +132,12 @@
 					<_long>Selects if the window title should be displayed in bold font or not.</_long>
 					<default>false</default>
 				</option>
+				<option name="title_font_family" type="string">
+					<_short>Font Family</_short>
+					<_long>Font family for the window title</_long>
+					<hints>family;</hints>
+					<default>Sans</default>
+				</option>
 				<option name="title_font_size" type="int">
 					<_short>Font Size</_short>
 					<_long>Font size for the window title</_long>

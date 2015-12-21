@@ -109,7 +109,7 @@ wsnamesRenderNameText (CompScreen *s)
     attrib.maxWidth  = (ox2 - ox1) * 3 / 4;
     attrib.maxHeight = 100;
 
-    attrib.family = "Sans";
+    attrib.family = workspacenamesGetTextFontFamily (s);
     attrib.size = workspacenamesGetTextFontSize (s);
 
     attrib.color[0] = workspacenamesGetFontColorRed (s);
@@ -157,9 +157,9 @@ wsnamesDrawText (CompScreen *s)
 		XRectangle workArea;
 		getWorkareaForOutput (s, s->currentOutputDev, &workArea);
 
-	    	if (workspacenamesGetTextPlacement (s) ==
+		if (workspacenamesGetTextPlacement (s) ==
 		    TextPlacementTopOfScreen)
-    		    y = oy1 + workArea.y + (2 * border) + ws->textData->height;
+		    y = oy1 + workArea.y + (2 * border) + ws->textData->height;
 		else
 		    y = oy1 + workArea.y + workArea.height - (2 * border);
 	    }
@@ -205,7 +205,7 @@ wsnamesPaintOutput (CompScreen		    *s,
 
 	glPopMatrix ();
     }
-	
+
     return status;
 }
 
