@@ -1,6 +1,6 @@
 AC_PREREQ(2.57)
 
-AC_INIT([compiz-plugins-unsupported], [0.8.9], [maniac@opencompositing.org])
+AC_INIT([compiz-plugins-experimental], [0.8.9], [chat-to-me@raveit.de])
 AM_INIT_AUTOMAKE([1.9 foreign dist-xz no-dist-gzip])
 AC_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
@@ -16,7 +16,7 @@ IT_PROG_INTLTOOL([0.35.0])
 AC_CONFIG_MACRO_DIR([m4])
 AC_SUBST(ALL_LINGUAS)
 AM_GLIB_GNU_GETTEXT
-GETTEXT_PACKAGE=compiz-plugins-unsupported
+GETTEXT_PACKAGE=compiz-plugins-experimental
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package.])
 AC_SUBST(GETTEXT_PACKAGE)
 
