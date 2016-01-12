@@ -1,7 +1,7 @@
 AC_PREREQ(2.57)
 
 AC_INIT([compiz-plugins-experimental], [0.8.9], [chat-to-me@raveit.de])
-AM_INIT_AUTOMAKE([1.9 foreign dist-xz no-dist-gzip])
+AM_INIT_AUTOMAKE([1.9 tar-ustar dist-xz no-dist-gzip check-news])
 AC_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
 
