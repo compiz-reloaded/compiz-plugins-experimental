@@ -31,6 +31,8 @@ AM_CFLAGS =                                \
 	-DLOCALEDIR="\"@datadir@/locale\""  \
 	-DIMAGEDIR='"$(imagedir)"'
 
+AM_CXXFLAGS = $(AM_CFLAGS)
+
 moduledir = $(plugindir)
 
 if SCREENSAVER_PLUGIN
