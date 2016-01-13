@@ -1,7 +1,28 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+metadata/anaglyph.xml.in
+metadata/animationplus.xml.in
+metadata/animationsim.xml.in
 metadata/atlantis.xml.in
 metadata/cubemodel.xml.in
+metadata/dialog.xml.in
 metadata/elements.xml.in
+metadata/fireflies.xml.in
+metadata/freewins.xml.in
 metadata/fakeargb.xml.in
+metadata/ghost.xml.in
 metadata/mswitch.xml.in
+metadata/photo.xml.in
+metadata/putplus.xml.in
+metadata/smartput.xml.in
 metadata/snow.xml.in
+metadata/snowglobe.xml.in
+metadata/stackswitch.xml.in
+metadata/star.xml.in
+metadata/static.xml.in
+metadata/swap.xml.in
+metadata/throw.xml.in
 metadata/tile.xml.in
+metadata/toggledeco.xml.in
+metadata/wizard.xml.in
+metadata/workspacenames.xml.in

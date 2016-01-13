@@ -15,6 +15,8 @@ EXTRA_DIST =	        \
 	autumn2.png \
 	bubbles1.png \
 	bubbles2.png \
+	fireflies1.svg \
+	fireflies2.svg \
 	snow1.png \
 	snow2.png \
 	stars1.png

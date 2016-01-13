@@ -5,7 +5,7 @@ if WIZARD_PLUGIN
 libwizard_la_LDFLAGS = $(PFLAGS)
 libwizard_la_LIBADD = @COMPIZ_LIBS@
 nodist_libwizard_la_SOURCES = wizard_options.c wizard_options.h
-dist_libwizard_la_SOURCES = wizard.c
+dist_libwizard_la_SOURCES = wizard.c wizard_tex.h
 endif
 
 BUILT_SOURCES = $(nodist_libwizard_la_SOURCES)

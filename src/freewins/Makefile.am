@@ -5,7 +5,7 @@ if FREEWINS_PLUGIN
 libfreewins_la_LDFLAGS = $(PFLAGS)
 libfreewins_la_LIBADD = @COMPIZ_LIBS@ -lGLU -lcairo
 nodist_libfreewins_la_SOURCES = freewins_options.c freewins_options.h
-dist_libfreewins_la_SOURCES = freewins.c
+dist_libfreewins_la_SOURCES = freewins.c freewins.h
 endif
 
 BUILT_SOURCES = $(nodist_libfreewins_la_SOURCES)
