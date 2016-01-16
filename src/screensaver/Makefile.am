@@ -23,15 +23,13 @@ endif
 
 BUILT_SOURCES = $(nodist_libscreensaver_la_SOURCES)
 
-AM_CFLAGS =                                \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \
 	-DLIBDIR='"$(libdir)"'              \
 	-DLOCALEDIR="\"@datadir@/locale\""  \
 	-DIMAGEDIR='"$(imagedir)"'
-
-AM_CXXFLAGS = $(AM_CFLAGS)
 
 moduledir = $(plugindir)
 

@@ -8,7 +8,7 @@ dist_libtile_la_SOURCES = tile.c
 
 BUILT_SOURCES = $(nodist_libtile_la_SOURCES)
 
-AM_CFLAGS =                                \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \

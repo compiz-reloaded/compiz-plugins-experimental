@@ -8,7 +8,7 @@ dist_libtoggledeco_la_SOURCES = toggledeco.c
 
 BUILT_SOURCES = $(nodist_libtoggledeco_la_SOURCES)
 
-AM_CFLAGS =                                \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \

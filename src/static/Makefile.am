@@ -8,7 +8,7 @@ dist_libstatic_la_SOURCES = static.c
 
 BUILT_SOURCES = $(nodist_libstatic_la_SOURCES)
 
-AM_CFLAGS =                                \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \

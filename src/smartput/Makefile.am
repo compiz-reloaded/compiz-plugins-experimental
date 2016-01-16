@@ -8,7 +8,7 @@ dist_libsmartput_la_SOURCES = smartput.c
 
 BUILT_SOURCES = $(nodist_libsmartput_la_SOURCES)
 
-AM_CFLAGS =                                \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \

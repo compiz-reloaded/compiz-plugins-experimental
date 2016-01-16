@@ -8,7 +8,7 @@ dist_libdialog_la_SOURCES = dialog.c
 
 BUILT_SOURCES = $(nodist_libdialog_la_SOURCES)
 
-AM_CFLAGS =                                \
+AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
 	-DDATADIR='"$(compdatadir)"'        \
