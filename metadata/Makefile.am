@@ -44,13 +44,18 @@ endif
 #dialog depends on regex
 
 if SCREENSAVER_PLUGIN
-#depends on xscreensaver (external)
+#depends on text and xscreensaver (external)
 screensaverxml = screensaver.xml.in
 endif
 
 if FREEWINS_PLUGIN
 #depends on cairo-xlib (external)
 freewinsxml = freewins.xml.in
+endif
+
+if ELEMENTS_PLUGIN
+#depends on text
+elementsxml = elements.xml.in
 endif
 
 if STACKSWITCH_PLUGIN
@@ -66,7 +71,6 @@ endif
 xml_in_files =               \
 	anaglyph.xml.in       \
 	dialog.xml.in         \
-	elements.xml.in       \
 	fakeargb.xml.in       \
 	fireflies.xml.in      \
 	mswitch.xml.in        \
@@ -83,6 +87,7 @@ xml_in_files =               \
 	$(animationsimxml)    \
 	$(atlantisxml)        \
 	$(cubemodelxml)       \
+	$(elementsxml)        \
 	$(freewinsxml)        \
 	$(ghostxml)           \
 	$(photowheelxml)      \
