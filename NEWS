@@ -1,5 +1,21 @@
-Release 0.8.12
-==================================================================
+Release 0.8.12 (2016-02-12 Sorokin Alexei <sor.alexei@meowr.ru>)
+================================================================
+COMPIZ-RELOADED
+
+Rename project from compiz-plugins-unsupported to
+compiz-plugins-experimental.
+
+Plugin updates.
+
+Don't fail if compiz-plugins-main and compiz-plugins-extra
+development files are not present. Note that plugins are currently
+being excluded by that silently.
+
+New plugins collected: Anaglyph, Simple Animations, Animations Plus,
+ADDialog, Fireflies, Freely Transformable Windows, Ghost, Photowheel,
+Put Plus, Screensaver, Smart Put, Cube Snow Globe, Stars,
+Stack Window Switcher, Static Windows, Swap Windows, Throw Windows,
+Toggle Decoration, Wizard, Workspace Naming.
 
 Release 0.8.9 (2015-11-06 Wolfgang Ulbrich <chat-to-me@raveit.de>)
 ==================================================================
