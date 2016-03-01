@@ -1,11 +1,14 @@
-## Process this file with automake to produce Makefile.in
-
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 SUBDIRS = metadata include src po images
 
-EXTRA_DIST =            \
-    VERSION
+EXTRA_DIST =		    \
+	AUTHORS		    \
+	COPYING		    \
+	NEWS		    \
+	README.md	    \
+	VERSION		    \
+	autogen.sh
 
 DISTCLEANFILES =     \
     po/stamp-it \
