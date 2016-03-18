@@ -9,8 +9,6 @@ dist_libworkspacenames_la_SOURCES = workspacenames.c
 
 BUILT_SOURCES = $(nodist_libworkspacenames_la_SOURCES)
 
-BUILT_SOURCES = $(nodist_libworkspacenames_la_SOURCES)
-
 AM_CPPFLAGS =                              \
 	-I$(top_srcdir)/include             \
 	@COMPIZ_CFLAGS@                     \
