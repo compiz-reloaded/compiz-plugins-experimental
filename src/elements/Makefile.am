@@ -6,13 +6,7 @@ libelements_la_LIBADD = @COMPIZ_LIBS@
 nodist_libelements_la_SOURCES = elements_options.c  \
 			        elements_options.h
 dist_libelements_la_SOURCES = \
-	autumn.c \
-	bubbles.c \
-	elements.c  \
-	elements-internal.h \
-	fireflies.c \
-	snow.c \
-	stars.c
+	elements.c
 
 BUILT_SOURCES = $(nodist_libelements_la_SOURCES)
 

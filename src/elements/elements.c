@@ -1,1295 +1,603 @@
-/**
- * Compiz elements plugin
- * elements.c
- *
- * This plugin allows you to draw different 'elements' on your screen
- * such as snow, fireflies, starts, leaves and bubbles. It also has
- * a pluggable element creation interface
- *
- * Copyright (c) 2008 Sam Spilsbury <smspillaz@gmail.com>
- * Copyright (c) 2008 Patrick Fisher <pat@elementsplugin.com>
- *
- * This plugin was based on the works of the following authors:
- *
- * Snow Plugin:
- * Copyright (c) 2006 Eckhart P. <beryl@cornergraf.net>
- * Copyright (c) 2006 Brian Jørgensen <qte@fundanemt.com>
- *
- * Fireflies Plugin:
- * Copyright (c) 2006 Eckhart P. <beryl@cornergraf.net>
- * Copyright (c) 2006 Brian Jørgensen <qte@fundanemt.com>
- *
- * Stars Plugin:
- * Copyright (c) 2007 Kyle Mallory <kyle.mallory@utah.edu>
- *
- * Autumn Plugin
- * Copyright (c) 2007 Patrick Fisher <pat@elementsplugin.com>
- *
- * Extensions interface largely based off the Animation plugin
- * Copyright (c) 2006 Erkin Bahceci <erkinbah@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA  02110-1301, USA.
- **/
+    ////////////////////////////////////////////////////////////////////////
+   //////                  Elements for Compiz Fusion                //////
+  ////////////////////////////////////////////////////////////////////////
+/*                                                                       *
+ * 									 *
+ * 		     Copyleft (c) 2008 Patrick Fisher			 *
+ *			   pat@elementsplugin.com			 *
+ *		      http://www.elementsplugin.com/  			 *
+ *		        Based on the Snow Plugin			 *
+ * 		    By Eckhart P. and Brian Jørgensen			 *
+	
+
+ *         This program is free software; you can redistribute           *
+ *           it and/or modify it under the terms of the GNU              *
+ *                 General Public License version 2                      *
+
+ 
+ *          This program is distributed without ANY warranty		 *
+ *		WHATSOEVER. Not even an IMPLIED warranty		 *
+ *	     of MERCHANTABILITY or FITNESS for ANY PURPOSE.		 *
+ *	  See the GNU General Public License for more details. 		 *
+
+
+ *	     Elements was written from the ground-up, but is 
+ *	    both inspired and based on the Snow, Stars, Autumn		 *
+ *	    and Fireflies Plugins, written by various authors 		 *
+ *	     listed below. I (Pat Fisher) would like to thank		 *
+ * 	     each and every one of them for their help and		 *
+ *			       inspiration.				 *
+
+ *			Snow and Fireflies Plugins: 
+ * 	  Copyright (c) 2006 Eckhart P. <beryl@cornergraf.net>		 *
+ *	  Copyright (c) 2006 Brian Jørgensen <qte@fundanemt.com>	 *
+ * 	 								 *
+ * 			       Stars Plugin:				 *
+ * 	  Copyright (c) 2007 Kyle Mallory <kyle.mallory@utah.edu>	 *
+ * 	 								 *
+ * 			       Autumn Plugin:				 *
+ * 	  Copyright (c) 2007 Pat Fisher <pat@elementsplugin.com>	 *
+
+ *			     Special thanks to:				 *
+ *	   Simon Strumse who was willing to sacrifice his time,		 *
+ *	     and effort to make sure that Elements was ready.		 *
+ *	     This guy even had to re-install his OS because of		 *
+ *		  one of the Elements Alphas. Thanks!			 *
+ *									 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
 
 #include <compiz-core.h>
-#include <string.h>
-#include <math.h>
-#include "elements-internal.h"
+#include "elements_options.h"
+#define GET_DISPLAY(d)                            \
+	((eDisplay *) (d)->base.privates[displayPrivateIndex].ptr)
 
-int displayPrivateIndex;
-int functionsPrivateIndex;
+#define E_DISPLAY(d)                                \
+	eDisplay *ed = GET_DISPLAY (d)
 
-int
-elementsGetRand (int min,
-		 int max)
+#define GET_SCREEN(s, ed)                         \
+	((screen *) (s)->base.privates[(ed)->privateIndex].ptr)
+
+#define E_SCREEN(s)                                 \
+	screen *eScreen = GET_SCREEN (s, GET_DISPLAY (s->display))
+
+#define GLOW_STAGES		5
+#define MAX_AUTUMN_AGE		100
+#define BIG_NUMBER		20000			/* This is the number used to make sure that elements don't get all created in one place. 									Bigger number, more distance. Possibly fixable later.*/
+
+static float glowCurve[GLOW_STAGES][4] = { { 0.0, 0.5, 0.5, 1.0 }, { 1.0, 1.0, 0.5, 0.75 }, { 0.75, 0.3, 1.2, 1.0 }, { 1.0, 0.7, 1.5, 1.0 }, { 1.0, 0.5, 0.5, 0.0 } };
+static int displayPrivateIndex = 0;
+
+typedef struct _eDisplay 			//This structure holds all the textures selected from the Compiz window
 {
-    return (rand () % (max - min + 1) + min);
+	int privateIndex;
+	int numTex[5];			
+	CompOptionValue *texFiles[5];
+} eDisplay;
+
+typedef struct _texture
+{
+	CompTexture tex;
+	unsigned int width;
+	unsigned int height;
+	Bool loaded;
+	GLuint dList;		
+} texture;
+
+
+typedef struct _element
+{
+	int type;				//Follows the usual pattern, alphabetic except for bubbles, which is 4.
+	float x, y, z;
+	float dx[4], dy[4], dz[4];		//matrix only used for Fireflies
+	int autumnAge[2];			//Used by both Autumn and Bubbles. Determines which part of the autumnFloat matrix the Element is in
+	float rSpeed;
+	int rDirection;
+	int rAngle;
+	float autumnFloat[2][MAX_AUTUMN_AGE];	//Determines how much side-to-side the Bubbles and Leaves go. Fairly complicated. See initiateElement
+	int autumnChange;
+	float lifespan;
+	float age;
+	float lifecycle;
+	float glowAlpha;
+	texture *eTex;
+} element;
+
+typedef struct _screen
+{
+	CompScreen *cScreen;
+	Bool isActive[5];
+	Bool useKeys;
+	CompTimeoutHandle timeoutHandle;
+	PaintOutputProc paintOutput;
+	DrawWindowProc  drawWindow;
+	texture *textu;
+	int numElements;
+	int numTexLoaded[5];
+	GLuint displayList;
+	Bool   needUpdate;
+	element *allElements;
+} screen;
+static void initiateElement (screen *eScreen, element *ele);
+static void elementMove (CompDisplay *d, element *ele);
+static void setElementTexture (screen *eScreen, element  *ele);
+static void updateElementTextures (CompScreen *s, Bool changeTextures);
+static inline float mmRand(int  min, int max, float divisor);
+static void elementsDisplayOptionChanged (CompDisplay *d, CompOption *opt, ElementsDisplayOptions num);
+float bezierCurve(float p[4], float time, int type);
+static void createAll(CompDisplay *d);
+
+static inline int
+getRand (int min,
+	 int max)
+{
+	return (rand() % (max - min + 1) + min);
 }
 
-float
-elementsMmRand (int   min,
-		int   max,
-		float divisor)
+static inline float
+mmRand (int   min,
+	int   max,
+	float divisor)
 {
-    return ((float) elementsGetRand (min, max)) / divisor;
-}
+	return ((float) getRand(min, max)) / divisor;
+};
 
-int elementsGetEBoxing (CompScreen *s)
-{
-    return elementsGetScreenBoxing (s);
-}
 
-int elementsGetEDepth (CompScreen *s)
-{
-    return elementsGetScreenDepth (s);
-}
-
-/* Check to see if an element is outside the screen. If it is
- * remove it and re-initiate it. Otherwise move it */
-
-static void
-elementTestCreate (CompScreen       *s,
-		   Element          *ele,
-		   ElementAnimation *anim)
-{
-    if (ele)
-    {
-	if ((ele->y >= s->height + 200                               ||
-	     ele->x <= -200                                          ||
-	     ele->x >= s->width + 200                                ||
-	     ele->y >= s->height + 200                               ||
-	     ele->z <= -((float) elementsGetScreenDepth (s) / 500.0) ||
-	     ele->z >= ((float)elementsGetScreenBoxing (s) / 5.0f)))
+float bezierCurve(float p[4], float time, int type) {				//Used for Fireflies and Stars to move.
+	float out;
+	if (type == 3)
+		out = p[0] * (time+0.01) * 10;
+	else if (type == 1)
 	{
-	    if (anim->properties->fini)
-		(*anim->properties->fini) (s, ele);
-	    initiateElement(s, anim, ele, FALSE);
+		float a = p[0];
+		float b = p[0] + p[1];
+		float c = p[3] + p[2];
+		float d = p[3];
+		float e = 1.0 - time; 
+		out = (a*(e*e*e)) + (3.0*b*(e*e)*time) + (3.0*c*e*(time*time)) + (d*(time*time*time));
 	}
-    }
-
-    elementMove(s, ele, anim, elementsGetUpdateDelay (s));
-}
-
-/* Check to see if an element is still within the screen. If it is,
- * return FALSE and move all elements. If every element isn't,
- * return TRUE
- */
-
-static Bool
-elementTestOffscreen (CompScreen       *s,
-		      ElementAnimation *anim)
-{
-    int     i;
-    Element *e;
-    Bool    ret = TRUE;
-
-    for (i = 0; i < anim->nElement; i++)
-    {
-	e = &anim->elements[i];
-	if (e)
-	{
-	    if (!(e->y >= s->height + 200                               ||
-		  e->x <= -200                                          ||
-		  e->x >= s->width + 200                                ||
-		  e->y >= s->height + 200                               ||
-		  e->z <= -((float) elementsGetScreenDepth (s) / 500.0) ||
-		  e->z >= 1                                             ||
-		  e->y <= -((float) elementsGetScreenBoxing (s) / 5.0f)) &&
-		e->opacity > 0.0f)
-	    {
-		ret = FALSE;
-	    }
-	    else
-	    {
-		if (anim->properties->fini)
-		    (*anim->properties->fini) (s, e);
-	    }
-	}
-	if (e->opacity > 0.0f)
-	    e->opacity -= 0.003f;
-    }
-
-    if (!ret)
-    {
-	for (i = 0; i < anim->nElement; i++)
-	{
-	    elementMove (s, &anim->elements[i], anim,
-			 elementsGetUpdateDelay (s));
-	}
-    }
-
-    return ret;
-}
-
-/* Element Text Display Management */
-
-static void
-elementsFreeTitle (CompScreen *s)
-{
-    ELEMENTS_SCREEN (s);
-    ELEMENTS_DISPLAY (s->display);
-
-    if (!es->textData)
-	return;
-
-    (ed->textFunc->finiTextData) (s, es->textData);
-    es->textData = NULL;
-
-    damageScreen (s);
+    return out;
 }
 
 static void
-elementsRenderTitle (CompScreen *s,
-		     char       *stringData)
+elementTestCreate ( screen *currentScreen, element *ele)		//If the Element is outside of screen boxing, it is recreated. Else, it's moved.
 {
-    CompTextAttrib tA;
-    int            ox1, ox2, oy1, oy2;
-
-    ELEMENTS_SCREEN (s);
-    ELEMENTS_DISPLAY (s->display);
-
-    elementsFreeTitle (s);
-
-    getCurrentOutputExtents (s, &ox1, &oy1, &ox2, &oy2);
-
-    /* 75% of the output device es maximum width */
-    tA.maxWidth = (ox2 - ox1) * 3 / 4;
-    tA.maxHeight = 100;
-
-    tA.family = "Sans";
-    tA.size = elementsGetTitleFontSize (s);
-    tA.color[0] = elementsGetTitleFontColorRed (s);
-    tA.color[1] = elementsGetTitleFontColorGreen (s);
-    tA.color[2] = elementsGetTitleFontColorBlue (s);
-    tA.color[3] = elementsGetTitleFontColorAlpha (s);
-
-    tA.flags = CompTextFlagWithBackground | CompTextFlagEllipsized;
-
-    tA.bgHMargin = 10.0f;
-    tA.bgVMargin = 10.0f;
-    tA.bgColor[0] = elementsGetTitleBackColorRed (s);
-    tA.bgColor[1] = elementsGetTitleBackColorGreen (s);
-    tA.bgColor[2] = elementsGetTitleBackColorBlue (s);
-    tA.bgColor[3] = elementsGetTitleBackColorAlpha (s);
-
-    es->textData = (ed->textFunc->renderText) (s, stringData, &tA);
-}
-
-/* Taken from ring.c */
-
-static void
-elementsDrawTitle (CompScreen *s)
-{
-    GLboolean  wasBlend;
-    GLint      oldBlendSrc, oldBlendDst;
-    float      x, y, width, height;
-    int        ox1, ox2, oy1, oy2, k;
-    CompMatrix *m;
-
-    ELEMENTS_SCREEN(s);
-
-    width  = es->textData->width;
-    height = es->textData->height;
-
-    getCurrentOutputExtents (s, &ox1, &oy1, &ox2, &oy2);
-
-    x = floor (ox1 + ((ox2 - ox1) / 2) - (width / 2));
-    y = floor (oy1 + ((oy2 - oy1) * 3 / 4) + (height / 2));
-
-    glGetIntegerv (GL_BLEND_SRC, &oldBlendSrc);
-    glGetIntegerv (GL_BLEND_DST, &oldBlendDst);
-    wasBlend = glIsEnabled (GL_BLEND);
-
-    if (!wasBlend)
-	glEnable (GL_BLEND);
-    glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-    glColor4f(1.0f, 1.0f, 1.0f, 0.7f);
-
-    enableTexture (s, es->textData->texture, COMP_TEXTURE_FILTER_GOOD);
-
-    m = &es->textData->texture->matrix;
-
-    if (es->renderTexture && es->eTexture)
-    {
-	glBegin (GL_QUADS);
-
-	glTexCoord2f (COMP_TEX_COORD_X (m, 0), COMP_TEX_COORD_Y (m ,0));
-	glVertex2f (x - es->eTexture[es->nTexture].width - 20, y - height);
-	glTexCoord2f (COMP_TEX_COORD_X (m, 0), COMP_TEX_COORD_Y (m, height));
-	glVertex2f (x - es->eTexture[es->nTexture].width - 20, y);
-	glTexCoord2f (COMP_TEX_COORD_X (m, width),
-		      COMP_TEX_COORD_Y (m, height));
-	glVertex2f (x - es->eTexture[es->nTexture].width - 20 + width, y);
-	glTexCoord2f (COMP_TEX_COORD_X (m, width), COMP_TEX_COORD_Y (m, 0));
-	glVertex2f (x - es->eTexture[es->nTexture].width - 20 + width,
-		    y - height);
-
-	glEnd ();
-    }
-    else
-    {
-	glBegin (GL_QUADS);
-
-	glTexCoord2f (COMP_TEX_COORD_X (m, 0), COMP_TEX_COORD_Y (m ,0));
-	glVertex2f (x, y - height);
-	glTexCoord2f (COMP_TEX_COORD_X (m, 0), COMP_TEX_COORD_Y (m, height));
-	glVertex2f (x, y);
-	glTexCoord2f (COMP_TEX_COORD_X (m, width), COMP_TEX_COORD_Y (m, height));
-	glVertex2f (x + width, y);
-	glTexCoord2f (COMP_TEX_COORD_X (m, width), COMP_TEX_COORD_Y (m, 0));
-	glVertex2f (x + width, y - height);
-
-	glEnd ();
-    }
-    disableTexture (s, es->textData->texture);
-
-    if (es->renderTexture && es->eTexture)
-    {
-	int border = 5;
-	width  = es->eTexture[es->nTexture].width;
-	height = es->eTexture[es->nTexture].height;
-
-	glPushMatrix ();
-
-	glColor4f ((float) elementsGetTitleBackColorRed (s) / OPAQUE,
-		   (float) elementsGetTitleBackColorGreen (s) / OPAQUE,
-		   (float) elementsGetTitleBackColorBlue (s) / OPAQUE,
-		   (float) elementsGetTitleBackColorAlpha (s) / OPAQUE);
-
-	glTranslatef (x + es->textData->width - width,
-		      y - height + (border / 2),
-		      0.0f);
-	glRectf (0.0f, height, width, 0.0f);
-	glRectf (0.0f, 0.0f, width, -border);
-	glRectf (0.0f, height + border, width, height);
-	glRectf (-border, height, 0.0f, 0.0f);
-	glRectf (width, height, width + border, 0.0f);
-	glTranslatef (-border, -border, 0.0f);
-
-#define CORNER(a,b) \
-for (k = a; k < b; k++) \
-{\
-float rad = k * (M_PI / 180.0f);\
-glVertex2f (0.0f, 0.0f);\
-glVertex2f (cos (rad) * border, sin (rad) * border);\
-glVertex2f (cos ((k - 1) * (M_PI / 180.0f)) * border, \
-	    sin ((k - 1) * (M_PI / 180.0f)) * border);\
-}
-
-	glTranslatef (border, border, 0.0f);
-	glBegin (GL_TRIANGLES);
-	CORNER (180, 270) glEnd ();
-	glTranslatef (-border, -border, 0.0f);
-
-	glTranslatef (width + border, border, 0.0f);
-	glBegin (GL_TRIANGLES);
-	CORNER (270, 360) glEnd ();
-	glTranslatef (-(width + border), -border, 0.0f);
-
-	glTranslatef (border, height + border, 0.0f);
-	glBegin (GL_TRIANGLES);
-	CORNER (90, 180) glEnd ();
-	glTranslatef (-border, -(height + border), 0.0f);
-
-	glTranslatef (width + border, height + border, 0.0f);
-	glBegin (GL_TRIANGLES);
-	CORNER (0, 90) glEnd ();
-	glTranslatef (-(width + border), -(height + border), 0.0f);
-
-	glColor4usv(defaultColor);
-
-	enableTexture (s, &es->eTexture[es->nTexture].tex,
-		       COMP_TEXTURE_FILTER_GOOD);
-	glTranslatef (border, border, 0.0f);
-	glCallList (es->eTexture[es->nTexture].dList);
-	disableTexture (s, &es->eTexture[es->nTexture].tex);
-
-	glPopMatrix ();
-
-#undef CORNER
-    }
-
-    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glColor4usv (defaultColor);
-
-    if (!wasBlend)
-	glDisable (GL_BLEND);
-    glBlendFunc (oldBlendSrc, oldBlendDst);
-}
-
-/* Element Animation Management */
-
-static Bool
-elementsPropertiesForAnimation (CompDisplay      *d,
-				ElementAnimation *anim,
-				char             *name)
-{
-    ELEMENTS_DISPLAY (d);
-
-    ElementTypeInfo *info;
-
-    for (info = ed->elementTypes; info; info = info->next)
-    {
-	if (!strcmp (info->name, name))
+	if (ele->y >= currentScreen->cScreen->height + 200|| ele->x <= -200|| ele->x >= currentScreen->cScreen->width + 200||
+	ele->y >= currentScreen->cScreen->height + 200||
+	ele->z <= -((float) elementsGetScreenDepth (currentScreen->cScreen->display) / 500.0) ||
+	ele->z >= 1 || ele->y <= -200)			// Screen boxing has been replaced by a hard-coded number. It is 200, in this case.
 	{
-	    anim->properties = info;
-	    return TRUE;
+		initiateElement(currentScreen, ele);
 	}
-    }
 
-    return FALSE;
-}
-
-ElementAnimation *
-elementsCreateAnimation (CompScreen *s,
-			 char       *name)
-{
-    ElementAnimation *anim;
-
-    ELEMENTS_SCREEN (s);
-
-    if (!es->animations)
-    {
-	es->animations = calloc (1, sizeof (ElementAnimation));
-	if (!es->animations)
-	    return NULL;
-
-	es->animations->next = NULL;
-	anim = es->animations;
-    }
-    else
-    {
-	/* Exhaust the list, last entry */
-	for (anim = es->animations; anim->next; anim = anim->next) ;
-
-	anim->next = calloc (1, sizeof (ElementAnimation));
-	if (!anim->next)
-	    return NULL;
-
-	anim->next->next = NULL;
-	anim = anim->next;
-    }
-
-    if (!elementsPropertiesForAnimation (s->display, anim, name))
-    {
-	compLogMessage ("elements", CompLogLevelWarn,
-			"Could not find element movement pattern %s, "
-			"disabling this element", name);
-	free (anim);
-	return NULL;
-    }
-
-    return anim;
-}
-
-void
-elementsDeleteAnimation (CompScreen       *s,
-			 ElementAnimation *anim)
-{
-    ElementAnimation *run;
-
-    ELEMENTS_SCREEN (s);
-
-    if (es->animations)
-    {
-	if (anim == es->animations)
-	{
-	    if (es->animations->next)
-		es->animations = es->animations->next;
-	    else
-		es->animations = NULL;
-
-	    free (anim);
-	}
-	for (run = es->animations; run; run = run->next)
-	{
-	    if (anim == run->next)
-	    {
-		if (run->next->next)
-		    run->next = run->next->next;
-	        else
-		    run->next = NULL;
-
-	    	free (anim);
-		break;
-	    }
-    	}
-    }
-}
-
-/* Type Info Management */
-
-static Bool
-elementsCreateNewElementType (CompDisplay         *d,
-			      char                *name,
-			      char                *desc,
-			      ElementInitiateProc initiate,
-			      ElementMoveProc     move,
-			      ElementFiniProc     fini)
-{
-    ElementTypeInfo *info;
-
-    ELEMENTS_DISPLAY (d);
-
-    if (!ed->elementTypes)
-    {
-	ed->elementTypes = calloc (1, sizeof (ElementTypeInfo));
-	if (!ed->elementTypes)
-	    return FALSE;
-
-	ed->elementTypes->next = NULL;
-	info = ed->elementTypes;
-    }
-    else
-    {
-	/* Exhaust the list, last entry */
-	for (info = ed->elementTypes; info->next; info = info->next) ;
-
-	info->next = calloc (1, sizeof (ElementTypeInfo));
-	if (!info->next)
-	    return FALSE;
-
-	info->next->next = NULL;
-	info = info->next;
-    }
-
-    info->name     = name;
-    info->desc     = desc;
-    info->initiate = initiate;
-    info->move     = move;
-    info->fini     = fini;
-
-    return TRUE;
+		elementMove(currentScreen->cScreen->display, ele);
 }
 
 static void
-elementsRemoveElementType (CompScreen *s,
-			   char       *name)
+elementMove (CompDisplay *display, element *ele)
 {
-    ElementAnimation *anim, *next;
-    ElementTypeInfo  *info;
 
-    ELEMENTS_DISPLAY (s->display);
-    ELEMENTS_SCREEN (s);
+	float autumnSpeed = elementsGetAutumnSpeed (display)/30.0f;
+	float ffSpeed = elementsGetFireflySpeed (display) / 700.0f;
+	float snowSpeed = elementsGetSnowSpeed (display) / 500.0f;
+	float starsSpeed = elementsGetStarsSpeed (display) / 500.0f;
+	float bubblesSpeed = (100.0 - elementsGetViscosity (display))/30.0f;
+	int   updateDelay = elementsGetUpdateDelay (display);
 
-    for (anim = es->animations; anim; anim = next)
-    {
-	next = anim->next;
-
-	if (!strcmp (anim->type, name))
+	if (ele->type == 0)
 	{
-	    int i;
+		ele->x += (ele->autumnFloat[0][ele->autumnAge[0]] * (float) updateDelay) * 0.0125;
+		ele->y += (ele->autumnFloat[1][ele->autumnAge[1]] * (float) updateDelay) * 0.0125 + autumnSpeed;
+		ele->z += (ele->dz[0] * (float) updateDelay) * autumnSpeed / 100.0;
+		ele->rAngle += ((float) updateDelay) / (10.1f - ele->rSpeed);
+		ele->autumnAge[0] += ele->autumnChange;
+		ele->autumnAge[1] += 1;
+		if (ele->autumnAge[1] >= MAX_AUTUMN_AGE)
+		{
+			ele->autumnAge[1] = 0;
+		}
+		if (ele->autumnAge[0] >= MAX_AUTUMN_AGE)
+		{
+			ele->autumnAge[0] = MAX_AUTUMN_AGE - 1;
+			ele->autumnChange = -1;
+		}
+		if (ele->autumnAge[0] <= -1)
+		{
+			ele->autumnAge[0] = 0;
+			ele->autumnChange = 1;
+		}
 
-	    for (i = 0; i < anim->nTextures; i++)
-	    {
-	        finiTexture (s, &anim->texture[i].tex);
-		glDeleteLists (anim->texture[i].dList, 1);
-	    }
-
-	    for (i = 0; i < anim->nElement; i++)
-	    {
-	        if (anim->properties->fini)
-	            (*anim->properties->fini) (s, &anim->elements[i]);
-	    }
-
-	    free (anim->elements);
-	    free (anim->texture);
-	    free (anim->type);
-	    elementsDeleteAnimation (s, anim);
 	}
-    }
-
-    for (info = ed->elementTypes; info; info = info->next)
-	if (!strcmp (info->name, name))
-	    break;
-
-    if (info)
-    {
-	if (info == ed->elementTypes)
+	else if (ele->type == 1)
 	{
-	    if (ed->elementTypes->next)
-		ed->elementTypes = ed->elementTypes->next;
-	    else
-		ed->elementTypes = NULL;
+	  	ele->age += 0.01;
+		ele->lifecycle = (ele->age / 10) / ele->lifespan * (ffSpeed * 70);
+		int glowStage = (ele->lifecycle * GLOW_STAGES);
+		ele->glowAlpha = bezierCurve(glowCurve[glowStage], ele->lifecycle, ele->type);
+		float xs = bezierCurve(ele->dx, ele->lifecycle, ele->type); 
+		float ys = bezierCurve(ele->dy, ele->lifecycle, ele->type); 
+		float zs = bezierCurve(ele->dz, ele->lifecycle, ele->type); 
+		ele->x += (float)(xs * (double)updateDelay) * ffSpeed;
+		ele->y += (float)(ys * (double)updateDelay) * ffSpeed;
+		ele->z += (float)(zs * (double)updateDelay) * ffSpeed;
+	}
+	else if (ele->type == 2)
+	{
+		ele->x += (ele->dx[0] * (float) updateDelay) * snowSpeed;
+		ele->y += (ele->dy[0] * (float) updateDelay) * snowSpeed;
+		ele->z += (ele->dz[0] * (float) updateDelay) * snowSpeed;
+		ele->rAngle += ((float) updateDelay) / (10.1f - ele->rSpeed);
+	}
+	else if (ele->type == 3)
+	{
+		float tmp = 1.0f / (100.0f - starsSpeed);
+		float xs = bezierCurve(ele->dx, tmp, ele->type); 
+		float ys = bezierCurve(ele->dy, tmp, ele->type); 
+		float zs = bezierCurve(ele->dz, tmp, ele->type); 
+		ele->x += (float)(xs * (double)updateDelay) * starsSpeed;
+		ele->y += (float)(ys * (double)updateDelay) * starsSpeed;
+		ele->z += (float)(zs * (double)updateDelay) * starsSpeed;
+	}
+	else if (ele->type == 4)
+	{
+		ele->x += (ele->autumnFloat[0][ele->autumnAge[0]] * (float) updateDelay) * 0.125;
+		ele->y += (ele->dy[0] * (float) updateDelay) * bubblesSpeed;
+		ele->z += (ele->dz[0] * (float) updateDelay) * bubblesSpeed / 100.0;
+		ele->rAngle += ((float) updateDelay) / (10.1f - ele->rSpeed);
+		ele->autumnAge[0] += ele->autumnChange;
+		if (ele->autumnAge[0] >= MAX_AUTUMN_AGE)
+		{
+			ele->autumnAge[0] = MAX_AUTUMN_AGE - 1;
+			ele->autumnChange = -9;
+		}
+		if (ele->autumnAge[0] <= -1)
+		{
+			ele->autumnAge[0] = 0;
+			ele->autumnChange = 9;
+		}
 
-	    free (info);
 	}
 	else
 	{
-	    ElementTypeInfo *run;
-
-	    for (run = ed->elementTypes; run; run = run->next)
-	    {
-		if (run->next == info)
-		{
-		    if (run->next)
-		        run->next = run->next->next;
-		    else
-			run->next = NULL;
-
-		    free (info);
-		    break;
-		}
-	    }
+		compLogMessage ("Elements", CompLogLevelWarn,
+			    "Not a valid element type");
 	}
-    }
 }
 
 static Bool
-textureToAnimation (CompScreen       *s,
-		    ElementAnimation *anim,
-		    CompListValue    *paths,
-		    CompListValue    *iters,
-		    int              size,
-		    int              iter)
+stepPositions(void *closure)
 {
-    ElementTexture *aTex;
-    CompMatrix	   *mat;
-    int            i;
-    int		   texIter = 0;
+	CompScreen *s = closure;
+	int i, ii, numSnow, numAutumn, numStars, numFf, numBubbles, numTmp;
+	element *ele;
+	Bool onTopOfWindows;
+	E_SCREEN(s);
 
-    for (i = 0; i < iters->nValue; i++)
-	if (iters->value[i].i == iter)
-	    anim->nTextures++;
-
-    anim->texture = realloc (anim->texture,
-			     sizeof (ElementTexture) * anim->nTextures);
-    if (!anim->texture)
-	return FALSE;
-
-    for (i = 0; i < iters->nValue; i++)
-    {
-	if (iters->value[i].i == iter)
+	Bool active = FALSE;			//THis makes sure nothing happens if all features are off.
+	for (ii = 0; ii <= 4; ii++)
 	{
-	    if (paths->value[i].s)
-	    {
-		initTexture (s, &anim->texture[texIter].tex);
-		anim->texture[texIter].loaded =
-		    readImageToTexture (s,
-					&anim->texture[texIter].tex,
-					paths->value[i].s,
-					&anim->texture[texIter].width,
-					&anim->texture[texIter].height);
-
-		if (!anim->texture[texIter].loaded)
-		{
-		    compLogMessage ("elements", CompLogLevelWarn,
-				    "Texture for animation %s not found at"
-				    " location %s or invalid",
-				     anim->type, paths->value[i].s);
-		    return FALSE;
-		}
-		else
-		{
-		    compLogMessage ("elements", CompLogLevelInfo,
-				    "Loaded Texture %s for animation %s",
-				     paths->value[i].s, anim->type);
-		}
-
-		mat = &anim->texture[texIter].tex.matrix;
-		aTex = &anim->texture[texIter];
-		aTex->dList = glGenLists (1);
-		glNewList (aTex->dList, GL_COMPILE);
-
-		glBegin (GL_QUADS);
-
-		glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
-			      COMP_TEX_COORD_Y (mat, 0));
-		glVertex2f (0, 0);
-		glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
-			  COMP_TEX_COORD_Y (mat, aTex->height));
-		glVertex2f (0, size * aTex->height / aTex->width);
-		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
-			  COMP_TEX_COORD_Y (mat, aTex->height));
-		glVertex2f (size, size * aTex->height / aTex->width);
-		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
-			  COMP_TEX_COORD_Y (mat, 0));
-		glVertex2f (size, 0);
-
-		glEnd ();
-		glEndList ();
-
-		texIter++;
-	    }
+		if (eScreen->isActive[ii])
+			active = TRUE;
 	}
-    }
 
-    return TRUE;
-}
+	if (!active)
+		return TRUE;
 
-static Bool
-createElementAnimation (CompScreen *s,
-			int        nElement,
-			char       *type,
-			int        size,
-			int        speed,
-			int        iter,
-			Bool       rotate)
-{
-    ElementAnimation *anim = elementsCreateAnimation (s, type);
-    CompListValue    *paths, *iters;
+	ele = eScreen->allElements;
 
-    if (!anim)
-	return FALSE;
+	if (eScreen->isActive[0])
+		numAutumn = elementsGetNumLeaves (s->display);	
+	else
+		numAutumn = 0;
+	if (eScreen->isActive[1])
+		numFf = elementsGetNumFireflies (s->display);
+	else
+		numFf = 0;
+	if (eScreen->isActive[2])
+		numSnow = elementsGetNumSnowflakes (s->display);
+	else
+		numSnow = 0;
+	if (eScreen->isActive[3])
+		numStars = elementsGetNumStars (s->display);
+	else
+		numStars = 0;
+	if (eScreen->isActive[4])
+		numBubbles = elementsGetNumBubbles (s->display);
+	else
+		numBubbles = 0;
 
-    paths = elementsGetElementImage (s);
-    iters = elementsGetElementIter  (s);
-
-    anim->nElement  = nElement;
-    anim->size      = size;
-    anim->speed     = speed;
-    anim->id        = iter;
-    anim->rotate    = rotate;
-    anim->type      = strdup (type);
-    anim->nTextures = 0;
-
-    if (textureToAnimation (s, anim, paths, iters, size, iter) &&
-	anim->nTextures)
-    {
-	Element *e;
-
-	anim->elements = realloc (anim->elements,
-				  sizeof (Element) * nElement);
-	/* FIXME: NULL check? */
-
-	e = anim->elements;
-	while (nElement--)
+	numTmp = numAutumn + numFf + numSnow + numStars + numBubbles;
+	onTopOfWindows = elementsGetOverWindows (s->display);
+	for (i = 0; i < numTmp; i++)
+		elementTestCreate(eScreen, ele++);
+	if (active && !onTopOfWindows )
 	{
-	    initiateElement (s, anim, e, rotate);
-	    e++;
-	}
-	anim->active = TRUE;
+		CompWindow *w;
+		for (w = s->windows; w; w = w->next)
+		{
+			if (w->type & CompWindowTypeDesktopMask)
+				addWindowDamage (w);
+		}
+    	}
+	else if (active)
+		damageScreen (s);
 
 	return TRUE;
-    }
-
-    if (anim->texture)
-	free (anim->texture);
-    elementsDeleteAnimation (s, anim);
-
-    return FALSE;
-}
-
-/* Timeout callbacks */
-
-static Bool
-elementsRemoveTimeout (void *closure)
-{
-    CompScreen *s = (CompScreen *) closure;
-    int        i;
-
-    ELEMENTS_SCREEN (s);
-
-    es->renderText    = FALSE;
-    es->renderTexture = FALSE;
-
-    elementsFreeTitle (s);
-
-    for (i = 0; i < es->ntTextures; i++)
-    {
-	finiTexture (s, &es->eTexture[i].tex);
-	glDeleteLists (es->eTexture[i].dList, 1);
-    }
-
-    free (es->eTexture);
-    es->eTexture = NULL;
-
-    damageScreen (s);
-
-    if (es->switchTimeout)
-	compRemoveTimeout (es->switchTimeout);
-
-    return FALSE;
 }
 
 static Bool
-elementsSwitchTextures (void *closure)
+elementsAutumnToggle (CompDisplay     *d,
+	    CompAction      *action,
+	    CompActionState state,
+ 	    CompOption      *option,
+	    int             nOption)
 {
-    CompScreen *s = (CompScreen *) closure;
+	Bool useKeys;
+			CompScreen *s;
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				useKeys = eScreen->useKeys;
+				if (useKeys)
+				{
+					eScreen->isActive[0] = !eScreen->isActive[0];
+					damageScreen (s);
+					eScreen->needUpdate = TRUE;
+				}
+						}
+				if (useKeys)
+				{
+					createAll( d );
+				}
+				return TRUE;
+}
 
-    ELEMENTS_SCREEN (s);
-
-    es->nTexture = ++es->nTexture % (es->ntTextures);
-    damageScreen (s);
-
-    return TRUE;
+static Bool
+elementsFirefliesToggle (CompDisplay     *d,
+	    CompAction      *action,
+	    CompActionState state,
+ 	    CompOption      *option,
+	    int             nOption)
+{
+	Bool useKeys;
+	CompScreen *s;
+	for (s = d->screens; s; s = s->next)
+ 	{		E_SCREEN (s);
+		useKeys = eScreen->useKeys;
+		if (useKeys)
+		{
+			eScreen->isActive[1] = !eScreen->isActive[1];
+			damageScreen (s);
+			eScreen->needUpdate = TRUE;
+		}
+	}
+	if (useKeys)
+	{
+		createAll( d );
+	}
+	return TRUE;
+}
+static Bool
+elementsSnowToggle (CompDisplay     *d,
+	    CompAction      *action,
+	    CompActionState state,
+ 	    CompOption      *option,
+	    int             nOption)
+{
+	Bool useKeys;
+	CompScreen *s;
+	for (s = d->screens; s; s = s->next)
+	{
+		E_SCREEN (s);
+		useKeys = eScreen->useKeys;
+		if (useKeys)
+		{
+			eScreen->isActive[2] = !eScreen->isActive[2];
+			damageScreen (s);
+			eScreen->needUpdate = TRUE;
+		}
+	}
+	if (useKeys)
+	{
+		createAll( d );
+	}
+	return TRUE;
+}
+static Bool
+elementsStarsToggle (CompDisplay     *d,
+	    CompAction      *action,
+	    CompActionState state,
+ 	    CompOption      *option,
+	    int             nOption)
+{
+	Bool useKeys;
+	CompScreen *s;
+	for (s = d->screens; s; s = s->next)
+	{
+		E_SCREEN (s);
+		useKeys = eScreen->useKeys;
+		if (useKeys)
+		{
+			eScreen->isActive[3] = !eScreen->isActive[3];
+			damageScreen (s);
+			eScreen->needUpdate = TRUE;
+		}
+	}
+	if (useKeys)
+	{
+		createAll( d );
+	}
+	return TRUE;
+}
+static Bool
+elementsBubblesToggle (CompDisplay     *d,
+	    CompAction      *action,
+	    CompActionState state,
+ 	    CompOption      *option,
+	    int             nOption)
+{
+	Bool useKeys;
+	CompScreen *s;
+	for (s = d->screens; s; s = s->next)
+	{
+		E_SCREEN (s);
+		useKeys = eScreen->useKeys;
+		if (useKeys)
+		{
+			eScreen->isActive[4] = !eScreen->isActive[4];
+			damageScreen (s);
+			eScreen->needUpdate = TRUE;
+		}
+	}
+	if (useKeys)
+	{
+		createAll( d );
+	}
+	return TRUE;
 }
 
 static void
-addDisplayTimeouts (CompScreen *s,
-		    Bool       switchIt)
+setupDisplayList (screen *eScreen)
 {
-    int time = elementsGetTitleDisplayTime (s);
-
-    ELEMENTS_SCREEN (s);
-
-    if (es->renderTimeout)
-	compRemoveTimeout (es->renderTimeout);
-
-    es->renderTimeout = compAddTimeout (time, time * 2.0,
-					elementsRemoveTimeout, s);
-
-    if (switchIt)
-    {
-	if (es->switchTimeout)
-	    compRemoveTimeout (es->switchTimeout);
-
-	es->switchTimeout = compAddTimeout (time / es->ntTextures,
-					    time * 2 / es->ntTextures,
-					    elementsSwitchTextures, s);
-    }
-}
-
-static Bool
-createTemporaryTexture (CompScreen    *s,
-		        CompListValue *paths,
-			CompListValue *iters,
-			int           iter,
-		        int           size)
-{
-    CompMatrix *mat;
-    int        i;
-    int	       texIter = 0;
-
-    ELEMENTS_SCREEN (s);
-
-    es->ntTextures = 0;
-    es->nTexture   = 0;
-
-    if (es->eTexture)
-    {
-	for (i = 0; i < es->ntTextures; i++)
-	{
-	    finiTexture (s, &es->eTexture[i].tex);
-	    glDeleteLists (es->eTexture[i].dList, 1);
-	}
-    }
-
-    for (i = 0; i < iters->nValue; i++)
-    {
-	if (iters->value[i].i == iter)
-	    es->ntTextures++;
-    }
-    es->eTexture = realloc (es->eTexture,
-			    sizeof (ElementTexture) * es->ntTextures);
-
-    if (!es->eTexture)
-	return FALSE;
-
-    for (i = 0; i < iters->nValue; i++)
-    {
-	if (iters->value[i].i == iter)
-	{
-	    initTexture (s, &es->eTexture[texIter].tex);
-
-            es->eTexture[texIter].loaded =
-		readImageToTexture (s,
-				    &es->eTexture[texIter].tex,
-				    paths->value[i].s,
-				    &es->eTexture[texIter].width,
-				    &es->eTexture[texIter].height);
-	    if (!es->eTexture[texIter].loaded)
-	    {
-		compLogMessage ("elements", CompLogLevelWarn,
-			        "Texture not found or invalid at %s",
-			         paths->value[i].s);
-		return FALSE;
-	    }
-	    else
-	    {
-		compLogMessage ("elements", CompLogLevelInfo,
-				"Loaded Texture %s", paths->value[i].s);
-	    }
-
-	    mat = &es->eTexture[texIter].tex.matrix;
-	    es->eTexture[texIter].dList = glGenLists (1);
-	    glNewList (es->eTexture[texIter].dList, GL_COMPILE);
-
-	    glBegin (GL_QUADS);
-
-	    glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
-			  COMP_TEX_COORD_Y (mat, 0));
-	    glVertex2f (0, 0);
-	    glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
-			  COMP_TEX_COORD_Y (mat,
-					    es->eTexture[texIter].height));
-	    glVertex2f (0, size);
-	    glTexCoord2f (COMP_TEX_COORD_X (mat, es->eTexture[texIter].width),
-			  COMP_TEX_COORD_Y (mat,
-					    es->eTexture[texIter].height));
-	    glVertex2f (size, size);
-	    glTexCoord2f (COMP_TEX_COORD_X (mat, es->eTexture[texIter].width),
-			  COMP_TEX_COORD_Y (mat, 0));
-	    glVertex2f (size, 0);
-
-	    es->eTexture[texIter].height = size;
-	    es->eTexture[texIter].width = size;
-
-	    glEnd ();
-	    glEndList ();
-
-	    texIter++;
-	}
-    }
-
-    return TRUE;
-}
-static Bool
-elementsNextElement (CompDisplay     *d,
-		     CompAction      *action,
-		     CompActionState state,
-	 	     CompOption      *option,
-		     int             nOption)
-{
-    CompScreen *s;
-    Window     xid;
-
-    xid = getIntOptionNamed (option, nOption, "root", 0);
-    s   = findScreenAtDisplay (d, xid);
-
-    if (s)
-    {
-	CompListValue   *cType, *cPath, *cIter;
-	char            *string;
-	int             i;
-	Bool            foundHigher = FALSE;
-	ElementTypeInfo *info;
-
-	ELEMENTS_DISPLAY (d);
-	ELEMENTS_SCREEN (s);
-
-	cType = elementsGetElementType (s);
-	cPath = elementsGetElementImage (s);
-	cIter = elementsGetElementIter (s);
-
-	if (!((cType->nValue  == cIter->nValue) &&
-	      (cPath->nValue  == cIter->nValue)))
-	{
-	    compLogMessage ("elements", CompLogLevelWarn,
-			    "Options are not set correctly,"
-			    " cannot read this setting.");
-	    return FALSE;
-	}
-
-	for (i = 0; i < cIter->nValue; i++)
-	{
-	    if (cIter->value[i].i > es->animIter)
-	    {
-		foundHigher  = TRUE;
-		es->listIter = i;
-		es->animIter = cIter->value[i].i;
-		break;
-	    }
-	}
-
-	if (!foundHigher)
-	{
-	    int lowest = 50;
-	    es->listIter = 0;
-	    for (i = 0; i < cIter->nValue; i++)
-		if (cIter->value[i].i < lowest)
-		    lowest = cIter->value[i].i;
-
-	    es->animIter = lowest;
-	}
-
-	if (ed->textFunc && cType->nValue > 0)
-	{
-	    for (info = ed->elementTypes; info; info = info->next)
-	    {
-		if (!strcmp (info->name, cType->value[es->listIter].s))
-		{
-		    string = info->desc;
-		    break;
-	        }
-	    }
-
-	    if (string)
-	    {
-		int height;
-
-		elementsRenderTitle (s, string);
-
-		height = es->textData ? es->textData->height : 0;
-
-		es->renderText    = TRUE;
-		es->renderTexture =
-		    createTemporaryTexture (s, cPath, cIter,
-					    es->animIter, height);
-		addDisplayTimeouts (s, es->ntTextures > 1);
-		damageScreen (s);
-	    }
-	}
-	else if (ed->textFunc)
-	{
-	    elementsRenderTitle (s, "No elements have been defined");
-	    es->renderText = TRUE;
-	    addDisplayTimeouts (s, es->ntTextures > 1);
-	}
-    }
-
-    return FALSE;
-}
-
-static Bool
-elementsPrevElement (CompDisplay     *d,
-		     CompAction      *action,
-		     CompActionState state,
-	 	     CompOption      *option,
-		     int             nOption)
-{
-    CompScreen      *s;
-    Window          xid;
-
-    xid = getIntOptionNamed (option, nOption, "root", 0);
-    s   = findScreenAtDisplay (d, xid);
-
-    if (s)
-    {
-	CompListValue   *cType, *cPath, *cIter;
-	char            *string;
-	int             i;
-	Bool            foundLower = FALSE;
-	ElementTypeInfo *info;
-
-	ELEMENTS_DISPLAY (d);
-	ELEMENTS_SCREEN (s);
-
-	cType = elementsGetElementType (s);
-	cPath = elementsGetElementImage (s);
-	cIter = elementsGetElementIter (s);
-
-	if (!((cType->nValue  == cIter->nValue) &&
-	      (cPath->nValue  == cIter->nValue)))
-	{
-	    compLogMessage ("elements", CompLogLevelWarn,
-			    "Options are not set correctly,"
-			    " cannot read this setting.");
-	    return FALSE;
-	}
-
-	for (i = cIter->nValue -1; i > -1; i--)
-	{
-	    if (cIter->value[i].i < es->animIter)
-	    {
-		foundLower   = TRUE;
-		es->listIter = i;
-		es->animIter = cIter->value[i].i;
-		break;
-	    }
-	}
-
-	if (!foundLower)
-	{
-	    int highest = 0;
-
-	    for (i = 0; i < cIter->nValue; i++)
-		if (cIter->value[i].i > highest)
-		    highest = cIter->value[i].i;
-
-	    es->animIter = highest;
-	    for (i = 0; i < cIter->nValue; i++)
-		if (cIter->value[i].i == highest)
-		    break;
-
-	    es->listIter = i;
-	}
-
-	if (ed->textFunc && cType->nValue > 0)
-	{
-	    for (info = ed->elementTypes; info; info = info->next)
-	    {
-		if (!strcmp (info->name, cType->value[es->listIter].s))
-		{
-		    string = info->desc;
-		    break;
-	        }
-	    }
-
-	    if (string)
-	    {
-		int height;
-
-		elementsRenderTitle (s, string);
-
-		height = es->textData ? es->textData->height : 0;
-
-		es->renderText    = TRUE;
-		es->renderTexture =
-		    createTemporaryTexture (s, cPath, cIter,
-					    es->animIter, height);
-		addDisplayTimeouts (s, es->ntTextures > 1);
-		damageScreen (s);
-		
-	    }
-	}
-	else if (ed->textFunc)
-	{
-	    elementsRenderTitle (s, "No elements have been defined");
-	    es->renderText = TRUE;
-	    addDisplayTimeouts (s, es->ntTextures > 1);
-	}
-
-    }
-
-    return FALSE;
-}
-
-static Bool
-elementsToggleSelected (CompDisplay     *d,
-		        CompAction      *action,
-		        CompActionState state,
-	 	        CompOption      *option,
-		        int             nOption)
-{
-    CompScreen *s;
-    Window     xid;
-
-    xid = getIntOptionNamed (option, nOption, "root", 0);
-    s   = findScreenAtDisplay (d, xid);
-
-    if (s)
-    {
-	char             *string;
-	Bool             success = TRUE;
-	ElementTypeInfo  *info;
-	CompListValue    *cIter  = elementsGetElementIter  (s);
-	CompListValue    *cType  = elementsGetElementType  (s);
-	CompListValue    *cPath  = elementsGetElementImage (s);
-	CompListValue    *cCap   = elementsGetElementCap   (s);
-	CompListValue    *cSize  = elementsGetElementSize  (s);
-	CompListValue    *cSpeed = elementsGetElementSpeed (s);
-	CompListValue    *cRot   = elementsGetElementRotate(s);
-	ElementAnimation *anim;
-
-	ELEMENTS_DISPLAY (d);
-	ELEMENTS_SCREEN (s);
-
-	if (!((cType->nValue  == cIter->nValue) &&
-	      (cPath->nValue  == cIter->nValue) &&
-	      (cCap->nValue   == cIter->nValue) &&
-	      (cSize->nValue  == cIter->nValue) &&
-	      (cSpeed->nValue == cIter->nValue) &&
-	      (cRot->nValue   == cIter->nValue)))
-	{
-	    compLogMessage ("elements", CompLogLevelWarn,
-			    "Options are not set correctly,"
-			    " cannot read this setting.");
-	    return FALSE;
-	}
-
-	if (cType->nValue < 1)
-	{
-	    if (ed->textFunc)
-	    {
-		elementsRenderTitle (s, "No elements have been defined\n");
-		es->renderText = TRUE;
-		addDisplayTimeouts (s, es->ntTextures > 1);
-	    }
-	}
-
-	for (anim = es->animations; anim; anim = anim->next)
-	{
-	    if (anim->id == es->animIter)
-	    {
-		anim->active = !anim->active;
-		break;
-	    }
-	}
-
-	if (!anim)
-	{
-	    success = createElementAnimation (s,
-					      cCap->value[es->listIter].i,
-					      cType->value[es->listIter].s,
-					      cSize->value[es->listIter].i,
-					      cSpeed->value[es->listIter].i,
-					      es->animIter,
-					      cRot->value[es->listIter].b);
-	}
-	
-	if (ed->textFunc && elementsGetTitleOnToggle (s) && success)
-	{
-	    for (info = ed->elementTypes; info; info = info->next)
-	    {
-		if (!strcmp (info->name, cType->value[es->listIter].s))
-		{
-		    string = info->desc;
-		    break;
-	        }
-	    }
-
-	    if (string)
-	    {
-		int height;
-
-		elementsRenderTitle (s, string);
-
-		height = es->textData ? es->textData->height : 0;
-
-		es->renderText    = TRUE;
-		es->renderTexture =
-		    createTemporaryTexture (s, cPath, cIter,
-					    es->animIter, height);
-		addDisplayTimeouts (s, es->ntTextures > 1);
-		damageScreen (s);
-		
-	    }
-	}
-	else if (ed->textFunc && elementsGetTitleOnToggle (s) && anim)
-	{
-	    elementsRenderTitle (s, "Error - Element image was not found"
-				    " or is invalid");
-	    es->renderText = TRUE;
-	    addDisplayTimeouts (s, es->ntTextures > 1);
-	    damageScreen (s);
-	}
-	
-    }
-
-    return FALSE;
-}
-
-static GLuint
-setupDisplayList (void)
-{
-    GLuint retval;
-
-    retval = glGenLists (1);
-    glNewList (retval, GL_COMPILE);
-    glBegin (GL_QUADS);
-    glColor4f (1.0, 1.0, 1.0, 1.0);
-    glVertex3f (0, 0, -0.0);
-    glColor4f (1.0, 1.0, 1.0, 1.0);
-    glVertex3f (0, 1.0, -0.0);
-    glColor4f (1.0, 1.0, 1.0, 1.0);
-    glVertex3f (1.0, 1.0, -0.0);
-    glColor4f (1.0, 1.0, 1.0, 1.0);
-    glVertex3f (1.0, 0, -0.0);
-    glEnd ();
-    glEndList ();
-
-    return retval;
+	eScreen->displayList = glGenLists (1);
+	glNewList (eScreen->displayList, GL_COMPILE);
+	glBegin (GL_QUADS);
+	glColor4f (1.0, 1.0, 1.0, 1.0);
+	glVertex3f (0, 0, -0.0);
+	glColor4f (1.0, 1.0, 1.0, 1.0);
+	glVertex3f (0, 1.0, -0.0);
+	glColor4f (1.0, 1.0, 1.0, 1.0);
+	glVertex3f (1.0, 1.0, -0.0);
+	glColor4f (1.0, 1.0, 1.0, 1.0);
+	glVertex3f (1.0, 0, -0.0);
+	glEnd ();
+	glEndList ();
 }
 
 static void
-beginRendering (CompScreen *s)
+beginRendering (screen *eScreen,
+		CompScreen *s)
 {
-    ElementAnimation *anim;
+	int j;
+	glEnable (GL_BLEND);
+	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    ELEMENTS_SCREEN (s);
-
-    glEnable (GL_BLEND);
-    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    if (es->needUpdate)
-    {
-	es->displayList = setupDisplayList ();
-	es->needUpdate = FALSE;
-    }
-
-    for (anim = es->animations; anim; anim = anim->next)
-    {
-	int    num = anim->nElement;
-	int    i;
-
-	if (anim->nTextures > 0)
+	if (eScreen->needUpdate)
 	{
-	    for (i = 0; i < num; i++)
-	    {
-		Element *e = &anim->elements[i];
-		int     nTexture = e->nTexture % anim->nTextures;
-
-		enableTexture (s, &anim->texture[nTexture].tex,
-			       COMP_TEXTURE_FILTER_GOOD);
-
-		glColor4f (1.0, 1.0, 1.0, e->opacity);
-		glTranslatef (e->x, e->y, e->z);
-		glRotatef (e->rAngle, 0, 0, 1);
-		glCallList (anim->texture[nTexture].dList);
-		glRotatef (-e->rAngle, 0, 0, 1);
-		glTranslatef (-e->x, -e->y, -e->z);
-
-		disableTexture (s, &anim->texture[nTexture].tex);
-	    }
+		setupDisplayList (eScreen);
+		eScreen->needUpdate = FALSE;
 	}
-    }
 
-    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    glDisable (GL_BLEND);
-    glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4f (1.0, 1.0, 1.0, 1.0);
+	for (j = 0; j < eScreen->numElements; j++)
+		{
+			element *ele = eScreen->allElements;
+			int i, numAutumn, numFf, numSnow, numStars, numBubbles;
+			if (eScreen->isActive[0])
+				numAutumn = elementsGetNumLeaves (s->display);	
+			else
+				numAutumn = 0;
+			if (eScreen->isActive[1])
+				numFf = elementsGetNumFireflies (s->display);
+			else
+				numFf = 0;
+			if (eScreen->isActive[2])
+				numSnow = elementsGetNumSnowflakes (s->display);
+			else
+				numSnow = 0;
+			if (eScreen->isActive[3])
+				numStars = elementsGetNumStars (s->display);
+			else
+				numStars = 0;
+			if (eScreen->isActive[4])
+				numBubbles = elementsGetNumBubbles (s->display);
+			else
+				numBubbles = 0;
+
+			int numTmp = numAutumn + numFf + numSnow + numStars + numBubbles;
+			Bool autumnRotate = elementsGetAutumnRotate (s->display);
+			Bool snowRotate = elementsGetSnowRotate (s->display);
+			Bool ffRotate = elementsGetFirefliesRotate (s->display);
+			Bool starsRotate = elementsGetStarsRotate (s->display);
+			Bool bubblesRotate = elementsGetBubblesRotate (s->display);
+
+			enableTexture (eScreen->cScreen, &eScreen->textu[j].tex,
+			   COMP_TEXTURE_FILTER_GOOD);
+
+			for (i = 0; i < numTmp; i++)
+			{
+				if (ele->eTex == &eScreen->textu[j])
+				{
+					glTranslatef (ele->x, ele->y, ele->z);
+					if (autumnRotate && ele->type == 0)
+						glRotatef (ele->rAngle, 0, 0, 1);
+					if (ffRotate && ele->type == 1)
+						glRotatef (ele->rAngle, 0, 0, 1);
+					if (snowRotate && ele->type == 2)
+						glRotatef (ele->rAngle, 0, 0, 1);
+					if (starsRotate && ele->type == 3)
+						glRotatef (ele->rAngle, 0, 0, 1);
+					if (bubblesRotate && ele->type == 4)
+						glRotatef (ele->rAngle, 0, 0, 1);
+					glCallList (eScreen->textu[j].dList);
+					if (autumnRotate && ele->type == 0)
+						glRotatef (-ele->rAngle, 0, 0, 1);
+					if (ffRotate && ele->type == 1)
+						glRotatef (-ele->rAngle, 0, 0, 1);
+					if (snowRotate && ele->type == 2)
+						glRotatef (-ele->rAngle, 0, 0, 1);
+					if (starsRotate && ele->type == 3)
+						glRotatef (-ele->rAngle, 0, 0, 1);
+					if (bubblesRotate && ele->type == 4)
+						glRotatef (-ele->rAngle, 0, 0, 1);
+					glTranslatef (-ele->x, -ele->y, -ele->z);
+				}
+				ele++;
+			}
+			disableTexture (eScreen->cScreen, &eScreen->textu[j].tex);
+	}
+	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glDisable (GL_BLEND);
+	glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
 static Bool
 elementsPaintOutput (CompScreen              *s,
-		     const ScreenPaintAttrib *sa,
-		     const CompTransform     *transform,
-		     Region                  region,
-		     CompOutput              *output,
-		     unsigned int            mask)
+		 const ScreenPaintAttrib *sa,
+		 const CompTransform	 *transform,
+		 Region                  region,
+		 CompOutput              *output, 
+		 unsigned int            mask)
 {
-    Bool status;
+	Bool status;
 
-    ELEMENTS_SCREEN (s);
+	E_SCREEN (s);
+	int ii;
+	Bool active = FALSE;
+	for (ii = 0; ii <= 4; ii++)
+	{
+		if (eScreen->isActive[ii])
+			active = TRUE;
+	}
 
-    if (es->animations && elementsGetOverWindows (s))
-	mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
+	if (active && elementsGetOverWindows (s->display))
+		mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
 
-    UNWRAP (es, s, paintOutput);
-    status = (*s->paintOutput) (s, sa, transform, region, output, mask);
-    WRAP (es, s, paintOutput, elementsPaintOutput);
+	UNWRAP (eScreen, s, paintOutput);
+	status = (*s->paintOutput) (s, sa, transform, region, output, mask);
+	WRAP (eScreen, s, paintOutput, elementsPaintOutput);
 
-    if (es->renderText || (es->animations && elementsGetOverWindows (s)))
-    {
-	CompTransform sTransform = *transform;
-
-	transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &sTransform);
-	glPushMatrix ();
-	glLoadMatrixf (sTransform.m);
-
-	if (es->animations && elementsGetOverWindows (s))
-	    beginRendering (s);
-	if (es->renderText)
-	    elementsDrawTitle (s);
-
-	glPopMatrix ();
-    }
+	if (active && elementsGetOverWindows (s->display))
+	{
+		CompTransform sTransform = *transform;
+		transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &sTransform);
+		glPushMatrix ();
+		glLoadMatrixf (sTransform.m);
+		beginRendering (eScreen, s);
+		glPopMatrix ();
+	}
 
     return status;
 }
@@ -1297,516 +605,1047 @@ elementsPaintOutput (CompScreen              *s,
 
 static Bool
 elementsDrawWindow (CompWindow           *w,
-		    const CompTransform  *transform,
-		    const FragmentAttrib *attrib,
-		    Region               region,
-		    unsigned int         mask)
+		const CompTransform  *transform,
+		const FragmentAttrib *attrib,
+		Region               region,
+		unsigned int         mask)
 {
-    Bool       status;
-    CompScreen *s = w->screen;
+	Bool status;
 
-    ELEMENTS_SCREEN (s);
+	E_SCREEN (w->screen);
+	Bool active = FALSE;
+	int ii;
+	for (ii = 0; ii <= 4; ii++)
+	{
+		if (eScreen->isActive[ii])
+			active = TRUE;
+	}
+	UNWRAP (eScreen, w->screen, drawWindow);
+	status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
+	WRAP (eScreen, w->screen, drawWindow, elementsDrawWindow);
 
-    UNWRAP (es, s, drawWindow);
-    status = (*s->drawWindow) (w, transform, attrib, region, mask);
-    WRAP (es, s, drawWindow, elementsDrawWindow);
-
-    if (es->animations && (w->type & CompWindowTypeDesktopMask) &&
-	!elementsGetOverWindows (s))
-    {
-	beginRendering (s);
-    }
-    return status;
+	if (active && (w->type & CompWindowTypeDesktopMask) && 
+		!elementsGetOverWindows (w->screen->display))
+	{
+		beginRendering (eScreen, w->screen);
+	}
+	return status;
 }
-
-void
-initiateElement (CompScreen       *s,
-		 ElementAnimation *anim,
-		 Element          *e,
-		 Bool             rotate)
-{
-    e->x  = 0;
-    e->y  = 0;
-    e->z  = elementsMmRand (-elementsGetScreenDepth (s), 0.1, 5000);
-    e->dz = elementsMmRand (-500, 500, 500000);
-    e->rAngle = elementsMmRand (-1000, 1000, 50);
-    e->rSpeed = rotate ? elementsMmRand (-2100, 2100, 700) : 0;
-
-    e->opacity  = 1.0f;
-    e->nTexture = 0;
-    e->ptr      = NULL;
-
-    if (anim->properties->initiate)
-	(*anim->properties->initiate) (s, e);
-}
-
-void
-elementMove (CompScreen       *s,
-	     Element          *e,
-	     ElementAnimation *anim,
-	     int              updateDelay)
-{
-    if (anim->properties->move)
-	(*anim->properties->move) (s, anim, e, updateDelay);
-
-}
-
-static Bool
-stepPositions (void *closure)
-{
-    CompScreen       *s = (CompScreen *) closure;
-    ElementAnimation *anim;
-
-    ELEMENTS_SCREEN (s);
-
-    if (!es->animations)
-	return TRUE;
-
-    for (anim = es->animations; anim; anim = anim->next)
-    {
-	int i;
-
-	if (anim->active)
-	{
-	    for (i = 0; i < anim->nElement; i++)
-		elementTestCreate (s, &anim->elements[i], anim);
-	}
-	else
-	{
-	    if (elementTestOffscreen (s, anim))
-	    {
-		for (i = 0; i < anim->nTextures; i++)
-		{
-		    finiTexture (s, &anim->texture[i].tex);
-		    glDeleteLists (anim->texture[i].dList, 1);
-		}
-
-		free (anim->elements);
-		free (anim->texture);
-		elementsDeleteAnimation (s, anim);
-		break;
-	    }
-	}
-    }
-
-    if (!elementsGetOverWindows (s))
-    {
-	CompWindow *w;
-
-	for (w = s->windows; w; w = w->next)
-	{
-	    if (w->type & CompWindowTypeDesktopMask)
-		addWindowDamage (w);
-	}
-    }
-    else
-    {
-	damageScreen (s);
-    }
-
-    return TRUE;
-}
-
-void
-updateElementTextures (CompScreen *s,
-		       Bool       changeTextures)
-{
-    ElementAnimation *anim;
-
-    ELEMENTS_SCREEN (s);
-
-    for (anim = es->animations; anim; anim = anim->next)
-    {
-	int           i, iter, nElement, size,speed;
-	Bool          rotate;
-	char          *type;
-	CompListValue *cType  = elementsGetElementType  (s);
-	CompListValue *cPath  = elementsGetElementImage (s);
-	CompListValue *cCap   = elementsGetElementCap   (s);
-	CompListValue *cSize  = elementsGetElementSize  (s);
-	CompListValue *cSpeed = elementsGetElementSpeed (s);
-	CompListValue *cIter  = elementsGetElementIter  (s);
-	CompListValue *cRot   = elementsGetElementRotate(s);
-	Element *e;
-	Bool    initiate = FALSE;
-
-	if (!((cType->nValue  == cIter->nValue) &&
-	      (cPath->nValue  == cIter->nValue) &&
-	      (cCap->nValue   == cIter->nValue) &&
-	      (cSize->nValue  == cIter->nValue) &&
-	      (cSpeed->nValue == cIter->nValue) &&
-	      (cRot->nValue   == cIter->nValue)))
-	{
-	    compLogMessage ("elements", CompLogLevelWarn,
-			    "Options are not set correctly,"
-			    " cannot read this setting.");
-	    return;
-	}
-
-	iter     = anim->id;
-	nElement = cCap->value[anim->id - 1].i;
-	type     = cType->value[anim->id - 1].s;
-	size     = cSize->value[anim->id - 1].i;
-	speed    = cSpeed->value[anim->id - 1].i;
-	rotate   = cRot->value[anim->id - 1].b;
-
-	for (i = 0; i < anim->nTextures; i++)
-	{
-	    finiTexture (s, &anim->texture[i].tex);
-	    glDeleteLists (anim->texture[i].dList, 1);
-	}
-
-	if (strcmp (type, anim->type))
-	{
-	    int i;
-
-	    /* discard old memory and create new one for anim's type */
-	    free (anim->type);
-	    anim->type = strdup (type);
-
-	    if (!elementsPropertiesForAnimation (s->display, anim, type))
-	    {
-		compLogMessage ("elements", CompLogLevelWarn,
-				"Could not find element movement pattern %s",
-				type);
-	    }
-
-	    if (anim->properties->fini)
-	    {
-		e = anim->elements;
-
-		for (i = 0; i < anim->nElement; i++, e++)
-		    (*anim->properties->fini) (s, e);
-	    }
-	    initiate = TRUE;
-	}
-
-	if (textureToAnimation (s, anim, cPath, cIter, size, iter))
-	{
-	    if (nElement != anim->nElement)
-	    {
-		Element *newElements;
-
-		newElements = realloc (anim->elements,
-						sizeof (Element) * nElement);
-		if (newElements)
-		{
-		    anim->elements = newElements;
-		    anim->nElement = nElement;
-		}
-		else
-		    nElement = anim->nElement;
-
-		initiate = TRUE;
-	    }
-
-	    if (anim->rotate != rotate)
-		initiate = TRUE;
-
-	    anim->rotate = rotate;
-	    anim->size  = size;
-	    anim->speed = speed;
-	    e = anim->elements;
-
-	    if (initiate)
-		for (; nElement--; e++)
-		    initiateElement (s, anim, e, rotate);
-	}
-    }
-}
-
-static ElementsBaseFunctions elementsFunctions =
-{
-    .newElementType    = elementsCreateNewElementType,
-    .removeElementType = elementsRemoveElementType,
-    .getRand	       = elementsGetRand,
-    .mmRand	       = elementsMmRand,
-    .boxing	       = elementsGetEBoxing,
-    .depth	       = elementsGetEDepth
-};
 
 static void
-elementsScreenOptionChanged (CompScreen            *s,
-			     CompOption            *opt,
-			     ElementsScreenOptions num)
+initiateElement (screen *eScreen,
+		   element  *ele)
 {
-    switch (num)
-    {
-	case ElementsScreenOptionElementType:
-	case ElementsScreenOptionElementImage:
-	case ElementsScreenOptionElementCap:
-	case ElementsScreenOptionElementSize:
-	case ElementsScreenOptionElementSpeed:
-	case ElementsScreenOptionElementRotate:
+	int i, iii;
+
+	if (ele->type == 4)
 	{
+		float temp = mmRand(elementsGetViscosity( eScreen->cScreen->display)/2.0,elementsGetViscosity( eScreen->cScreen->display),50.0);
+		float xSway = 1.0 - temp*temp * 1.0 / 4.0;
+	
+		for (iii=0; iii<MAX_AUTUMN_AGE; iii++)
+		{
+			ele->autumnFloat[0][iii] = -xSway + (iii * ((2 * xSway)/(MAX_AUTUMN_AGE-1)));
+		}
 
-	    ELEMENTS_SCREEN (s);
-
-	    es->needUpdate = TRUE;
-	    updateElementTextures (s, FALSE);
-
+		ele->autumnAge[0] = getRand(0,MAX_AUTUMN_AGE-1);
+		ele->autumnAge[1] = ele->autumnAge[0];
+		ele->x  = mmRand (0, eScreen->cScreen->width, 1);
+		ele->autumnChange = 1;
+		ele->y = mmRand (eScreen->cScreen->height+100, eScreen->cScreen->height+ BIG_NUMBER,1);
+		ele->dy[0] = mmRand (-2, -1, 5);
 	}
-	break;
-    	case ElementsScreenOptionUpdateDelay:
+	if (ele->type == 0)
 	{
-	    ELEMENTS_SCREEN (s);
+		float xSway = mmRand(elementsGetAutumnSway( eScreen->cScreen->display)/2,elementsGetAutumnSway( eScreen->cScreen->display),2.0);
+		float ySway = elementsGetAutumnSpeed(eScreen->cScreen->display) / 20.0;
 
-	    if (es->timeoutHandle)
-		compRemoveTimeout (es->timeoutHandle);
-	    es->timeoutHandle =
-		compAddTimeout (elementsGetUpdateDelay (s),
-				(float) elementsGetUpdateDelay (s) * 1.2,
-				stepPositions, s);
+		for (iii=0; iii<MAX_AUTUMN_AGE; iii++)
+		{
+			ele->autumnFloat[0][iii] = -xSway + (iii * ((2 * xSway)/(MAX_AUTUMN_AGE-1)));
+		}
+		for (iii=0; iii<(MAX_AUTUMN_AGE / 2); iii++)
+		{
+			ele->autumnFloat[1][iii] = -ySway + (iii * ((2 * ySway)/(MAX_AUTUMN_AGE-1)));
+		}
+		for (; iii<MAX_AUTUMN_AGE; iii++)
+		{
+			ele->autumnFloat[1][iii] = ySway - (iii * ((2 * ySway)/(MAX_AUTUMN_AGE-1)));
+		}
+		ele->autumnAge[0] = getRand(0,MAX_AUTUMN_AGE-1);
+		ele->autumnAge[1] = getRand(0,(MAX_AUTUMN_AGE/2)-1);
+		ele->x  = mmRand (0, eScreen->cScreen->width, 1);		ele->autumnChange = 1;
+		ele->y  = -mmRand (100, BIG_NUMBER, 1);
+		ele->dy[0] = mmRand (-2, -1, 5);
 	}
-	break;
-	default:
-	    break;
-    }
+
+
+
+	if (ele->type == 2)
+	{
+		int snowSway = elementsGetSnowSway (eScreen->cScreen->display);
+		switch (elementsGetWindDirection (eScreen->cScreen->display))
+		{
+			case WindDirectionNone:
+				ele->x  = mmRand (0, eScreen->cScreen->width, 1);
+				ele->dx[0] = mmRand (-snowSway, snowSway, 1.0);
+				ele->y  = mmRand (-BIG_NUMBER, -100, 1);
+				ele->dy[0] = mmRand (1, 3, 1);
+			break;
+			case WindDirectionUp:
+				ele->x  = mmRand (0, eScreen->cScreen->width, 1);
+				ele->dx[0] = mmRand (-snowSway, snowSway, 1.0);
+				ele->y  = mmRand (eScreen->cScreen->height + 100, eScreen->cScreen->height + BIG_NUMBER, 1);
+				ele->dy[0] = -mmRand (1, 3, 1);
+			break;
+			case WindDirectionLeft:
+				ele->x  = mmRand (eScreen->cScreen->width+100, eScreen->cScreen->width+BIG_NUMBER, 1);
+				ele->dx[0] = -mmRand (1, 3, 1);
+				ele->y  = mmRand (0, eScreen->cScreen->height, 1);
+				ele->dy[0] = mmRand (-snowSway, snowSway, 1.5);
+			break;
+			case WindDirectionRight:
+				ele->x  = mmRand (-BIG_NUMBER, -100, 1);
+				ele->dx[0] = mmRand (1, 3, 1);
+				ele->y  = mmRand (0, eScreen->cScreen->height, 1);
+				ele->dy[0] = mmRand (-snowSway, snowSway, 1.5);
+			break;
+			default:
+			break;
+		}
+	}
+
+	ele->z  = mmRand (-elementsGetScreenDepth (eScreen->cScreen->display), 0.1, 5000);
+	ele->dz[0] = mmRand (-500, 500, 500000);
+	ele->rAngle = mmRand (-1000, 1000, 50);
+	ele->rSpeed = mmRand (-2100, 2100, 700);
+
+	if (ele->type == 1)
+	{
+		ele->x = mmRand(0, eScreen->cScreen->width, 1);
+		ele->y = mmRand(0, eScreen->cScreen->height, 1);
+		ele->lifespan = mmRand(50,1000, 100);
+		ele->age = 0.0;
+		for (i = 0; i < 4; i++) 
+		{
+			ele->dx[i] = mmRand(-3000, 3000, 200);
+			ele->dy[i] = mmRand(-2000, 2000, 200);
+			ele->dz[i] = mmRand(-1000, 1000, 500000);
+		}
+	}
+	if (ele->type == 3)
+	{
+	   	float init;
+		ele->dx[0] = mmRand(-50000, 50000, 5000);
+		ele->dy[0] = mmRand(-50000, 50000, 5000);
+		ele->dz[0] = mmRand(000, 200, 2000);
+		ele->x = eScreen->cScreen->width * .5 + elementsGetStarOffsetX (eScreen->cScreen->display); // X Offset
+		ele->y = eScreen->cScreen->height * .5 + elementsGetStarOffsetY (eScreen->cScreen->display); // Y Offset
+		ele->z = mmRand(000, 0.1, 5000);
+		init = mmRand(0,100, 1);
+		ele->x += init * ele->dx[0];
+		ele->y += init * ele->dy[0];
+	}
+}
+
+static void
+setElementTexture (screen *eScreen,
+		     element  *ele)
+{
+	if (eScreen->numTexLoaded[0] && ele->type == 0)
+		ele->eTex = &eScreen->textu[rand () % eScreen->numTexLoaded[0]];
+	else if (eScreen->numTexLoaded[1] && ele->type == 1)
+		ele->eTex = &eScreen->textu[eScreen->numTexLoaded[0] + (rand () % eScreen->numTexLoaded[1])];
+	else if (eScreen->numTexLoaded[2] && ele->type == 2)
+		ele->eTex = &eScreen->textu[eScreen->numTexLoaded[0] + eScreen->numTexLoaded[1] + (rand () % eScreen->numTexLoaded[2])];
+	else if (eScreen->numTexLoaded[3] && ele->type == 3)
+		ele->eTex = &eScreen->textu[eScreen->numTexLoaded[0] + eScreen->numTexLoaded[1] + eScreen->numTexLoaded[2] + (rand () % eScreen->numTexLoaded[3])];
+	else if (eScreen->numTexLoaded[4] && ele->type == 4)
+		ele->eTex = &eScreen->textu[eScreen->numTexLoaded[0] + eScreen->numTexLoaded[1] + eScreen->numTexLoaded[2] + eScreen->numTexLoaded[3] + (rand () % eScreen->numTexLoaded[4])];
+	else
+		ele->eTex = NULL;
+	
+}
+
+static void
+updateElementTextures (CompScreen *s, Bool changeTextures)
+{
+	int       i, count = 0;
+	float     autumnSize = elementsGetLeafSize(s->display);
+	float     ffSize = elementsGetFireflySize(s->display);
+	float     snowSize = elementsGetSnowSize(s->display);
+	float     starsSize = elementsGetStarsSize(s->display);
+	float     bubblesSize = elementsGetBubblesSize(s->display);	element *ele;
+
+	E_SCREEN (s);
+	E_DISPLAY (s->display);
+	int numAutumn, numFf, numSnow, numStars, numBubbles;
+
+	if (eScreen->isActive[0])
+		numAutumn = elementsGetNumLeaves (s->display);	
+	else
+		numAutumn = 0;
+	if (eScreen->isActive[1])
+		numFf = elementsGetNumFireflies (s->display);
+	else
+		numFf = 0;
+	if (eScreen->isActive[2])
+		numSnow = elementsGetNumSnowflakes (s->display);
+	else
+		numSnow = 0;
+	if (eScreen->isActive[3])
+		numStars = elementsGetNumStars (s->display);
+	else
+		numStars = 0;
+	if (eScreen->isActive[4])
+		numBubbles = elementsGetNumBubbles (s->display);
+	else
+		numBubbles = 0;
+	ele = eScreen->allElements;
+	if (changeTextures)
+	{
+	for (i = 0; i < eScreen->numElements; i++)
+	{
+		finiTexture (s, &eScreen->textu[i].tex);
+		glDeleteLists (eScreen->textu[i].dList, 1);
+	}
+
+	if (eScreen->textu)
+		free (eScreen->textu);
+	eScreen->numElements = 0;
+	eScreen->numTexLoaded[0] = 0;
+	eScreen->numTexLoaded[1] = 0;
+	eScreen->numTexLoaded[2] = 0;
+	eScreen->numTexLoaded[3] = 0;
+	eScreen->numTexLoaded[4] = 0;
+	eScreen->textu = calloc (1, sizeof (texture) * (ed->numTex[0] + ed->numTex[1] + ed->numTex[2] + ed->numTex[3] + ed->numTex[4]));
+	}
+	for (i = 0; i < ed->numTex[0]; i++)
+	{		
+		CompMatrix  *mat;
+		texture *aTex;
+	if (changeTextures)
+	{
+		eScreen->textu[count].loaded =
+		    readImageToTexture (s, &eScreen->textu[count].tex,
+					ed->texFiles[0][i].s,
+					&eScreen->textu[count].width,
+					&eScreen->textu[count].height);
+		if (!eScreen->textu[count].loaded)
+		{
+		    compLogMessage ("Elements", CompLogLevelWarn,
+			    "Texture (Autumn) not found : %s", ed->texFiles[0][i].s);
+		    continue;
+		}
+		compLogMessage ("Elements", CompLogLevelInfo,
+			"Loaded Texture (Autumn)%s", ed->texFiles[0][i].s);
+		}
+		mat = &eScreen->textu[count].tex.matrix;
+		aTex = &eScreen->textu[count];
+		aTex->dList = glGenLists (1);
+		glNewList (aTex->dList, GL_COMPILE);
+
+		glBegin (GL_QUADS);
+
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0), COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (0, 0);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
+			      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (0, autumnSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+			      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (autumnSize, autumnSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+			      COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (autumnSize, 0);
+
+		glEnd ();
+		glEndList ();
+
+		count++;
+	}
+	if (changeTextures)
+		eScreen->numTexLoaded[0] = count;
+	for (i = 0; i < ed->numTex[1]; i++)
+	{ 
+		CompMatrix  *mat;
+		texture *aTex;
+		if (changeTextures)
+		{
+		eScreen->textu[count].loaded =
+		readImageToTexture (s, &eScreen->textu[count].tex,
+				ed->texFiles[1][i].s,
+				&eScreen->textu[count].width,
+				&eScreen->textu[count].height);
+		if (!eScreen->textu[count].loaded)
+		{
+		    compLogMessage ("Elements", CompLogLevelWarn,
+			    "Texture (Firefly) not found : %s", ed->texFiles[1][i].s);
+		    continue;
+		}
+		compLogMessage ("Elements", CompLogLevelInfo,
+			"Loaded Texture (Firefly) %s", ed->texFiles[1][i].s);
+		}
+		mat = &eScreen->textu[count].tex.matrix;
+		aTex = &eScreen->textu[count];
+
+		aTex->dList = glGenLists (1);
+		glNewList (aTex->dList, GL_COMPILE);
+
+		glBegin (GL_QUADS);
+
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0), COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (0, 0);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
+		      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (0, ffSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+			      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (ffSize, ffSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+			      COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (ffSize, 0);
+
+		glEnd ();
+		glEndList ();
+
+		count++;
+	}
+	if (changeTextures)
+	eScreen->numTexLoaded[1] = count - eScreen->numTexLoaded[0];
+	for (i = 0; i < ed->numTex[2]; i++)
+	{ 
+		CompMatrix  *mat;
+		texture *aTex;
+	if (changeTextures)
+	{
+		eScreen->textu[count].loaded =
+		readImageToTexture (s, &eScreen->textu[count].tex,
+				ed->texFiles[2][i].s,
+				&eScreen->textu[count].width,
+				&eScreen->textu[count].height);
+		if (!eScreen->textu[count].loaded)
+		{
+			compLogMessage ("Elements", CompLogLevelWarn,
+			    "Texture (snow) not found : %s", ed->texFiles[2][i].s);
+			continue;
+		}
+		compLogMessage ("Elements", CompLogLevelInfo,
+			"Loaded Texture (snow) %s", ed->texFiles[2][i].s);
+	}
+		mat = &eScreen->textu[count].tex.matrix;
+		aTex = &eScreen->textu[count];
+
+		aTex->dList = glGenLists (1);
+		glNewList (aTex->dList, GL_COMPILE);
+
+		glBegin (GL_QUADS);
+
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0), COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (0, 0);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
+		      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (0, snowSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+		      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (snowSize, snowSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+		      COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (snowSize, 0);
+
+		glEnd ();
+		glEndList ();
+
+		count++;
+	}
+	if (changeTextures)
+	eScreen->numTexLoaded[2] = count - eScreen->numTexLoaded[0] -eScreen->numTexLoaded[1];
+	for (i = 0; i < ed->numTex[3]; i++)
+	{ 
+		CompMatrix  *mat;
+		texture *aTex;
+	if (changeTextures)
+	{
+		eScreen->textu[count].loaded =
+		readImageToTexture (s, &eScreen->textu[count].tex,
+				ed->texFiles[3][i].s,
+				&eScreen->textu[count].width,
+				&eScreen->textu[count].height);
+		if (!eScreen->textu[count].loaded)
+		{
+			compLogMessage ("Elements", CompLogLevelWarn,
+			    "Texture (stars) not found : %s", ed->texFiles[3][i].s);
+			continue;
+		}
+		compLogMessage ("Elements", CompLogLevelInfo,
+			"Loaded Texture (stars)%s", ed->texFiles[3][i].s);
+	}
+		mat = &eScreen->textu[count].tex.matrix;
+		aTex = &eScreen->textu[count];
+
+		aTex->dList = glGenLists (1);
+		glNewList (aTex->dList, GL_COMPILE);
+
+		glBegin (GL_QUADS);
+
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0), COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (0, 0);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
+		      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (0, starsSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+		      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (starsSize, starsSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+		      COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (starsSize, 0);
+
+		glEnd ();
+		glEndList ();
+
+		count++;
+	}
+	if (changeTextures)
+	eScreen->numTexLoaded[3] = count - eScreen->numTexLoaded[0] - eScreen->numTexLoaded[1] - eScreen->numTexLoaded[2];
+	for (i = 0; i < ed->numTex[4]; i++)
+	{ 
+		CompMatrix  *mat;
+		texture *aTex;
+	if (changeTextures)
+	{
+		eScreen->textu[count].loaded =
+		readImageToTexture (s, &eScreen->textu[count].tex,
+				ed->texFiles[4][i].s,
+				&eScreen->textu[count].width,
+				&eScreen->textu[count].height);
+		if (!eScreen->textu[count].loaded)
+		{
+			compLogMessage ("Elements", CompLogLevelWarn,
+			    "Texture (bubbles) not found : %s", ed->texFiles[4][i].s);
+			continue;
+		}
+		compLogMessage ("Elements", CompLogLevelInfo,
+			"Loaded Texture (bubbles)%s", ed->texFiles[4][i].s);
+	}
+		mat = &eScreen->textu[count].tex.matrix;
+		aTex = &eScreen->textu[count];
+
+		aTex->dList = glGenLists (1);
+		glNewList (aTex->dList, GL_COMPILE);
+
+		glBegin (GL_QUADS);
+
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0), COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (0, 0);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, 0),
+		      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (0, bubblesSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+		      COMP_TEX_COORD_Y (mat, aTex->height));
+		glVertex2f (bubblesSize, bubblesSize * aTex->height / aTex->width);
+		glTexCoord2f (COMP_TEX_COORD_X (mat, aTex->width),
+		      COMP_TEX_COORD_Y (mat, 0));
+		glVertex2f (bubblesSize, 0);
+
+		glEnd ();
+		glEndList ();
+
+		count++;
+	}
+	if (changeTextures)
+	{
+	eScreen->numTexLoaded[4] = count - eScreen->numTexLoaded[0] - eScreen->numTexLoaded[1] - eScreen->numTexLoaded[2] - eScreen->numTexLoaded[3];
+
+//	if (count < (ed->numTex[0] + ed->numTex[1] + ed->numTex[2] + ed->numTex[3] + ed->numTex[4]))
+		eScreen->textu = realloc (eScreen->textu, sizeof (texture) * count);
+
+	eScreen->numElements = count;
+
+	for (i = 0; i < (numAutumn + numFf + numSnow + numStars + numBubbles); i++)
+		setElementTexture (eScreen, ele++);
+	}
 }
 
 static Bool
 elementsInitScreen (CompPlugin *p,
-		    CompScreen *s)
+		CompScreen *s)
 {
-    ElementsScreen *es;
-    int            delay;
-    int 	   lowest = 50;
-    int		   i;
-    CompListValue  *cIter = elementsGetElementIter (s);
+	screen *eScreen;
+	E_DISPLAY (s->display);
 
-    ELEMENTS_DISPLAY (s->display);
+	eScreen = calloc (1, sizeof(screen));
+	s->base.privates[ed->privateIndex].ptr = eScreen;
+	eScreen->cScreen = s;
+	eScreen->numElements = 0;
+	eScreen->textu = NULL;
+	eScreen->needUpdate = FALSE;
+	eScreen->useKeys = elementsGetToggle (s->display);
 
-    es = calloc (1, sizeof (ElementsScreen));
-    if (!es)
-	return FALSE;
+	if (!eScreen->useKeys)
+	{
+	eScreen->isActive[0] = elementsGetToggleAutumnCheck (s->display);
+	eScreen->isActive[1] = elementsGetToggleFirefliesCheck (s->display);
+	eScreen->isActive[2] = elementsGetToggleSnowCheck (s->display);
+	eScreen->isActive[3] = elementsGetToggleStarsCheck (s->display);
+	eScreen->isActive[4] = elementsGetToggleBubblesCheck (s->display);
+	}
+	else
+	{
+	eScreen->isActive[0] = FALSE;
+	eScreen->isActive[1] = FALSE;
+	eScreen->isActive[2] = FALSE;
+	eScreen->isActive[3] = FALSE;
+	eScreen->isActive[4] = FALSE;
+	}
 
-    es->needUpdate    = FALSE;
-    es->listIter      = 0;
-    es->animations    = NULL;
-    es->textData      = NULL;
-    es->renderText    = FALSE;
-    es->renderTexture = FALSE;
-    es->renderTimeout = 0;
-    es->switchTimeout = 0;
-    es->eTexture      = NULL;
-    for (i = 0; i < cIter->nValue; i++)
-	if (cIter->value[i].i < lowest)
-	    lowest = cIter->value[i].i;
+	createAll( s->display);
+	updateElementTextures (s, TRUE);
+	setupDisplayList (eScreen);
+	WRAP (eScreen, s, paintOutput, elementsPaintOutput);
+	WRAP (eScreen, s, drawWindow, elementsDrawWindow);
+	eScreen->timeoutHandle = compAddTimeout (elementsGetUpdateDelay (s->display),
+							elementsGetUpdateDelay (s->display),
+							stepPositions, s);
 
-    es->animIter = lowest;
-
-    elementsSetElementTypeNotify (s, elementsScreenOptionChanged);
-    elementsSetElementImageNotify (s, elementsScreenOptionChanged);
-    elementsSetElementSizeNotify (s, elementsScreenOptionChanged);
-    elementsSetElementSpeedNotify (s, elementsScreenOptionChanged);
-    elementsSetElementCapNotify (s, elementsScreenOptionChanged);
-    elementsSetElementRotateNotify (s, elementsScreenOptionChanged);
-    elementsSetUpdateDelayNotify (s, elementsScreenOptionChanged);
-
-    es->displayList = setupDisplayList ();
-
-    delay             = elementsGetUpdateDelay (s);
-    es->timeoutHandle = compAddTimeout (delay, (float) delay * 1.2,
-					stepPositions, s);
-
-    WRAP (es, s, paintOutput, elementsPaintOutput);
-    WRAP (es, s, drawWindow, elementsDrawWindow);
-
-    s->base.privates[ed->screenPrivateIndex].ptr = es;
-
-    updateElementTextures (s, TRUE);
-
-    return TRUE;
+	return TRUE;
 }
 
 static void
 elementsFiniScreen (CompPlugin *p,
-		    CompScreen *s)
+		CompScreen *s)
 {
-    ELEMENTS_SCREEN (s);
-
-    if (es->timeoutHandle)
-	compRemoveTimeout (es->timeoutHandle);
-
-    if (es->renderTimeout)
-    	compRemoveTimeout (es->renderTimeout);
-
-    elementsFreeTitle (s);
-    
-    if (es->eTexture)
-    {
 	int i;
-	for (i = 0; i < es->ntTextures; i++)
+
+	E_SCREEN (s);
+
+	if (eScreen->timeoutHandle)
+		compRemoveTimeout (eScreen->timeoutHandle);
+
+	for (i = 0; i < eScreen->numElements; i++)
 	{
-    	    finiTexture (s, &es->eTexture[i].tex);
-	    glDeleteLists (es->eTexture[i].dList, 1);
+		finiTexture (s, &eScreen->textu[i].tex);
+		glDeleteLists (eScreen->textu[i].dList, 1);
 	}
-    	free (es->eTexture);
-    }
 
-    elementsRemoveElementType (s, "autumn");
-    elementsRemoveElementType (s, "fireflies");
-    elementsRemoveElementType (s, "snow");
-    elementsRemoveElementType (s, "stars");
-    elementsRemoveElementType (s, "bubbles");
+	if (eScreen->textu)
+		free (eScreen->textu);
 
-    UNWRAP (es, s, paintOutput);
-    UNWRAP (es, s, drawWindow);
+	UNWRAP (eScreen, s, paintOutput);
+	UNWRAP (eScreen, s, drawWindow);
+	free (eScreen);
+}
 
-    free (es);
+static void
+createAll( CompDisplay *d )
+{
+	    		CompScreen *s;
+	    		int        i, ii, iii, iv ,v, numAutumn, numFf, numSnow, numStars, numBubbles, numTmp;
+	    		element  *ele;
+	    		for (s = d->screens; s; s = s->next)
+    	    		{
+				E_SCREEN (s);	
+				if (eScreen->isActive[0])
+					numAutumn = elementsGetNumLeaves (s->display);	
+				else
+					numAutumn = 0;
+				if (eScreen->isActive[1])
+					numFf = elementsGetNumFireflies (s->display);
+				else
+					numFf = 0;
+				if (eScreen->isActive[2])
+					numSnow = elementsGetNumSnowflakes (s->display);
+				else
+					numSnow = 0;
+				if (eScreen->isActive[3])
+					numStars = elementsGetNumStars (s->display);
+				else
+					numStars = 0; 
+				if (eScreen->isActive[4])
+					numBubbles = elementsGetNumBubbles (s->display);
+				else
+					numBubbles = 0;
+
+				numTmp = (numAutumn + numFf + numSnow + numStars + numBubbles);
+				eScreen->allElements = ele = realloc (eScreen->allElements,
+					     numTmp * sizeof (element));
+				ele = eScreen->allElements;
+
+				for (i = 0; i < numAutumn; i++)
+				{
+					ele->type = 0;
+					initiateElement (eScreen, ele);
+    					setElementTexture (eScreen, ele);
+					ele++;
+				}
+				for (ii = 0; ii < numFf; ii++)
+				{
+					ele->type = 1;
+					initiateElement (eScreen, ele);
+					setElementTexture (eScreen, ele);
+					ele++;
+				}
+				for (iii = 0; iii < numSnow; iii++)
+				{
+					ele->type = 2;
+					initiateElement (eScreen, ele);
+					setElementTexture (eScreen, ele);
+					ele++;
+				}
+				for (iv = 0; iv < numStars; iv++)
+				{
+					ele->type = 3;
+					initiateElement (eScreen, ele);
+					setElementTexture (eScreen, ele);
+					ele++;
+				}
+				for (v = 0; v < numBubbles; v++)
+				{
+					ele->type = 4;
+					initiateElement (eScreen, ele);
+					setElementTexture (eScreen, ele);
+					ele++;
+				}
+	    		}
+}
+
+static void
+elementsDisplayOptionChanged (CompDisplay        *d,
+			  CompOption         *opt,
+			  ElementsDisplayOptions num)
+{
+	E_DISPLAY (d);
+	switch (num)
+	{
+		case ElementsDisplayOptionToggleAutumnCheck:
+		{
+			Bool useKeys;
+			CompScreen *s;
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				useKeys = eScreen->useKeys;
+				if (!useKeys)
+				{
+					eScreen->isActive[0] = elementsGetToggleAutumnCheck(s->display);
+					damageScreen (s);
+					eScreen->needUpdate = TRUE;
+				}
+			}
+			if (!useKeys)
+				createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionToggleFirefliesCheck:
+		{
+			Bool useKeys;
+			CompScreen *s;
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				useKeys = eScreen->useKeys;
+				if (!useKeys)
+				{
+					eScreen->isActive[1] = elementsGetToggleFirefliesCheck(s->display);
+					damageScreen (s);
+					eScreen->needUpdate = TRUE;
+				}
+			}
+			if (!useKeys)
+				createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionToggleSnowCheck:
+		{
+			Bool useKeys;
+			CompScreen *s;
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				useKeys = eScreen->useKeys;
+				if (!useKeys)
+				{
+					eScreen->isActive[2] = elementsGetToggleSnowCheck(s->display);
+					damageScreen (s);
+					eScreen->needUpdate = TRUE;
+				}
+			}
+			if (!useKeys)
+			createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionToggleStarsCheck:
+		{
+			Bool useKeys;
+			CompScreen *s;
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				useKeys = eScreen->useKeys;
+				if (!useKeys)
+				{
+					eScreen->isActive[3] = elementsGetToggleStarsCheck(s->display);
+					damageScreen (s);
+					eScreen->needUpdate = TRUE;
+				}
+			}
+			if (!useKeys)
+				createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionToggleBubblesCheck:
+		{
+			Bool useKeys;
+			CompScreen *s;
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				useKeys = eScreen->useKeys;
+				if (!useKeys)
+				{
+					eScreen->isActive[4] = elementsGetToggleBubblesCheck(s->display);
+					damageScreen (s);
+					eScreen->needUpdate = TRUE;
+				}
+			}
+			if (!useKeys)
+			createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionToggle:
+		{
+			CompScreen *s;
+
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				eScreen->useKeys = elementsGetToggle(d);
+				if (!eScreen->useKeys)
+				{
+					eScreen->isActive[0] = elementsGetToggleAutumnCheck(s->display);
+					eScreen->isActive[1] = elementsGetToggleFirefliesCheck(s->display);
+					eScreen->isActive[2] = elementsGetToggleSnowCheck(s->display);
+					eScreen->isActive[3] = elementsGetToggleStarsCheck(s->display);
+					eScreen->isActive[4] = elementsGetToggleBubblesCheck(s->display);
+					createAll( d);
+				}
+				damageScreen (s);
+			}
+		}
+		break;
+		case ElementsDisplayOptionLeafSize:
+		{
+			CompScreen *s;
+
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				eScreen->needUpdate = TRUE;
+				updateElementTextures (s, FALSE);
+		    	}
+		}
+		break;
+		case ElementsDisplayOptionBubblesSize:
+		{
+			CompScreen *s;
+
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				eScreen->needUpdate = TRUE;
+				updateElementTextures (s, FALSE);
+		    	}
+		}
+
+		break;
+    		case ElementsDisplayOptionSnowSize:
+		{
+			CompScreen *s;
+
+			for (s = d->screens; s; s = s->next)
+			{
+				E_SCREEN (s);
+				eScreen->needUpdate = TRUE;
+				updateElementTextures (s, FALSE);
+			}
+		}
+		break;
+    		case ElementsDisplayOptionSnowSway:
+		{
+			createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionStarsSize:
+		{
+			CompScreen *s;
+
+			for (s = d->screens; s; s = s->next)
+			{
+				E_SCREEN (s);
+				eScreen->needUpdate = TRUE;
+				updateElementTextures (s, FALSE);
+			}
+		}
+		break;
+		case ElementsDisplayOptionFireflySize:
+		{
+			CompScreen *s;
+			for (s = d->screens; s; s = s->next)
+	    		{
+				E_SCREEN (s);
+				eScreen->needUpdate = TRUE;
+				updateElementTextures (s, FALSE);
+	    		}	
+		}
+		break;
+    		case ElementsDisplayOptionUpdateDelay:
+		{
+			CompScreen *s;
+
+	   		for (s = d->screens; s; s = s->next)
+	   	 	{
+			E_SCREEN (s);
+					
+			if (eScreen->timeoutHandle)
+		  	  	compRemoveTimeout (eScreen->timeoutHandle);
+				eScreen->timeoutHandle =
+					compAddTimeout (elementsGetUpdateDelay (d),
+							elementsGetUpdateDelay (d),
+							stepPositions, s);
+			}
+		}
+		break;
+   		case ElementsDisplayOptionNumLeaves:
+		{
+			createAll( d );
+		}
+		break;
+ 		case ElementsDisplayOptionNumBubbles:
+		{
+			createAll( d );
+		}
+		break;
+
+  		case ElementsDisplayOptionAutumnSway:
+		{
+			createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionNumFireflies:
+		{
+			createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionNumSnowflakes:
+		{
+			createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionNumStars:
+		{
+			createAll( d );
+		}
+		break;
+		case ElementsDisplayOptionLeafTextures:
+		{
+			CompScreen *s;
+			CompOption *texAutOpt;
+			texAutOpt = elementsGetLeafTexturesOption (d);
+			ed->texFiles[0] = texAutOpt->value.list.value;
+			ed->numTex[0] = texAutOpt->value.list.nValue;
+			for (s = d->screens; s; s = s->next)
+				updateElementTextures (s, TRUE);
+		}
+		break;
+		case ElementsDisplayOptionBubblesTextures:
+		{
+			CompScreen *s;
+			CompOption *texBubblesOpt;
+			texBubblesOpt = elementsGetBubblesTexturesOption (d);
+			ed->texFiles[4] = texBubblesOpt->value.list.value;
+			ed->numTex[4] = texBubblesOpt->value.list.nValue;
+			for (s = d->screens; s; s = s->next)
+				updateElementTextures (s, TRUE);
+		}
+		break;
+		case ElementsDisplayOptionFirefliesTextures:
+		{
+			CompScreen *s;
+			CompOption *texFfOpt;
+
+			texFfOpt = elementsGetFirefliesTexturesOption (d);
+
+			ed->texFiles[1] = texFfOpt->value.list.value;
+			ed->numTex[1] = texFfOpt->value.list.nValue;
+
+			for (s = d->screens; s; s = s->next)
+				updateElementTextures (s, TRUE);
+		}
+		break;
+		case ElementsDisplayOptionSnowTextures:
+		{
+			CompScreen *s;
+			CompOption *texSnowOpt;
+
+			texSnowOpt = elementsGetSnowTexturesOption (d);
+
+			ed->texFiles[2] = texSnowOpt->value.list.value;
+			ed->numTex[2] = texSnowOpt->value.list.nValue;
+
+			for (s = d->screens; s; s = s->next)
+				updateElementTextures (s, TRUE);
+		}
+		break;
+		case ElementsDisplayOptionStarsTextures:
+		{
+			CompScreen *s;
+			CompOption *texStarsOpt;
+
+			texStarsOpt = elementsGetStarsTexturesOption (d);
+			ed->texFiles[3] = texStarsOpt->value.list.value;
+			ed->numTex[3] = texStarsOpt->value.list.nValue;
+
+			for (s = d->screens; s; s = s->next)
+				updateElementTextures (s, TRUE);
+
+		}
+		break;
+		default:
+		break;
+	}
 }
 
 static Bool
 elementsInitDisplay (CompPlugin  *p,
-		     CompDisplay *d)
+		 CompDisplay *d)
 {
-    ElementsDisplay *ed;
-    CompOption      *abi, *index;
-    int             idx;
+	CompOption  *texAutOpt, *texFfOpt, *texSnowOpt, *texStarsOpt;
+	CompOption  *texBubblesOpt;
+	eDisplay *ed;
+        if (!checkPluginABI ("core", CORE_ABIVERSION))
+	return FALSE;    
 
-    if (!checkPluginABI ("core", CORE_ABIVERSION))
-	return FALSE;
+	ed = malloc (sizeof (eDisplay));
 
-    ed = malloc (sizeof (ElementsDisplay));
-    if (!ed)
-	return FALSE;
+	ed->privateIndex = allocateScreenPrivateIndex (d);
+	if (ed->privateIndex < 0)
+	{
+		free (ed);
+		return FALSE;
+	}
+	elementsSetToggleAutumnKeyInitiate (d, elementsAutumnToggle);
+	elementsSetToggleFirefliesKeyInitiate (d, elementsFirefliesToggle);
+	elementsSetToggleSnowKeyInitiate (d, elementsSnowToggle);
+	elementsSetToggleStarsKeyInitiate (d, elementsStarsToggle);
+	elementsSetToggleBubblesKeyInitiate (d, elementsBubblesToggle);
+	elementsSetToggleNotify (d, elementsDisplayOptionChanged);
+	elementsSetToggleSnowCheckNotify (d, elementsDisplayOptionChanged);
+	elementsSetToggleAutumnCheckNotify (d, elementsDisplayOptionChanged);
+	elementsSetToggleStarsCheckNotify (d, elementsDisplayOptionChanged);
+	elementsSetToggleFirefliesCheckNotify (d, elementsDisplayOptionChanged);
+	elementsSetToggleBubblesCheckNotify (d, elementsDisplayOptionChanged);
+	elementsSetNumSnowflakesNotify (d, elementsDisplayOptionChanged);
+	elementsSetNumBubblesNotify (d, elementsDisplayOptionChanged);
+	elementsSetAutumnSwayNotify (d, elementsDisplayOptionChanged);
+	elementsSetNumLeavesNotify (d, elementsDisplayOptionChanged);
+	elementsSetNumFirefliesNotify (d, elementsDisplayOptionChanged);
+	elementsSetNumStarsNotify (d, elementsDisplayOptionChanged);
+	elementsSetLeafSizeNotify (d, elementsDisplayOptionChanged);
+	elementsSetBubblesSizeNotify (d, elementsDisplayOptionChanged);
+	elementsSetFireflySizeNotify (d, elementsDisplayOptionChanged);
+	elementsSetSnowSizeNotify (d, elementsDisplayOptionChanged);
+	elementsSetSnowSwayNotify (d, elementsDisplayOptionChanged);
+	elementsSetStarsSizeNotify (d, elementsDisplayOptionChanged);
+	elementsSetUpdateDelayNotify (d, elementsDisplayOptionChanged);
+	elementsSetLeafTexturesNotify (d, elementsDisplayOptionChanged);
+	elementsSetFirefliesTexturesNotify (d, elementsDisplayOptionChanged);
+	elementsSetSnowTexturesNotify (d, elementsDisplayOptionChanged);
+	elementsSetStarsTexturesNotify (d, elementsDisplayOptionChanged);
+	elementsSetBubblesTexturesNotify (d, elementsDisplayOptionChanged);
 
-    ed->screenPrivateIndex = allocateScreenPrivateIndex (d);
-    if (ed->screenPrivateIndex < 0)
-    {
-	free (ed);
-	return FALSE;
-    }
+	texAutOpt = elementsGetLeafTexturesOption (d);
+	texFfOpt = elementsGetFirefliesTexturesOption (d);
+	texSnowOpt = elementsGetSnowTexturesOption (d);
+	texStarsOpt = elementsGetStarsTexturesOption (d);
+	texBubblesOpt = elementsGetBubblesTexturesOption (d);
+	ed->texFiles[0] = texAutOpt->value.list.value;
+	ed->texFiles[1] = texFfOpt->value.list.value;
+	ed->texFiles[2] = texSnowOpt->value.list.value;
+	ed->texFiles[3] = texStarsOpt->value.list.value;
+	ed->texFiles[4] = texBubblesOpt->value.list.value;
+	ed->numTex[0] = texAutOpt->value.list.nValue;
+	ed->numTex[1] = texFfOpt->value.list.nValue;
+	ed->numTex[2] = texSnowOpt->value.list.nValue;
+	ed->numTex[3] = texStarsOpt->value.list.nValue;
+	ed->numTex[4] = texBubblesOpt->value.list.nValue;
 
-    if (checkPluginABI ("text", TEXT_ABIVERSION) &&
-	getPluginDisplayIndex (d, "text", &idx))
-    {
-	ed->textFunc = d->base.privates[idx].ptr;
-    }
-    else
-    {
-	compLogMessage ("elements", CompLogLevelWarn,
-			"No compatible text plugin found.");
-	ed->textFunc = NULL;
-    }
-
-    ed->elementTypes = NULL;
-
-    abi   = elementsGetAbiOption (d);
-    index = elementsGetIndexOption (d);
-
-    abi->value.i   = ELEMENTS_ABIVERSION;
-    index->value.i = functionsPrivateIndex;
-
-    elementsSetNextElementKeyInitiate (d, elementsNextElement);
-    elementsSetPrevElementKeyInitiate (d, elementsPrevElement);
-    elementsSetToggleSelectedKeyInitiate (d, elementsToggleSelected);
-
-    d->base.privates[displayPrivateIndex].ptr   = ed;
-    d->base.privates[functionsPrivateIndex].ptr = &elementsFunctions;
-
-    elementsCreateNewElementType (d, "autumn", "Autumn",
-				  initiateAutumnElement,
-				  autumnMove,
-				  autumnFini);
-
-    elementsCreateNewElementType (d, "fireflies", "Fireflies",
-				  initiateFireflyElement,
-				  fireflyMove,
-				  fireflyFini);
-
-    elementsCreateNewElementType (d, "snow", "Snow",
-				  initiateSnowElement,
-				  snowMove,
-				  snowFini);
-
-    elementsCreateNewElementType (d, "stars",  "Stars",
-				  initiateStarElement,
-				  starMove,
-				  starFini);
-
-    elementsCreateNewElementType (d, "bubbles", "Bubbles",
-				  initiateBubbleElement,
-				  bubbleMove,
-				  bubbleFini);
-
-    return TRUE;
+	d->base.privates[displayPrivateIndex].ptr = ed;
+	return TRUE;
 }
 
 
 static void
 elementsFiniDisplay (CompPlugin  *p,
-		     CompDisplay *d)
+		 CompDisplay *d)
 {
-    ELEMENTS_DISPLAY (d);
+	E_DISPLAY (d);
 
-    freeScreenPrivateIndex (d, ed->screenPrivateIndex);
-    free (ed);
+	freeScreenPrivateIndex (d, ed->privateIndex);
+	free (ed);
 }
 
 static Bool
 elementsInit (CompPlugin *p)
 {
-    displayPrivateIndex = allocateDisplayPrivateIndex ();
-    if (displayPrivateIndex < 0)
-	return FALSE;
+	displayPrivateIndex = allocateDisplayPrivateIndex ();
+	if (displayPrivateIndex < 0)
+		return FALSE;
 
-    functionsPrivateIndex = allocateDisplayPrivateIndex ();
-    if (functionsPrivateIndex < 0)
-    {
-	freeDisplayPrivateIndex (displayPrivateIndex);
-	return FALSE;
-    }
-
-     return TRUE;
+	return TRUE;
 }
 
 static void
 elementsFini (CompPlugin *p)
 {
-    freeDisplayPrivateIndex (displayPrivateIndex);
-    freeDisplayPrivateIndex (functionsPrivateIndex);
+	freeDisplayPrivateIndex (displayPrivateIndex);
 }
 
-static CompBool
-elementsInitObject(CompPlugin *p,
-		   CompObject *o)
-{
-    static InitPluginObjectProc dispTab[] = {
-	(InitPluginObjectProc) 0, /* InitCore */
-	(InitPluginObjectProc) elementsInitDisplay,
-	(InitPluginObjectProc) elementsInitScreen
-     };
 
-    RETURN_DISPATCH(o, dispTab, ARRAY_SIZE(dispTab), TRUE, (p, o));
+static CompBool elementsInitObject(CompPlugin *p, CompObject *o)
+{
+	static InitPluginObjectProc dispTab[] = {
+		(InitPluginObjectProc) 0, // InitCore
+		(InitPluginObjectProc) elementsInitDisplay,
+		(InitPluginObjectProc) elementsInitScreen
+		};
+
+	RETURN_DISPATCH(o, dispTab, ARRAY_SIZE(dispTab), TRUE, (p, o));
 }
 
-static void
-elementsFiniObject(CompPlugin *p,
-		   CompObject *o)
+static void elementsFiniObject(CompPlugin *p, CompObject *o)
 {
-    static FiniPluginObjectProc dispTab[] = {
-	(FiniPluginObjectProc) 0, /* FiniCore */
-	(FiniPluginObjectProc) elementsFiniDisplay,
-	(FiniPluginObjectProc) elementsFiniScreen
-    };
+	static FiniPluginObjectProc dispTab[] = {
+		(FiniPluginObjectProc) 0, // FiniCore
+		(FiniPluginObjectProc) elementsFiniDisplay,
+		(FiniPluginObjectProc) elementsFiniScreen
+   	 };
 
-    DISPATCH(o, dispTab, ARRAY_SIZE(dispTab), (p, o));
+	DISPATCH(o, dispTab, ARRAY_SIZE(dispTab), (p, o));
 }
 
 CompPluginVTable elementsVTable = {
-    "elements",
-    0,
-    elementsInit,
-    elementsFini,
-    elementsInitObject,
-    elementsFiniObject,
-    0,
-    0
+ 	"elements",
+	0,
+	elementsInit,
+	elementsFini,
+	elementsInitObject,
+	elementsFiniObject,
+	0,
+	0
 };
 
-CompPluginVTable *
+CompPluginVTable*
 getCompPluginInfo (void)
 {
     return &elementsVTable;
 }
+// Software is like sex. Sure, you can pay for it, but why would you?! //
