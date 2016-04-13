@@ -119,8 +119,8 @@
 					<_long>Snow textures</_long>
 					<hints>file;image;</hints>
 					<default>
-						<value>snow1.png</value>
-						<value>snow2.png</value>
+						<value>elements/snow1.png</value>
+						<value>elements/snow2.png</value>
 					</default>
 					<type>string</type>
 				</option>
@@ -183,8 +183,8 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-						<value>autumn1.png</value>
-						<value>autumn2.png</value>
+						<value>elements/autumn1.png</value>
+						<value>elements/autumn2.png</value>
 					</default>
 				</option>
 			</group>
@@ -242,8 +242,8 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-						<value>bubbles1.png</value>
-						<value>bubbles2.png</value>
+						<value>elements/bubbles1.png</value>
+						<value>elements/bubbles2.png</value>
 					</default>
 				</option>
 			</group>
@@ -302,8 +302,8 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-						<value>fireflies1.svg</value>
-						<value>fireflies2.svg</value>
+						<value>elements/fireflies1.svg</value>
+						<value>elements/fireflies2.svg</value>
 					</default>
 				</option>
 			</group>
@@ -374,7 +374,7 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-						<value>stars1.png</value>
+						<value>elements/stars1.png</value>
 					</default>
 				</option>
 			</group>
