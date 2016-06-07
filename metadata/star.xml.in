@@ -113,7 +113,7 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-						<value>star/star.png</value>
+						<value>stars/star.png</value>
 					</default>
 				</option>
 			</group>
