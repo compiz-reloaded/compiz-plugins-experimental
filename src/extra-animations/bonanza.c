@@ -208,7 +208,7 @@ fxBonanzaAnimStep (CompWindow *w, float time)
     ANIMPLUS_DISPLAY (s->display);
     ANIMPLUS_WINDOW (w);
 
-    float timestep = 2.0;
+    float timestep = 8.0;
     float old = 1 - (aw->com->animRemainingTime) / (aw->com->animTotalTime - timestep);
     float stepSize;
 
