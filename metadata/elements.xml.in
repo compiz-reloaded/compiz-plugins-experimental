@@ -84,7 +84,7 @@
 				</option>
 				<option name="toggle_snow_key" type="key">
 					<_short>Toggle Snow</_short>
-					<_long>Toggle Snow Only works if Toggle Elements with Keys is disabled.</_long>
+					<_long>Toggle Snow Only works if Toggle Elements with Keys is enabled.</_long>
 					<allowed key="true"/>
 					<default>
 						<key>&lt;Super&gt;s</key>
@@ -170,7 +170,7 @@
 				</option>
 				<option name="toggle_autumn_key" type="key">
 					<_short>Toggle Autumn</_short>
-					<_long>Toggle Autumn Only works if Toggle Elements with Keys is disabled.</_long>
+					<_long>Toggle Autumn Only works if Toggle Elements with Keys is enabled.</_long>
 					<allowed key="true"/>
 					<default>
 						<key>&lt;Super&gt;a</key>
@@ -228,7 +228,7 @@
 				</option>
 				<option name="toggle_bubbles_key" type="key">
 					<_short>Toggle Bubbles</_short>
-					<_long>Toggle Bubbles. Only works if Toggle Elements with Keys is disabled.</_long>
+					<_long>Toggle Bubbles. Only works if Toggle Elements with Keys is enabled.</_long>
 					<allowed key="true"/>
 					<default>
 						<key>&lt;Super&gt;b</key>
@@ -288,7 +288,7 @@
 				</option>
 				<option name="toggle_fireflies_key" type="key">
 					<_short>Toggle Fireflies</_short>
-					<_long>Toggle Fireflies. Only works if Toggle Elements with Keys is disabled.</_long>
+					<_long>Toggle Fireflies. Only works if Toggle Elements with Keys is enabled.</_long>
 					<allowed key="true"/>
 					<default>
 						<key>&lt;Super&gt;f</key>
@@ -360,7 +360,7 @@
 				</option>
 				<option name="toggle_stars_key" type="key">
 					<_short>Toggle Stars</_short>
-					<_long>Toggle Stars. Only works if Toggle Elements with Keys is disabled.</_long>
+					<_long>Toggle Stars. Only works if Toggle Elements with Keys is enabled.</_long>
 					<allowed key="true"/>
 					<default>
 						<key>&lt;Super&gt;t</key>
