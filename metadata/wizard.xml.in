@@ -20,6 +20,11 @@
 				    <_long>Toggle all particle effects.</_long>
 					<default>&lt;Super&gt;w</default>
 				</option>
+                <option name="default_enabled" type="bool">
+                    <_short>Enable by default</_short>
+                    <_long>Enable wizard by default.</_long>
+                    <default>false</default>
+                </option>
 			</group>
 		</display>
 		<screen>

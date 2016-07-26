@@ -1228,6 +1228,31 @@ wizardFiniScreen (CompPlugin *p, CompScreen *s)
     free (ws);
 }
 
+static void
+wizardDisplayOptionChanged (CompDisplay        *d,
+		CompOption         *opt,
+		WizardDisplayOptions num)
+{
+    WIZARD_DISPLAY (d);
+
+    switch (num)
+    {
+    case WizardDisplayOptionDefaultEnabled:
+	{
+	    CompScreen *s;
+	    for (s = d->screens; s; s = s->next)
+	    {
+		WIZARD_SCREEN (s);
+		ws->active = wizardGetDefaultEnabled(s->display);
+		damageScreen (s);
+	    }
+	}
+	break;
+    default:
+	break;
+    }
+}
+
 static Bool
 wizardInitDisplay (CompPlugin *p, CompDisplay *d)
 {
@@ -1262,6 +1287,7 @@ wizardInitDisplay (CompPlugin *p, CompDisplay *d)
 
     wizardSetInitiateInitiate (d, wizardInitiate);
     wizardSetInitiateTerminate (d, wizardTerminate);
+    wizardSetDefaultEnabledNotify (d, wizardDisplayOptionChanged);
 
     //Record the display
     d->base.privates[displayPrivateIndex].ptr = wd;
