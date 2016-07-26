@@ -694,6 +694,17 @@ snowDisplayOptionChanged (CompDisplay        *d,
 		updateSnowTextures (s);
 	}
 	break;
+    case StarDisplayOptionDefaultEnabled:
+	{
+	    CompScreen *s;
+	    for (s = d->screens; s; s = s->next)
+	    {
+		SNOW_SCREEN (s);
+		ss->active = starGetDefaultEnabled(s->display);
+		ss->displayListNeedsUpdate = TRUE;
+		damageScreen (s);
+	    }
+	}
     default:
 	break;
     }
@@ -723,6 +734,7 @@ snowInitDisplay (CompPlugin  *p,
     starSetSnowSizeNotify (d, snowDisplayOptionChanged);
     starSetSnowUpdateDelayNotify (d, snowDisplayOptionChanged);
     starSetSnowTexturesNotify (d, snowDisplayOptionChanged);
+    starSetDefaultEnabledNotify (d, snowDisplayOptionChanged);
 
     texOpt = starGetSnowTexturesOption (d);
     sd->snowTexFiles = texOpt->value.list.value;
