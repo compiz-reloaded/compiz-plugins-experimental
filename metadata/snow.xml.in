@@ -90,6 +90,11 @@
 						<_name>Left to Right</_name>
 					</desc>
 				</option>
+				<option name="default_enabled" type="bool">
+					<_short>Enable by default</_short>
+					<_long>Enable snow by default.</_long>
+					<default>false</default>
+				</option>
 			</group>
 			<group>
 				<_short>Textures</_short>
