@@ -656,6 +656,18 @@ snowDisplayOptionChanged (CompDisplay        *d,
 		updateSnowTextures (s);
 	}
 	break;
+    case FirefliesDisplayOptionDefaultEnabled:
+	{
+	    CompScreen *s;
+	    for (s = d->screens; s; s = s->next)
+	    {
+		SNOW_SCREEN (s);
+		ss->active = firefliesGetDefaultEnabled(s->display);
+		ss->displayListNeedsUpdate = TRUE;
+		damageScreen (s);
+	    }
+	}
+	break;
     default:
 	break;
     }
@@ -685,6 +697,7 @@ snowInitDisplay (CompPlugin  *p,
     firefliesSetSnowSizeNotify (d, snowDisplayOptionChanged);
     firefliesSetSnowUpdateDelayNotify (d, snowDisplayOptionChanged);
     firefliesSetSnowTexturesNotify (d, snowDisplayOptionChanged);
+    firefliesSetDefaultEnabledNotify (d, snowDisplayOptionChanged);
 
     texOpt = firefliesGetSnowTexturesOption (d);
     sd->snowTexFiles = texOpt->value.list.value;
