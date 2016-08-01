@@ -267,7 +267,8 @@ fxBonanzaAnimStep (CompWindow *w, float time)
     }
     else
     {
-	XUnionRegion (&emptyRegion, &emptyRegion, aw->com->drawRegion);
+	    XUnionRegion (&emptyRegion, &emptyRegion, aw->com->drawRegion);
+	    damageScreen(w->screen);
     }
 
 
