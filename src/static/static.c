@@ -43,6 +43,9 @@ StaticMode;
 typedef struct _StaticScreen
 {
     PaintWindowProc             paintWindow;
+    DrawWindowProc              drawWindow;
+    AddWindowGeometryProc       addWindowGeometry;
+    DamageWindowRectProc        damageWindowRect;
     PaintOutputProc             paintOutput;
     ApplyScreenTransformProc    applyScreenTransform;
     PaintTransformedOutputProc  paintTransformedOutput;
@@ -195,6 +198,68 @@ staticPaintWindow (CompWindow              *w,
     return status;
 }
 
+static Bool
+staticDrawWindow (CompWindow           *w,
+                  const CompTransform  *transform,
+                  const FragmentAttrib *fragment,
+                  Region	           region,
+                  unsigned int	       mask)
+{
+    CompScreen *s = w->screen;
+    Bool status = TRUE;
+    STATIC_SCREEN (s);
+
+    if (ss->staticMode == STATIC_STATIC && isStatic(w)) {
+         /* Draw static windows directly */
+         (*s->addWindowGeometry) (w, &w->matrix, 1, w->region, region);
+         (*s->drawWindowTexture) (w, w->texture, fragment, mask);
+    } else {
+         UNWRAP (ss, s, drawWindow);
+         status = (*s->drawWindow) (w, transform, fragment, region, mask);
+         WRAP (ss, s, drawWindow, staticDrawWindow);
+    }
+
+    return status;
+}
+
+static void
+staticAddWindowGeometry (CompWindow *w,
+                         CompMatrix *matrix,
+                         int	    nMatrix,
+                         Region     region,
+                         Region     clip)
+{
+    CompScreen *s = w->screen;
+    STATIC_SCREEN (s);
+
+    /* Don't add geometry for static windows */
+    if (ss->staticMode == STATIC_STATIC && isStatic(w))
+        return;
+
+    UNWRAP (ss, s, addWindowGeometry);
+    (*w->screen->addWindowGeometry) (w, matrix, nMatrix, region, clip);
+    WRAP (ss, s, addWindowGeometry, staticAddWindowGeometry);
+}
+
+static Bool
+staticDamageWindowRect (CompWindow *w,
+                        Bool       initial,
+                        BoxPtr     rect)
+{
+    CompScreen *s = w->screen;
+    Bool status;
+
+    STATIC_SCREEN (s);
+
+    UNWRAP (ss, s, damageWindowRect);
+    status = (*s->damageWindowRect) (w, initial, rect);
+    WRAP (ss, s, damageWindowRect, staticDamageWindowRect);
+
+    damageScreenRegion (s, w->clip);
+
+    return status;
+}
+
 
 static Bool
 staticInitScreen (CompPlugin *p,
@@ -210,6 +275,9 @@ staticInitScreen (CompPlugin *p,
         return FALSE;
 
     WRAP (ss, s, paintWindow, staticPaintWindow);
+    WRAP (ss, s, drawWindow, staticDrawWindow);
+    WRAP (ss, s, addWindowGeometry, staticAddWindowGeometry);
+    WRAP (ss, s, damageWindowRect, staticDamageWindowRect);
     WRAP (ss, s, paintOutput, staticPaintOutput);
     WRAP (ss, s, applyScreenTransform, staticApplyScreenTransform);
     WRAP (ss, s, paintTransformedOutput, staticPaintTransformedOutput);
@@ -230,6 +298,9 @@ staticFiniScreen (CompPlugin *p,
     UNWRAP (ss, s, paintTransformedOutput);
     UNWRAP (ss, s, applyScreenTransform);
     UNWRAP (ss, s, paintOutput);
+    UNWRAP (ss, s, damageWindowRect);
+    UNWRAP (ss, s, addWindowGeometry);
+    UNWRAP (ss, s, drawWindow);
     UNWRAP (ss, s, paintWindow);
 
     free (ss);

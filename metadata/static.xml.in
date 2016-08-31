@@ -7,9 +7,9 @@
     <deps>
       <relation type="after">
         <plugin>3d</plugin>
+        <plugin>expo</plugin>
       </relation>
       <relation type="before">
-        <plugin>expo</plugin>
         <plugin>zoom</plugin>
         <plugin>ezoom</plugin>
       </relation>
