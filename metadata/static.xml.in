@@ -7,10 +7,10 @@
     <deps>
       <relation type="after">
         <plugin>3d</plugin>
+        <plugin>expo</plugin>
       </relation>
       <relation type="before">
         <plugin>zoom</plugin>
-        <plugin>expo</plugin>
         <plugin>ezoom</plugin>
       </relation>
     </deps>
