@@ -9,8 +9,8 @@
         <plugin>3d</plugin>
       </relation>
       <relation type="before">
-        <plugin>expo</plugin>
         <plugin>zoom</plugin>
+        <plugin>expo</plugin>
         <plugin>ezoom</plugin>
       </relation>
     </deps>
