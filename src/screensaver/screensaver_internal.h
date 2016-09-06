@@ -93,6 +93,7 @@ typedef struct _ScreenSaverScreen {
 	ScreenEffect* effect;
 	GLushort desktopOpacity;
 
+	int grabIndex;
 } ScreenSaverScreen;
 
 typedef struct _ScreenSaverWindow {

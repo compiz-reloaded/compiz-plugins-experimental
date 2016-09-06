@@ -74,6 +74,8 @@ static void screenSaverEnableEffect( CompDisplay* d )
 			screenSaverEffectInstance< DisplayEffect, ScreenEffect, WindowEffect >(d);
 			return;
 		}
+		if (!ss->grabIndex)
+			ss->grabIndex = pushScreenGrab (s, None, "screensaver");
 	}
 	sd->state.fadingOut = False;
 	sd->state.fadingIn = True;
@@ -88,6 +90,11 @@ static void screenSaverDisableEffect( CompDisplay* d )
 		SCREENSAVER_SCREEN(s);
 		ss->effect->disable();
 		ss->time = 0;
+		if (ss->grabIndex)
+		{
+			removeScreenGrab (s, ss->grabIndex, 0);
+			ss->grabIndex = 0;
+		}
 	}
 
 	sd->state.fadingOut = True;
@@ -177,6 +184,18 @@ void screenSaverHandleEvent( CompDisplay *d, XEvent *event )
 {
 	XScreenSaverNotifyEvent* XSSevent;
 	SCREENSAVER_DISPLAY (d);
+
+	switch (event->type)
+	{
+	case MotionNotify:
+	case ButtonPress:
+	case KeyPress:
+		if (sd->state.running)
+			screenSaverSetState(d, False);
+		break;
+	default:
+		break;
+	}
 
 	sd->effect->handleEvent( event );
 
@@ -307,6 +326,7 @@ screenSaverInitScreen (CompPlugin *p,
 	s->base.privates[sd->screenPrivateIndex].ptr = ss;
 	ss->effect = new ScreenEffect(s);
 	ss->desktopOpacity = OPAQUE;
+	ss->grabIndex = 0;
 
 	WRAP (ss, s, preparePaintScreen, screenSaverPreparePaintScreen);
 	WRAP (ss, s, donePaintScreen, screenSaverDonePaintScreen);
@@ -323,6 +343,12 @@ screenSaverFiniScreen (CompPlugin *p,
 		      CompScreen *s)
 {
 	SCREENSAVER_SCREEN (s);
+
+    if (ss->grabIndex)
+    {
+		removeScreenGrab (s, ss->grabIndex, 0);
+		ss->grabIndex = 0;
+    }
 
 	UNWRAP (ss, s, preparePaintScreen);
 	UNWRAP (ss, s, donePaintScreen);
