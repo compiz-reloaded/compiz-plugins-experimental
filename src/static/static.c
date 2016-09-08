@@ -55,6 +55,7 @@ typedef struct _StaticScreen
     PreparePaintScreenProc      preparePaintScreen;
 
     StaticMode   staticMode;
+    Bool         active;
 }
 StaticScreen;
 
@@ -279,10 +280,20 @@ staticPaintOutput(CompScreen              *s,
 
         matrixGetIdentity (&sTransform);
 
+        if (!ss->active)
+        {
+            WRAP (ss, s, damageWindowRect, staticDamageWindowRect);
+            ss->active = TRUE;
+        }
+
         paintTransformedOutput (s, sAttrib, &sTransform, &s->region,
                                 output, mask);
 
         ss->staticMode = STATIC_NORMAL;
+    } else if (ss->active)
+    {
+        UNWRAP (ss, s, damageWindowRect);
+        ss->active = FALSE;
     }
 
     return status;
@@ -310,9 +321,10 @@ staticInitScreen (CompPlugin *p,
         return FALSE;
     }
 
+    ss->active = FALSE;
+
     WRAP (ss, s, paintWindow, staticPaintWindow);
     WRAP (ss, s, paintOutput, staticPaintOutput);
-    WRAP (ss, s, damageWindowRect, staticDamageWindowRect);
     WRAP (ss, s, addWindowGeometry, staticAddWindowGeometry);
     WRAP (ss, s, drawWindowTexture, staticDrawWindowTexture);
     WRAP (ss, s, preparePaintScreen, staticPreparePaintScreen);
@@ -337,7 +349,6 @@ staticFiniScreen (CompPlugin *p,
     UNWRAP (ss, s, preparePaintScreen);
     UNWRAP (ss, s, drawWindowTexture);
     UNWRAP (ss, s, addWindowGeometry);
-    UNWRAP (ss, s, damageWindowRect);
     UNWRAP (ss, s, paintOutput);
     UNWRAP (ss, s, paintWindow);
 
