@@ -464,8 +464,6 @@ deformCylinder(CompScreen *s,
 
     int size = as->hsize;
 
-    float ratioRadiusToSideDist;
-
     //Vertex a = {{ 0.0, 0.0, 0.0 }};
     Vertex b = {{ 0.0, 0.0, 0.0 }};
     Vertex c = {{ 0.0, 0.0, 0.0 }};
@@ -492,8 +490,6 @@ deformCylinder(CompScreen *s,
     nVer = size * ((nRow * (nRow + 1)) / 2) + 1;
 
     nWVer = pow (2, subdiv + 1) + 2;
-
-    ratioRadiusToSideDist = as->radius * as->ratio / as->sideDistance;
 
     r = cs->distance / cosf (M_PI / size);
     ang = M_PI / size;
@@ -627,11 +623,9 @@ deformSphere(CompScreen *s,
 
     float        ang, r, aStep;
 
-    Vertex       *wv;
-
     int size = as->hsize;
 
-    float ratioRadiusToSideDist, sphereRadiusFactor, sphereRadiusFactor2;
+    float sphereRadiusFactor, sphereRadiusFactor2;
 
     //Vertex a = {{ 0.0, 0.0, 0.0 }};
     Vertex b = {{ 0.0, 0.0, 0.0 }};
@@ -662,8 +656,6 @@ deformSphere(CompScreen *s,
     nWIdx2 = nWIdx * nRow * 2;
     nWVer2 = nWVer * (nRow + 1) / 2;
 
-    ratioRadiusToSideDist = as->radius * as->ratio / as->sideDistance;
-
     sphereRadiusFactor  = as->radius / 100000;
     sphereRadiusFactor  = progress * (hypotf (sphereRadiusFactor, 0.5f) /
 			  sphereRadiusFactor - 1);
@@ -672,8 +664,6 @@ deformSphere(CompScreen *s,
     r = cs->distance / cosf (M_PI / size);
     ang = M_PI / size;
     aStep = 2 * M_PI / size;
-
-    wv = w->vertices + w->nSVer;
 
     if (nWVer2 * size != w->nWVer2 && w->vertices2)
     {
