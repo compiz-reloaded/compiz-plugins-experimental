@@ -1632,9 +1632,7 @@ cubemodelDrawVBOModel (CompScreen      *s,
 
     int prevMaterialIndex = -1;
 
-    int ambientTextureIndex     = -1;
     int diffuseTextureIndex     = -1;
-    int specularTextureIndex    = -1;
     int transparentTextureIndex = -1;
 
     const float *ambient   = white;
@@ -1683,12 +1681,8 @@ cubemodelDrawVBOModel (CompScreen      *s,
 	    {
 		glDisable (GL_COLOR_MATERIAL);
 
-		ambientTextureIndex     =
-		    data->material[0][group->materialIndex].map_Ka;
 		diffuseTextureIndex     =
 		    data->material[0][group->materialIndex].map_Kd;
-		specularTextureIndex    =
-		    data->material[0][group->materialIndex].map_Ks;
 		transparentTextureIndex =
 		    data->material[0][group->materialIndex].map_d;
 
