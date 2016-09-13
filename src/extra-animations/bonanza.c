@@ -209,15 +209,11 @@ fxBonanzaAnimStep (CompWindow *w, float time)
     ANIMPLUS_WINDOW (w);
 
     float timestep = 8.0;
-    float old = 1 - (aw->com->animRemainingTime) / (aw->com->animTotalTime - timestep);
-    float stepSize;
 
     aw->com->animRemainingTime -= timestep;
     if (aw->com->animRemainingTime <= 0)
 	    aw->com->animRemainingTime = 0;	// avoid sub-zero values
     float new = 1 - (aw->com->animRemainingTime) / (aw->com->animTotalTime - timestep);
-
-    stepSize = new - old;
 
     if (aw->com->curWindowEvent == WindowEventOpen ||
 	aw->com->curWindowEvent == WindowEventUnminimize ||
@@ -253,15 +249,14 @@ fxBonanzaAnimStep (CompWindow *w, float time)
             pts[i].y = centerY + (int)(radius * sinf( (float) i/20.0 * two_pi ));
         }
 
-        Region r1, r2, r3;
-        r3 = XCreateRegion();
-        r2 = XCreateRegion();
+        Region r1, r2;
         r1 = XCreateRegion();
+        r2 = XCreateRegion();
 
-        XUnionRectWithRegion(&rect, &emptyRegion, r3);
+        XUnionRectWithRegion(&rect, &emptyRegion, r1);
         r2 = XPolygonRegion(pts, 20, 1);
 
-        XSubtractRegion(r3, r2, aw->com->drawRegion);
+        XSubtractRegion(r1, r2, aw->com->drawRegion);
 
 
     }
@@ -269,6 +264,7 @@ fxBonanzaAnimStep (CompWindow *w, float time)
     {
 	    XUnionRegion (&emptyRegion, &emptyRegion, aw->com->drawRegion);
 	    damageScreen(w->screen);
+	    return;
     }
 
 
