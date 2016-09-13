@@ -1730,6 +1730,7 @@ swapPaintWindow (CompWindow		   *w,
 	glEnable (GL_SCISSOR_TEST);
 	glScissor (w->attrib.x, 0, w->width, w->screen->height);
 
+	offX = 0;
 	for (i = 0; i < ss->nWindows; i++)
 	{
 	    x = i % ss->xCount;
