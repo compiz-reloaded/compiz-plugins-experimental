@@ -81,6 +81,8 @@ applyFlyinTransform (CompWindow *w)
 	    offsetX = animGetF (w, ANIMSIM_SCREEN_OPTION_FLYIN_DIRECTION_X);
 	    offsetY = animGetF (w, ANIMSIM_SCREEN_OPTION_FLYIN_DIRECTION_Y);
 	    break;
+	default:
+	    return;
     }
 
     forwardProgress = fxFlyinAnimProgress (w);
