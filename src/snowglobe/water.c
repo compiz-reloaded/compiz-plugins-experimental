@@ -37,7 +37,7 @@ genTriMesh (Vertex       *vertices,
 	    Vertex       b,
 	    Vertex       c)
 {
-    int          nVer, nRow;
+    int          nRow;
     Vertex       *v;
     unsigned int *idx;
     int          i, j, k;
@@ -51,7 +51,6 @@ genTriMesh (Vertex       *vertices,
 	return;
 
     nRow = (subdiv)?(2 << (subdiv - 1)) + 1 : 2;
-    nVer = (nRow * (nRow + 1)) / 2;
 
     v =   vertices;
     idx = indices;
