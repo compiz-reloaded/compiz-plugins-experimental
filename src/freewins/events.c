@@ -551,6 +551,8 @@ void FWHandleEvent(CompDisplay *d, XEvent *ev){
     CompWindow *oldPrev, *oldNext, *w;
     FREEWINS_DISPLAY(d);
 
+    w = oldPrev = oldNext = NULL;
+
     /* Check our modifiers first */
 
     if (ev->type == d->xkbEvent)
