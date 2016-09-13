@@ -707,6 +707,8 @@ genNewParticles (ParticleSystem *ps, Emitter *e)
     Particle *part = ps->particles;
     int i, j;
 
+    t = 0.0f;
+
     for (i = 0; i < ps->hardLimit && count > 0; i++, part++)
     {
 	if (part->t <= 0.0f)
@@ -1233,8 +1235,6 @@ wizardDisplayOptionChanged (CompDisplay        *d,
 		CompOption         *opt,
 		WizardDisplayOptions num)
 {
-    WIZARD_DISPLAY (d);
-
     switch (num)
     {
     case WizardDisplayOptionDefaultEnabled:
