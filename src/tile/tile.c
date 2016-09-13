@@ -932,8 +932,11 @@ applyTiling (CompScreen *s)
 			  winHeight - (border.top + border.bottom));
 		tw->isTiled = TRUE;
 		break;
-	    case -1:
-		if (tw->isTiled)
+	    default:
+		break;
+	    }
+
+	    if (ts->tileType == -1 && tw->isTiled)
 		{
 		    placeWin (w,
 			      tw->savedCoords.x, tw->savedCoords.y,
@@ -941,10 +944,6 @@ applyTiling (CompScreen *s)
 		    tw->savedValid = FALSE;
 		    tw->isTiled = FALSE;
 		}
-		break;
-	    default:
-		break;
-	    }
 
 	    i++;
 	    tw->animationNum = i;
