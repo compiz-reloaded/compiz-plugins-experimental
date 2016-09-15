@@ -49,7 +49,7 @@
 
 
 #include <compiz-core.h>
-#include "elements_options.h"
+#include "elements_options.h"
 #define GET_DISPLAY(d)                            \
 	((eDisplay *) (d)->base.privates[displayPrivateIndex].ptr)
 
@@ -72,7 +72,7 @@ static int displayPrivateIndex = 0;
 typedef struct _eDisplay 			//This structure holds all the textures selected from the Compiz window
 {
 	int privateIndex;
-	int numTex[5];			
+	int numTex[5];
 	CompOptionValue *texFiles[5];
 } eDisplay;
 
@@ -82,7 +82,7 @@ typedef struct _texture
 	unsigned int width;
 	unsigned int height;
 	Bool loaded;
-	GLuint dList;		
+	GLuint dList;
 } texture;
 
 
@@ -119,7 +119,8 @@ typedef struct _screen
 	Bool   needUpdate;
 	element *allElements;
 } screen;
-static void initiateElement (screen *eScreen, element *ele);
+
+static void initiateElement (screen *eScreen, element *ele);
 static void elementMove (CompDisplay *d, element *ele);
 static void setElementTexture (screen *eScreen, element  *ele);
 static void updateElementTextures (CompScreen *s, Bool changeTextures);
@@ -287,7 +288,7 @@ stepPositions(void *closure)
 	ele = eScreen->allElements;
 
 	if (eScreen->isActive[0])
-		numAutumn = elementsGetNumLeaves (s->display);	
+		numAutumn = elementsGetNumLeaves (s->display);
 	else
 		numAutumn = 0;
 	if (eScreen->isActive[1])
@@ -319,7 +320,7 @@ stepPositions(void *closure)
 			if (w->type & CompWindowTypeDesktopMask)
 				addWindowDamage (w);
 		}
-    	}
+	}
 	else if (active)
 		damageScreen (s);
 
@@ -330,40 +331,41 @@ static Bool
 elementsAutumnToggle (CompDisplay     *d,
 	    CompAction      *action,
 	    CompActionState state,
- 	    CompOption      *option,
+	    CompOption      *option,
 	    int             nOption)
 {
 	Bool useKeys;
-			CompScreen *s;
-			for (s = d->screens; s; s = s->next)
-	    		{
-				E_SCREEN (s);
-				useKeys = eScreen->useKeys;
-				if (useKeys)
-				{
-					eScreen->isActive[0] = !eScreen->isActive[0];
-					damageScreen (s);
-					eScreen->needUpdate = TRUE;
-				}
-						}
-				if (useKeys)
-				{
-					createAll( d );
-				}
-				return TRUE;
+	CompScreen *s;
+	for (s = d->screens; s; s = s->next)
+	{
+		E_SCREEN (s);
+		useKeys = eScreen->useKeys;
+		if (useKeys)
+		{
+			eScreen->isActive[0] = !eScreen->isActive[0];
+			damageScreen (s);
+			eScreen->needUpdate = TRUE;
+		}
+	}
+	if (useKeys)
+	{
+		createAll( d );
+	}
+	return TRUE;
 }
 
 static Bool
 elementsFirefliesToggle (CompDisplay     *d,
 	    CompAction      *action,
 	    CompActionState state,
- 	    CompOption      *option,
+	    CompOption      *option,
 	    int             nOption)
 {
 	Bool useKeys;
 	CompScreen *s;
 	for (s = d->screens; s; s = s->next)
- 	{		E_SCREEN (s);
+ 	{
+		E_SCREEN (s);
 		useKeys = eScreen->useKeys;
 		if (useKeys)
 		{
@@ -382,7 +384,7 @@ static Bool
 elementsSnowToggle (CompDisplay     *d,
 	    CompAction      *action,
 	    CompActionState state,
- 	    CompOption      *option,
+	    CompOption      *option,
 	    int             nOption)
 {
 	Bool useKeys;
@@ -408,7 +410,7 @@ static Bool
 elementsStarsToggle (CompDisplay     *d,
 	    CompAction      *action,
 	    CompActionState state,
- 	    CompOption      *option,
+	    CompOption      *option,
 	    int             nOption)
 {
 	Bool useKeys;
@@ -434,7 +436,7 @@ static Bool
 elementsBubblesToggle (CompDisplay     *d,
 	    CompAction      *action,
 	    CompActionState state,
- 	    CompOption      *option,
+	    CompOption      *option,
 	    int             nOption)
 {
 	Bool useKeys;
@@ -495,7 +497,7 @@ beginRendering (screen *eScreen,
 			element *ele = eScreen->allElements;
 			int i, numAutumn, numFf, numSnow, numStars, numBubbles;
 			if (eScreen->isActive[0])
-				numAutumn = elementsGetNumLeaves (s->display);	
+				numAutumn = elementsGetNumLeaves (s->display);
 			else
 				numAutumn = 0;
 			if (eScreen->isActive[1])
@@ -568,7 +570,7 @@ elementsPaintOutput (CompScreen              *s,
 		 const ScreenPaintAttrib *sa,
 		 const CompTransform	 *transform,
 		 Region                  region,
-		 CompOutput              *output, 
+		 CompOutput              *output,
 		 unsigned int            mask)
 {
 	Bool status;
@@ -624,7 +626,7 @@ elementsDrawWindow (CompWindow           *w,
 	status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
 	WRAP (eScreen, w->screen, drawWindow, elementsDrawWindow);
 
-	if (active && (w->type & CompWindowTypeDesktopMask) && 
+	if (active && (w->type & CompWindowTypeDesktopMask) &&
 		!elementsGetOverWindows (w->screen->display))
 	{
 		beginRendering (eScreen, w->screen);
@@ -674,7 +676,8 @@ initiateElement (screen *eScreen,
 		}
 		ele->autumnAge[0] = getRand(0,MAX_AUTUMN_AGE-1);
 		ele->autumnAge[1] = getRand(0,(MAX_AUTUMN_AGE/2)-1);
-		ele->x  = mmRand (0, eScreen->cScreen->width, 1);		ele->autumnChange = 1;
+		ele->x  = mmRand (0, eScreen->cScreen->width, 1);
+		ele->autumnChange = 1;
 		ele->y  = -mmRand (100, BIG_NUMBER, 1);
 		ele->dy[0] = mmRand (-2, -1, 5);
 	}
@@ -775,14 +778,15 @@ updateElementTextures (CompScreen *s, Bool changeTextures)
 	float     ffSize = elementsGetFireflySize(s->display);
 	float     snowSize = elementsGetSnowSize(s->display);
 	float     starsSize = elementsGetStarsSize(s->display);
-	float     bubblesSize = elementsGetBubblesSize(s->display);	element *ele;
+	float     bubblesSize = elementsGetBubblesSize(s->display);
+	element *ele;
 
 	E_SCREEN (s);
 	E_DISPLAY (s->display);
 	int numAutumn, numFf, numSnow, numStars, numBubbles;
 
 	if (eScreen->isActive[0])
-		numAutumn = elementsGetNumLeaves (s->display);	
+		numAutumn = elementsGetNumLeaves (s->display);
 	else
 		numAutumn = 0;
 	if (eScreen->isActive[1])
@@ -817,11 +821,11 @@ updateElementTextures (CompScreen *s, Bool changeTextures)
 	eScreen->numTexLoaded[1] = 0;
 	eScreen->numTexLoaded[2] = 0;
 	eScreen->numTexLoaded[3] = 0;
-	eScreen->numTexLoaded[4] = 0;
+	eScreen->numTexLoaded[4] = 0;
 	eScreen->textu = calloc (1, sizeof (texture) * (ed->numTex[0] + ed->numTex[1] + ed->numTex[2] + ed->numTex[3] + ed->numTex[4]));
 	}
 	for (i = 0; i < ed->numTex[0]; i++)
-	{		
+	{
 		CompMatrix  *mat;
 		texture *aTex;
 	if (changeTextures)
@@ -867,7 +871,7 @@ updateElementTextures (CompScreen *s, Bool changeTextures)
 	if (changeTextures)
 		eScreen->numTexLoaded[0] = count;
 	for (i = 0; i < ed->numTex[1]; i++)
-	{ 
+	{
 		CompMatrix  *mat;
 		texture *aTex;
 		if (changeTextures)
@@ -914,7 +918,7 @@ updateElementTextures (CompScreen *s, Bool changeTextures)
 	if (changeTextures)
 	eScreen->numTexLoaded[1] = count - eScreen->numTexLoaded[0];
 	for (i = 0; i < ed->numTex[2]; i++)
-	{ 
+	{
 		CompMatrix  *mat;
 		texture *aTex;
 	if (changeTextures)
@@ -961,7 +965,7 @@ updateElementTextures (CompScreen *s, Bool changeTextures)
 	if (changeTextures)
 	eScreen->numTexLoaded[2] = count - eScreen->numTexLoaded[0] -eScreen->numTexLoaded[1];
 	for (i = 0; i < ed->numTex[3]; i++)
-	{ 
+	{
 		CompMatrix  *mat;
 		texture *aTex;
 	if (changeTextures)
@@ -1008,7 +1012,7 @@ updateElementTextures (CompScreen *s, Bool changeTextures)
 	if (changeTextures)
 	eScreen->numTexLoaded[3] = count - eScreen->numTexLoaded[0] - eScreen->numTexLoaded[1] - eScreen->numTexLoaded[2];
 	for (i = 0; i < ed->numTex[4]; i++)
-	{ 
+	{
 		CompMatrix  *mat;
 		texture *aTex;
 	if (changeTextures)
@@ -1138,74 +1142,75 @@ elementsFiniScreen (CompPlugin *p,
 static void
 createAll( CompDisplay *d )
 {
-	    		CompScreen *s;
-	    		int        i, ii, iii, iv ,v, numAutumn, numFf, numSnow, numStars, numBubbles, numTmp;
-	    		element  *ele;
-	    		for (s = d->screens; s; s = s->next)
-    	    		{
-				E_SCREEN (s);	
-				if (eScreen->isActive[0])
-					numAutumn = elementsGetNumLeaves (s->display);	
-				else
-					numAutumn = 0;
-				if (eScreen->isActive[1])
-					numFf = elementsGetNumFireflies (s->display);
-				else
-					numFf = 0;
-				if (eScreen->isActive[2])
-					numSnow = elementsGetNumSnowflakes (s->display);
-				else
-					numSnow = 0;
-				if (eScreen->isActive[3])
-					numStars = elementsGetNumStars (s->display);
-				else
-					numStars = 0; 
-				if (eScreen->isActive[4])
-					numBubbles = elementsGetNumBubbles (s->display);
-				else
-					numBubbles = 0;
+	CompScreen *s;
+	int  i, ii, iii, iv ,v, numAutumn, numFf, numSnow, numStars, numBubbles, numTmp;
+	element  *ele;
 
-				numTmp = (numAutumn + numFf + numSnow + numStars + numBubbles);
-				eScreen->allElements = ele = realloc (eScreen->allElements,
-					     numTmp * sizeof (element));
-				ele = eScreen->allElements;
+	for (s = d->screens; s; s = s->next)
+	{
+		E_SCREEN (s);
+		if (eScreen->isActive[0])
+			numAutumn = elementsGetNumLeaves (s->display);
+		else
+			numAutumn = 0;
+		if (eScreen->isActive[1])
+			numFf = elementsGetNumFireflies (s->display);
+		else
+			numFf = 0;
+		if (eScreen->isActive[2])
+			numSnow = elementsGetNumSnowflakes (s->display);
+		else
+			numSnow = 0;
+		if (eScreen->isActive[3])
+			numStars = elementsGetNumStars (s->display);
+		else
+			numStars = 0;
+		if (eScreen->isActive[4])
+			numBubbles = elementsGetNumBubbles (s->display);
+		else
+			numBubbles = 0;
 
-				for (i = 0; i < numAutumn; i++)
-				{
-					ele->type = 0;
-					initiateElement (eScreen, ele);
-    					setElementTexture (eScreen, ele);
-					ele++;
-				}
-				for (ii = 0; ii < numFf; ii++)
-				{
-					ele->type = 1;
-					initiateElement (eScreen, ele);
-					setElementTexture (eScreen, ele);
-					ele++;
-				}
-				for (iii = 0; iii < numSnow; iii++)
-				{
-					ele->type = 2;
-					initiateElement (eScreen, ele);
-					setElementTexture (eScreen, ele);
-					ele++;
-				}
-				for (iv = 0; iv < numStars; iv++)
-				{
-					ele->type = 3;
-					initiateElement (eScreen, ele);
-					setElementTexture (eScreen, ele);
-					ele++;
-				}
-				for (v = 0; v < numBubbles; v++)
-				{
-					ele->type = 4;
-					initiateElement (eScreen, ele);
-					setElementTexture (eScreen, ele);
-					ele++;
-				}
-	    		}
+		numTmp = (numAutumn + numFf + numSnow + numStars + numBubbles);
+		eScreen->allElements = ele = realloc (eScreen->allElements,
+				 numTmp * sizeof (element));
+		ele = eScreen->allElements;
+
+		for (i = 0; i < numAutumn; i++)
+		{
+			ele->type = 0;
+			initiateElement (eScreen, ele);
+				setElementTexture (eScreen, ele);
+			ele++;
+		}
+		for (ii = 0; ii < numFf; ii++)
+		{
+			ele->type = 1;
+			initiateElement (eScreen, ele);
+			setElementTexture (eScreen, ele);
+			ele++;
+		}
+		for (iii = 0; iii < numSnow; iii++)
+		{
+			ele->type = 2;
+			initiateElement (eScreen, ele);
+			setElementTexture (eScreen, ele);
+			ele++;
+		}
+		for (iv = 0; iv < numStars; iv++)
+		{
+			ele->type = 3;
+			initiateElement (eScreen, ele);
+			setElementTexture (eScreen, ele);
+			ele++;
+		}
+		for (v = 0; v < numBubbles; v++)
+		{
+			ele->type = 4;
+			initiateElement (eScreen, ele);
+			setElementTexture (eScreen, ele);
+			ele++;
+		}
+	}
 }
 
 static void
@@ -1221,7 +1226,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			Bool useKeys;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				useKeys = eScreen->useKeys;
 				if (!useKeys)
@@ -1240,7 +1245,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			Bool useKeys;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				useKeys = eScreen->useKeys;
 				if (!useKeys)
@@ -1259,7 +1264,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			Bool useKeys;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				useKeys = eScreen->useKeys;
 				if (!useKeys)
@@ -1278,7 +1283,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			Bool useKeys;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				useKeys = eScreen->useKeys;
 				if (!useKeys)
@@ -1297,7 +1302,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			Bool useKeys;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				useKeys = eScreen->useKeys;
 				if (!useKeys)
@@ -1316,7 +1321,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			CompScreen *s;
 
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				eScreen->useKeys = elementsGetToggle(d);
 				if (!eScreen->useKeys)
@@ -1337,11 +1342,11 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			CompScreen *s;
 
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				eScreen->needUpdate = TRUE;
 				updateElementTextures (s, FALSE);
-		    	}
+			}
 		}
 		break;
 		case ElementsDisplayOptionBubblesSize:
@@ -1349,15 +1354,15 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			CompScreen *s;
 
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				eScreen->needUpdate = TRUE;
 				updateElementTextures (s, FALSE);
-		    	}
+			}
 		}
 
 		break;
-    		case ElementsDisplayOptionSnowSize:
+		case ElementsDisplayOptionSnowSize:
 		{
 			CompScreen *s;
 
@@ -1369,7 +1374,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			}
 		}
 		break;
-    		case ElementsDisplayOptionSnowSway:
+		case ElementsDisplayOptionSnowSway:
 		{
 			createAll( d );
 		}
@@ -1390,42 +1395,42 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 		{
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
-	    		{
+			{
 				E_SCREEN (s);
 				eScreen->needUpdate = TRUE;
 				updateElementTextures (s, FALSE);
-	    		}	
-		}
-		break;
-    		case ElementsDisplayOptionUpdateDelay:
-		{
-			CompScreen *s;
-
-	   		for (s = d->screens; s; s = s->next)
-	   	 	{
-			E_SCREEN (s);
-					
-			if (eScreen->timeoutHandle)
-		  	  	compRemoveTimeout (eScreen->timeoutHandle);
-				eScreen->timeoutHandle =
-					compAddTimeout (elementsGetUpdateDelay (d),
-							elementsGetUpdateDelay (d),
-							stepPositions, s);
 			}
 		}
 		break;
-   		case ElementsDisplayOptionNumLeaves:
+		case ElementsDisplayOptionUpdateDelay:
+		{
+			CompScreen *s;
+
+			for (s = d->screens; s; s = s->next)
+			{
+				E_SCREEN (s);
+
+				if (eScreen->timeoutHandle)
+					compRemoveTimeout (eScreen->timeoutHandle);
+					eScreen->timeoutHandle =
+						compAddTimeout (elementsGetUpdateDelay (d),
+								elementsGetUpdateDelay (d),
+								stepPositions, s);
+			}
+		}
+		break;
+		case ElementsDisplayOptionNumLeaves:
 		{
 			createAll( d );
 		}
 		break;
- 		case ElementsDisplayOptionNumBubbles:
+		case ElementsDisplayOptionNumBubbles:
 		{
 			createAll( d );
 		}
 		break;
 
-  		case ElementsDisplayOptionAutumnSway:
+		case ElementsDisplayOptionAutumnSway:
 		{
 			createAll( d );
 		}
@@ -1616,7 +1621,7 @@ static CompBool elementsInitObject(CompPlugin *p, CompObject *o)
 		(InitPluginObjectProc) 0, // InitCore
 		(InitPluginObjectProc) elementsInitDisplay,
 		(InitPluginObjectProc) elementsInitScreen
-		};
+	};
 
 	RETURN_DISPATCH(o, dispTab, ARRAY_SIZE(dispTab), TRUE, (p, o));
 }
@@ -1627,13 +1632,13 @@ static void elementsFiniObject(CompPlugin *p, CompObject *o)
 		(FiniPluginObjectProc) 0, // FiniCore
 		(FiniPluginObjectProc) elementsFiniDisplay,
 		(FiniPluginObjectProc) elementsFiniScreen
-   	 };
+	};
 
 	DISPATCH(o, dispTab, ARRAY_SIZE(dispTab), (p, o));
 }
 
 CompPluginVTable elementsVTable = {
- 	"elements",
+	"elements",
 	0,
 	elementsInit,
 	elementsFini,
@@ -1648,4 +1653,5 @@ getCompPluginInfo (void)
 {
     return &elementsVTable;
 }
-// Software is like sex. Sure, you can pay for it, but why would you?! //
+
+// Software is like sex. Sure, you can pay for it, but why would you?! //
