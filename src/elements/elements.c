@@ -146,7 +146,7 @@ mmRand (int   min,
 
 
 float bezierCurve(float p[4], float time, int type) {				//Used for Fireflies and Stars to move.
-	float out;
+	float out = 0.0f;
 	if (type == 3)
 		out = p[0] * (time+0.01) * 10;
 	else if (type == 1)
@@ -334,7 +334,7 @@ elementsAutumnToggle (CompDisplay     *d,
 	    CompOption      *option,
 	    int             nOption)
 {
-	Bool useKeys;
+	Bool useKeys = FALSE;
 	CompScreen *s;
 	for (s = d->screens; s; s = s->next)
 	{
@@ -361,7 +361,7 @@ elementsFirefliesToggle (CompDisplay     *d,
 	    CompOption      *option,
 	    int             nOption)
 {
-	Bool useKeys;
+	Bool useKeys = FALSE;
 	CompScreen *s;
 	for (s = d->screens; s; s = s->next)
  	{
@@ -387,7 +387,7 @@ elementsSnowToggle (CompDisplay     *d,
 	    CompOption      *option,
 	    int             nOption)
 {
-	Bool useKeys;
+	Bool useKeys = FALSE;
 	CompScreen *s;
 	for (s = d->screens; s; s = s->next)
 	{
@@ -413,7 +413,7 @@ elementsStarsToggle (CompDisplay     *d,
 	    CompOption      *option,
 	    int             nOption)
 {
-	Bool useKeys;
+	Bool useKeys = FALSE;
 	CompScreen *s;
 	for (s = d->screens; s; s = s->next)
 	{
@@ -439,7 +439,7 @@ elementsBubblesToggle (CompDisplay     *d,
 	    CompOption      *option,
 	    int             nOption)
 {
-	Bool useKeys;
+	Bool useKeys = FALSE;
 	CompScreen *s;
 	for (s = d->screens; s; s = s->next)
 	{
@@ -1223,7 +1223,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 	{
 		case ElementsDisplayOptionToggleAutumnCheck:
 		{
-			Bool useKeys;
+			Bool useKeys = FALSE;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
 			{
@@ -1242,7 +1242,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 		break;
 		case ElementsDisplayOptionToggleFirefliesCheck:
 		{
-			Bool useKeys;
+			Bool useKeys = FALSE;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
 			{
@@ -1261,7 +1261,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 		break;
 		case ElementsDisplayOptionToggleSnowCheck:
 		{
-			Bool useKeys;
+			Bool useKeys = FALSE;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
 			{
@@ -1280,7 +1280,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 		break;
 		case ElementsDisplayOptionToggleStarsCheck:
 		{
-			Bool useKeys;
+			Bool useKeys = FALSE;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
 			{
@@ -1299,7 +1299,7 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 		break;
 		case ElementsDisplayOptionToggleBubblesCheck:
 		{
-			Bool useKeys;
+			Bool useKeys = FALSE;
 			CompScreen *s;
 			for (s = d->screens; s; s = s->next)
 			{
