@@ -29,6 +29,11 @@
 					<min>0</min>
 					<max>2000</max>
 				</option>
+				<option name="apply_transform" type="bool">
+					<_short>Apply Screen Transform</_short>
+					<_long>Moves particles with screen transforms when over_windows is enabled</_long>
+					<default>true</default>
+				</option>
 				<option name="over_windows" type="bool">
 					<_short>Draw Over Windows</_short>
 					<_long>Elements drawn above windows</_long>

@@ -112,6 +112,7 @@ typedef struct _screen
 	CompTimeoutHandle timeoutHandle;
 	PaintOutputProc paintOutput;
 	DrawWindowProc  drawWindow;
+	CompWindow *topWindow;
 	texture *textu;
 	int numElements;
 	int numTexLoaded[5];
@@ -281,6 +282,21 @@ elementMove (CompDisplay *display, element *ele)
 }
 
 static Bool
+isNormalWin (CompWindow *w)
+{
+	if (w->destroyed)
+	return FALSE;
+
+	if (!w->mapNum || w->attrib.map_state != IsViewable)
+		return FALSE;
+
+	if (!w || !(*w->screen->focusWindow) (w) || !w->resName)
+		return FALSE;
+
+	return TRUE;
+}
+
+static Bool
 stepPositions(void *closure)
 {
 	CompScreen *s = closure;
@@ -321,17 +337,21 @@ stepPositions(void *closure)
 	onTopOfWindows = elementsGetOverWindows (s->display);
 	for (i = 0; i < numTmp; i++)
 		elementTestCreate(eScreen, ele++);
-	if (active && !onTopOfWindows )
+	if (active)
 	{
 		CompWindow *w;
 		for (w = s->windows; w; w = w->next)
 		{
-			if (w->type & CompWindowTypeDesktopMask)
+			if (!onTopOfWindows && (w->type & CompWindowTypeDesktopMask))
 				addWindowDamage (w);
+			else if (onTopOfWindows && isNormalWin(w)) {
+				eScreen->topWindow = w;
+				addWindowDamage (w);
+			}
 		}
-	}
-	else if (active)
+
 		damageScreen (s);
+	}
 
 	return TRUE;
 }
@@ -582,6 +602,7 @@ elementsPaintOutput (CompScreen              *s,
 		 CompOutput              *output,
 		 unsigned int            mask)
 {
+	CompDisplay *d = s->display;
 	Bool status;
 	Bool active = elementActive(s);
 
@@ -591,7 +612,10 @@ elementsPaintOutput (CompScreen              *s,
 	status = (*s->paintOutput) (s, sa, transform, region, output, mask);
 	WRAP (eScreen, s, paintOutput, elementsPaintOutput);
 
-	if (active && elementsGetOverWindows (s->display))
+	if(elementsGetApplyTransform (d))
+		return status;
+
+	if (active && elementsGetOverWindows (d))
 	{
 		CompTransform sTransform = *transform;
 		transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &sTransform);
@@ -604,7 +628,6 @@ elementsPaintOutput (CompScreen              *s,
     return status;
 }
 
-
 static Bool
 elementsDrawWindow (CompWindow           *w,
 		const CompTransform  *transform,
@@ -613,20 +636,39 @@ elementsDrawWindow (CompWindow           *w,
 		unsigned int         mask)
 {
 	CompScreen *s = w->screen;
-	Bool status;
+	CompDisplay *d = s->display;
 	Bool active = elementActive(s);
+	Bool status = FALSE;
 
 	E_SCREEN (s);
 
-	UNWRAP (eScreen, w->screen, drawWindow);
-	status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
-	WRAP (eScreen, w->screen, drawWindow, elementsDrawWindow);
+	if (active) {
+		Bool applyTransform = elementsGetApplyTransform (d);
+		Bool onTop = elementsGetOverWindows (d);
+		Bool isDesktop = (w->type & CompWindowTypeDesktopMask) && !onTop;
+		Bool isTopMost = w && (w == eScreen->topWindow) && onTop;
 
-	if (active && (w->type & CompWindowTypeDesktopMask) &&
-		!elementsGetOverWindows (s->display))
-	{
-		beginRendering (eScreen, s);
+		if (isDesktop) {
+			UNWRAP (eScreen, s, drawWindow);
+			status = (*s->drawWindow) (w, transform, attrib, region, mask);
+			WRAP (eScreen, s, drawWindow, elementsDrawWindow);
+			beginRendering (eScreen, s);
+		} else if (isTopMost && elementsGetApplyTransform (d)) {
+			UNWRAP (eScreen, s, drawWindow);
+			status = (*s->drawWindow) (w, transform, attrib, region, mask);
+			WRAP (eScreen, s, drawWindow, elementsDrawWindow);
+			beginRendering (eScreen, s);
+		} else {
+			UNWRAP (eScreen, s, drawWindow);
+			status = (*s->drawWindow) (w, transform, attrib, region, mask);
+			WRAP (eScreen, s, drawWindow, elementsDrawWindow);
+		}
+	} else {
+		UNWRAP (eScreen, s, drawWindow);
+		status = (*s->drawWindow) (w, transform, attrib, region, mask);
+		WRAP (eScreen, s, drawWindow, elementsDrawWindow);
 	}
+
 	return status;
 }
 
@@ -1080,6 +1122,7 @@ elementsInitScreen (CompPlugin *p,
 	eScreen->textu = NULL;
 	eScreen->needUpdate = FALSE;
 	eScreen->useKeys = elementsGetToggle (s->display);
+	eScreen->topWindow = NULL;
 
 	if (!eScreen->useKeys)
 	{
