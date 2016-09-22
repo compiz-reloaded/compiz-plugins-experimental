@@ -161,6 +161,20 @@ float bezierCurve(float p[4], float time, int type) {				//Used for Fireflies an
     return out;
 }
 
+static Bool
+elementActive (CompScreen *s)
+{
+	int i;
+
+	E_SCREEN (s);
+
+	for (i = 0; i <= 4; i++)
+		if (eScreen->isActive[i])
+			return TRUE;
+
+	return FALSE;
+}
+
 static void
 elementTestCreate ( screen *currentScreen, element *ele)		//If the Element is outside of screen boxing, it is recreated. Else, it's moved.
 {
@@ -270,17 +284,12 @@ static Bool
 stepPositions(void *closure)
 {
 	CompScreen *s = closure;
-	int i, ii, numSnow, numAutumn, numStars, numFf, numBubbles, numTmp;
+	int i, numSnow, numAutumn, numStars, numFf, numBubbles, numTmp;
 	element *ele;
 	Bool onTopOfWindows;
-	E_SCREEN(s);
+	Bool active = elementActive(s);
 
-	Bool active = FALSE;			//THis makes sure nothing happens if all features are off.
-	for (ii = 0; ii <= 4; ii++)
-	{
-		if (eScreen->isActive[ii])
-			active = TRUE;
-	}
+	E_SCREEN(s);
 
 	if (!active)
 		return TRUE;
@@ -574,15 +583,9 @@ elementsPaintOutput (CompScreen              *s,
 		 unsigned int            mask)
 {
 	Bool status;
+	Bool active = elementActive(s);
 
 	E_SCREEN (s);
-	int ii;
-	Bool active = FALSE;
-	for (ii = 0; ii <= 4; ii++)
-	{
-		if (eScreen->isActive[ii])
-			active = TRUE;
-	}
 
 	UNWRAP (eScreen, s, paintOutput);
 	status = (*s->paintOutput) (s, sa, transform, region, output, mask);
@@ -609,24 +612,20 @@ elementsDrawWindow (CompWindow           *w,
 		Region               region,
 		unsigned int         mask)
 {
+	CompScreen *s = w->screen;
 	Bool status;
+	Bool active = elementActive(s);
 
-	E_SCREEN (w->screen);
-	Bool active = FALSE;
-	int ii;
-	for (ii = 0; ii <= 4; ii++)
-	{
-		if (eScreen->isActive[ii])
-			active = TRUE;
-	}
+	E_SCREEN (s);
+
 	UNWRAP (eScreen, w->screen, drawWindow);
 	status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
 	WRAP (eScreen, w->screen, drawWindow, elementsDrawWindow);
 
 	if (active && (w->type & CompWindowTypeDesktopMask) &&
-		!elementsGetOverWindows (w->screen->display))
+		!elementsGetOverWindows (s->display))
 	{
-		beginRendering (eScreen, w->screen);
+		beginRendering (eScreen, s);
 	}
 	return status;
 }
