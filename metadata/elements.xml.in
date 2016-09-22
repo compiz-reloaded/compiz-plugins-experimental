@@ -15,12 +15,13 @@
 			<group>
 				<_short>General</_short>
 
-				<option name="update_delay" type="int">
-					<_short>Update Delay</_short>
-					<_long>Delay (in ms) between screen updates. Decreasing this value may make snow fall more smoothly, but will also increase CPU usage.</_long>
-					<default>40</default>
-					<min>10</min>
-					<max>200</max>
+				<option name="global_speed" type="float">
+					<_short>Global Speed</_short>
+					<_long>Elements speed will be multiplied by this value</_long>
+					<default>1.0</default>
+					<min>0.0</min>
+					<max>5.0</max>
+					<precision>0.1</precision>
 				</option>
 				<option name="screen_depth" type="int">
 					<_short>Screen Depth</_short>

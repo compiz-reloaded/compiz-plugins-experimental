@@ -109,7 +109,8 @@ typedef struct _screen
 	CompScreen *cScreen;
 	Bool isActive[5];
 	Bool useKeys;
-	CompTimeoutHandle timeoutHandle;
+	PreparePaintScreenProc preparePaintScreen;
+	DonePaintScreenProc donePaintScreen;
 	PaintOutputProc paintOutput;
 	DrawWindowProc  drawWindow;
 	CompWindow *topWindow;
@@ -122,7 +123,7 @@ typedef struct _screen
 } screen;
 
 static void initiateElement (screen *eScreen, element *ele);
-static void elementMove (CompDisplay *d, element *ele);
+static void elementMove (CompDisplay *d, element *ele, int elapsed);
 static void setElementTexture (screen *eScreen, element  *ele);
 static void updateElementTextures (CompScreen *s, Bool changeTextures);
 static inline float mmRand(int  min, int max, float divisor);
@@ -177,7 +178,7 @@ elementActive (CompScreen *s)
 }
 
 static void
-elementTestCreate ( screen *currentScreen, element *ele)		//If the Element is outside of screen boxing, it is recreated. Else, it's moved.
+elementTestCreate ( screen *currentScreen, element *ele, int elapsed)		//If the Element is outside of screen boxing, it is recreated. Else, it's moved.
 {
 	if (ele->y >= currentScreen->cScreen->height + 200|| ele->x <= -200|| ele->x >= currentScreen->cScreen->width + 200||
 	ele->y >= currentScreen->cScreen->height + 200||
@@ -187,11 +188,11 @@ elementTestCreate ( screen *currentScreen, element *ele)		//If the Element is ou
 		initiateElement(currentScreen, ele);
 	}
 
-		elementMove(currentScreen->cScreen->display, ele);
+		elementMove(currentScreen->cScreen->display, ele, elapsed);
 }
 
 static void
-elementMove (CompDisplay *display, element *ele)
+elementMove (CompDisplay *display, element *ele, int ms)
 {
 
 	float autumnSpeed = elementsGetAutumnSpeed (display)/30.0f;
@@ -199,14 +200,14 @@ elementMove (CompDisplay *display, element *ele)
 	float snowSpeed = elementsGetSnowSpeed (display) / 500.0f;
 	float starsSpeed = elementsGetStarsSpeed (display) / 500.0f;
 	float bubblesSpeed = (100.0 - elementsGetViscosity (display))/30.0f;
-	int   updateDelay = elementsGetUpdateDelay (display);
+	float globalSpeed = elementsGetGlobalSpeed (display) * ms;
 
 	if (ele->type == 0)
 	{
-		ele->x += (ele->autumnFloat[0][ele->autumnAge[0]] * (float) updateDelay) * 0.0125;
-		ele->y += (ele->autumnFloat[1][ele->autumnAge[1]] * (float) updateDelay) * 0.0125 + autumnSpeed;
-		ele->z += (ele->dz[0] * (float) updateDelay) * autumnSpeed / 100.0;
-		ele->rAngle += ((float) updateDelay) / (10.1f - ele->rSpeed);
+		ele->x += (ele->autumnFloat[0][ele->autumnAge[0]] * (float) globalSpeed) * 0.0125;
+		ele->y += (ele->autumnFloat[1][ele->autumnAge[1]] * (float) globalSpeed) * 0.0125 + autumnSpeed;
+		ele->z += (ele->dz[0] * (float) globalSpeed) * autumnSpeed / 100.0;
+		ele->rAngle += ((float) globalSpeed) / (10.1f - ele->rSpeed);
 		ele->autumnAge[0] += ele->autumnChange;
 		ele->autumnAge[1] += 1;
 		if (ele->autumnAge[1] >= MAX_AUTUMN_AGE)
@@ -234,16 +235,16 @@ elementMove (CompDisplay *display, element *ele)
 		float xs = bezierCurve(ele->dx, ele->lifecycle, ele->type); 
 		float ys = bezierCurve(ele->dy, ele->lifecycle, ele->type); 
 		float zs = bezierCurve(ele->dz, ele->lifecycle, ele->type); 
-		ele->x += (float)(xs * (double)updateDelay) * ffSpeed;
-		ele->y += (float)(ys * (double)updateDelay) * ffSpeed;
-		ele->z += (float)(zs * (double)updateDelay) * ffSpeed;
+		ele->x += (float)(xs * (double)globalSpeed) * ffSpeed;
+		ele->y += (float)(ys * (double)globalSpeed) * ffSpeed;
+		ele->z += (float)(zs * (double)globalSpeed) * ffSpeed;
 	}
 	else if (ele->type == 2)
 	{
-		ele->x += (ele->dx[0] * (float) updateDelay) * snowSpeed;
-		ele->y += (ele->dy[0] * (float) updateDelay) * snowSpeed;
-		ele->z += (ele->dz[0] * (float) updateDelay) * snowSpeed;
-		ele->rAngle += ((float) updateDelay) / (10.1f - ele->rSpeed);
+		ele->x += (ele->dx[0] * (float) ms) * snowSpeed;
+		ele->y += (ele->dy[0] * (float) ms) * snowSpeed;
+		ele->z += (ele->dz[0] * (float) ms) * snowSpeed;
+		ele->rAngle += ((float) ms) / (10.1f - ele->rSpeed);
 	}
 	else if (ele->type == 3)
 	{
@@ -251,16 +252,16 @@ elementMove (CompDisplay *display, element *ele)
 		float xs = bezierCurve(ele->dx, tmp, ele->type); 
 		float ys = bezierCurve(ele->dy, tmp, ele->type); 
 		float zs = bezierCurve(ele->dz, tmp, ele->type); 
-		ele->x += (float)(xs * (double)updateDelay) * starsSpeed;
-		ele->y += (float)(ys * (double)updateDelay) * starsSpeed;
-		ele->z += (float)(zs * (double)updateDelay) * starsSpeed;
+		ele->x += (float)(xs * (double)globalSpeed) * starsSpeed;
+		ele->y += (float)(ys * (double)globalSpeed) * starsSpeed;
+		ele->z += (float)(zs * (double)globalSpeed) * starsSpeed;
 	}
 	else if (ele->type == 4)
 	{
-		ele->x += (ele->autumnFloat[0][ele->autumnAge[0]] * (float) updateDelay) * 0.125;
-		ele->y += (ele->dy[0] * (float) updateDelay) * bubblesSpeed;
-		ele->z += (ele->dz[0] * (float) updateDelay) * bubblesSpeed / 100.0;
-		ele->rAngle += ((float) updateDelay) / (10.1f - ele->rSpeed);
+		ele->x += (ele->autumnFloat[0][ele->autumnAge[0]] * (float) globalSpeed) * 0.125;
+		ele->y += (ele->dy[0] * (float) globalSpeed) * bubblesSpeed;
+		ele->z += (ele->dz[0] * (float) globalSpeed) * bubblesSpeed / 100.0;
+		ele->rAngle += ((float) globalSpeed) / (10.1f - ele->rSpeed);
 		ele->autumnAge[0] += ele->autumnChange;
 		if (ele->autumnAge[0] >= MAX_AUTUMN_AGE)
 		{
@@ -297,9 +298,8 @@ isNormalWin (CompWindow *w)
 }
 
 static Bool
-stepPositions(void *closure)
+stepPositions(CompScreen *s, int elapsed)
 {
-	CompScreen *s = closure;
 	int i, numSnow, numAutumn, numStars, numFf, numBubbles, numTmp;
 	element *ele;
 	Bool onTopOfWindows;
@@ -336,7 +336,7 @@ stepPositions(void *closure)
 	numTmp = numAutumn + numFf + numSnow + numStars + numBubbles;
 	onTopOfWindows = elementsGetOverWindows (s->display);
 	for (i = 0; i < numTmp; i++)
-		elementTestCreate(eScreen, ele++);
+		elementTestCreate(eScreen, ele++, elapsed);
 	if (active)
 	{
 		CompWindow *w;
@@ -507,6 +507,20 @@ setupDisplayList (screen *eScreen)
 }
 
 static void
+elementsPreparePaintScreen (CompScreen *s,
+                            int elapsed)
+{
+	E_SCREEN (s);
+
+	if (elementActive(s))
+		stepPositions (s, elapsed);
+
+    UNWRAP (eScreen, s, preparePaintScreen);
+    (*s->preparePaintScreen) (s, elapsed);
+    WRAP (eScreen, s, preparePaintScreen, elementsPreparePaintScreen);
+}
+
+static void
 beginRendering (CompScreen *s)
 {
 	int j;
@@ -672,6 +686,19 @@ elementsDrawWindow (CompWindow           *w,
 	}
 
 	return status;
+}
+
+static void
+elementsDonePaintScreen (CompScreen *s)
+{
+	E_SCREEN (s);
+
+	if (elementActive(s))
+		damageScreen (s);
+
+	UNWRAP (eScreen, s, donePaintScreen);
+	(*s->donePaintScreen) (s);
+	WRAP (eScreen, s, donePaintScreen, elementsDonePaintScreen);
 }
 
 static void
@@ -1146,11 +1173,10 @@ elementsInitScreen (CompPlugin *p,
 	createAll( s->display);
 	updateElementTextures (s, TRUE);
 	setupDisplayList (eScreen);
+	WRAP (eScreen, s, preparePaintScreen, elementsPreparePaintScreen);
+	WRAP (eScreen, s, donePaintScreen, elementsDonePaintScreen);
 	WRAP (eScreen, s, paintOutput, elementsPaintOutput);
 	WRAP (eScreen, s, drawWindow, elementsDrawWindow);
-	eScreen->timeoutHandle = compAddTimeout (elementsGetUpdateDelay (s->display),
-							elementsGetUpdateDelay (s->display),
-							stepPositions, s);
 
 	return TRUE;
 }
@@ -1163,9 +1189,6 @@ elementsFiniScreen (CompPlugin *p,
 
 	E_SCREEN (s);
 
-	if (eScreen->timeoutHandle)
-		compRemoveTimeout (eScreen->timeoutHandle);
-
 	for (i = 0; i < eScreen->numElements; i++)
 	{
 		finiTexture (s, &eScreen->textu[i].tex);
@@ -1175,6 +1198,8 @@ elementsFiniScreen (CompPlugin *p,
 	if (eScreen->textu)
 		free (eScreen->textu);
 
+	UNWRAP (eScreen, s, preparePaintScreen);
+	UNWRAP (eScreen, s, donePaintScreen);
 	UNWRAP (eScreen, s, paintOutput);
 	UNWRAP (eScreen, s, drawWindow);
 	free (eScreen);
@@ -1443,23 +1468,6 @@ elementsDisplayOptionChanged (CompDisplay        *d,
 			}
 		}
 		break;
-		case ElementsDisplayOptionUpdateDelay:
-		{
-			CompScreen *s;
-
-			for (s = d->screens; s; s = s->next)
-			{
-				E_SCREEN (s);
-
-				if (eScreen->timeoutHandle)
-					compRemoveTimeout (eScreen->timeoutHandle);
-					eScreen->timeoutHandle =
-						compAddTimeout (elementsGetUpdateDelay (d),
-								elementsGetUpdateDelay (d),
-								stepPositions, s);
-			}
-		}
-		break;
 		case ElementsDisplayOptionNumLeaves:
 		{
 			createAll( d );
@@ -1601,7 +1609,6 @@ elementsInitDisplay (CompPlugin  *p,
 	elementsSetSnowSizeNotify (d, elementsDisplayOptionChanged);
 	elementsSetSnowSwayNotify (d, elementsDisplayOptionChanged);
 	elementsSetStarsSizeNotify (d, elementsDisplayOptionChanged);
-	elementsSetUpdateDelayNotify (d, elementsDisplayOptionChanged);
 	elementsSetLeafTexturesNotify (d, elementsDisplayOptionChanged);
 	elementsSetFirefliesTexturesNotify (d, elementsDisplayOptionChanged);
 	elementsSetSnowTexturesNotify (d, elementsDisplayOptionChanged);
