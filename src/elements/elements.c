@@ -653,7 +653,7 @@ elementsDrawWindow (CompWindow           *w,
 			status = (*s->drawWindow) (w, transform, attrib, region, mask);
 			WRAP (eScreen, s, drawWindow, elementsDrawWindow);
 			beginRendering (eScreen, s);
-		} else if (isTopMost && elementsGetApplyTransform (d)) {
+		} else if (isTopMost && applyTransform) {
 			UNWRAP (eScreen, s, drawWindow);
 			status = (*s->drawWindow) (w, transform, attrib, region, mask);
 			WRAP (eScreen, s, drawWindow, elementsDrawWindow);
