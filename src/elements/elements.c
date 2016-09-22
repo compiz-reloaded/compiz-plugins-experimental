@@ -507,10 +507,12 @@ setupDisplayList (screen *eScreen)
 }
 
 static void
-beginRendering (screen *eScreen,
-		CompScreen *s)
+beginRendering (CompScreen *s)
 {
 	int j;
+
+	E_SCREEN (s);
+
 	glEnable (GL_BLEND);
 	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
@@ -621,7 +623,7 @@ elementsPaintOutput (CompScreen              *s,
 		transformToScreenSpace (s, output, -DEFAULT_Z_CAMERA, &sTransform);
 		glPushMatrix ();
 		glLoadMatrixf (sTransform.m);
-		beginRendering (eScreen, s);
+		beginRendering (s);
 		glPopMatrix ();
 	}
 
@@ -652,12 +654,12 @@ elementsDrawWindow (CompWindow           *w,
 			UNWRAP (eScreen, s, drawWindow);
 			status = (*s->drawWindow) (w, transform, attrib, region, mask);
 			WRAP (eScreen, s, drawWindow, elementsDrawWindow);
-			beginRendering (eScreen, s);
+			beginRendering (s);
 		} else if (isTopMost && applyTransform) {
 			UNWRAP (eScreen, s, drawWindow);
 			status = (*s->drawWindow) (w, transform, attrib, region, mask);
 			WRAP (eScreen, s, drawWindow, elementsDrawWindow);
-			beginRendering (eScreen, s);
+			beginRendering (s);
 		} else {
 			UNWRAP (eScreen, s, drawWindow);
 			status = (*s->drawWindow) (w, transform, attrib, region, mask);
