@@ -584,9 +584,6 @@ elementsPaintOutput (CompScreen              *s,
 			active = TRUE;
 	}
 
-	if (active && elementsGetOverWindows (s->display))
-		mask |= PAINT_SCREEN_WITH_TRANSFORMED_WINDOWS_MASK;
-
 	UNWRAP (eScreen, s, paintOutput);
 	status = (*s->paintOutput) (s, sa, transform, region, output, mask);
 	WRAP (eScreen, s, paintOutput, elementsPaintOutput);
