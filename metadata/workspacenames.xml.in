@@ -64,7 +64,7 @@
 			<_long>Font size for the text display.</_long>
 			<default>16</default>
 			<min>6</min>
-			<max>96</max>
+			<max>288</max>
 		    </option>
 		    <option name="text_placement" type="int">
 			<_short>Text Placement</_short>
