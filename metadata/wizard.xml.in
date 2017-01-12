@@ -63,7 +63,7 @@
 					</option>
 					<option name="g_posx" type="list">
 						<_short>Position X</_short>
-						<_long>The horizontal position of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<_long>The horizontal position of this gravity source. May be ignored or used for initialization, depending on the movement type.</_long>
 						<type>int</type>
 						<min>0</min>
 						<max>3000</max>
@@ -73,7 +73,7 @@
 					</option>
 					<option name="g_posy" type="list">
 						<_short>Position Y</_short>
-						<_long>The vertical position of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<_long>The vertical position of this gravity source. May be ignored or used for initialization, depending on the movement type.</_long>
 						<type>int</type>
 						<min>0</min>
 						<max>2000</max>
@@ -83,7 +83,7 @@
 					</option>
 					<option name="g_speed" type="list">
 						<_short>Speed</_short>
-						<_long>The speed of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<_long>The speed of this gravity source. May be ignored or used for initialization, depending on the movement type.</_long>
 						<type>int</type>
 						<min>0</min>
 						<max>1000</max>
@@ -93,7 +93,7 @@
 					</option>
 					<option name="g_angle" type="list">
 						<_short>Angle</_short>
-						<_long>The angle for the movement of this gravity source. May be ignored or used for initialisation, depending on the movement type.</_long>
+						<_long>The angle for the movement of this gravity source. May be ignored or used for initialization, depending on the movement type.</_long>
 						<type>int</type>
 						<min>0</min>
 						<max>360</max>
@@ -202,7 +202,7 @@
 				</option>
 				<option name="e_posx" type="list">
 					<_short>Position X</_short>
-					<_long>The horizontal position of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<_long>The horizontal position of this emitter. May be ignored or used for initialization, depending on the movement type.</_long>
 					<type>int</type>
 					<min>0</min>
 					<max>3000</max>
@@ -221,7 +221,7 @@
 				</option>
 				<option name="e_posy" type="list">
 					<_short>Position Y</_short>
-					<_long>The vertical position of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<_long>The vertical position of this emitter. May be ignored or used for initialization, depending on the movement type.</_long>
 					<type>int</type>
 					<min>0</min>
 					<max>2000</max>
@@ -240,7 +240,7 @@
 				</option>
 				<option name="e_speed" type="list">
 					<_short>Emitter Speed</_short>
-					<_long>The speed of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<_long>The speed of this emitter. May be ignored or used for initialization, depending on the movement type.</_long>
 					<type>int</type>
 					<min>0</min>
 					<max>1000</max>
@@ -259,7 +259,7 @@
 				</option>
 				<option name="e_angle" type="list">
 					<_short>Emitter Angle</_short>
-					<_long>The angle for the movement of this emitter. May be ignored or used for initialisation, depending on the movement type.</_long>
+					<_long>The angle for the movement of this emitter. May be ignored or used for initialization, depending on the movement type.</_long>
 					<type>int</type>
 					<min>0</min>
 					<max>360</max>

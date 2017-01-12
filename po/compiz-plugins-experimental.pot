@@ -1,2548 +1,2471 @@
-# English (United Kingdom) translations for compiz-plugins-experimental
-# Copyright (C) 2008 launchpad.net/compiz
-# This file is distributed under the same license as the compiz-plugins-experimental package.
-# David Lodge <dave@cirt.net>.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: compiz-plugins-experimental\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/compiz-reloaded/compiz-plugins-"
 "experimental/issues\n"
 "POT-Creation-Date: 2017-01-12 18:19+0300\n"
-"PO-Revision-Date: 2008-05-26 15:47+0200\n"
-"Last-Translator: David Lodge <dave@cirt.net>\n"
-"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
-"Language: en_GB\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Anaglyph"
-msgstr "Anaglyph"
+msgstr ""
 
 msgid "Anaglyph window and Desktop"
-msgstr "Anaglyph window and Desktop"
+msgstr ""
 
 msgid "Initiate Window"
-msgstr "Initiate Window"
+msgstr ""
 
 msgid "Start anaglyph window"
-msgstr "Start anaglyph window"
+msgstr ""
 
 msgid "Initiate Screen"
-msgstr "Initiate Screen"
+msgstr ""
 
 msgid "Start anaglyph screen"
-msgstr "Start anaglyph screen"
+msgstr ""
 
 msgid "Initiate Window Button"
-msgstr "Initiate Window Button"
+msgstr ""
 
 msgid "Start anaglyph active window"
-msgstr "Start anaglyph active window"
+msgstr ""
 
 msgid "Initiate Screen Button"
-msgstr "Initiate Screen Button"
+msgstr ""
 
 msgid "Anaglyph Windows"
-msgstr "Anaglyph Windows"
+msgstr ""
 
 msgid "Windows to be anaglyph by default"
-msgstr "Windows to be anaglyph by default"
+msgstr ""
 
 msgid "Exclude Windows"
-msgstr "Exclude Windows"
+msgstr ""
 
 msgid "Windows to exclude from anaglyph"
-msgstr "Windows to exclude from anaglyph"
+msgstr ""
 
 msgid "Offset"
-msgstr "Offset"
+msgstr ""
 
 msgid "offset anaglyph"
-msgstr "offset anaglyph"
+msgstr ""
 
 msgid "Increase Desktop deep"
-msgstr "Increase Desktop deep"
+msgstr ""
 
 msgid "Desaturate"
-msgstr "Saturation"
+msgstr ""
 
 msgid "Mipmaps"
-msgstr "Mipmaps"
+msgstr ""
 
 msgid "Animations Plus"
-msgstr "Animations Plus"
+msgstr ""
 
 msgid "More window animations"
-msgstr "More window animations"
+msgstr ""
 
 msgid "Effect Settings"
-msgstr "Effect Settings"
+msgstr ""
 
 msgid "Helix"
-msgstr "Helix"
+msgstr ""
 
 msgid "Helix Number of Twists"
-msgstr "Helix Number of Twists"
+msgstr ""
 
 msgid "Number of twists to do in the animation"
-msgstr "Number of twists to do in the animation"
+msgstr ""
 
 msgid "Helix Gridsize Y"
-msgstr "Helix Gridsize Y"
+msgstr ""
 
 msgid "Number of blocks in the animation"
-msgstr "Number of blocks in the animation"
+msgstr ""
 
 msgid "Helix Thickness"
-msgstr "Helix Thickness"
+msgstr ""
 
 msgid "Thickness of blocks in the animation"
-msgstr "Thickness of blocks in the animation"
+msgstr ""
 
 msgid "Spin Direction"
-msgstr "Spin Direction"
+msgstr ""
 
 msgid "Direction the strips spin."
-msgstr "Direction the strips spin."
+msgstr ""
 
 msgid "Counter-Clockwise"
-msgstr "Counter-Clockwise"
+msgstr ""
 
 msgid "Clockwise"
-msgstr "Clockwise"
+msgstr ""
 
 msgid "Vertical Helix"
-msgstr "Vertical Helix"
+msgstr ""
 
 msgid ""
 "Whether Helix should rotate with its axis up/down or in/out of the screen"
 msgstr ""
-"Whether Helix should rotate with its axis up/down or in/out of the screen"
 
 msgid "Blinds"
-msgstr "Blinds"
+msgstr ""
 
 msgid "Blinds Number of Half Twists"
-msgstr "Blinds Number of Half Twists"
+msgstr ""
 
 msgid "Number of half twists to do in the animation"
-msgstr "Number of half twists to do in the animation"
+msgstr ""
 
 msgid "Blinds Thickness"
-msgstr "Blinds Thickness"
+msgstr ""
 
 msgid "Shatter"
-msgstr "Shatter"
+msgstr ""
 
 msgid "Shatter number of spokes"
-msgstr "Shatter number of spokes"
+msgstr ""
 
 msgid "Number of spokes (divided by 4) in the animation"
-msgstr "Number of spokes (divided by 4) in the animation"
+msgstr ""
 
 msgid "Shatter Number of Tiers"
-msgstr "Shatter Number of Tiers"
+msgstr ""
 
 msgid "Number of concentric circles in the animation"
-msgstr "Number of concentric circles in the animation"
+msgstr ""
 
 msgid "Bonanza"
-msgstr "Bonanza"
+msgstr ""
 
 msgid "Number Of Fire Particles"
-msgstr "Number Of Fire Particles"
+msgstr ""
 
 msgid "Number of fire particles."
-msgstr "Number of fire particles."
+msgstr ""
 
 msgid "Fire Particle Size"
-msgstr "Fire Particle Size"
+msgstr ""
 
 msgid "Fire particle size."
-msgstr "Fire particle size."
+msgstr ""
 
 msgid "Fire Particle Life"
-msgstr "Fire Particle Life"
+msgstr ""
 
 msgid "Fire particle life."
-msgstr "Fire particle life."
+msgstr ""
 
 msgid "Fire Particle Color"
-msgstr "Fire Particle Colour"
+msgstr ""
 
 msgid "Fire particle color."
-msgstr "Fire particle colour."
+msgstr ""
 
 msgid "Randomly Colored Fire"
-msgstr "Randomly Coloured Fire"
+msgstr ""
 
 msgid "Have random colors for the fire effect, also known as Mystical Fire."
-msgstr "Have random colours for the fire effect, also known as Mystical Fire."
+msgstr ""
 
 msgid "Simple Animations"
-msgstr "Simple Animations"
+msgstr ""
 
 msgid "Animations that are simple on the eye"
-msgstr "Animations that are simple on the eye"
+msgstr ""
 
 msgid "Fly In"
-msgstr "Fly In"
+msgstr ""
 
 msgid "Fly In Direction"
-msgstr "Fly In Direction"
+msgstr ""
 
 msgid "The direction in which the fly in should take place"
-msgstr "The direction in which the fly in should take place"
+msgstr ""
 
 msgid "UD Direction X"
-msgstr "UD Direction X"
+msgstr ""
 
 msgid "Direction and Distance X for user defined fly in"
-msgstr "Direction and Distance X for user defined fly in"
+msgstr ""
 
 msgid "UD Direction Y"
-msgstr "UD Direction Y"
+msgstr ""
 
 msgid "Direction and Distance Y for user defined fly in"
-msgstr "Direction and Distance Y for user defined fly in"
+msgstr ""
 
 msgid "Fade"
-msgstr "Fade"
+msgstr ""
 
 msgid "Fade when flying in"
-msgstr "Fade when flying in"
+msgstr ""
 
 msgid "Distance"
-msgstr "Distance"
+msgstr ""
 
 msgid "Distance to fly in"
-msgstr "Distance to fly in"
+msgstr ""
 
 msgid "Rotate In"
-msgstr "Rotate In"
+msgstr ""
 
 msgid "Rotate In Direction"
-msgstr "Rotate In Direction"
+msgstr ""
 
 msgid "The direction in which the window rotates"
-msgstr "The direction in which the window rotates"
+msgstr ""
 
 msgid "Angle"
-msgstr "Angle"
+msgstr ""
 
 msgid "Angle to start from"
-msgstr "Angle to start from"
+msgstr ""
 
 msgid "Bounce"
-msgstr "Bounce"
+msgstr ""
 
 msgid "Maximum Size"
-msgstr "Maximum Size"
+msgstr ""
 
 msgid "Maximum scale factor of window when bouncing"
-msgstr "Maximum scale factor of window when bouncing"
+msgstr ""
 
 msgid "Minimum Size"
-msgstr "Minimum Size"
+msgstr ""
 
 msgid "Minimum scale factor of window when bouncing"
-msgstr "Minimum scale factor of window when bouncing"
+msgstr ""
 
 msgid "Number of Bounces"
-msgstr "Number of Bounces"
+msgstr ""
 
 msgid "How many bounces during the animation"
-msgstr "How many bounces during the animation"
+msgstr ""
 
 msgid "Sheet"
-msgstr "Sheet"
+msgstr ""
 
 msgid "Starting Percent"
-msgstr "Starting Percent"
+msgstr ""
 
 msgid ""
 "How wide the begginning of the sheet animation should be compared to the end"
 msgstr ""
-"How wide the begginning of the sheet animation should be compared to the end"
 
 msgid "Expand Piecewise"
-msgstr "Expand Piecewise"
+msgstr ""
 
 msgid "First expand horizontally"
-msgstr "First expand horizontally"
+msgstr ""
 
 msgid "If checked, initially expand horizontally, then vertically"
-msgstr "If checked, initially expand horizontally, then vertically"
+msgstr ""
 
 msgid "Initial horizontal size"
-msgstr "Initial horizontal size"
+msgstr ""
 
 msgid "Number of pixels initially in horizontal direction"
-msgstr "Number of pixels initially in horizontal direction"
+msgstr ""
 
 msgid "Initial vertical size"
-msgstr "Initial vertical size"
+msgstr ""
 
 msgid "Number of pixels initially in vertical direction"
-msgstr "Number of pixels initially in vertical direction"
+msgstr ""
 
 msgid "Delay"
-msgstr "Delay"
+msgstr ""
 
 msgid ""
 "Delay between expanding horizontally and vertically (expressed as a fraction)"
 msgstr ""
-"Delay between expanding horizontally and vertically (expressed as a fraction)"
 
 msgid "Expand"
-msgstr "Expand"
+msgstr ""
 
 msgid "Cube Atlantis"
-msgstr "Cube Atlantis"
+msgstr ""
 
 msgid "Render some sea animals inside of the transparent cube"
-msgstr "Render some sea animals inside of the transparent cube"
+msgstr ""
 
 msgid "Speed factor"
-msgstr "Speed factor"
+msgstr ""
 
 msgid "Multiply the speed of the fish by this factor."
-msgstr "Multiply the speed of the fish by this factor."
+msgstr ""
 
 msgid "Start crabs on bottom"
-msgstr "Start crabs on bottom"
+msgstr ""
 
 msgid "Start crabs on the bottom of the cube."
-msgstr "Start crabs on the bottom of the cube."
+msgstr ""
 
 msgid "School similar groups"
-msgstr "School similar groups"
+msgstr ""
 
 msgid "Fish in different groups, but of the same type, swim together."
-msgstr "Fish in different groups, but of the same type, swim together."
+msgstr ""
 
 msgid "Low detail models"
-msgstr "Low detail models"
+msgstr ""
 
 msgid "Use less detailed models for increased performance."
-msgstr "Use less detailed models for increased performance."
+msgstr ""
 
 msgid "Creature Selection"
-msgstr "Creature Selection"
+msgstr ""
 
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 msgid "Type of sea creature."
-msgstr "Type of sea creature."
+msgstr ""
 
 msgid "Color"
-msgstr "Colour"
+msgstr ""
 
 msgid "The color of the sea creature."
-msgstr "The colour of the sea creature."
+msgstr ""
 
 msgid "Number"
-msgstr "Number"
+msgstr ""
 
 msgid "The number of the sea creature."
-msgstr "The number of the sea creature."
+msgstr ""
 
 msgid "Size"
-msgstr "Size"
+msgstr ""
 
 msgid "The size of the sea creature."
-msgstr "The size of the sea creature."
+msgstr ""
 
 msgid "Miscellaneous Selection"
-msgstr "Miscellaneous Selection"
+msgstr ""
 
 msgid "Type of sea plant."
-msgstr "Type of sea plant."
+msgstr ""
 
 msgid "The color of the sea plant."
-msgstr "The colour of the sea plant."
+msgstr ""
 
 msgid "The number of the sea plants."
-msgstr "The number of the sea plants."
+msgstr ""
 
 msgid "The size of the sea plant."
-msgstr "The size of the sea plant."
+msgstr ""
 
 msgid "Water / Ground"
-msgstr "Water / Ground"
+msgstr ""
 
 msgid "Render water"
-msgstr "Render water"
+msgstr ""
 
 msgid "Render water inside the cube."
-msgstr "Render water inside the cube."
+msgstr ""
 
 msgid "Render water wireframe"
-msgstr "Render water wireframe"
+msgstr ""
 
 msgid "Render water wireframe inside the cube."
-msgstr "Render water wireframe inside the cube."
+msgstr ""
 
 msgid "Render ground"
-msgstr "Render ground"
+msgstr ""
 
 msgid "Render ground inside the cube."
-msgstr "Render ground inside the cube."
+msgstr ""
 
 msgid "Ground color"
-msgstr "Ground colour"
+msgstr ""
 
 msgid "Color of ground in the cube."
-msgstr "Colour of ground in the cube."
+msgstr ""
 
 msgid "Water surface height"
-msgstr "Water surface height"
+msgstr ""
 
 msgid "Height of water surface in the cube."
-msgstr "Height of water surface in the cube."
+msgstr ""
 
 msgid "Water color"
-msgstr "Water colour"
+msgstr ""
 
 msgid "Color of water in the cube."
-msgstr "Colour of water in the cube."
+msgstr ""
 
 msgid "Water/Ground grid smoothness"
-msgstr "Water/Ground grid smoothness"
+msgstr ""
 
 msgid "Number of subdivisions that create a finer grid."
-msgstr "Number of subdivisions that create a finer grid."
+msgstr ""
 
 msgid "Waves"
-msgstr "Waves"
+msgstr ""
 
 msgid "Render waves"
-msgstr "Render waves"
+msgstr ""
 
 msgid "Render water waves inside the cube."
-msgstr "Render water waves inside the cube."
+msgstr ""
 
 msgid "Ripple effect"
-msgstr "Ripple effect"
+msgstr ""
 
 msgid "Semi-randomize light scattering off water waves."
-msgstr "Semi-randomise light scattering off water waves."
+msgstr ""
 
 msgid "Wave amplitude"
-msgstr "Wave amplitude"
+msgstr ""
 
 msgid "Amplitude of water waves."
-msgstr "Amplitude of water waves."
+msgstr ""
 
 msgid "Wave frequency"
-msgstr "Wave frequency"
+msgstr ""
 
 msgid "Frequency of water waves."
-msgstr "Frequency of water waves."
+msgstr ""
 
 msgid "Small wave amplitude"
-msgstr "Small wave amplitude"
+msgstr ""
 
 msgid "Amplitude of small water waves on the bigger ones."
-msgstr "Amplitude of small water waves on the bigger ones."
+msgstr ""
 
 msgid "Small wave frequency"
-msgstr "Small wave frequency"
+msgstr ""
 
 msgid "Frequency of small water waves on the bigger ones."
-msgstr "Frequency of small water waves on the bigger ones."
+msgstr ""
 
 msgid "Display"
-msgstr "Display"
+msgstr ""
 
 msgid "Rescale for screen ratio"
-msgstr "Rescale for screen ratio"
+msgstr ""
 
 msgid ""
 "Rescale along the sides of the cube by the ratio of screen width to height."
 msgstr ""
-"Rescale along the sides of the cube by the ratio of screen width to height."
 
 msgid "Lighting"
-msgstr "Lighting"
+msgstr ""
 
 msgid "Rotate lighting"
-msgstr "Rotate lighting"
+msgstr ""
 
 msgid "Preserve light direction when rotating the cube."
-msgstr "Preserve light direction when rotating the cube."
+msgstr ""
 
 msgid "Light inclination"
-msgstr "Light inclination"
+msgstr ""
 
 msgid ""
 "The angle of light rays from the horizon in degrees (0 is from the viewer's "
 "perspective, 90 is from on top). Only has effect when Rotate Lighting is "
 "false."
 msgstr ""
-"The angle of light rays from the horizon in degrees (0 is from the viewer's "
-"perspective, 90 is from on top). Only has effect when Rotate Lighting is "
-"false."
 
 msgid "Ambient light"
-msgstr "Ambient light"
+msgstr ""
 
 msgid "Component of light coming from all directions equally."
-msgstr "Component of light coming from all directions equally."
+msgstr ""
 
 msgid "Cube 3D Models"
-msgstr "Cube 3D Models"
+msgstr ""
 
 msgid "Render still/animated 3D mesh models inside of the transparent cube"
-msgstr "Render still/animated 3D mesh models inside of the transparent cube"
+msgstr ""
 
 msgid "Scale all factor"
-msgstr "Scale all factor"
+msgstr ""
 
 msgid "Scale all the 3D models by this factor."
-msgstr "Scale all the 3D models by this factor."
+msgstr ""
 
 msgid "3D Models"
-msgstr "3D Models"
+msgstr ""
 
 msgid "Model"
-msgstr "Model"
+msgstr ""
 
 msgid "Full path to 3D wavefront (.obj) model file."
-msgstr "Full path to 3D wavefront (.obj) model file."
+msgstr ""
 
 msgid "Scale factor"
-msgstr "Scale factor"
+msgstr ""
 
 msgid "Scale the 3D model by this factor."
-msgstr "Scale the 3D model by this factor."
+msgstr ""
 
 msgid "X"
-msgstr "X"
+msgstr ""
 
 msgid "X coordinate offset from the center of the cube."
-msgstr "X coordinate offset from the centre of the cube."
+msgstr ""
 
 msgid "Y"
-msgstr "Y"
+msgstr ""
 
 msgid "Y coordinate offset from the center of the cube."
-msgstr "Y coordinate offset from the centre of the cube."
+msgstr ""
 
 msgid "Z"
-msgstr "Z"
+msgstr ""
 
 msgid "Z coordinate offset from the center of the cube."
-msgstr "Z coordinate offset from the centre of the cube."
+msgstr ""
 
 msgid "Rotation plane"
-msgstr "Rotation plane"
+msgstr ""
 
 msgid "Plane of rotation for the 3D model."
-msgstr "Plane of rotation for the 3D model."
+msgstr ""
 
 msgid "Rotation rate"
-msgstr "Rotation rate"
+msgstr ""
 
 msgid "Rate of rotation of 3D model (in rotations per second)."
-msgstr "Rate of rotation of 3D model (in rotations per second)."
+msgstr ""
 
 msgid "Model type"
-msgstr "Model type"
+msgstr ""
 
 msgid "Type of 3D model (still or animated)."
-msgstr "Type of 3D model (still or animated)."
+msgstr ""
 
 msgid "Frames per second"
-msgstr "Frames per second"
+msgstr ""
 
 msgid "Framerate (per second) for the animated series of obj files."
-msgstr "Framerate (per second) for the animated series of obj files."
+msgstr ""
 
 msgid "Render front and back sides"
-msgstr "Render front and back sides"
+msgstr ""
 
 msgid ""
 "Renders the front surface and then the back surface. This can be useful for "
 "models which show black spots but can cause a performance hit."
 msgstr ""
-"Renders the front surface and then the back surface. This can be useful for "
-"models which show black spots but can cause a performance hit."
 
 msgid "Ambient light intensity"
-msgstr "Ambient light intensity"
+msgstr ""
 
 msgid "Diffuse light intensity"
-msgstr "Diffuse light intensity"
+msgstr ""
 
 msgid ""
 "Component of light coming from the direction set by inclination or from the "
 "viewer if Rotate Lighting is true."
 msgstr ""
-"Component of light coming from the direction set by inclination or from the "
-"viewer if Rotate Lighting is true."
 
 msgid "Specular light intensity"
-msgstr "Specular light intensity"
+msgstr ""
 
 msgid ""
 "Highly directional component of light coming from the direction set by "
 "inclination or from the viewer if Rotate Lighting is true."
 msgstr ""
-"Highly directional component of light coming from the direction set by "
-"inclination or from the viewer if Rotate Lighting is true."
 
 msgid "Loading"
-msgstr "Loading"
+msgstr ""
 
 msgid "Use separate threads"
-msgstr "Use separate threads"
+msgstr ""
 
 msgid ""
 "Use separate threads to load each model faster and allow other interaction "
 "whilst loading."
 msgstr ""
-"Use separate threads to load each model faster and allow other interaction "
-"whilst loading."
 
 msgid "Dialog Match"
-msgstr "Dialogue Match"
+msgstr ""
 
 msgid "Dialogs which will trigger fading"
-msgstr "Dialogues which will trigger fading"
+msgstr ""
 
 msgid "Speed"
-msgstr "Speed"
+msgstr ""
 
 msgid "The speed of the animation"
-msgstr "The speed of the animation"
+msgstr ""
 
 msgid "Opacity"
-msgstr "Opacity"
+msgstr ""
 
 msgid "The Opacity of windows with open dialogs"
-msgstr "The Opacity of windows with open dialogues"
+msgstr ""
 
 msgid "Saturation"
-msgstr "Saturation"
+msgstr ""
 
 msgid "The Saturation of windows with open dialogs"
-msgstr "The Saturation of windows with open dialogues"
+msgstr ""
 
 msgid "Brightness"
-msgstr "Brightness"
+msgstr ""
 
 msgid "The Brightness of windows with open dialogs"
-msgstr "The Brightness of windows with open dialogues"
+msgstr ""
 
 msgid "Elements"
-msgstr "Elements"
+msgstr ""
 
 msgid "Snow, Stars, Autumn, Fireflies and Bubbles, all in one neat package"
-msgstr "Snow, Stars, Autumn, Fireflies and Bubbles, all in one neat package"
+msgstr ""
 
 msgid "General"
-msgstr "General"
+msgstr ""
 
 msgid "Global Speed"
-msgstr "Global Speed"
+msgstr ""
 
 msgid "Elements speed will be multiplied by this value"
-msgstr "Elements speed will be multiplied by this value"
+msgstr ""
 
 msgid "Screen Depth"
-msgstr "Screen Depth"
+msgstr ""
 
 msgid "How deep into the screen snowflakes can be drawn before being removed"
-msgstr "How deep into the screen snowflakes can be drawn before being removed"
+msgstr ""
 
 msgid "Apply Screen Transform"
-msgstr "Apply Screen Transform"
+msgstr ""
 
 msgid "Moves particles with screen transforms when over_windows is enabled"
-msgstr "Moves particles with screen transforms when over_windows is enabled"
+msgstr ""
 
 msgid "Draw Over Windows"
-msgstr "Draw Over Windows"
+msgstr ""
 
 msgid "Elements drawn above windows"
-msgstr "Elements drawn above windows"
+msgstr ""
 
 msgid "Toggle Elements with Keys:"
-msgstr "Toggle Elements with Keys:"
+msgstr ""
 
 msgid ""
 "If enabled, Elements will toggle with keys. Otherwise, it will toggle by "
 "checkboxes."
 msgstr ""
-"If enabled, Elements will toggle with keys. Otherwise, it will toggle by "
-"checkboxes."
 
 msgid "Snow"
-msgstr "Snow"
+msgstr ""
 
 msgid "Number Of Snowflakes"
-msgstr "Number Of Snowflakes"
+msgstr ""
 
 msgid "Number of snowflakes"
-msgstr "Number of snowflakes"
+msgstr ""
 
 msgid "Size Of Snowflakes"
-msgstr "Size Of Snowflakes"
+msgstr ""
 
 msgid "Size of snowflakes"
-msgstr "Size of snowflakes"
+msgstr ""
 
 msgid "Snow Speed"
-msgstr "Snow Speed"
+msgstr ""
 
 msgid "Speed of falling snow"
-msgstr "Speed of falling snow"
+msgstr ""
 
 msgid "Snow sway"
-msgstr "Snow sway"
+msgstr ""
 
 msgid ""
 "Side-to-side movement of Snow. Snow now uses the old Autumn movement engine."
 msgstr ""
-"Side-to-side movement of Snow. Snow now uses the old Autumn movement engine."
 
 msgid "Rotate Snowflakes"
-msgstr "Rotate Snowflakes"
+msgstr ""
 
 msgid "Toggle snow"
-msgstr "Toggle snow"
+msgstr ""
 
 msgid "Toggle Snow. Only works if Toggle Elements with Keys is disabled."
-msgstr "Toggle Snow. Only works if Toggle Elements with Keys is disabled."
+msgstr ""
 
 msgid "Toggle Snow"
-msgstr "Toggle Snow"
+msgstr ""
 
 msgid "Toggle Snow Only works if Toggle Elements with Keys is enabled."
-msgstr "Toggle Snow Only works if Toggle Elements with Keys is enabled."
+msgstr ""
 
 msgid "Snow Direction"
-msgstr "Snow Direction"
+msgstr ""
 
 msgid "Select snow flake movement direction"
-msgstr "Select snow flake movement direction"
+msgstr ""
 
 msgid "None"
-msgstr "None"
+msgstr ""
 
 msgid "Up"
-msgstr "Up"
+msgstr ""
 
 msgid "Left"
-msgstr "Left"
+msgstr ""
 
 msgid "Right"
-msgstr "Right"
+msgstr ""
 
 msgid "Snow Textures"
-msgstr "Snow Textures"
+msgstr ""
 
 msgid "Snow textures"
-msgstr "Snow textures"
+msgstr ""
 
 msgid "Autumn"
-msgstr "Autumn"
+msgstr ""
 
 msgid "Number Of leaves"
-msgstr "Number Of leaves"
+msgstr ""
 
 msgid "Number of leaves"
-msgstr "Number of leaves"
+msgstr ""
 
 msgid "Size Of leaves"
-msgstr "Size Of leaves"
+msgstr ""
 
 msgid "Size of leaves"
-msgstr "Size of leaves"
+msgstr ""
 
 msgid "Sway Of leaves"
-msgstr "Sway Of leaves"
+msgstr ""
 
 msgid "sway of leaves"
-msgstr "sway of leaves"
+msgstr ""
 
 msgid "Leaf Speed"
-msgstr "Leaf Speed"
+msgstr ""
 
 msgid "Speed of falling leaves"
-msgstr "Speed of falling leaves"
+msgstr ""
 
 msgid "Rotate Leaves"
-msgstr "Rotate Leaves"
+msgstr ""
 
 msgid "Toggle Autumn"
-msgstr "Toggle Autumn"
+msgstr ""
 
 msgid "Toggle Autumn. Only works if Toggle Elements with Keys is disabled."
-msgstr "Toggle Autumn. Only works if Toggle Elements with Keys is disabled."
+msgstr ""
 
 msgid "Toggle Autumn Only works if Toggle Elements with Keys is enabled."
-msgstr "Toggle Autumn Only works if Toggle Elements with Keys is enabled."
+msgstr ""
 
 msgid "Autumn Textures"
-msgstr "Autumn Textures"
+msgstr ""
 
 msgid "Autumn textures"
-msgstr "Autumn textures"
+msgstr ""
 
 msgid "Bubbles"
-msgstr "Bubbles"
+msgstr ""
 
 msgid "Number Of bubbles"
-msgstr "Number Of bubbles"
+msgstr ""
 
 msgid "Number of bubbles"
-msgstr "Number of bubbles"
+msgstr ""
 
 msgid "Size Of bubbles"
-msgstr "Size Of bubbles"
+msgstr ""
 
 msgid "Size of bubbles"
-msgstr "Size of bubbles"
+msgstr ""
 
 msgid "Viscosity of liquid"
-msgstr "Viscosity of liquid"
+msgstr ""
 
 msgid "Rotate Bubbles"
-msgstr "Rotate Bubbles"
+msgstr ""
 
 msgid "Toggle Bubbles"
-msgstr "Toggle Bubbles"
+msgstr ""
 
 msgid "Toggle Bubbles. Only works if Toggle Elements with Keys is disabled."
-msgstr "Toggle Bubbles. Only works if Toggle Elements with Keys is disabled."
+msgstr ""
 
 msgid "Toggle Bubbles. Only works if Toggle Elements with Keys is enabled."
-msgstr "Toggle Bubbles. Only works if Toggle Elements with Keys is enabled."
+msgstr ""
 
 msgid "Bubble Textures"
-msgstr "Bubble Textures"
+msgstr ""
 
 msgid "Bubble textures"
-msgstr "Bubble textures"
+msgstr ""
 
 msgid "Fireflies"
-msgstr "Fireflies"
+msgstr ""
 
 msgid "Number Of fireflies"
-msgstr "Number Of fireflies"
+msgstr ""
 
 msgid "Number of fireflies"
-msgstr "Number of fireflies"
+msgstr ""
 
 msgid "Size Of fireflies"
-msgstr "Size Of fireflies"
+msgstr ""
 
 msgid "Size of fireflies"
-msgstr "Size of fireflies"
+msgstr ""
 
 msgid "Firefly Speed"
-msgstr "Firefly Speed"
+msgstr ""
 
 msgid "Speed of firefly lifecycle and movement"
-msgstr "Speed of firefly lifecycle and movement"
+msgstr ""
 
 msgid "Rotate Fireflies"
-msgstr "Rotate Fireflies"
+msgstr ""
 
 msgid "When using \"glows\", you definitely want this ON"
-msgstr "When using \"glows\", you definitely want this ON"
+msgstr ""
 
 msgid "Toggle Fireflies"
-msgstr "Toggle Fireflies"
+msgstr ""
 
 msgid "Toggle Fireflies. Only works if Toggle Elements with Keys is disabled."
-msgstr "Toggle Fireflies. Only works if Toggle Elements with Keys is disabled."
+msgstr ""
 
 msgid "Toggle Fireflies. Only works if Toggle Elements with Keys is enabled."
-msgstr "Toggle Fireflies. Only works if Toggle Elements with Keys is enabled."
+msgstr ""
 
 msgid "Fireflies Textures"
-msgstr "Fireflies Textures"
+msgstr ""
 
 msgid "Fireflies textures"
-msgstr "Fireflies textures"
+msgstr ""
 
 msgid "Stars"
-msgstr "Stars"
+msgstr ""
 
 msgid "Number Of stars"
-msgstr "Number Of stars"
+msgstr ""
 
 msgid "Number of stars"
-msgstr "Number of stars"
+msgstr ""
 
 msgid "Size Of stars"
-msgstr "Size Of stars"
+msgstr ""
 
 msgid "Size of stars"
-msgstr "Size of stars"
+msgstr ""
 
 msgid "Star Speed"
-msgstr "Star Speed"
+msgstr ""
 
 msgid "Speed of stars"
-msgstr "Speed of stars"
+msgstr ""
 
 msgid "Star X Offset"
-msgstr "Star X Offset"
+msgstr ""
 
 msgid "The X point on the screen where stars should start"
-msgstr "The X point on the screen where stars should start"
+msgstr ""
 
 msgid "Star Y Offset"
-msgstr "Star Y Offset"
+msgstr ""
 
 msgid "The Y point on the screen where stars should start"
-msgstr "The Y point on the screen where stars should start"
+msgstr ""
 
 msgid "Rotate Stars"
-msgstr "Rotate Stars"
+msgstr ""
 
 msgid "Toggle Stars"
-msgstr "Toggle Stars"
+msgstr ""
 
 msgid "Toggle Stars. Only works if Toggle Elements with Keys is disabled."
-msgstr "Toggle Stars. Only works if Toggle Elements with Keys is disabled."
+msgstr ""
 
 msgid "Toggle Stars. Only works if Toggle Elements with Keys is enabled."
-msgstr "Toggle Stars. Only works if Toggle Elements with Keys is enabled."
+msgstr ""
 
 msgid "Star Textures"
-msgstr "Star Textures"
+msgstr ""
 
 msgid "Star textures"
-msgstr "Star textures"
+msgstr ""
 
 msgid "Fireflies for Compiz"
-msgstr "Fireflies for Compiz"
+msgstr ""
 
 msgid "Settings"
-msgstr "Settings"
+msgstr ""
 
 msgid "Number Of Fireflies"
-msgstr "Number Of Fireflies"
+msgstr ""
 
 msgid "The maximum number of fireflies allowed on screen"
-msgstr "The maximum number of fireflies allowed on screen"
+msgstr ""
 
 msgid "Size Of Fireflies"
-msgstr "Size Of Fireflies"
+msgstr ""
 
 msgid "Update Delay"
-msgstr "Update Delay"
+msgstr ""
 
 msgid ""
 "Delay (in ms) between screen updates. Decreasing this value may make snow "
 "fall more smoothly, but will also increase CPU usage."
 msgstr ""
-"Delay (in ms) between screen updates. Decreasing this value may make snow "
-"fall more smoothly, but will also increase CPU usage."
 
 msgid "Screen Boxing"
-msgstr "Screen Boxing"
+msgstr ""
 
 msgid ""
 "How far outside the screen resolution fireflies can be before being removed. "
 "Needed because of FOV."
 msgstr ""
-"How far outside the screen resolution fireflies can be before being removed. "
-"Needed because of FOV."
 
 msgid "How deep into the screen fireflies can be drawn before being removed"
-msgstr "How deep into the screen fireflies can be drawn before being removed"
+msgstr ""
 
 msgid "Fireflies Over Windows"
-msgstr "Fireflies Over Windows"
+msgstr ""
 
 msgid "Fireflies is drawn above windows"
-msgstr "Fireflies is drawn above windows"
+msgstr ""
 
 msgid "Rotate Flies. Redundant"
-msgstr "Rotate Flies. Redundant"
+msgstr ""
 
 msgid "Flies rotate if checked."
-msgstr "Flies rotate if checked."
+msgstr ""
 
 msgid "Fireflies Direction. Redundant"
-msgstr "Fireflies Direction. Redundant"
+msgstr ""
 
 msgid "Top to Bottom"
-msgstr "Top to Bottom"
+msgstr ""
 
 msgid "Bottom to Top"
-msgstr "Bottom to Top"
+msgstr ""
 
 msgid "Right to Left"
-msgstr "Right to Left"
+msgstr ""
 
 msgid "Left to Right"
-msgstr "Left to Right"
+msgstr ""
 
 msgid "Enable by default"
-msgstr "Enable by default"
+msgstr ""
 
 msgid "Enable fireflies by default."
-msgstr "Enable fireflies by default."
+msgstr ""
 
 msgid "Textures"
-msgstr "Textures"
+msgstr ""
 
 msgid "Debug"
-msgstr "Debug"
+msgstr ""
 
 msgid "Enable Blending"
-msgstr "Enable Blending"
+msgstr ""
 
 msgid "Enables alpha blending of flies."
-msgstr "Enables alpha blending of flies."
+msgstr ""
 
 msgid "Enable Textures"
-msgstr "Enable Textures"
+msgstr ""
 
 msgid "Enables textures flies. If not selected, color cradients are used."
-msgstr "Enables textures flies. If not selected, colour cradients are used."
+msgstr ""
 
 msgid "Key Bindings"
-msgstr "Key Bindings"
+msgstr ""
 
 msgid "Firefly toggle key"
-msgstr "Firefly toggle key"
+msgstr ""
 
 msgid "Freely Transformable Windows"
-msgstr "Freely Transformable Windows"
+msgstr ""
 
 msgid "Freely transform windows"
-msgstr "Freely transform windows"
+msgstr ""
 
 msgid "Free Transformation"
-msgstr "Free Transformation"
+msgstr ""
 
 msgid "Initiate Rotation"
-msgstr "Initiate Rotation"
+msgstr ""
 
 msgid "Start Free Rotation"
-msgstr "Start Free Rotation"
+msgstr ""
 
 msgid "Initiate Scaling"
-msgstr "Initiate Scaling"
+msgstr ""
 
 msgid "Reset"
-msgstr "Reset"
+msgstr ""
 
 msgid "Reset Transformation"
-msgstr "Reset Transformation"
+msgstr ""
 
 msgid "Axis help toggle"
-msgstr "Axis help toggle"
+msgstr ""
 
 msgid "Axis selection helper"
-msgstr "Axis selection helper"
+msgstr ""
 
 msgid "Transformation Behavior"
-msgstr "Transformation Behaviour"
+msgstr ""
 
 msgid "Snap Modifier"
-msgstr "Snap Modifier"
+msgstr ""
 
 msgid "Use this bindings to enable/disable snapping."
-msgstr "Use this bindings to enable/disable snapping."
+msgstr ""
 
 msgid "Shift"
-msgstr "Shift"
+msgstr ""
 
 msgid "Alt"
-msgstr "Alt"
+msgstr ""
 
 msgid "Control"
-msgstr "Control"
+msgstr ""
 
 msgid "Meta"
-msgstr "Meta"
+msgstr ""
 
 msgid "Rotation"
-msgstr "Rotation"
+msgstr ""
 
 msgid "Invert Modifier"
-msgstr "Invert Modifier"
+msgstr ""
 
 msgid "Use this bindings to invert the rotation mode."
-msgstr "Use this bindings to invert the rotation mode."
+msgstr ""
 
 msgid "Manual Transformation"
-msgstr "Manual Transformation"
+msgstr ""
 
 msgid "Scaling"
-msgstr "Scaling"
+msgstr ""
 
 msgid "Scale Up"
-msgstr "Scale Up"
+msgstr ""
 
 msgid "Scale up by one increment"
-msgstr "Scale up by one increment"
+msgstr ""
 
 msgid "Scale Down"
-msgstr "Scale Down"
+msgstr ""
 
 msgid "Scale down by one increment"
-msgstr "Scale down by one increment"
+msgstr ""
 
 msgid "Rotate Up"
-msgstr "Rotate Up"
+msgstr ""
 
 msgid "Rotate up by one increment"
-msgstr "Rotate up by one increment"
+msgstr ""
 
 msgid "Rotate Down"
-msgstr "Rotate Down"
+msgstr ""
 
 msgid "Rotate down by one increment"
-msgstr "Rotate down by one increment"
+msgstr ""
 
 msgid "Rotate Left"
-msgstr "Rotate Left"
+msgstr ""
 
 msgid "Rotate left by one increment"
-msgstr "Rotate left by one increment"
+msgstr ""
 
 msgid "Rotate Right"
-msgstr "Rotate Right"
+msgstr ""
 
 msgid "Rotate right by one increment"
-msgstr "Rotate right by one increment"
+msgstr ""
 
 msgid "Rotate Clockwise"
-msgstr "Rotate Clockwise"
+msgstr ""
 
 msgid "Rotate clockwise by one increment"
-msgstr "Rotate clockwise by one increment"
+msgstr ""
 
 msgid "Rotate Counter-Clockwise"
-msgstr "Rotate Counter-Clockwise"
+msgstr ""
 
 msgid "Rotate counter-clockwise by one increment"
-msgstr "Rotate counter-clockwise by one increment"
+msgstr ""
 
 msgid "Snap by default"
-msgstr "Snap by default"
+msgstr ""
 
 msgid "Snap to common points by default"
-msgstr "Snap to common points by default"
+msgstr ""
 
 msgid "Snap Threshold"
-msgstr "Snap Threshold"
+msgstr ""
 
 msgid "Snap to every one of these angles"
-msgstr "Snap to every one of these angles"
+msgstr ""
 
 msgid "Mouse sensitivity"
-msgstr "Mouse sensitivity"
+msgstr ""
 
 msgid "How sensitive the mouse movement should be"
-msgstr "How sensitive the mouse movement should be"
+msgstr ""
 
 msgid "Scale Mode"
-msgstr "Scale Mode"
+msgstr ""
 
 #. Comment out 'To Opposite Corner' for now as it is EXTREMELY BROKEN !
 msgid "How to scale windows"
-msgstr "How to scale windows"
+msgstr ""
 
 msgid "Allow negative"
-msgstr "Allow negative"
+msgstr ""
 
 msgid "Allow negative scaling"
-msgstr "Allow negative scaling"
+msgstr ""
 
 msgid "Maintain aspect ratio"
-msgstr "Maintain aspect ratio"
+msgstr ""
 
 msgid "Keep aspect ratio constant when scaling"
-msgstr "Keep aspect ratio constant when scaling"
+msgstr ""
 
 msgid "Minimum scale"
-msgstr "Minimum scale"
+msgstr ""
 
 msgid ""
 "How small the scale is allowed to be when 'Allow Negative' is not toggled"
 msgstr ""
-"How small the scale is allowed to be when 'Allow Negative' is not toggled"
 
 msgid "Rotation Type"
-msgstr "Rotation Type"
+msgstr ""
 
 msgid "2D/3D Rotation Type"
-msgstr "2D/3D Rotation Type"
+msgstr ""
 
 msgid "Rotation Axis"
-msgstr "Rotation Axis"
+msgstr ""
 
 msgid "How Freely Transformable Windows should determine the rotation axis"
-msgstr "How Freely Transformable Windows should determine the rotation axis"
+msgstr ""
 
 msgid "3D Rotation Percentage"
-msgstr "3D Rotation Percentage"
+msgstr ""
 
 msgid "Percentage of the window area used for 3D rotation"
-msgstr "Percentage of the window area used for 3D rotation"
+msgstr ""
 
 msgid "Auto-Zoom"
-msgstr "Auto-Zoom"
+msgstr ""
 
 msgid "Auto-Zoom when rotating so that windows do not get too large"
-msgstr "Auto-Zoom when rotating so that windows do not get too large"
+msgstr ""
 
 msgid "Disable on Transformed Screen"
-msgstr "Disable on Transformed Screen"
+msgstr ""
 
 msgid ""
 "Disable rotation on transformed screen. This prevents ugly looking clipped "
 "windows when the screen is transformed"
 msgstr ""
-"Disable rotation on transformed screen. This prevents ugly looking clipped "
-"windows when the screen is transformed"
 
 msgid "Speed of window rotation"
-msgstr "Speed of window rotation"
+msgstr ""
 
 msgid "How fast the window should rotate"
-msgstr "How fast the window should rotate"
+msgstr ""
 
 msgid "Rotate increment amount"
-msgstr "Rotate increment amount"
+msgstr ""
 
 msgid "How far to rotate a window when rotating an 'increment'"
-msgstr "How far to rotate a window when rotating an 'increment'"
+msgstr ""
 
 msgid "Scale increment amount"
-msgstr "Scale increment amount"
+msgstr ""
 
 msgid "How much to scale a window by when scaling by an 'increment'"
-msgstr "How much to scale a window by when scaling by an 'increment'"
+msgstr ""
 
 msgid "Misc"
-msgstr "Misc"
+msgstr ""
 
 msgid "Input Prevention"
-msgstr "Input Prevention"
+msgstr ""
 
 msgid "Prevented Input Window Types"
-msgstr "Prevented Input Window Types"
+msgstr ""
 
 msgid "Window types that should be Shaped. Disable problematic windows here"
-msgstr "Window types that should be Shaped. Disable problematic windows here"
+msgstr ""
 
 msgid "Prevent input"
-msgstr "Prevent input"
+msgstr ""
 
 msgid "Prevent input in transformed windows"
-msgstr "Prevent input in transformed windows"
+msgstr ""
 
 msgid "Immediate Moves"
-msgstr "Immediate Moves"
+msgstr ""
 
 msgid ""
 "Don't allow plugins like wobbly to transform the transformed window while "
 "it's being moved"
 msgstr ""
-"Don't allow plugins like wobbly to transform the transformed window while "
-"it's being moved"
 
 msgid "Helper Options"
-msgstr "Helper Options"
+msgstr ""
 
 msgid "Helper Circle Color"
-msgstr "Helper Circle Colour"
+msgstr ""
 
 msgid "Color of the circle."
-msgstr "Colour of the circle."
+msgstr ""
 
 msgid "Helper Line Color"
-msgstr "Helper Line Colour"
+msgstr ""
 
 msgid "Helper line color around the circle"
-msgstr "Helper line colour around the circle"
+msgstr ""
 
 msgid "Helper Cross Line Color"
-msgstr "Helper Cross Line Colour"
+msgstr ""
 
 msgid "Color of the cross line"
-msgstr "Colour of the cross line"
+msgstr ""
 
 msgid "Show 3D rotation circle"
-msgstr "Show 3D rotation circle"
+msgstr ""
 
 msgid "Show click area for 3D rotation"
-msgstr "Show click area for 3D rotation"
+msgstr ""
 
 msgid "Show rotation gizmo"
-msgstr "Show rotation gizmo"
+msgstr ""
 
 msgid "Show rotation axis info"
-msgstr "Show rotation axis info"
+msgstr ""
 
 msgid "Show crosshair"
-msgstr "Show crosshair"
+msgstr ""
 
 msgid "Show crosshair (for scaling click regions)"
-msgstr "Show crosshair (for scaling click regions)"
+msgstr ""
 
 msgid "Show input regions"
-msgstr "Show input regions"
+msgstr ""
 
 msgid "Show input region rectangle"
-msgstr "Show input region rectangle"
+msgstr ""
 
 msgid "Color Opacity"
-msgstr "Colour Opacity"
+msgstr ""
 
 msgid "Alter window opacity based on color."
-msgstr "Alter window opacity based on colour."
+msgstr ""
 
 msgid "Toggle Window Fake ARGB"
-msgstr "Toggle Window Fake ARGB"
+msgstr ""
 
 msgid "Toggle window fake ARGB."
-msgstr "Toggle window fake ARGB."
+msgstr ""
 
 msgid "Toggle Ghost"
-msgstr "Toggle Ghost"
+msgstr ""
 
 msgid "Toggle ghost for all matching windows"
-msgstr "Toggle ghost for all matching windows"
+msgstr ""
 
 msgid "Toggle Ghost Window"
-msgstr "Toggle Ghost Window"
+msgstr ""
 
 msgid "Toggle ghosting of individual window"
-msgstr "Toggle ghosting of individual window"
+msgstr ""
 
 msgid "Window Types"
-msgstr "Window Types"
+msgstr ""
 
 msgid "Windows which should become ghosts"
-msgstr "Windows which should become ghosts"
+msgstr ""
 
 msgid "Ghost Active Window"
-msgstr "Ghost Active Window"
+msgstr ""
 
 msgid "Whether a ghosted active window will accept input or not"
-msgstr "Whether a ghosted active window will accept input or not"
+msgstr ""
 
 msgid "Fade windows only on mousover"
-msgstr "Fade windows only on mousover"
+msgstr ""
 
 msgid ""
 "Whether a ghosted window will always be faded or only when the cursor is "
 "over it"
 msgstr ""
-"Whether a ghosted window will always be faded or only when the cursor is "
-"over it"
 
 msgid "The Opacity of Ghosted Windows"
-msgstr "The Opacity of Ghosted Windows"
+msgstr ""
 
 msgid "The Saturation of Ghosted Windows"
-msgstr "The Saturation of Ghosted Windows"
+msgstr ""
 
 msgid "The Brightness of Ghosted Windows"
-msgstr "The Brightness of Ghosted Windows"
+msgstr ""
 
 msgid "Mouse switch"
-msgstr "Mouse switch"
+msgstr ""
 
 msgid "Switch viewport in response to mouse gesture"
-msgstr "Switch viewport in response to mouse gesture"
+msgstr ""
 
 msgid "Begin Gesture"
-msgstr "Begin Gesture"
+msgstr ""
 
 msgid "Begin Mouse Gesture"
-msgstr "Begin Mouse Gesture"
+msgstr ""
 
 msgid "Photowheel"
-msgstr "Photo wheel"
+msgstr ""
 
 msgid "Render photo turn wheel inside of the transparent cube"
-msgstr "Render photo turn wheel inside of the transparent cube"
+msgstr ""
 
 msgid "Photo Textures"
-msgstr "Photo Textures"
+msgstr ""
 
 msgid "Photo textures"
-msgstr "Photo textures"
+msgstr ""
 
 msgid "Height"
-msgstr "Height"
+msgstr ""
 
 msgid "Width"
-msgstr "Width"
+msgstr ""
 
 msgid "X Offset"
-msgstr "X Offset"
+msgstr ""
 
 msgid "X Offset (this is width)"
-msgstr "X Offset (this is width)"
+msgstr ""
 
 msgid "Y Offset"
-msgstr "Y Offset"
+msgstr ""
 
 msgid "Y Offset (this is height)"
-msgstr "Y Offset (this is height)"
+msgstr ""
 
 msgid "Z Offset"
-msgstr "Z Offset"
+msgstr ""
 
 msgid "Z Offset (this is depth)"
-msgstr "Z Offset (this is depth)"
+msgstr ""
 
 msgid "Rotate Around Axis"
-msgstr "Rotate Around Axis"
+msgstr ""
 
 msgid "Otherwise rotate around its center of cube"
-msgstr "Otherwise rotate around its center of cube"
+msgstr ""
 
 msgid "Top Color"
-msgstr "Top Colour"
+msgstr ""
 
 msgid "Color of top face of the photo wheel"
-msgstr "Colour of top face of the photo wheel"
+msgstr ""
 
 msgid "Bottom Color"
-msgstr "Bottom Colour"
+msgstr ""
 
 msgid "Color of bottom face of the photo wheel"
-msgstr "Colour of bottom face of the photo wheel"
+msgstr ""
 
 msgid "Backface Culling"
-msgstr "Backface Culling"
+msgstr ""
 
 msgid "Enable backface culling"
-msgstr "Enable backface culling"
+msgstr ""
 
 msgid "Put Plus"
-msgstr "Put Plus"
+msgstr ""
 
 msgid "Put Plus window"
-msgstr "Put Plus window"
+msgstr ""
 
 msgid "Put On Viewport"
-msgstr "Put On Viewport"
+msgstr ""
 
 msgid "Move window to a certain viewport"
-msgstr "Move window to a certain viewport"
+msgstr ""
 
 msgid "Bindings"
-msgstr "Bindings"
+msgstr ""
 
 msgid "Put to arbitrary viewport"
-msgstr "Put to arbitrary viewport"
+msgstr ""
 
 msgid "Put On Viewport 1"
-msgstr "Put On Viewport 1"
+msgstr ""
 
 msgid "Move window to viewport 1"
-msgstr "Move window to viewport 1"
+msgstr ""
 
 msgid "Put On Viewport 2"
-msgstr "Put On Viewport 2"
+msgstr ""
 
 msgid "Move window to viewport 2"
-msgstr "Move window to viewport 2"
+msgstr ""
 
 msgid "Put On Viewport 3"
-msgstr "Put On Viewport 3"
+msgstr ""
 
 msgid "Move window to viewport 3"
-msgstr "Move window to viewport 3"
+msgstr ""
 
 msgid "Put On Viewport 4"
-msgstr "Put On Viewport 4"
+msgstr ""
 
 msgid "Move window to viewport 4"
-msgstr "Move window to viewport 4"
+msgstr ""
 
 msgid "Put On Viewport 5"
-msgstr "Put On Viewport 5"
+msgstr ""
 
 msgid "Move window to viewport 5"
-msgstr "Move window to viewport 5"
+msgstr ""
 
 msgid "Put On Viewport 6"
-msgstr "Put On Viewport 6"
+msgstr ""
 
 msgid "Move window to viewport 6"
-msgstr "Move window to viewport 6"
+msgstr ""
 
 msgid "Put On Viewport 7"
-msgstr "Put On Viewport 7"
+msgstr ""
 
 msgid "Move window to viewport 7"
-msgstr "Move window to viewport 7"
+msgstr ""
 
 msgid "Put On Viewport 8"
-msgstr "Put On Viewport 8"
+msgstr ""
 
 msgid "Move window to viewport 8"
-msgstr "Move window to viewport 8"
+msgstr ""
 
 msgid "Put On Viewport 9"
-msgstr "Put On Viewport 9"
+msgstr ""
 
 msgid "Move window to viewport 9"
-msgstr "Move window to viewport 9"
+msgstr ""
 
 msgid "Put On Viewport 10"
-msgstr "Put On Viewport 10"
+msgstr ""
 
 msgid "Move window to viewport 10"
-msgstr "Move window to viewport 10"
+msgstr ""
 
 msgid "Put On Viewport 11"
-msgstr "Put On Viewport 11"
+msgstr ""
 
 msgid "Move window to viewport 11"
-msgstr "Move window to viewport 11"
+msgstr ""
 
 msgid "Put On Viewport 12"
-msgstr "Put On Viewport 12"
+msgstr ""
 
 msgid "Move window to viewport 12"
-msgstr "Move window to viewport 12"
+msgstr ""
 
 msgid "Put to adjacent viewport"
-msgstr "Put to adjacent viewport"
+msgstr ""
 
 msgid "Viewport Left"
-msgstr "Viewport Left"
+msgstr ""
 
 msgid "Move window to the viewport on the left"
-msgstr "Move window to the viewport on the left"
+msgstr ""
 
 msgid "Viewport Right"
-msgstr "Viewport Right"
+msgstr ""
 
 msgid "Move window to the viewport on the right"
-msgstr "Move window to the viewport on the right"
+msgstr ""
 
 msgid "Viewport Top"
-msgstr "Viewport Top"
+msgstr ""
 
 msgid "Move window to the viewport on the top"
-msgstr "Move window to the viewport on the top"
+msgstr ""
 
 msgid "Viewport Bottom"
-msgstr "Viewport Bottom"
+msgstr ""
 
 msgid "Move window to the viewport on the bottom"
-msgstr "Move window to the viewport on the bottom"
+msgstr ""
 
 msgid "Put within viewport"
-msgstr "Put within viewport"
+msgstr ""
 
 msgid "Put Center"
-msgstr "Put Centre"
+msgstr ""
 
 msgid "Move window to the center"
-msgstr "Move window to the centre"
+msgstr ""
 
 msgid "Put Left"
-msgstr "Put Left"
+msgstr ""
 
 msgid "Move window to the left edge"
-msgstr "Move window to the left edge"
+msgstr ""
 
 msgid "Put Right"
-msgstr "Put Right"
+msgstr ""
 
 msgid "Move window to the right edge"
-msgstr "Move window to the right edge"
+msgstr ""
 
 msgid "Put Top"
-msgstr "Put Top"
+msgstr ""
 
 msgid "Move window to the top edge"
-msgstr "Move window to the top edge"
+msgstr ""
 
 msgid "Put Bottom"
-msgstr "Put Bottom"
+msgstr ""
 
 msgid "Move window to the bottom edge"
-msgstr "Move window to the bottom edge"
+msgstr ""
 
 msgid "Put Top Left"
-msgstr "Put Top Left"
+msgstr ""
 
 msgid "Move window to the top left corner"
-msgstr "Move window to the top left corner"
+msgstr ""
 
 msgid "Put Top Right"
-msgstr "Put Top Right"
+msgstr ""
 
 msgid "Move window to the top right corner"
-msgstr "Move window to the top right corner"
+msgstr ""
 
 msgid "Put Bottom Left"
-msgstr "Put Bottom Left"
+msgstr ""
 
 msgid "Move window to the bottom left corner"
-msgstr "Move window to the bottom left corner"
+msgstr ""
 
 msgid "Put Bottom Right"
-msgstr "Put Bottom Right"
+msgstr ""
 
 msgid "Move window to the bottom right corner"
-msgstr "Move window to the bottom right corner"
+msgstr ""
 
 msgid "Put on empty regions"
-msgstr "Put on empty regions"
+msgstr ""
 
 msgid "Restore Position"
-msgstr "Restore Position"
+msgstr ""
 
 msgid "Move window to the last position"
-msgstr "Move window to the last position"
+msgstr ""
 
 msgid "Put Pointer"
-msgstr "Put Pointer"
+msgstr ""
 
 msgid "Move window to the pointer position"
-msgstr "Move window to the pointer position"
+msgstr ""
 
 msgid "Put"
-msgstr "Put"
+msgstr ""
 
 msgid "Move window arbitrarily by passing x, y and type."
-msgstr "Move window arbitrarily by passing x, y and type."
+msgstr ""
 
 msgid "Misc. Options"
-msgstr "Misc. Options"
+msgstr ""
 
 msgid "Padding"
-msgstr "Padding"
+msgstr ""
 
 msgid "Pad Left"
-msgstr "Pad Left"
+msgstr ""
 
 msgid "Number of pixels from the left edge where the window will come to rest"
-msgstr "Number of pixels from the left edge where the window will come to rest"
+msgstr ""
 
 msgid "Pad Right"
-msgstr "Pad Right"
+msgstr ""
 
 msgid "Number of pixels from the right edge where the window will come to rest"
 msgstr ""
-"Number of pixels from the right edge where the window will come to rest"
 
 msgid "Pad Top"
-msgstr "Pad Top"
+msgstr ""
 
 msgid "Number of pixels from the top edge where the window will come to rest"
-msgstr "Number of pixels from the top edge where the window will come to rest"
+msgstr ""
 
 msgid "Pad Bottom"
-msgstr "Pad Bottom"
+msgstr ""
 
 msgid ""
 "Number of pixels from the bottom edge where the window will come to rest"
 msgstr ""
-"Number of pixels from the bottom edge where the window will come to rest"
 
 msgid "Unfocus Window"
-msgstr "Unfocus Window"
+msgstr ""
 
 msgid "Unfocus windows that are moved off the viewport"
-msgstr "Unfocus windows that are moved off the viewport"
+msgstr ""
 
 msgid "Window Center"
-msgstr "Window Centre"
+msgstr ""
 
 msgid "Put pointer uses the center of the window"
-msgstr "Put pointer uses the centre of the window"
+msgstr ""
 
 msgid "Avoid Offscreen"
-msgstr "Avoid Offscreen"
+msgstr ""
 
 msgid "Avoids putting window borders offscreen"
-msgstr "Avoids putting window borders offscreen"
+msgstr ""
 
 msgid "Animation"
-msgstr "Animation"
+msgstr ""
 
 msgid "Animation speed"
-msgstr "Animation speed"
+msgstr ""
 
 msgid "Timestep"
-msgstr "Timestep"
+msgstr ""
 
 msgid "Animation timestep"
-msgstr "Animation timestep"
+msgstr ""
 
 msgid "Screen Saver"
-msgstr "Screen Saver"
+msgstr ""
 
 msgid "Initiate"
-msgstr "Initiate"
+msgstr ""
 
 msgid "Start and stop the screensaver"
-msgstr "Start and stop the screen saver"
+msgstr ""
 
 msgid "Screensaver mode"
-msgstr "Screen saver mode"
+msgstr ""
 
 msgid "Screensaver mode."
-msgstr "Screen saver mode."
+msgstr ""
 
 msgid "Start Automatically"
-msgstr "Start Automatically"
+msgstr ""
 
 msgid "Start Automatically."
-msgstr "Start Automatically."
+msgstr ""
 
 msgid "After (min)"
-msgstr "After (min)"
+msgstr ""
 
 msgid "After (min)."
-msgstr "After (min)."
+msgstr ""
 
 msgid "Fade In duration (sec)"
-msgstr "Fade In duration (sec)"
+msgstr ""
 
 msgid "Fade In duration (sec)."
-msgstr "Fade In duration (sec)."
+msgstr ""
 
 msgid "Fade Out duration (sec)"
-msgstr "Fade Out duration (sec)"
+msgstr ""
 
 msgid "Fade Out duration (sec)."
-msgstr "Fade Out duration (sec)."
+msgstr ""
 
 msgid "Flying windows"
-msgstr "Flying windows"
+msgstr ""
 
 msgid "ScreenSaver Windows"
-msgstr "Screen Saver Windows"
+msgstr ""
 
 msgid ":)"
-msgstr ":)"
+msgstr ""
 
 msgid "Generate mipmaps"
-msgstr "Generate mipmaps"
+msgstr ""
 
 msgid "Attraction Depth"
-msgstr "Attraction Depth"
+msgstr ""
 
 msgid "Attraction Depth."
-msgstr "Attraction Depth."
+msgstr ""
 
 msgid "Attraction/Repulsion ratio"
-msgstr "Attraction/Repulsion ratio"
+msgstr ""
 
 msgid "Attraction/Repulsion ratio."
-msgstr "Attraction/Repulsion ratio."
+msgstr ""
 
 msgid ""
 "Make windows bounce on the floor, still buggy, but essential with cube "
 "reflexion."
 msgstr ""
-"Make windows bounce on the floor, still buggy, but essential with cube "
-"reflexion."
 
 msgid "Rotating cube"
-msgstr "Rotating cube"
+msgstr ""
 
 msgid "Cube rotation speed"
-msgstr "Cube rotation speed"
+msgstr ""
 
 msgid "Zoom"
-msgstr "Zoom"
+msgstr ""
 
 msgid "Smart Put"
-msgstr "Smart Put"
+msgstr ""
 
 msgid "Smart way to fit windows."
-msgstr "Smart way to fit windows."
+msgstr ""
 
 msgid "Apply Smart Put on current window."
-msgstr "Apply Smart Put on current window."
+msgstr ""
 
 msgid "Initiate Smartput on current window."
-msgstr "Initiate Smart put on current window."
+msgstr ""
 
 msgid "Initiate Smart Put on current window."
-msgstr "Initiate Smart Put on current window."
+msgstr ""
 
 msgid "Initiate Smartput on current viewport"
-msgstr "Initiate Smart put on current viewport"
+msgstr ""
 
 msgid "Smart Put!!!"
-msgstr "Smart Put!!!"
+msgstr ""
 
 msgid "Undo Smart Put on last \"smartputed\" window"
-msgstr "Undo Smart Put on last \"smartputed\" window"
+msgstr ""
 
 msgid "Undo!!!"
-msgstr "Undo!!!"
+msgstr ""
 
 msgid "Also use apply-key to undo"
-msgstr "Also use apply-key to undo"
+msgstr ""
 
 msgid "If set, you can also use the same key for undo as you use for applying."
 msgstr ""
-"If set, you can also use the same key for undo as you use for applying."
 
 msgid "Options"
-msgstr "Options"
+msgstr ""
 
 msgid "Allow stack windows"
-msgstr "Allow stack windows"
+msgstr ""
 
 msgid "Stack windows on each other if there is no place left to place them."
-msgstr "Stack windows on each other if there is no place left to place them."
+msgstr ""
 
 msgid "Allow windows shrink"
-msgstr "Allow windows shrink"
+msgstr ""
 
 msgid "Just place the window when the new size is larger than the old one."
-msgstr "Just place the window when the new size is larger than the old one."
+msgstr ""
 
 msgid "Minimal window height"
-msgstr "Minimal window height"
+msgstr ""
 
 msgid "Minimal height that the new window must have at least."
-msgstr "Minimal height that the new window must have at least."
+msgstr ""
 
 msgid "Minimal window width"
-msgstr "Minimal window width"
+msgstr ""
 
 msgid "Minimal width that the new window must have at least."
-msgstr "Minimal width that the new window must have at least."
+msgstr ""
 
 msgid "Window margin"
-msgstr "Window margin"
+msgstr ""
 
 msgid "The distance between windows."
-msgstr "The distance between windows."
+msgstr ""
 
 msgid "Snow for Compiz"
-msgstr "Snow for Compiz"
+msgstr ""
 
 msgid ""
 "How far outside the screen resolution snow flakes can be before being "
 "removed. Needed because of FOV."
 msgstr ""
-"How far outside the screen resolution snow flakes can be before being "
-"removed. Needed because of FOV."
 
 msgid "Snow Over Windows"
-msgstr "Snow Over Windows"
+msgstr ""
 
 msgid "Snow is drawn above windows"
-msgstr "Snow is drawn above windows"
+msgstr ""
 
 msgid "Rotate Flakes"
-msgstr "Rotate Flakes"
+msgstr ""
 
 msgid "Flakes rotate if checked."
-msgstr "Flakes rotate if checked."
+msgstr ""
 
 msgid "Enable snow by default."
-msgstr "Enable snow by default."
+msgstr ""
 
 msgid "Enables alpha blending of snowflakes."
-msgstr "Enables alpha blending of snowflakes."
+msgstr ""
 
 msgid "Enables textured snowflakes. If not selected, color gradients are used."
 msgstr ""
-"Enables textured snowflakes. If not selected, colour gradients are used."
 
 msgid "Snow Toggle"
-msgstr "Snow Toggle"
+msgstr ""
 
 msgid "Snow toggle key"
-msgstr "Snow toggle key"
+msgstr ""
 
 msgid "Maximum number of snowflakes."
-msgstr "Maximum number of snowflakes."
+msgstr ""
 
 msgid "Size of snowflakes."
-msgstr "Size of snowflakes."
+msgstr ""
 
 msgid "Size of snowman"
-msgstr "Size of snowman"
+msgstr ""
 
 msgid "Size of snowman inside the cube."
-msgstr "Size of snowman inside the cube."
+msgstr ""
 
 msgid "Stack Window Switcher"
-msgstr "Stack Window Switcher"
+msgstr ""
 
 msgid "Key bindings"
-msgstr "Key bindings"
+msgstr ""
 
 msgid "Next Window"
-msgstr "Next Window"
+msgstr ""
 
 msgid "Show switcher if not visible and select next window."
-msgstr "Show switcher if not visible and select next window."
+msgstr ""
 
 msgid "Previous Window"
-msgstr "Previous Window"
+msgstr ""
 
 msgid "Show switcher if not visible and select previous window."
-msgstr "Show switcher if not visible and select previous window."
+msgstr ""
 
 msgid "Next Window (All Workspaces)"
-msgstr "Next Window (All Workspaces)"
+msgstr ""
 
 msgid "Show switcher if not visible and select next window out of all windows."
 msgstr ""
-"Show switcher if not visible and select next window out of all windows."
 
 msgid "Previous Window (All Workspaces)"
-msgstr "Previous Window (All Workspaces)"
+msgstr ""
 
 msgid ""
 "Show switcher if not visible and select previous window out of all windows."
 msgstr ""
-"Show switcher if not visible and select previous window out of all windows."
 
 msgid "Next Window (Group)"
-msgstr "Next Window (Group)"
+msgstr ""
 
 msgid ""
 "Show switcher if not visible and select next window of the current "
 "application."
 msgstr ""
-"Show switcher if not visible and select next window of the current "
-"application."
 
 msgid "Previous Window (Group)"
-msgstr "Previous Window (Group)"
+msgstr ""
 
 msgid ""
 "Show switcher if not visible and select previous window of the current "
 "application."
 msgstr ""
-"Show switcher if not visible and select previous window of the current "
-"application."
 
 msgid "Behavior"
-msgstr "Behaviour"
+msgstr ""
 
 msgid "Inactive Window Opacity"
-msgstr "Inactive Window Opacity"
+msgstr ""
 
 msgid ""
 "Amount of opacity (in percent) for windows in the switcher which are not "
 "selected"
 msgstr ""
-"Amount of opacity (in percent) for windows in the switcher which are not "
-"selected"
 
 msgid "Rotate inactive windows"
-msgstr "Rotate inactive windows"
+msgstr ""
 
 msgid "Should not selected windows be rotated"
-msgstr "Should not selected windows be rotated"
+msgstr ""
 
 msgid "Windows"
-msgstr "Windows"
+msgstr ""
 
 msgid "Windows that should be shown in the switcher"
-msgstr "Windows that should be shown in the switcher"
+msgstr ""
 
 msgid "Darken Background"
-msgstr "Darken Background"
+msgstr ""
 
 msgid "Darken background when showing the stack"
-msgstr "Darken background when showing the stack"
+msgstr ""
 
 msgid "Show Minimized"
-msgstr "Show Minimised"
+msgstr ""
 
 msgid "Show windows that are minimized, shaded or in show desktop mode."
-msgstr "Show windows that are minimised, shaded or in show desktop mode."
+msgstr ""
 
 msgid "Tilt"
-msgstr "Tilt"
+msgstr ""
 
 msgid "Tilt angle of the background."
-msgstr "Tilt angle of the background."
+msgstr ""
 
 msgid "Window title display"
-msgstr "Window title display"
+msgstr ""
 
 msgid "Show Window Title"
-msgstr "Show Window Title"
+msgstr ""
 
 msgid "Show window title of currently selected window."
-msgstr "Show window title of currently selected window."
+msgstr ""
 
 msgid "Bold Font"
-msgstr "Bold Font"
+msgstr ""
 
 msgid "Selects if the window title should be displayed in bold font or not."
-msgstr "Selects if the window title should be displayed in bold font or not."
+msgstr ""
 
 msgid "Font Family"
-msgstr "Font Family"
+msgstr ""
 
 msgid "Font family for the window title"
-msgstr "Font family for the window title"
+msgstr ""
 
 msgid "Font Size"
-msgstr "Font Size"
+msgstr ""
 
 msgid "Font size for the window title"
-msgstr "Font size for the window title"
+msgstr ""
 
 msgid "Background Color"
-msgstr "Background Colour"
+msgstr ""
 
 msgid "Background color for the window title"
-msgstr "Background colour for the window title"
+msgstr ""
 
 msgid "Font Color"
-msgstr "Font Colour"
+msgstr ""
 
 msgid "Font color for the window title"
-msgstr "Font colour for the window title"
+msgstr ""
 
 msgid "Text Placement"
-msgstr "Text Placement"
+msgstr ""
 
 msgid "Selects where to place the window title."
-msgstr "Selects where to place the window title."
+msgstr ""
 
 msgid "On Thumbnail"
-msgstr "On Thumbnail"
+msgstr ""
 
 msgid "Centered on screen"
-msgstr "Centred on screen"
+msgstr ""
 
 msgid "Above"
-msgstr "Above"
+msgstr ""
 
 msgid "Below"
-msgstr "Below"
+msgstr ""
 
 msgid "Stars for Compiz"
-msgstr "Stars for Compiz"
+msgstr ""
 
 msgid "Number Of Stars"
-msgstr "Number Of Stars"
+msgstr ""
 
 msgid "Maximum number of stars"
-msgstr "Maximum number of stars"
+msgstr ""
 
 msgid "Size Of Stars"
-msgstr "Size Of Stars"
+msgstr ""
 
 msgid "Speed of traveling stars"
-msgstr "Speed of travelling stars"
+msgstr ""
 
 msgid ""
 "How far outside the screen resolution stars can be before being removed. "
 "Needed because of FOV."
 msgstr ""
-"How far outside the screen resolution stars can be before being removed. "
-"Needed because of FOV."
 
 msgid "How deep into the screen stars can be drawn before being removed"
-msgstr "How deep into the screen stars can be drawn before being removed"
+msgstr ""
 
 msgid "Stars Over Windows"
-msgstr "Stars Over Windows"
+msgstr ""
 
 msgid "Stars are drawn above windows"
-msgstr "Stars are drawn above windows"
+msgstr ""
 
 msgid "Rotate Flakes. Redundant"
-msgstr "Rotate Flakes. Redundant"
+msgstr ""
 
 msgid "Snow Direction. Redundant"
-msgstr "Snow Direction. Redundant"
+msgstr ""
 
 msgid "Stars Textures"
-msgstr "Stars Textures"
+msgstr ""
 
 msgid "Images to use as 'stars'"
-msgstr "Images to use as 'stars'"
+msgstr ""
 
 msgid "Enables textures snowflakes. If not selected, color gradients are used."
 msgstr ""
-"Enables textures snowflakes. If not selected, colour gradients are used."
 
 msgid "Stars Toggle"
-msgstr "Stars Toggle"
+msgstr ""
 
 msgid "Stars toggle key"
-msgstr "Stars toggle key"
+msgstr ""
 
 msgid "Static Windows"
-msgstr "Static Windows"
+msgstr ""
 
 msgid "Keep windows such as dock or panels static"
-msgstr "Keep windows such as dock or panels static"
+msgstr ""
 
 msgid "Window Match"
-msgstr "Window Match"
+msgstr ""
 
 msgid "Windows that should be kept static during transformations."
-msgstr "Windows that should be kept static during transformations."
+msgstr ""
 
 msgid "Swap Windows"
-msgstr "Swap Windows"
+msgstr ""
 
 msgid "Next window"
-msgstr "Next window"
+msgstr ""
 
 msgid "Popup switcher if not visible and select next window"
-msgstr "Popup switcher if not visible and select next window"
+msgstr ""
 
 msgid "Prev window"
-msgstr "Previous window"
+msgstr ""
 
 msgid "Popup switcher if not visible and select previous window"
-msgstr "Popup switcher if not visible and select previous window"
+msgstr ""
 
 msgid "Next window (All windows)"
-msgstr "Next window (All windows)"
+msgstr ""
 
 msgid "Popup switcher if not visible and select next window out of all windows"
 msgstr ""
-"Popup switcher if not visible and select next window out of all windows"
 
 msgid "Prev window (All windows)"
-msgstr "Previous window (All windows)"
+msgstr ""
 
 msgid ""
 "Popup switcher if not visible and select previous window out of all windows"
 msgstr ""
-"Popup switcher if not visible and select previous window out of all windows"
 
 msgid "Next window (Group)"
-msgstr "Next window (Group)"
+msgstr ""
 
 msgid ""
 "Popup switcher if not visible and select next window of the current "
 "application."
 msgstr ""
-"Popup switcher if not visible and select next window of the current "
-"application."
 
 msgid "Prev window (Group)"
-msgstr "Previous window (Group)"
+msgstr ""
 
 msgid ""
 "Popup switcher if not visible and select previous window of the current "
 "application."
 msgstr ""
-"Popup switcher if not visible and select previous window of the current "
-"application."
 
 msgid "Next window (No popup)"
-msgstr "Next window (No popup)"
+msgstr ""
 
 msgid "Select next window without showing the popup window."
-msgstr "Select next window without showing the popup window."
+msgstr ""
 
 msgid "Prev window (No popup)"
-msgstr "Previous window (No popup)"
+msgstr ""
 
 msgid "Select previous window without showing the popup window."
-msgstr "Select previous window without showing the popup window."
+msgstr ""
 
 msgid "Next Panel"
-msgstr "Next Panel"
+msgstr ""
 
 msgid "Select next panel type window."
-msgstr "Select next panel type window."
+msgstr ""
 
 msgid "Prev Panel"
-msgstr "Preview Panel"
+msgstr ""
 
 msgid "Select previous panel type window."
-msgstr "Select previous panel type window."
+msgstr ""
 
 msgid "Switcher speed"
-msgstr "Switcher speed"
+msgstr ""
 
 msgid "Switcher timestep"
-msgstr "Switcher timestep"
+msgstr ""
 
 msgid "Switcher windows"
-msgstr "Switcher windows"
+msgstr ""
 
 msgid "Windows that should be shown in switcher"
-msgstr "Windows that should be shown in switcher"
+msgstr ""
 
 msgid "Show minimized windows"
-msgstr "Show minimised windows"
+msgstr ""
 
 msgid "Auto Change Viewport"
-msgstr "Auto Change Viewport"
+msgstr ""
 
 msgid "Change to the viewport of the selected window while switching"
-msgstr "Change to the viewport of the selected window while switching"
+msgstr ""
 
 msgid "Popup Window Delay"
-msgstr "Popup Window Delay"
+msgstr ""
 
 msgid "Time (in s) the popup window should be delayed before appearing"
-msgstr "Time (in s) the popup window should be delayed before appearing"
+msgstr ""
 
 msgid "Appearance"
-msgstr "Appearance"
+msgstr ""
 
 msgid "Amount of saturation in percent"
-msgstr "Amount of saturation in percent"
+msgstr ""
 
 msgid "Amount of brightness in percent"
-msgstr "Amount of brightness in percent"
+msgstr ""
 
 msgid "Amount of opacity in percent"
-msgstr "Amount of opacity in percent"
+msgstr ""
 
 msgid "Icon"
-msgstr "Icon"
+msgstr ""
 
 msgid "Show icon next to thumbnail"
-msgstr "Show icon next to thumbnail"
+msgstr ""
 
 msgid "Mipmap"
-msgstr "Mipmap"
+msgstr ""
 
 msgid "Generate mipmaps when possible for higher quality scaling"
-msgstr "Generate mipmaps when possible for higher quality scaling"
+msgstr ""
 
 msgid "Row Alignment"
-msgstr "Row Alignment"
+msgstr ""
 
 msgid "Alignment for rows that are not fully filled"
-msgstr "Alignment for rows that are not fully filled"
+msgstr ""
 
 msgid "Centered"
-msgstr "Centred"
+msgstr ""
 
 msgid "Selected Window Highlight"
-msgstr "Selected Window Highlight"
+msgstr ""
 
 msgid "Highlight Mode"
-msgstr "Highlight Mode"
+msgstr ""
 
 msgid "Mode for highlighting the currently selected window"
-msgstr "Mode for highlighting the currently selected window"
+msgstr ""
 
 msgid "Bring Selected To Front"
-msgstr "Bring Selected To Front"
+msgstr ""
 
 msgid "Show Rectangle"
-msgstr "Show Rectangle"
+msgstr ""
 
 msgid "Minimized Window Highlight Rectangle"
-msgstr "Minimised Window Highlight Rectangle"
+msgstr ""
 
 msgid "Where to draw highlight rectangle for minimized windows"
-msgstr "Where to draw highlight rectangle for minimised windows"
+msgstr ""
 
 msgid "Taskbar Entry"
-msgstr "Task bar Entry"
+msgstr ""
 
 msgid "Original Window Position"
-msgstr "Original Window Position"
+msgstr ""
 
 msgid "Highlight Color"
-msgstr "Highlight Colour"
+msgstr ""
 
 msgid "Color of highlight rectangle"
-msgstr "Colour of highlight rectangle"
+msgstr ""
 
 msgid "Highlight Border Color"
-msgstr "Highlight Border Colour"
+msgstr ""
 
 msgid "Color of highlight rectangle border"
-msgstr "Colour of highlight rectangle border"
+msgstr ""
 
 msgid "Highlight Border Inlay Color"
-msgstr "Highlight Border Inlay Colour"
+msgstr ""
 
 msgid "Color of inlay in highlight rectangle border"
-msgstr "Colour of inlay in highlight rectangle border"
+msgstr ""
 
 msgid "Throw Windows"
-msgstr "Throw Windows"
+msgstr ""
 
 msgid "Windows have a velocity once they are released after moving"
-msgstr "Windows have a velocity once they are released after moving"
+msgstr ""
 
 msgid "X Velocity Multiplier"
-msgstr "X Velocity Multiplier"
+msgstr ""
 
 msgid "X Velocity Multipler"
-msgstr "X Velocity Multipler"
+msgstr ""
 
 msgid "Y Velocity Multiplier"
-msgstr "Y Velocity Multiplier"
+msgstr ""
 
 msgid "Y Velocity Multipler"
-msgstr "Y Velocity Multipler"
+msgstr ""
 
 msgid "Friction constant"
-msgstr "Friction constant"
+msgstr ""
 
 msgid "How much friction the screen provides"
-msgstr "How much friction the screen provides"
+msgstr ""
 
 msgid "Constrain X"
-msgstr "Constrain X"
+msgstr ""
 
 msgid "Constrain window in display width"
-msgstr "Constrain window in display width"
+msgstr ""
 
 msgid "Constrain Y"
-msgstr "Constrain Y"
+msgstr ""
 
 msgid "Constrain window in display height"
-msgstr "Constrain window in display height"
+msgstr ""
 
 msgid "Tile"
-msgstr "Tile"
+msgstr ""
 
 msgid "Tile windows"
-msgstr "Tile windows"
+msgstr ""
 
 msgid "Tiling Animation Type"
-msgstr "Tiling Animation Type"
+msgstr ""
 
 msgid "Selects the animation used while tiling"
-msgstr "Selects the animation used while tiling"
+msgstr ""
 
 msgid "Filled Outline"
-msgstr "Filled Outline"
+msgstr ""
 
 msgid "Slide"
-msgstr "Slide"
+msgstr ""
 
 msgid "Drop From Top"
-msgstr "Drop From Top"
+msgstr ""
 
 msgid "Animation Duration"
-msgstr "Animation Duration"
+msgstr ""
 
 msgid "Duration (in ms) of the tiling animation"
-msgstr "Duration (in ms) of the tiling animation"
+msgstr ""
 
 msgid "Tiling Method For Toggle"
-msgstr "Tiling Method For Toggle"
+msgstr ""
 
 msgid "Choose the tiling type you want when using toggle."
-msgstr "Choose the tiling type you want when using toggle."
+msgstr ""
 
 msgid "Tile Vertically"
-msgstr "Tile Vertically"
+msgstr ""
 
 msgid "Tile Horizontally"
-msgstr "Tile Horizontally"
+msgstr ""
 
 msgid "Cascade"
-msgstr "Cascade"
+msgstr ""
 
 msgid "Join Windows (EXPERIMENTAL)"
-msgstr "Join Windows (EXPERIMENTAL)"
+msgstr ""
 
 msgid ""
 "Tries to join the windows together when horizontal, vertical or left tiling "
 "is enabled so that when you resize a window surrounding windows resize "
 "accordingly. This may cause problems if you dont leave them enough space."
 msgstr ""
-"Tries to join the windows together when horizontal, vertical or left tiling "
-"is enabled so that when a window is resized, the surrounding windows resize "
-"accordingly. This may cause problems if you dont leave them enough space."
 
 msgid "Cascade Delta"
-msgstr "Cascade Delta"
+msgstr ""
 
 msgid "Distance between windows when using cascade"
-msgstr "Distance between windows when using cascade"
+msgstr ""
 
 msgid "Left Occupancy"
-msgstr "Left Occupancy"
+msgstr ""
 
 msgid ""
 "Occupancy percentage for window placed left. This number is percentage of "
 "screen width, which the active window will have it as width when tiled. "
 "Applies to Left tiling type."
 msgstr ""
-"Occupancy percentage for the left placed window. This number is the "
-"percentage of the screen width that the active window will have when it is "
-"tiled. Applies to Left tiling type."
 
 msgid "Excluded Windows"
-msgstr "Excluded Windows"
+msgstr ""
 
 msgid "Windows which should be excluded from tiling"
-msgstr "Windows which should be excluded from tiling"
+msgstr ""
 
 msgid "Tile Windows Vertically"
-msgstr "Tile Windows Vertically"
+msgstr ""
 
 msgid ""
 "Move and resize all visible windows so that they have full height, same "
 "width and occupy whole screen."
 msgstr ""
-"Move and resize all visible windows so that they have full height, the same "
-"width and occupy the whole screen."
 
 msgid "Tile Windows Horizontally"
-msgstr "Tile Windows Horizontally"
+msgstr ""
 
 msgid ""
 "Move and resize all visible windows so that they have full width, same "
 "height and occupy whole screen."
 msgstr ""
-"Move and resize all visible windows so that they have full width, the same "
-"height and occupy the whole screen."
 
 msgid "Tile Windows"
-msgstr "Tile Windows"
+msgstr ""
 
 msgid ""
 "Move and resize all visible windows both vertically and horizontally, so "
 "that the occupy whole screen and are in a grid."
 msgstr ""
-"Move and resize all visible windows both vertically and horizontally, so "
-"that they occupy the whole screen and are in a grid."
 
 msgid "Cascade Windows"
-msgstr "Cascade Windows"
+msgstr ""
 
 msgid ""
 "Move and resize all visible windows with the delta value set for cascading."
 msgstr ""
-"Move and resize all visible windows with the delta value set for cascading."
 
 msgid "Restore Windows"
-msgstr "Restore Windows"
+msgstr ""
 
 msgid "Restore windows to their original position they had before tiling."
-msgstr "Restore windows to their original position they had before tiling."
+msgstr ""
 
 msgid "Toggle Tiling"
-msgstr "Toggle Tiling"
+msgstr ""
 
 msgid "Toggle between tile and restore"
-msgstr "Toggle between tile and restore"
+msgstr ""
 
 msgid "Toggle Decoration"
-msgstr "Toggle Decoration"
+msgstr ""
 
 msgid "Toggles decoration."
-msgstr "Toggles decoration."
+msgstr ""
 
 msgid "Toggle decoration"
-msgstr "Toggle decoration"
+msgstr ""
 
 msgid "Toggles decoration on/off."
-msgstr "Toggles decoration on/off."
+msgstr ""
 
 msgid "Toggle decoration on desktop"
-msgstr "Toggle decoration on desktop"
+msgstr ""
 
 msgid "Toggles decoration of every window on the desktop."
-msgstr "Toggles decoration of every window on the desktop."
+msgstr ""
 
 msgid "Wizard"
-msgstr "Wizard"
+msgstr ""
 
 msgid ""
 "Wastes resources to create fancy particle systems for wizard-wannabes :)"
 msgstr ""
-"Wastes resources to create fancy particle systems for wizard-wannabes :)"
 
 msgid "Toggle all particle effects."
-msgstr "Toggle all particle effects."
+msgstr ""
 
 msgid "Enable wizard by default."
-msgstr "Enable wizard by default."
+msgstr ""
 
 msgid "Gravity"
-msgstr "Gravity"
+msgstr ""
 
 msgid "Global gravity"
-msgstr "Global gravity"
+msgstr ""
 
 msgid "Gravity X"
-msgstr "Gravity X"
+msgstr ""
 
 msgid "Global horizontal gravity"
-msgstr "Global horizontal gravity"
+msgstr ""
 
 msgid "Gravity Y"
-msgstr "Gravity Y"
+msgstr ""
 
 msgid "Global vertical gravity"
-msgstr "Global vertical gravity"
+msgstr ""
 
 msgid "Point gravity sources"
-msgstr "Point gravity sources"
+msgstr ""
 
 msgid "Strength"
-msgstr "Strength"
+msgstr ""
 
 msgid ""
 "The strength of this gravity source. Use negative values for a repulsing "
 "effect."
 msgstr ""
-"The strength of this gravity source. Use negative values for a repulsing "
-"effect."
 
 msgid "Position X"
-msgstr "Position X"
+msgstr ""
 
 msgid ""
 "The horizontal position of this gravity source. May be ignored or used for "
 "initialization, depending on the movement type."
 msgstr ""
-"The horizontal position of this gravity source. May be ignored or used for "
-"initialisation, depending on the movement type."
 
 msgid "Position Y"
-msgstr "Position Y"
+msgstr ""
 
 msgid ""
 "The vertical position of this gravity source. May be ignored or used for "
 "initialization, depending on the movement type."
 msgstr ""
-"The vertical position of this gravity source. May be ignored or used for "
-"initialisation, depending on the movement type."
 
 msgid ""
 "The speed of this gravity source. May be ignored or used for initialization, "
 "depending on the movement type."
 msgstr ""
-"The speed of this gravity source. May be ignored or used for initialisation, "
-"depending on the movement type."
 
 msgid ""
 "The angle for the movement of this gravity source. May be ignored or used "
 "for initialization, depending on the movement type."
 msgstr ""
-"The angle for the movement of this gravity source. May be ignored or used "
-"for initialisation, depending on the movement type."
 
 msgid "Movement Type"
-msgstr "Movement Type"
+msgstr ""
 
 msgid ""
 "The movement type of this source: Fixed (not moving at all), Mouse Position "
@@ -2550,38 +2473,32 @@ msgid ""
 "set speed), Bounce (moving at constant speed, bouncing off the walls) or "
 "Wrap (moving at constant speed, jumping to the opposite side at a wall)."
 msgstr ""
-"The movement type of this source: Fixed (not moving at all), Mouse Position "
-"(exactly on the core pointer), Follow Mouse (moving towards core pointer at "
-"set speed), Bounce (moving at constant speed, bouncing off the walls) or "
-"Wrap (moving at constant speed, jumping to the opposite side at a wall)."
 
 msgid "Mouse Position"
-msgstr "Mouse Position"
+msgstr ""
 
 msgid "Follow Mouse"
-msgstr "Follow Mouse"
+msgstr ""
 
 msgid "Wrap"
-msgstr "Wrap"
+msgstr ""
 
 msgid "Emitters"
-msgstr "Emitters"
+msgstr ""
 
 msgid "Active"
-msgstr "Active"
+msgstr ""
 
 msgid ""
 "Since emitters have a lot of options, you can simply deactivate and name "
 "them instead of deleting them."
 msgstr ""
-"Since emitters have a lot of options, you can simply deactivate and name "
-"them instead of deleting them."
 
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgid "Trigger"
-msgstr "Trigger"
+msgstr ""
 
 msgid ""
 "The trigger to create particles: Persitent (create particles all the time), "
@@ -2590,57 +2507,44 @@ msgid ""
 "on and off particle production) or Notification (a single particle burst on "
 "notification events)."
 msgstr ""
-"The trigger to create particles: Persitent (create particles all the time), "
-"Mouse Movement (create particles when the mouse is being moved), Random Shot "
-"(a single particle burst once in a while), Random Period (randomly turning "
-"on and off particle production) or Notification (a single particle burst on "
-"notification events)."
 
 msgid "Persistent"
-msgstr "Persistent"
+msgstr ""
 
 msgid "Mouse Movement"
-msgstr "Mouse Movement"
+msgstr ""
 
 msgid "Random Shot"
-msgstr "Random Shot"
+msgstr ""
 
 msgid "Random Period"
-msgstr "Random Period"
+msgstr ""
 
 msgid ""
 "The horizontal position of this emitter. May be ignored or used for "
 "initialization, depending on the movement type."
 msgstr ""
-"The horizontal position of this emitter. May be ignored or used for "
-"initialisation, depending on the movement type."
 
 msgid ""
 "The vertical position of this emitter. May be ignored or used for "
 "initialization, depending on the movement type."
 msgstr ""
-"The vertical position of this emitter. May be ignored or used for "
-"initialisation, depending on the movement type."
 
 msgid "Emitter Speed"
-msgstr "Emitter Speed"
+msgstr ""
 
 msgid ""
 "The speed of this emitter. May be ignored or used for initialization, "
 "depending on the movement type."
 msgstr ""
-"The speed of this emitter. May be ignored or used for initialisation, "
-"depending on the movement type."
 
 msgid "Emitter Angle"
-msgstr "Emitter Angle"
+msgstr ""
 
 msgid ""
 "The angle for the movement of this emitter. May be ignored or used for "
 "initialization, depending on the movement type."
 msgstr ""
-"The angle for the movement of this emitter. May be ignored or used for "
-"initialisation, depending on the movement type."
 
 msgid ""
 "The movement type of this emitter: Mouse Position (exactly on the core "
@@ -2648,315 +2552,283 @@ msgid ""
 "(moving at constant speed, bouncing off the walls) or Wrap (moving at "
 "constant speed, jumping to the opposite side at a wall)."
 msgstr ""
-"The movement type of this emitter: Mouse Position (exactly on the core "
-"pointer), Follow Mouse (moving towards core pointer at set speed), Bounce "
-"(moving at constant speed, bouncing off the walls) or Wrap (moving at "
-"constant speed, jumping to the opposite side at a wall)."
 
 msgid "Particle count"
-msgstr "Particle count"
+msgstr ""
 
 msgid "The amount of particles generated each time this emitter is triggered."
-msgstr "The amount of particles generated each time this emitter is triggered."
+msgstr ""
 
 msgid "Color hue"
-msgstr "Colour hue"
+msgstr ""
 
 msgid ""
 "The color of the particles. This is hue like in HSL colors. It is the center "
 "of the range given below."
 msgstr ""
-"The color of the particles. This is hue like in HSL colors. It is the centre "
-"of the range given below."
 
 msgid "Color hue range"
-msgstr "Colour hue range"
+msgstr ""
 
 msgid ""
 "The color of the particles can be any value from the hue (given above) plus/"
 "minus this range. A range of 500 means any color."
 msgstr ""
-"The colour of the particles can be any value from the hue (given above) plus/"
-"minus this range. A range of 500 means any colour."
 
 msgid "Color lightness"
-msgstr "Colour lightness"
+msgstr ""
 
 msgid ""
 "The color of the particles. This is lightness like in HSL colors. It is the "
 "center of the range given below."
 msgstr ""
-"The colour of the particles. This is lightness like in HSL colors. It is the "
-"centre of the range given below."
 
 msgid "Color lightness range"
-msgstr "Colour lightness range"
+msgstr ""
 
 msgid ""
 "The color of the particles can be any value from the lightness (given above) "
 "plus/minus this range."
 msgstr ""
-"The colour of the particles can be any value from the lightness (given "
-"above) plus/minus this range."
 
 msgid "Alpha"
-msgstr "Alpha"
+msgstr ""
 
 msgid ""
 "The alpha (opacity) of the particles. This is the center of the range given "
 "below."
 msgstr ""
-"The alpha (opacity) of the particles. This is the centre of the range given "
-"below."
 
 msgid "Alpha range"
-msgstr "Alpha range"
+msgstr ""
 
 msgid ""
 "The alpha (opacity) of the particles can be any value from the alpha (given "
 "above) plus/minus this range."
 msgstr ""
-"The alpha (opacity) of the particles can be any value from the alpha (given "
-"above) plus/minus this range."
 
 msgid "X range"
-msgstr "X range"
+msgstr ""
 
 msgid "The horizontal range of the particles."
-msgstr "The horizontal range of the particles."
+msgstr ""
 
 msgid "Y range"
-msgstr "Y range"
+msgstr ""
 
 msgid "The vertical range of the particles."
-msgstr "The vertical range of the particles."
+msgstr ""
 
 msgid "Circular range"
-msgstr "Circular range"
+msgstr ""
 
 msgid "The circular range of the particles."
-msgstr "The circular range of the particles."
+msgstr ""
 
 msgid "X speed"
-msgstr "X speed"
+msgstr ""
 
 msgid "The horizontal speed of the particles."
-msgstr "The horizontal speed of the particles."
+msgstr ""
 
 msgid "Y speed"
-msgstr "Y speed"
+msgstr ""
 
 msgid "The vertical speed of the particles."
-msgstr "The vertical speed of the particles."
+msgstr ""
 
 msgid "Aging speed"
-msgstr "Aging speed"
+msgstr ""
 
 msgid "The more negative the sooner particles disappear."
-msgstr "The more negative the sooner particles disappear."
+msgstr ""
 
 msgid "Rotation speed"
-msgstr "Rotation speed"
+msgstr ""
 
 msgid ""
 "The rotation of the particles can probably only be seen on the really big "
 "ones."
 msgstr ""
-"The rotation of the particles can probably only be seen on the really big "
-"ones."
 
 msgid "X speed range"
-msgstr "X speed range"
+msgstr ""
 
 msgid "The horizontal speed range of the particles."
-msgstr "The horizontal speed range of the particles."
+msgstr ""
 
 msgid "Y speed range"
-msgstr "Y speed range"
+msgstr ""
 
 msgid "The vertical speed range of the particles."
-msgstr "The vertical speed range of the particles."
+msgstr ""
 
 msgid "Circular speed range"
-msgstr "Circular speed range"
+msgstr ""
 
 msgid "The circular speed range of the particles."
-msgstr "The circular speed range of the particles."
+msgstr ""
 
 msgid "Aging speed range"
-msgstr "Aging speed range"
+msgstr ""
 
 msgid "The range of aging speeds"
-msgstr "The range of aging speeds"
+msgstr ""
 
 msgid "Rotation speed range"
-msgstr "Rotation speed range"
+msgstr ""
 
 msgid "Particle Size"
-msgstr "Particle Size"
+msgstr ""
 
 msgid "The size of the particles."
-msgstr "The size of the particles."
+msgstr ""
 
 msgid "Particle Size Range"
-msgstr "Particle Size Range"
+msgstr ""
 
 msgid "The size range of the particles."
-msgstr "The size range of the particles."
+msgstr ""
 
 msgid "New Size"
-msgstr "New Size"
+msgstr ""
 
 msgid "The size of the particles when they are new."
-msgstr "The size of the particles when they are new."
+msgstr ""
 
 msgid "New Size Range"
-msgstr "New Size Range"
+msgstr ""
 
 msgid "The size range of the particles when they are new."
-msgstr "The size range of the particles when they are new."
+msgstr ""
 
 msgid ""
 "The strength of the gravity effect, these particles have. (See gravity "
 "probability. May be especially resource consuming."
 msgstr ""
-"The strength of the gravity effect, these particles have. (See gravity "
-"probability. May be especially resource consuming."
 
 msgid "Gravity Range"
-msgstr "Gravity Range"
+msgstr ""
 
 msgid ""
 "The strength range of the gravity effect, these particles have. (See gravity "
 "probability. May be especially resource consuming."
 msgstr ""
-"The strength range of the gravity effect, these particles have. (See gravity "
-"probability. May be especially resource consuming."
 
 msgid "Gravity Probability"
-msgstr "Gravity Probability"
+msgstr ""
 
 msgid ""
 "The probability that a particle has the gravity effect, that has been set up "
 "above. This value represents gravity particles out of 10000 particles. "
 "(Using gravity on too many particles may be very resource consuming)"
 msgstr ""
-"The probability that a particle has the gravity effect, that has been set up "
-"above. This value represents gravity particles out of 10000 particles. "
-"(Using gravity on too many particles may be very resource consuming)"
 
 msgid "Advanced"
-msgstr "Advanced"
+msgstr ""
 
 msgid "Hard limit for particles"
-msgstr "Hard limit for particles"
+msgstr ""
 
 msgid "If this hard limit is reached, no new particles are created"
-msgstr "If this hard limit is reached, no new particles are created"
+msgstr ""
 
 msgid "Soft limit for particles"
-msgstr "Soft limit for particles"
+msgstr ""
 
 msgid ""
 "This soft limit can be exceeded. If this happens, particles will die faster"
 msgstr ""
-"This soft limit can be exceeded. If this happens, particles will die faster"
 
 msgid "Darken backgound"
-msgstr "Darken backgound"
+msgstr ""
 
 msgid "Darken background under particles"
-msgstr "Darken background under particles"
+msgstr ""
 
 msgid "Additive blending"
-msgstr "Additive blending"
+msgstr ""
 
 msgid "Additive blending of particles"
-msgstr "Additive blending of particles"
+msgstr ""
 
 msgid "New particle time"
-msgstr "New particle time"
+msgstr ""
 
 msgid ""
 "If the age of a particle is above this value, it is regarded as new and is "
 "especially bright and large. Particles are born at the age of 1.0 and die at "
 "the age of 0.0"
 msgstr ""
-"If the age of a particle is above this value, it is regarded as new and is "
-"especially bright and large. Particles are born at the age of 1.0 and die at "
-"the age of 0.0"
 
 msgid "Old particle time"
-msgstr "Old particle time"
+msgstr ""
 
 msgid ""
 "If the age of a particle is below this value, it is regarded as old and "
 "starts to fade. Particles are born at the age of 1.0 and die at the age of "
 "0.0"
 msgstr ""
-"If the age of a particle is below this value, it is regarded as old and "
-"starts to fade. Particles are born at the age of 1.0 and die at the age of "
-"0.0"
 
 msgid "Workspace Naming"
-msgstr "Workspace Naming"
+msgstr ""
 
 msgid "Allows assigning descriptions to workspaces"
-msgstr "Allows assigning descriptions to workspaces"
+msgstr ""
 
 msgid "Names"
-msgstr "Names"
+msgstr ""
 
 msgid "Workspace Names"
-msgstr "Workspace Names"
+msgstr ""
 
 msgid "Viewport"
-msgstr "Viewport"
+msgstr ""
 
 msgid "Number of viewport to be named"
-msgstr "Number of viewport to be named"
+msgstr ""
 
 msgid "Viewport name"
-msgstr "Viewport name"
+msgstr ""
 
 msgid "Display Time"
-msgstr "Display Time"
+msgstr ""
 
 msgid "Timeout (in s) of the name display"
-msgstr "Timeout (in s) of the name display"
+msgstr ""
 
 msgid "Fade Time"
-msgstr "Fade Time"
+msgstr ""
 
 msgid "Time (in s) the name display fades out after being shown."
-msgstr "Time (in s) the name display fades out after being shown."
+msgstr ""
 
 msgid "Text Display"
-msgstr "Text Display"
+msgstr ""
 
 msgid "Selects if the text should be displayed in bold font or not."
-msgstr "Selects if the text should be displayed in bold font or not."
+msgstr ""
 
 msgid "Font family for the text display."
-msgstr "Font family for the text display."
+msgstr ""
 
 msgid "Font size for the text display."
-msgstr "Font size for the text display."
+msgstr ""
 
 msgid "Selects where to place the text."
-msgstr "Selects where to place the text."
+msgstr ""
 
 msgid "Top of screen"
-msgstr "Top of screen"
+msgstr ""
 
 msgid "Bottom of screen"
-msgstr "Bottom of screen"
+msgstr ""
 
 msgid "Colors"
-msgstr "Colours"
+msgstr ""
 
 msgid "Background color for the text display."
-msgstr "Background colour for the text display."
+msgstr ""
 
 msgid "Font color for the text display."
-msgstr "Font colour for the text display."
+msgstr ""

@@ -466,7 +466,7 @@ FWDetermineZAxisClick (CompWindow *w,
 
         /* Check if we are going in a particular 3D direction
          * because if we are going left/right and we suddenly
-         * change to 2D mode this would not be expected behaviour.
+         * change to 2D mode this would not be expected behavior.
          * It is only if we have a change in direction that we want
          * to change to 2D rotation.
          */

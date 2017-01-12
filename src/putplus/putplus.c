@@ -688,7 +688,7 @@ putplusInitiateCommon (CompDisplay     *d,
 	    {
 		/* user double-tapped the key, so use the screen work area */
 		workArea = s->workArea;
-		/* set the type to unknown to have a toggle-type behaviour
+		/* set the type to unknown to have a toggle-type behavior
 		   between 'use head's work area' and 'use screen work area' */
 		pd->lastType = PutplusUnknown;
 	    }

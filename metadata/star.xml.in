@@ -31,7 +31,7 @@
 				</option>
 				<option name="snow_speed" type="int">
 					<_short>Star Speed</_short>
-					<_long>Speed of travelling stars</_long>
+					<_long>Speed of traveling stars</_long>
 					<default>85</default>
 					<min>0</min>
 					<max>100</max>

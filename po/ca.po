@@ -1,23 +1,23 @@
-# Compiz Fusion Plugins ca translation.
-# Copyright (C) 2007 compiz-fusion.org
-# This file is distributed under the same license as the compiz-fusion-plugins package.
+# Catalan translation for compiz-plugins-experimental
+# Copyright (C) 2007 launchpad.net/compiz
+# This file is distributed under the same license as the compiz-plugins-experimental package.
 # Gustau L. Castells (Karasu) <gustaucastells@gmail.com>, 2007.
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2016.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: compiz-plugins-experimental 0.8.12\n"
-"Report-Msgid-Bugs-To: http://bugs.opencompositing.org\n"
-"POT-Creation-Date: 2016-08-18 20:14+0200\n"
+"Project-Id-Version: compiz-plugins-experimental\n"
+"Report-Msgid-Bugs-To: https://github.com/compiz-reloaded/compiz-plugins-"
+"experimental/issues\n"
+"POT-Creation-Date: 2017-01-12 18:19+0300\n"
 "PO-Revision-Date: 2016-08-21 16:57+0200\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
-"Language-Team: Catalan\n"
+"Language-Team: Catalan <ca@li.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.8\n"
 
 msgid "Anaglyph"
 msgstr ""
@@ -531,20 +531,20 @@ msgstr ""
 msgid "X"
 msgstr "X"
 
-msgid "X coordinate offset from the centre of the cube."
-msgstr "Desplaçament de la coordenada X des del centre del cub."
+msgid "X coordinate offset from the center of the cube."
+msgstr "Desplaçament de la coordenada X des del center del cub."
 
 msgid "Y"
 msgstr "Y"
 
-msgid "Y coordinate offset from the centre of the cube."
-msgstr "Desplaçament de la coordenada Y des del centre del cub."
+msgid "Y coordinate offset from the center of the cube."
+msgstr "Desplaçament de la coordenada Y des del center del cub."
 
 msgid "Z"
 msgstr "Z"
 
-msgid "Z coordinate offset from the centre of the cube."
-msgstr "Desplaçament de la coordenada Z des del centre del cub."
+msgid "Z coordinate offset from the center of the cube."
+msgstr "Desplaçament de la coordenada Z des del center del cub."
 
 msgid "Rotation plane"
 msgstr "Pla de gir"
@@ -651,21 +651,24 @@ msgstr ""
 msgid "General"
 msgstr "General"
 
-msgid "Update Delay"
-msgstr "Retard d'actualització"
+#, fuzzy
+msgid "Global Speed"
+msgstr "Velocitat de la neu"
 
-msgid ""
-"Delay (in ms) between screen updates. Decreasing this value may make snow "
-"fall more smoothly, but will also increase CPU usage."
+msgid "Elements speed will be multiplied by this value"
 msgstr ""
-"El retard (en ms) entre les actualitzacions de la pantalla. La disminució "
-"d'aquest valor pot fer caure la neu més suaument, però també augmentarà l'ús "
-"de la CPU."
 
 msgid "Screen Depth"
 msgstr "Profunditat de la pantalla"
 
 msgid "How deep into the screen snowflakes can be drawn before being removed"
+msgstr ""
+
+#, fuzzy
+msgid "Apply Screen Transform"
+msgstr "Transformació lliure"
+
+msgid "Moves particles with screen transforms when over_windows is enabled"
 msgstr ""
 
 msgid "Draw Over Windows"
@@ -938,6 +941,17 @@ msgstr ""
 msgid "Size Of Fireflies"
 msgstr "Mida de les cuques de llum"
 
+msgid "Update Delay"
+msgstr "Retard d'actualització"
+
+msgid ""
+"Delay (in ms) between screen updates. Decreasing this value may make snow "
+"fall more smoothly, but will also increase CPU usage."
+msgstr ""
+"El retard (en ms) entre les actualitzacions de la pantalla. La disminució "
+"d'aquest valor pot fer caure la neu més suaument, però també augmentarà l'ús "
+"de la CPU."
+
 msgid "Screen Boxing"
 msgstr ""
 
@@ -1038,7 +1052,7 @@ msgstr "Commutació d'ajuda de l'eix"
 msgid "Axis selection helper"
 msgstr ""
 
-msgid "Transformation Behaviour"
+msgid "Transformation Behavior"
 msgstr "Comportament de la transformació"
 
 msgid "Snap Modifier"
@@ -1401,7 +1415,7 @@ msgid "Rotate Around Axis"
 msgstr "Gira al voltant dels eixos"
 
 msgid "Otherwise rotate around its center of cube"
-msgstr "Altrament gira al voltant del mateix centre del cub"
+msgstr "Altrament gira al voltant del mateix center del cub"
 
 msgid "Top Color"
 msgstr "Color superior"
@@ -1542,10 +1556,10 @@ msgid "Put within viewport"
 msgstr "Posa dins de l'àrea de visualització"
 
 msgid "Put Center"
-msgstr "Posa al centre"
+msgstr "Posa al center"
 
 msgid "Move window to the center"
-msgstr "Mou la finestra al centre"
+msgstr "Mou la finestra al center"
 
 msgid "Put Left"
 msgstr "Posa a l'esquerra"
@@ -1658,7 +1672,7 @@ msgid "Window Center"
 msgstr "Centra la finestra"
 
 msgid "Put pointer uses the center of the window"
-msgstr "Posa al punter utilitza el centre de la finestra"
+msgstr "Posa al punter utilitza el center de la finestra"
 
 msgid "Avoid Offscreen"
 msgstr "Evita que surti de la pantalla"
@@ -2044,7 +2058,7 @@ msgstr "Nombre màxim d'estrelles"
 msgid "Size Of Stars"
 msgstr "Mida de les estrelles"
 
-msgid "Speed of travelling stars"
+msgid "Speed of traveling stars"
 msgstr "Velocitat del viatge de les estrelles"
 
 msgid ""
@@ -2180,9 +2194,6 @@ msgstr "Plafó anterior"
 
 msgid "Select previous panel type window."
 msgstr "Selecciona l'anterior finestra de tipus plafó."
-
-msgid "Behaviour"
-msgstr "Comportament"
 
 msgid "Switcher speed"
 msgstr "Velocitat del commutador"
@@ -2538,7 +2549,7 @@ msgstr "Posició X"
 
 msgid ""
 "The horizontal position of this gravity source. May be ignored or used for "
-"initialisation, depending on the movement type."
+"initialization, depending on the movement type."
 msgstr ""
 "La posició horitzontal d'aquest origen de gravitació. Pot ser ignorat o "
 "utilitzat per a la inicialització, depenent del tipus de moviment."
@@ -2548,13 +2559,13 @@ msgstr "Posició Y"
 
 msgid ""
 "The vertical position of this gravity source. May be ignored or used for "
-"initialisation, depending on the movement type."
+"initialization, depending on the movement type."
 msgstr ""
 "La posició vertical d'aquest origen de gravitació. Pot ser ignorat o "
 "utilitzat per a la inicialització, depenent del tipus de moviment."
 
 msgid ""
-"The speed of this gravity source. May be ignored or used for initialisation, "
+"The speed of this gravity source. May be ignored or used for initialization, "
 "depending on the movement type."
 msgstr ""
 "La velocitat d'aquest origen de gravitació. Pot ser ignorat o utilitzat per "
@@ -2562,7 +2573,7 @@ msgstr ""
 
 msgid ""
 "The angle for the movement of this gravity source. May be ignored or used "
-"for initialisation, depending on the movement type."
+"for initialization, depending on the movement type."
 msgstr ""
 "L'angle per al moviment d'aquest origen de gravitació. Pot ser ignorat o "
 "utilitzat per a la inicialització, depenent del tipus de moviment."
@@ -2577,8 +2588,8 @@ msgid ""
 "Wrap (moving at constant speed, jumping to the opposite side at a wall)."
 msgstr ""
 "El tipus de moviment d'aquest origen: Fix (no es mou en absolut), Posició "
-"del ratolí (exactament en el centre del punter), Seguiment del ratolí (es "
-"mou cap al centre del punter a la velocitat establerta), Rebota (es mou a "
+"del ratolí (exactament en el center del punter), Seguiment del ratolí (es "
+"mou cap al center del punter a la velocitat establerta), Rebota (es mou a "
 "velocitat constant, rebotant a les parets) o Envolta (es mou a velocitat "
 "constant, saltant cap al costat oposat a una paret)."
 
@@ -2632,19 +2643,19 @@ msgstr ""
 
 msgid ""
 "The horizontal position of this emitter. May be ignored or used for "
-"initialisation, depending on the movement type."
+"initialization, depending on the movement type."
 msgstr ""
 
 msgid ""
 "The vertical position of this emitter. May be ignored or used for "
-"initialisation, depending on the movement type."
+"initialization, depending on the movement type."
 msgstr ""
 
 msgid "Emitter Speed"
 msgstr ""
 
 msgid ""
-"The speed of this emitter. May be ignored or used for initialisation, "
+"The speed of this emitter. May be ignored or used for initialization, "
 "depending on the movement type."
 msgstr ""
 
@@ -2653,7 +2664,7 @@ msgstr ""
 
 msgid ""
 "The angle for the movement of this emitter. May be ignored or used for "
-"initialisation, depending on the movement type."
+"initialization, depending on the movement type."
 msgstr ""
 
 msgid ""

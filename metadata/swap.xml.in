@@ -103,7 +103,7 @@
 	</display>
 	<screen>
 	    <group>
-		<_short>Behaviour</_short>
+		<_short>Behavior</_short>
 		<option name="speed" type="float">
 		    <_short>Speed</_short>
 		    <_long>Switcher speed</_long>

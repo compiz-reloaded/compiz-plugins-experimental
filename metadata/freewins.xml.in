@@ -52,7 +52,7 @@
 			<default>&lt;Control&gt;&lt;Shift&gt;h</default>
 	    </option>
         <subgroup>
-        <_short>Transformation Behaviour</_short>
+        <_short>Transformation Behavior</_short>
         <option name="snap_mods" type="list">
           <_short>Snap Modifier</_short>
           <_long>Use this bindings to enable/disable snapping.</_long>
@@ -179,7 +179,7 @@
 	<group>
 	<_short>Free Transformation</_short>
     <subgroup>
-    <_short>Transformation Behaviour</_short>
+    <_short>Transformation Behavior</_short>
 	    <option type="bool" name="snap">
 			    <_short>Snap by default</_short>
 			    <_long>Snap to common points by default</_long>
@@ -297,7 +297,7 @@
 	        </option>
         </subgroup>
         <subgroup>
-            <_short>Transformation Behaviour</_short>
+            <_short>Transformation Behavior</_short>
             <option type="float" name="speed">
                 <_short>Speed of window rotation</_short>
                 <_long>How fast the window should rotate</_long>

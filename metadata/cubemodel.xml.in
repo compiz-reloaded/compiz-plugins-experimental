@@ -40,7 +40,7 @@
 				</option>
 				<option name="model_x_offset" type="list">
 					<_short>X</_short>
-					<_long>X coordinate offset from the centre of the cube.</_long>
+					<_long>X coordinate offset from the center of the cube.</_long>
 					<type>float</type>
 					<min>-1</min>
 					<max>1</max>
@@ -48,7 +48,7 @@
 				</option>
 				<option name="model_y_offset" type="list">
 					<_short>Y</_short>
-					<_long>Y coordinate offset from the centre of the cube.</_long>
+					<_long>Y coordinate offset from the center of the cube.</_long>
 					<type>float</type>
 					<min>-1</min>
 					<max>1</max>
@@ -56,7 +56,7 @@
 				</option>
 				<option name="model_z_offset" type="list">
 					<_short>Z</_short>
-					<_long>Z coordinate offset from the centre of the cube.</_long>
+					<_long>Z coordinate offset from the center of the cube.</_long>
 					<type>float</type>
 					<min>-1</min>
 					<max>1</max>

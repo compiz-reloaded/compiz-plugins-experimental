@@ -74,7 +74,7 @@ genTriMesh (Vertex       *vertices,
     v[0] = a;
 
 
-    /* initialize coordinates, spiralling around from centre */
+    /* initialize coordinates, spiralling around from center */
     for (i = 1; i <= nRow; i++)
     {
 	ang = PI / size;
@@ -500,7 +500,7 @@ deformCylinder(CompScreen *s,
 
     //v[0] = a;
 
-    /* new coordinates, spiralling around from centre */
+    /* new coordinates, spiralling around from center */
     for (i = 1; i <= nRow; i++)
     {
 	ang = PI / size;
@@ -699,7 +699,7 @@ deformSphere(CompScreen *s,
 
     //v[0] = a;
 
-    /* new coordinates, spiralling around from centre */
+    /* new coordinates, spiralling around from center */
     for (i = 1; i <= nRow; i++)
     {
 	ang = PI / size;

@@ -154,9 +154,9 @@ FWDisplayOptionChanged (CompDisplay *d,
     }
 }
 
-/* ------ Plugin Initialisation ---------------------------------------*/
+/* ------ Plugin Initialization ---------------------------------------*/
 
-/* Window initialisation / cleaning */
+/* Window initialization / cleaning */
 static Bool
 freewinsInitWindow (CompPlugin *p,
 		    CompWindow *w)

@@ -306,8 +306,8 @@ typedef struct _AtlantisScreen
     float waterHeight;  /* water surface height */
 
     int hsize;
-    float sideDistance; /* perpendicular distance to side wall from centre */
-    float topDistance;  /* perpendicular distance to top wall from centre */
+    float sideDistance; /* perpendicular distance to side wall from center */
+    float topDistance;  /* perpendicular distance to top wall from center */
     float radius;       /* radius on which the hSize points lie */
     float arcAngle;   	/* 360 degrees / horizontal size */
     float ratio;        /* screen width to height */

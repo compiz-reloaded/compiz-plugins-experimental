@@ -109,7 +109,7 @@ typedef struct _SnowglobeScreen
     float waterHeight; //water surface height
 
     int hsize;
-    float distance;    //perpendicular distance to wall from centre
+    float distance;    //perpendicular distance to wall from center
     float radius;      //radius on which the hSize points lie
     float arcAngle;    //360 degrees / horizontal size
 
