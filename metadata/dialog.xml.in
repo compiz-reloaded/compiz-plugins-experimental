@@ -12,7 +12,7 @@
 				<option name="dialogtypes" type="match">
 					<_short>Dialog Match</_short>
 					<_long>Dialogs which will trigger fading</_long>
-				    <default>(override_redirect=0) &amp; !(type=Menu | class=Gimp | class=Inkscape | (class=Firefox &amp; type=Tooltip))</default>
+				    <default>(override_redirect=0) &amp; !(type=Menu | class=Gimp | class=Inkscape | (class=Firefox &amp; type=Tooltip)) &amp; !type=Tooltip</default>
 				</option>
 				<option name="speed" type="float">
 					<_short>Speed</_short>
