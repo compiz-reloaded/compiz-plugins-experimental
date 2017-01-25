@@ -24,7 +24,7 @@
 				</option>
 				<option name="opacity" type="float">
 					<_short>Opacity</_short>
-					<_long>The Opacity of windows with open dialogs</_long>
+					<_long>The opacity of windows with open dialogs</_long>
 					<default>80</default>
 					<min>0</min>
 					<max>100</max>
@@ -32,7 +32,7 @@
 				</option>
 				<option name="saturation" type="float">
 					<_short>Saturation</_short>
-					<_long>The Saturation of windows with open dialogs</_long>
+					<_long>The saturation of windows with open dialogs</_long>
 					<default>18</default>
 					<min>0</min>
 					<max>100</max>
@@ -40,7 +40,7 @@
 				</option>
 				<option name="brightness" type="float">
 					<_short>Brightness</_short>
-					<_long>The Brightness of windows with open dialogs</_long>
+					<_long>The brightness of windows with open dialogs</_long>
 					<default>60</default>
 					<min>0</min>
 					<max>100</max>
