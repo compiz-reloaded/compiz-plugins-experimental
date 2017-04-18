@@ -140,7 +140,7 @@
 				<option name="toggle_key" type="key">
 					<_short>Stars Toggle</_short>
 					<_long>Stars toggle key</_long>
-					<default>&lt;Super&gt;F3</default>
+					<default>&lt;Super&gt;F5</default>
 				</option>
 			</group>
 		</display>
