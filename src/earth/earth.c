@@ -347,9 +347,9 @@ TransformClouds (CompScreen* s)
 
 	p_jpgdata = (char*) jpgdata;
 	/* Adjust alpha channel */
-	for (h=0; h<height; h++)
+	for (h = 0; h < height; h++)
 	{
-		for (w=0; w<width; w++)
+		for (w = 0; w < width; w++)
 		{
 			int pos = h * width + w;
 			#if __BYTE_ORDER == __BIG_ENDIAN
@@ -363,7 +363,7 @@ TransformClouds (CompScreen* s)
 	/* Flip image vertically */
 	p_pngdata = malloc (width * height * 4);
 
-	for (h=0; h<height; h++)
+	for (h = 0; h < height; h++)
 		memcpy (&p_pngdata[h * width * 4], &p_jpgdata[(height - h) * width * 4], width * 4);
 
 	free (jpgdata);
@@ -504,7 +504,7 @@ earthPaintInside (CompScreen			  *s,
 
 	float ratio = (float)output->height / (float)output->width;
 	if (cs->moMode == CUBE_MOMODE_AUTO)
-	ratio = (float)s->height / (float)s->width;
+		ratio = (float)s->height / (float)s->width;
 	glScalef (ratio * es->earth_size, es->earth_size, ratio * es->earth_size);
 	es->previousoutput = output->id;
 
@@ -745,7 +745,7 @@ earthInitScreen (CompPlugin *p,
 	CreateShaders(es);
 
 	/* Lights and materials settings */
-	for (i=0; i<4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		es->light[SUN].ambient[i] = 0.2;
 		es->light[SUN].diffuse[i] = 1;
@@ -765,7 +765,7 @@ earthInitScreen (CompPlugin *p,
 	/* Display lists creation */
 	CreateLists (es);
 
-	for (i=0; i<4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		if (es->imagedata[i].image)
 		{
@@ -806,7 +806,7 @@ earthFiniScreen (CompPlugin *p,
 	glDeleteLists (es->list[0], 4);
 
 	/* Free textures data */
-	for (i=0; i<4; i++)
+	for (i = 0; i < 4; i++)
 		destroyTexture (s, es->tex[i]);
 
 	/* Detach and free shaders */
