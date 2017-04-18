@@ -140,7 +140,7 @@ LoadSource (char* filename)
 		return NULL;
 	}
 
-	for (i=0; i<size; i++)
+	for (i = 0; i < size; i++)
 		src[i] = fgetc (fp);
 
 	src[size] = '\0';
@@ -289,17 +289,29 @@ CreateLists (EarthScreen* es)
 	int i;
 	es->list[0] = glGenLists (4);
 
-	for (i=0; i<4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		GLdouble radius;
 		GLboolean inside;
 
 		switch (i)
 		{
-			case SUN:		radius = 0.1;	inside = TRUE;	break;
-			case EARTH:		radius = 0.75;	inside = FALSE;	break;
-			case CLOUDS:	radius = 0.76;	inside = FALSE;	break;
-			case SKY:		radius = 10;	inside = TRUE;	break;
+			case SUN:
+				radius = 0.1;
+				inside = TRUE;
+			break;
+			case EARTH:
+				radius = 0.75;
+				inside = FALSE;
+			break;
+			case CLOUDS:
+				radius = 0.76;
+				inside = FALSE;
+			break;
+			case SKY:
+				radius = 10;
+				inside = TRUE;
+			break;
 		}
 
 		es->list[i] = es->list[0] + i;
@@ -509,13 +521,13 @@ earthPaintInside (CompScreen			  *s,
 	es->previousoutput = output->id;
 
 	/* Earth position according to longitude and latitude */
-	glRotatef (es->lat-90, 1, 0, 0);
+	glRotatef (es->lat - 90, 1, 0, 0);
 	glRotatef (es->lon, 0, 0, 1);
 
 	glPushMatrix ();
 
 	/* Sun position (hour * 15 for degree) */
-	glRotatef (-es->gha*15, 0, 0, 1);
+	glRotatef (-es->gha * 15, 0, 0, 1);
 	glRotatef (-es->dec, 1, 0, 0);
 
 	glLightfv (GL_LIGHT1, GL_POSITION, es->light[SUN].position);
@@ -620,7 +632,7 @@ earthClearTargetOutput (CompScreen *s,
 	disableTexture (s, es->tex[SKY]);
 
 	/* Now rotate to the position of the sun */
-	glRotatef (-es->gha*15, 0, 0, 1);
+	glRotatef (-es->gha * 15, 0, 0, 1);
 	glRotatef (es->dec, 1, 0, 0);
 
 	glTranslatef (0, -5, 0);
@@ -814,7 +826,7 @@ earthFiniScreen (CompPlugin *p,
 
 	/* cURL cleanup */
 	if (es->curlhandle)
-	curl_easy_cleanup (es->curlhandle);
+		curl_easy_cleanup (es->curlhandle);
 	curl_global_cleanup ();
 
 	UNWRAP (es, s, donePaintScreen);
