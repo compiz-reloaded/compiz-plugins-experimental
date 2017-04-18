@@ -1,3 +1,27 @@
+Release 0.8.14 (2017-04-18 Scott Moreau <oreaus@gmail.com>)
+================================================================
+COMPIZ-RELOADED
+
+Add models for cubemodel plugin
+
+Many improvements to elements plugin
+
+Increase bonanza animation speed
+
+Add default enabled option for stars, fireflies, wizard and snow
+
+Improvements to static plugin
+
+Exit on user input after starting screensaver manually
+
+Improve default snow texture
+
+Increase maximum text size in workspacenames
+
+Update translations
+
+Add earth plugin
+
 Release 0.8.12 (2016-02-12 Sorokin Alexei <sor.alexei@meowr.ru>)
 ================================================================
 COMPIZ-RELOADED
