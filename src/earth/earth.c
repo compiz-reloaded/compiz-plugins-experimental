@@ -339,7 +339,11 @@ TransformClouds (CompScreen* s)
 
 	/* Load the jpgfile from disk */
 	asprintf (&imagefile, "%s", "clouds.jpg");
-	readImageFromFile (s->display, imagefile, &width, &height, &jpgdata);
+	if (!readImageFromFile (s->display, imagefile, &width, &height, &jpgdata))
+	{
+		free (imagefile);
+		return;
+	}
 
 	p_jpgdata = (char*) jpgdata;
 	/* Adjust alpha channel */
