@@ -5,6 +5,7 @@ SUBDIRS =                \
 	atlantis          \
 	cubemodel         \
 	dialog            \
+	earth             \
 	elements          \
 	extra-animations  \
 	fakeargb          \

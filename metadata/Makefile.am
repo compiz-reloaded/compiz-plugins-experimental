@@ -25,6 +25,11 @@ if CUBEMODEL_PLUGIN
 cubemodelxml = cubemodel.xml.in
 endif
 
+if EARTH_PLUGIN
+#depends on curl
+earthxml = earth.xml.in
+endif
+
 if SNOWGLOBE_PLUGIN
 #depends on cube
 snowglobexml = snowglobe.xml.in
@@ -87,6 +92,7 @@ xml_in_files =               \
 	$(animationsimxml)    \
 	$(atlantisxml)        \
 	$(cubemodelxml)       \
+	$(earthxml)           \
 	$(elementsxml)        \
 	$(freewinsxml)        \
 	$(ghostxml)           \

@@ -1,1 +1,1 @@
-SUBDIRS = elements fireflies snow stars
+SUBDIRS = earth elements fireflies snow stars

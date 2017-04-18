@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="earth" useBcop="true">
+		<_short>Earth</_short>
+		<_long>Display a realtime lit 3d earth in the desktop cube</_long>
+		<category>Effects</category>
+		<deps>
+			<relation type="after">
+				<plugin>cube</plugin>
+			</relation>
+			<relation type="before">
+				<plugin>cubeaddon</plugin>
+			</relation>
+			<requirement>
+				<plugin>cube</plugin>
+			</requirement>
+		</deps>
+		<screen>
+			<option name="latitude" type="float">
+				<_short>Latitude</_short>
+				<_long>Enter a positive value for a North latitude, negative for a South one</_long>
+				<min>-90</min>
+				<max>90</max>
+				<default>0</default>
+				<precision>0.1</precision>
+			</option>
+			<option name="longitude" type="float">
+				<_short>Longitude</_short>
+				<_long>Enter a positive value for a West longitude, negative for an East one</_long>
+				<min>-180</min>
+				<max>180</max>
+				<default>0</default>
+				<precision>0.1</precision>
+			</option>
+			<option name="timezone" type="float">
+				<_short>Time Zone</_short>
+				<_long>Time difference from GMT (without taking account of DST)</_long>
+				<min>-12</min>
+				<max>12</max>
+				<default>0</default>
+				<precision>0.5</precision>
+			</option>
+			<option name="shaders" type="bool">
+				<_short>Use shaders</_short>
+				<_long>Make use of the shaders if possible</_long>
+				<default>true</default>
+			</option>
+			<option name="clouds" type="bool">
+				<_short>Realtime cloudmap</_short>
+				<_long>Download a cloudmap every 3 hour</_long>
+				<default>false</default>
+			</option>
+			<option name="clouds_url" type="string">
+				<_short>Realtime cloudmap url</_short>
+				<_long>Url from which realtime cloudmap texture will be downloaded</_long>
+				<default>http://home.megapass.co.kr/~holywatr/cloud_data/clouds_2048.jpg</default>
+			</option>
+			<option name="earth_size" type="float">
+				<_short>Earth size</_short>
+				<_long>Size of earth</_long>
+				<min>0.1</min>
+				<max>1</max>
+				<default>0.7</default>
+				<precision>0.01</precision>
+			</option>
+		</screen>
+	</plugin>
+</compiz>

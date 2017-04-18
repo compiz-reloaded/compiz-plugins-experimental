@@ -149,9 +149,16 @@ AM_CONDITIONAL(ANIMATIONSIM_PLUGIN, test "x$have_compiz_animation" = "xyes")
 PKG_CHECK_MODULES(COMPIZANIMATIONADDON, compiz-animationaddon, [have_compiz_animationaddon=yes], [have_compiz_animationaddon=no])
 AM_CONDITIONAL(ANIMATIONPLUS_PLUGIN, test "x$have_compiz_animationaddon" = "xyes")
 
+PKG_CHECK_MODULES(GLEW, glew, [have_glew=yes], [have_glew=no])
+PKG_CHECK_MODULES(LIBCURL, libcurl, [have_libcurl=yes], [have_libcurl=no])
+AM_CONDITIONAL(EARTH_PLUGIN, test "x$have_glew" = "xyes" && test "x$have_libcurl" = "xyes")
+
 AC_OUTPUT([
 Makefile
+data/Makefile
+data/earth/Makefile
 images/Makefile
+images/earth/Makefile
 images/elements/Makefile
 images/fireflies/Makefile
 images/snow/Makefile
@@ -163,6 +170,7 @@ src/anaglyph/Makefile
 src/atlantis/Makefile
 src/cubemodel/Makefile
 src/dialog/Makefile
+src/earth/Makefile
 src/elements/Makefile
 src/extra-animations/Makefile
 src/fakeargb/Makefile
