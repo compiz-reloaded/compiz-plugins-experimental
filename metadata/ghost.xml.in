@@ -7,9 +7,11 @@
 		<deps>
 			<relation type="after">
 			    <plugin>regex</plugin>
+			    <plugin>mousepoll</plugin>
 			</relation>
 			<requirement>
 			    <plugin>regex</plugin>
+			    <plugin>mousepoll</plugin>
 			</requirement>
 		</deps>
 		<display>
