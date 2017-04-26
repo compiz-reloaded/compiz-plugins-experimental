@@ -443,7 +443,7 @@ TransformClouds (CompScreen* s)
 
 	/* Write in the pngfile */
 	assert (asprintf (&imagefile, "%s%s", getenv ("HOME"), "/.compiz/images/clouds.png") ==
-						strlen (getenv ("HOME") + strlen ("/.compiz/images/clouds.png")));
+						strlen (getenv ("HOME")) + strlen ("/.compiz/images/clouds.png"));
 	writeImageToFile (s->display, "", imagefile, "png", width, height, pngdata);
 
 	/* Clean */
