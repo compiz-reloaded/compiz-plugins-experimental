@@ -30,6 +30,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <pthread.h>
+#include <assert.h>
 #include <curl/curl.h>
 
 #include <GL/glew.h>

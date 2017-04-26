@@ -183,22 +183,29 @@ LoadTexture_t (void* threaddata)
 	switch (num)
 	{
 	case DAY:
-		asprintf (&texfile, "%s", "earth/day.png");
+		assert (asprintf (&texfile, "%s", "earth/day.png") ==
+									strlen ("earth/day.png"));
 	break;
 	case NIGHT:
-		asprintf (&texfile, "%s", "earth/night.png");
+		assert (asprintf (&texfile, "%s", "earth/night.png") ==
+									strlen ("earth/night.png"));
 	break;
 	case SKY:
-		asprintf (&texfile, "%s", "earth/skydome.png");
+		assert (asprintf (&texfile, "%s", "earth/skydome.png") ==
+									strlen ("earth/skydome.png"));
 	break;
 	case CLOUDS:
-		asprintf(&texfile, "%s%s", getenv ("HOME"), "/.compiz/images/clouds.png");
+		assert (asprintf (&texfile, "%s%s", getenv ("HOME"),
+									"/.compiz/images/clouds.png") ==
+									strlen (getenv ("HOME")) +
+									strlen ("/.compiz/images/clouds.png"));
 		if (stat (texfile, &st) == 0 && S_ISREG (st.st_mode))
 			break;
 		else
 		{
 			free(texfile);
-			asprintf (&texfile, "%s", "earth/clouds.png");
+			assert (asprintf (&texfile, "%s", "earth/clouds.png") ==
+									strlen ("earth/clouds.png"));
 		}
 	break;
 	}
@@ -403,7 +410,7 @@ TransformClouds (CompScreen* s)
 	int h, w;
 
 	/* Load the jpgfile from disk */
-	asprintf (&imagefile, "%s", "clouds.jpg");
+	assert (asprintf (&imagefile, "%s", "clouds.jpg") == strlen ("clouds.jpg"));
 	if (!readImageFromFile (s->display, imagefile, &width, &height, &jpgdata))
 	{
 		free (imagefile);
@@ -435,7 +442,8 @@ TransformClouds (CompScreen* s)
 	pngdata = (void*) p_pngdata;
 
 	/* Write in the pngfile */
-	asprintf (&imagefile, "%s%s", getenv ("HOME"), "/.compiz/images/clouds.png");
+	assert (asprintf (&imagefile, "%s%s", getenv ("HOME"), "/.compiz/images/clouds.png") ==
+						strlen (getenv ("HOME") + strlen ("/.compiz/images/clouds.png")));
 	writeImageToFile (s->display, "", imagefile, "png", width, height, pngdata);
 
 	/* Clean */
@@ -756,7 +764,8 @@ earthInitScreen (CompPlugin *p,
 		return FALSE;
 	}
 
-	asprintf (&imagedir, "%s%s", getenv("HOME"), "/.compiz/images");
+	assert (asprintf (&imagedir, "%s%s", getenv("HOME"), "/.compiz/images") ==
+						strlen (getenv ("HOME")) + strlen ("/.compiz/images"));
 	/* Check if directory exists and create it if not.
 	 * If path exists but is not a writable directory, the plugin will fail to load */
 	if (stat (imagedir, &st) == 0)
@@ -774,7 +783,8 @@ earthInitScreen (CompPlugin *p,
 						"Creating %s/\n", imagedir);
 		if (mkdir (imagedir, S_IRWXU) == -1)
 		{
-			asprintf (&compizhome, "%s%s", getenv("HOME"), "/.compiz");
+			assert (asprintf (&compizhome, "%s%s", getenv("HOME"), "/.compiz") ==
+								strlen (getenv ("HOME")) + strlen ("/.compiz"));
 			if (mkdir (compizhome, S_IRWXU) == -1 ||
 				mkdir (imagedir, S_IRWXU) == -1)
 			{
@@ -790,7 +800,8 @@ earthInitScreen (CompPlugin *p,
 	free (imagedir);
 
 	/* cloudsfile initialization */
-	asprintf (&es->cloudsfile.filename, "%s%s", getenv("HOME"), "/.compiz/images/clouds.jpg");
+	assert (asprintf (&es->cloudsfile.filename, "%s%s", getenv("HOME"), "/.compiz/images/clouds.jpg") ==
+									strlen (getenv("HOME")) + strlen ("/.compiz/images/clouds.jpg"));
 	es->cloudsfile.stream = NULL;
 	es->cloudsthreaddata.started = 0;
 	es->cloudsthreaddata.finished = 0;
