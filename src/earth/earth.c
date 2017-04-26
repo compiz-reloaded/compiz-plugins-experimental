@@ -141,7 +141,7 @@ LoadSource (char* filename)
 	if (fp == NULL)
 	{
 		compLogMessage ("earth", CompLogLevelWarn,
-						"Unable to load %s", filename);
+						"Unable to load %s for reading", filename);
 		return NULL;
 	}
 
@@ -243,23 +243,35 @@ static void
 CreateShaders (EarthScreen* es)
 {
 	struct stat st;
+	GLint status = 0;
 	/* Shader support */
 	glewInit ();
 	if (glewIsSupported ("GL_VERSION_2_0"))
 		es->shadersupport = GL_TRUE;
-
-	if (!es->shadersupport)
+	else
+	{
+		compLogMessage ("earth", CompLogLevelWarn,
+						"GL version 2.0 required for shader support");
 		return;
+	}
 
 	if (stat (DATADIR "/earth/earth.vert", &st) == 0 && S_ISREG (st.st_mode))
 		es->vertfile[EARTH] = DATADIR "/earth/earth.vert";
 	else
+	{
+		compLogMessage ("earth", CompLogLevelWarn, "Failed to stat %s",
+										DATADIR "/earth/earth.vert");
 		return;
+	}
 
 	if (stat (DATADIR "/earth/earth.frag", &st) == 0 && S_ISREG (st.st_mode))
 		es->fragfile[EARTH] = DATADIR "/earth/earth.frag";
 	else
+	{
+		compLogMessage ("earth", CompLogLevelWarn, "Failed to stat %s",
+										DATADIR "/earth/earth.frag");
 		return;
+	}
 
 	/* Shader creation, loading and compiling */
 	es->vert[EARTH] = glCreateShader (GL_VERTEX_SHADER);
@@ -274,6 +286,20 @@ CreateShaders (EarthScreen* es)
 	glCompileShader (es->vert[EARTH]);
 	glCompileShader (es->frag[EARTH]);
 
+	/* Check for compile errors */
+	glGetObjectParameterivARB(es->vert[EARTH], GL_OBJECT_COMPILE_STATUS_ARB, &status);
+	if (!status)
+	{
+		compLogMessage ("earth", CompLogLevelWarn, "Failed to compile vertex shader");
+		return;
+	}
+	glGetObjectParameterivARB(es->frag[EARTH], GL_OBJECT_COMPILE_STATUS_ARB, &status);
+	if (!status)
+	{
+		compLogMessage ("earth", CompLogLevelWarn, "Failed to compile fragment shader");
+		return;
+	}
+
 	/* Program creation, attaching and linking */
 	es->prog[EARTH] = glCreateProgram ();
 
@@ -281,6 +307,14 @@ CreateShaders (EarthScreen* es)
 	glAttachShader (es->prog[EARTH], es->frag[EARTH]);
 
 	glLinkProgram (es->prog[EARTH]);
+
+	/* Check for link errors */
+	glGetObjectParameterivARB(es->prog[EARTH], GL_OBJECT_LINK_STATUS_ARB, &status);
+	if (!status)
+	{
+		compLogMessage ("earth", CompLogLevelWarn, "Failed to link shader program");
+		return;
+	}
 
 	/* Cleanup */
 	free (es->vertsource[EARTH]);
