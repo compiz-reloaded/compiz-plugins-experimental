@@ -19,8 +19,8 @@
 			<option name="latitude" type="float">
 				<_short>Latitude</_short>
 				<_long>Enter a positive value for a North latitude, negative for a South one</_long>
-				<min>-90</min>
-				<max>90</max>
+				<min>-180</min>
+				<max>180</max>
 				<default>0</default>
 				<precision>0.1</precision>
 			</option>
