@@ -22,7 +22,7 @@
 				<min>-180</min>
 				<max>180</max>
 				<default>0</default>
-				<precision>0.1</precision>
+				<precision>1</precision>
 			</option>
 			<option name="longitude" type="float">
 				<_short>Longitude</_short>
@@ -30,7 +30,7 @@
 				<min>-180</min>
 				<max>180</max>
 				<default>0</default>
-				<precision>0.1</precision>
+				<precision>1</precision>
 			</option>
 			<option name="timezone" type="float">
 				<_short>Time Zone</_short>
