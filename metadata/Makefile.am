@@ -75,11 +75,13 @@ endif
 
 xml_in_files =               \
 	anaglyph.xml.in       \
+        boing.xml.in          \
 	dialog.xml.in         \
 	fakeargb.xml.in       \
 	fireflies.xml.in      \
 	mswitch.xml.in        \
 	putplus.xml.in        \
+        roach.xml.in          \
 	smartput.xml.in       \
 	snow.xml.in           \
 	star.xml.in           \
@@ -113,4 +115,3 @@ EXTRA_DIST =		\
 
 DISTCLEANFILES =	\
 	$(xml_files)
-
