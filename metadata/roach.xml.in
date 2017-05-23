@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<compiz>
+	<plugin name="roach" useBcop="true">
+		<_short>roach</_short>
+		<_long>Roaches for Compiz</_long>
+		<category>Extras</category>
+		<deps>
+			<relation type="after">
+				<plugin>png</plugin>
+				<plugin>svg</plugin>
+				<plugin>jpeg</plugin>
+			</relation>
+		</deps>
+		<display>
+			<group>
+				<_short>Settings</_short>
+				<option name="num_leaves" type="int">
+					<_short>Number Of roaches</_short>
+					<_long>Number of roaches</_long>
+					<default>64</default>
+					<min>0</min>
+					<max>10000</max>
+				</option>
+				<option name="leaf_size" type="float">
+					<_short>Size Of roaches</_short>
+					<_long>Size of roaches</_long>
+					<default>50.0</default>
+					<min>0.0</min>
+					<max>100.0</max>
+					<precision>0.1</precision>
+				</option>
+				<option name="autumn_update_delay" type="int">
+					<_short>Update Delay</_short>
+					<_long>Delay (in ms) between screen updates. Decreasing this value may make leaves fall more smoothly, but will also increase CPU usage.</_long>
+					<default>21</default>
+					<min>10</min>
+					<max>200</max>
+				</option>
+				<option name="screen_boxing" type="int">
+					<_short>Screen Boxing</_short>
+					<_long>How far outside the screen resolution leaves can be before being removed. Needed because of FOV.</_long>
+					<default>400</default>
+					<min>-2000</min>
+					<max>2000</max>
+				</option>
+				<option name="screen_depth" type="int">
+					<_short>Screen Depth</_short>
+					<_long>How deep into the screen leaves can be drawn before being removed</_long>
+					<default>1000</default>
+					<min>0</min>
+					<max>2000</max>
+				</option>
+				<option name="leaves_over_windows" type="bool">
+					<_short>Roaches Over Windows</_short>
+					<_long>Roaches are drawn above windows</_long>
+					<default>false</default>
+				</option>
+				<option name="leaf_rotation" type="bool">
+					<_short>Rotate Balls</_short>
+					<_long>Balls rotate if checked.</_long>
+					<default>false</default>
+				</option>
+				<option name="wind_direction" type="int">
+					<_short>Wind Direction</_short>
+					<_long>Select the wind direction</_long>
+					<default>0</default>
+					<min>0</min>
+					<max>3</max>
+					<desc>
+						<value>0</value>
+						<_name>No Wind</_name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<_name>Up</_name>
+					</desc>
+					<desc>
+						<value>2</value>
+						<_name>Left</_name>
+					</desc>
+					<desc>
+						<value>3</value>
+						<_name>Right</_name>
+					</desc>
+				</option>
+				<option name="default_enabled" type="bool">
+					<_short>Enable by default</_short>
+					<_long>Enable snow by default.</_long>
+					<default>false</default>
+				</option>
+			</group>
+			<group>
+				<_short>Textures</_short>
+				<option name="leaf_textures" type="list">
+					<_short>Roach Textures</_short>
+					<_long>Roach textures</_long>
+					<hints>file;image;</hints>
+					<type>string</type>
+					<default>
+					<value>up.png</value>
+					<value>right.png</value>
+					<value>down.png</value>
+					<value>left.png</value>
+					<value>up2.png</value>
+					<value>right2.png</value>
+					<value>down2.png</value>
+					<value>left2.png</value>
+					</default>
+				</option>
+			</group>
+			<group>
+				<_short>Debug</_short>
+				<option name="use_blending" type="bool">
+					<_short>Enable Blending</_short>
+					<_long>Enables alpha blending of balls.</_long>
+					<default>true</default>
+				</option>
+				<option name="use_textures" type="bool">
+					<_short>Enable Textures</_short>
+					<_long>Enables textured balls. If not selected, color gradients are used.</_long>
+					<default>true</default>
+				</option>
+			</group>
+			<group>
+				<_short>Key Bindings</_short>
+				<option name="toggle_key" type="key">
+					<_short>Toggle Roaches</_short>
+					<_long>Roach toggle key</_long>
+					<allowed key="true"/>
+					<default>
+						<key>&lt;Super&gt;F11</key>
+					</default>
+				</option>
+			</group>
+		</display>
+	</plugin>
+</compiz>
+
