@@ -4,6 +4,7 @@ metadata/anaglyph.xml.in
 metadata/animationplus.xml.in
 metadata/animationsim.xml.in
 metadata/atlantis.xml.in
+metadata/boing.xml.in 
 metadata/cubemodel.xml.in
 metadata/dialog.xml.in
 metadata/earth.xml.in
@@ -15,6 +16,7 @@ metadata/ghost.xml.in
 metadata/mswitch.xml.in
 metadata/photo.xml.in
 metadata/putplus.xml.in
+metadata/roach.xml.in 
 metadata/screensaver.xml.in
 metadata/smartput.xml.in
 metadata/snow.xml.in
