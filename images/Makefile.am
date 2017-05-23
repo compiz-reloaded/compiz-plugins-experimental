@@ -1,1 +1,1 @@
-SUBDIRS = earth elements fireflies snow stars
+SUBDIRS = boing earth elements fireflies roach snow stars 
