@@ -162,7 +162,6 @@ images/boing/Makefile
 images/earth/Makefile
 images/elements/Makefile
 images/fireflies/Makefile
-images/roach/Makefile
 images/snow/Makefile
 images/stars/Makefile
 include/Makefile
@@ -183,7 +182,6 @@ src/ghost/Makefile
 src/mswitch/Makefile
 src/photowheel/Makefile
 src/putplus/Makefile
-src/roach/Makefile
 src/screensaver/Makefile
 src/simple-animations/Makefile
 src/smartput/Makefile
