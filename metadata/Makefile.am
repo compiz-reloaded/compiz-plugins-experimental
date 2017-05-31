@@ -81,7 +81,6 @@ xml_in_files =               \
 	fireflies.xml.in      \
 	mswitch.xml.in        \
 	putplus.xml.in        \
-        roach.xml.in          \
 	smartput.xml.in       \
 	snow.xml.in           \
 	star.xml.in           \
