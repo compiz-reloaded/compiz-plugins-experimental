@@ -97,14 +97,14 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-					<value>up.png</value>
-					<value>right.png</value>
-					<value>down.png</value>
-					<value>left.png</value>
-					<value>up2.png</value>
-					<value>right2.png</value>
-					<value>down2.png</value>
-					<value>left2.png</value>
+					<value>roach/up.png</value>
+					<value>roach/right.png</value>
+					<value>roach/down.png</value>
+					<value>roach/left.png</value>
+					<value>roach/up2.png</value>
+					<value>roach/right2.png</value>
+					<value>roach/down2.png</value>
+					<value>roach/left2.png</value>
 					</default>
 				</option>
 			</group>
