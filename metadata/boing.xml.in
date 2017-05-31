@@ -136,7 +136,7 @@
 					<_long>Boing toggle key</_long>
 					<allowed key="true"/>
 					<default>
-						<key>&lt;Super&gt;F11</key>
+						<key>&lt;Super&gt;F6</key>
 					</default>
 				</option>
 			</group>
