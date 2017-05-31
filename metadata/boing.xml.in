@@ -97,22 +97,22 @@
 					<hints>file;image;</hints>
 					<type>string</type>
 					<default>
-					<value>ball-00.png</value>
-					<value>ball-01.png</value>
-					<value>ball-02.png</value>
-					<value>ball-03.png</value>
-					<value>ball-04.png</value>
-					<value>ball-05.png</value>
-					<value>ball-06.png</value>
-					<value>ball-07.png</value>
-					<value>ball-08.png</value>
-					<value>ball-09.png</value>
-					<value>ball-10.png</value>
-					<value>ball-11.png</value>
-					<value>ball-12.png</value>
-					<value>ball-13.png</value>
-					<value>ball-14.png</value>
-					<value>ball-15.png</value>
+					<value>boing/ball-00.png</value>
+					<value>boing/ball-01.png</value>
+					<value>boing/ball-02.png</value>
+					<value>boing/ball-03.png</value>
+					<value>boing/ball-04.png</value>
+					<value>boing/ball-05.png</value>
+					<value>boing/ball-06.png</value>
+					<value>boing/ball-07.png</value>
+					<value>boing/ball-08.png</value>
+					<value>boing/ball-09.png</value>
+					<value>boing/ball-10.png</value>
+					<value>boing/ball-11.png</value>
+					<value>boing/ball-12.png</value>
+					<value>boing/ball-13.png</value>
+					<value>boing/ball-14.png</value>
+					<value>boing/ball-15.png</value>
 					</default>
 				</option>
 			</group>
