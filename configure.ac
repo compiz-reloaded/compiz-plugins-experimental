@@ -158,9 +158,11 @@ Makefile
 data/Makefile
 data/earth/Makefile
 images/Makefile
+images/boing/Makefile
 images/earth/Makefile
 images/elements/Makefile
 images/fireflies/Makefile
+images/roach/Makefile
 images/snow/Makefile
 images/stars/Makefile
 include/Makefile
@@ -168,6 +170,7 @@ metadata/Makefile
 src/Makefile
 src/anaglyph/Makefile
 src/atlantis/Makefile
+src/boing/Makefile
 src/cubemodel/Makefile
 src/dialog/Makefile
 src/earth/Makefile
@@ -180,6 +183,7 @@ src/ghost/Makefile
 src/mswitch/Makefile
 src/photowheel/Makefile
 src/putplus/Makefile
+src/roach/Makefile
 src/screensaver/Makefile
 src/simple-animations/Makefile
 src/smartput/Makefile
