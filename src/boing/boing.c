@@ -31,11 +31,8 @@
  * for helping me make this possible
  */
 
-#include <math.h>
-
 #include <compiz-core.h>
 #include "boing_options.h"
-#include <time.h>
 
 
 #define GET_BOING_DISPLAY(d)                            \
@@ -748,6 +745,7 @@ boingInitDisplay (CompPlugin  *p,
     boingSetLeafSizeNotify (d, boingDisplayOptionChanged);
     boingSetAutumnUpdateDelayNotify (d, boingDisplayOptionChanged);
     boingSetLeafTexturesNotify (d, boingDisplayOptionChanged);
+    boingSetDefaultEnabledNotify (d, boingDisplayOptionChanged);
 
     texOpt = boingGetLeafTexturesOption (d);
     sd->boingTexFiles = texOpt->value.list.value;
