@@ -3,6 +3,7 @@
 SUBDIRS =                \
 	anaglyph          \
 	atlantis          \
+        boing             \
 	cubemodel         \
 	dialog            \
 	earth             \
@@ -15,6 +16,7 @@ SUBDIRS =                \
 	mswitch           \
 	photowheel        \
 	putplus           \
+        roach             \
 	screensaver       \
 	simple-animations \
 	smartput          \

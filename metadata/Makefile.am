@@ -75,6 +75,7 @@ endif
 
 xml_in_files =               \
 	anaglyph.xml.in       \
+        boing.xml.in          \
 	dialog.xml.in         \
 	fakeargb.xml.in       \
 	fireflies.xml.in      \
@@ -113,4 +114,4 @@ EXTRA_DIST =		\
 
 DISTCLEANFILES =	\
 	$(xml_files)
-
+	
