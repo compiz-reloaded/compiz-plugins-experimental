@@ -3,6 +3,7 @@
 SUBDIRS =                \
 	anaglyph          \
 	atlantis          \
+	boing             \
 	cubemodel         \
 	dialog            \
 	earth             \
