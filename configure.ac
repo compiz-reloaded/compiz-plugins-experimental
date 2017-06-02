@@ -158,7 +158,6 @@ Makefile
 data/Makefile
 data/earth/Makefile
 images/Makefile
-images/boing/Makefile
 images/earth/Makefile
 images/elements/Makefile
 images/fireflies/Makefile
@@ -169,7 +168,6 @@ metadata/Makefile
 src/Makefile
 src/anaglyph/Makefile
 src/atlantis/Makefile
-src/boing/Makefile
 src/cubemodel/Makefile
 src/dialog/Makefile
 src/earth/Makefile
