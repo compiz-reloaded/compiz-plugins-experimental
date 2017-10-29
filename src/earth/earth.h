@@ -83,6 +83,7 @@ typedef struct _cloudsthreaddata
     pthread_t tid;
     int started;
     int finished;
+    char *url;
 } CloudsThreadData;
 
 typedef struct _imagedata

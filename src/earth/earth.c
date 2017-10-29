@@ -235,6 +235,9 @@ DownloadClouds_t (void* threaddata)
 	/* cloudsfile initialization */
 	es->cloudsfile.stream = NULL;
 
+	compLogMessage ("earth", CompLogLevelInfo,
+					"Downloading %s to %s", data->url, es->cloudsfile);
+
 	/* Download the jpg file */
 	if (es->curlhandle)
 		curl_easy_perform (es->curlhandle);
@@ -403,6 +406,7 @@ TransformClouds (CompScreen* s)
 {
 	struct stat st;
 	char* imagefile;
+	char* pngfile;
 	void* jpgdata;
 	void* pngdata;
 	char* p_jpgdata;
@@ -454,15 +458,19 @@ TransformClouds (CompScreen* s)
 	pngdata = (void*) p_pngdata;
 
 	/* Write in the pngfile */
-	assert (asprintf (&imagefile, "%s%s", getenv ("HOME"), "/.compiz/images/clouds.png") ==
+	assert (asprintf (&pngfile, "%s%s", getenv ("HOME"), "/.compiz/images/clouds.png") ==
 						strlen (getenv ("HOME")) + strlen ("/.compiz/images/clouds.png"));
-	if (!writeImageToFile (s->display, "", imagefile, "png", width, height, pngdata))
+	if (!writeImageToFile (s->display, "", pngfile, "png", width, height, pngdata))
 		compLogMessage ("earth", CompLogLevelWarn,
-							"Failed to write %s", imagefile);
+							"Failed to write %s", pngfile);
+	else
+		compLogMessage ("earth", CompLogLevelInfo,
+							"Transformed %s to %s", imagefile, pngfile);
 
 	/* Clean */
 	free (pngdata);
-	return imagefile;
+	free (imagefile);
+	return pngfile;
 }
 
 static void
@@ -487,6 +495,7 @@ earthScreenOptionChanged (CompScreen		*s,
 	break;
 	case EarthScreenOptionCloudsUrl:
 		es->clouds_url_changed = TRUE;
+		es->cloudsthreaddata.url = earthGetCloudsUrl (s);
 		curl_easy_setopt (es->curlhandle, CURLOPT_URL, earthGetCloudsUrl (s));
 	break;
 	case EarthScreenOptionEarthSize:
@@ -832,6 +841,7 @@ earthInitScreen (CompPlugin *p,
 	es->cloudsfile.stream = NULL;
 	es->cloudsthreaddata.started = 0;
 	es->cloudsthreaddata.finished = 0;
+	es->cloudsthreaddata.url = NULL;
 	es->clouds_url_changed = FALSE;
 
 	/* cURL initialization */
@@ -840,6 +850,7 @@ earthInitScreen (CompPlugin *p,
 
 	if (es->curlhandle)
 	{
+		es->cloudsthreaddata.url = earthGetCloudsUrl (s);
 		curl_easy_setopt (es->curlhandle, CURLOPT_URL, earthGetCloudsUrl (s));
 		curl_easy_setopt (es->curlhandle, CURLOPT_WRITEFUNCTION, write_clouds_file);
 		curl_easy_setopt (es->curlhandle, CURLOPT_WRITEDATA, &es->cloudsfile);
