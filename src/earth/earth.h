@@ -117,6 +117,7 @@ typedef struct _EarthScreen
     float tz;
     Bool  shaders;
     Bool  clouds;
+    Bool  clouds_url_changed;
     float earth_size;
 
     int previousoutput;

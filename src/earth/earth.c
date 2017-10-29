@@ -398,9 +398,10 @@ write_clouds_file(void *buffer, size_t size, size_t nmemb, void *stream)
 	return fwrite(buffer, size, nmemb, out->stream);
 }
 
-static void
+static char*
 TransformClouds (CompScreen* s)
 {
+	struct stat st;
 	char* imagefile;
 	void* jpgdata;
 	void* pngdata;
@@ -410,11 +411,22 @@ TransformClouds (CompScreen* s)
 	int h, w;
 
 	/* Load the jpgfile from disk */
-	assert (asprintf (&imagefile, "%s", "clouds.jpg") == strlen ("clouds.jpg"));
+	assert (asprintf (&imagefile, "%s/%s", getenv ("HOME"),
+								".compiz/images/clouds.jpg") ==
+								strlen (getenv ("HOME")) +
+								strlen ("/.compiz/images/clouds.jpg"));
+	if (stat (imagefile, &st) != 0 || !S_ISREG (st.st_mode))
+	{
+		free(imagefile);
+		assert (asprintf (&imagefile, "%s", "clouds.jpg") == strlen ("clouds.jpg"));
+	}
+
 	if (!readImageFromFile (s->display, imagefile, &width, &height, &jpgdata))
 	{
+		compLogMessage ("earth", CompLogLevelWarn,
+							"Failed to load %s", imagefile);
 		free (imagefile);
-		return;
+		return NULL;
 	}
 
 	p_jpgdata = (char*) jpgdata;
@@ -444,11 +456,13 @@ TransformClouds (CompScreen* s)
 	/* Write in the pngfile */
 	assert (asprintf (&imagefile, "%s%s", getenv ("HOME"), "/.compiz/images/clouds.png") ==
 						strlen (getenv ("HOME")) + strlen ("/.compiz/images/clouds.png"));
-	writeImageToFile (s->display, "", imagefile, "png", width, height, pngdata);
+	if (!writeImageToFile (s->display, "", imagefile, "png", width, height, pngdata))
+		compLogMessage ("earth", CompLogLevelWarn,
+							"Failed to write %s", imagefile);
 
 	/* Clean */
 	free (pngdata);
-	free (imagefile);
+	return imagefile;
 }
 
 static void
@@ -470,6 +484,10 @@ earthScreenOptionChanged (CompScreen		*s,
 	break;
 	case EarthScreenOptionClouds:
 		es->clouds = earthGetClouds (s);
+	break;
+	case EarthScreenOptionCloudsUrl:
+		es->clouds_url_changed = TRUE;
+		curl_easy_setopt (es->curlhandle, CURLOPT_URL, earthGetCloudsUrl (s));
 	break;
 	case EarthScreenOptionEarthSize:
 		es->earth_size = earthGetEarthSize (s);
@@ -508,6 +526,7 @@ earthPreparePaintScreen (CompScreen *s,
 
 	struct stat attrib;
 	int res;
+	char *clouds_filename;
 
 	/* Earth and Sun positions calculations */
 	es->dec = 23.4400f * cos((6.2831f/365.0f) *
@@ -518,17 +537,25 @@ earthPreparePaintScreen (CompScreen *s,
 
 	/* Realtime cloudmap */
 	res = stat (es->cloudsfile.filename, &attrib);
-	if ( ((difftime (timer, attrib.st_mtime) > (3600 * 3)) || (res != 0)) && (es->cloudsthreaddata.started == 0) && (es->clouds) )
+	if (es->clouds && (es->cloudsthreaddata.started == 0) &&
+		((es->clouds_url_changed || (res != 0) ||
+			difftime (timer, attrib.st_mtime) > (3600 * 3))) )
 	{
 		es->cloudsthreaddata.s = s;
 		pthread_create (&es->cloudsthreaddata.tid, NULL, DownloadClouds_t, (void*) &es->cloudsthreaddata);
+		es->clouds_url_changed = FALSE;
 	}
 
 	if (es->cloudsthreaddata.finished == 1)
 	{
 		pthread_join (es->cloudsthreaddata.tid, NULL);
-		TransformClouds (s);
-		readImageToTexture (s, es->tex[CLOUDS], "clouds.png", 0, 0);
+		clouds_filename = TransformClouds (s);
+		if (readImageToTexture (s, es->tex[CLOUDS], clouds_filename, 0, 0))
+			compLogMessage ("earth", CompLogLevelInfo,
+								"Loaded texture %s", clouds_filename);
+		else
+			readImageToTexture (s, es->tex[CLOUDS], "clouds.png", 0, 0);
+		free(clouds_filename);
 		es->cloudsthreaddata.finished = 0;
 		es->cloudsthreaddata.started = 0;
 	}
@@ -805,6 +832,7 @@ earthInitScreen (CompPlugin *p,
 	es->cloudsfile.stream = NULL;
 	es->cloudsthreaddata.started = 0;
 	es->cloudsthreaddata.finished = 0;
+	es->clouds_url_changed = FALSE;
 
 	/* cURL initialization */
 	curl_global_init (CURL_GLOBAL_DEFAULT);
@@ -856,6 +884,7 @@ earthInitScreen (CompPlugin *p,
 	earthSetTimezoneNotify (s, earthScreenOptionChanged);
 	earthSetShadersNotify (s, earthScreenOptionChanged);
 	earthSetCloudsNotify (s, earthScreenOptionChanged);
+	earthSetCloudsUrlNotify (s, earthScreenOptionChanged);
 	earthSetEarthSizeNotify (s, earthScreenOptionChanged);
 
 	earthScreenOptionChanged (s, earthGetShadersOption (s), EarthScreenOptionShaders);
