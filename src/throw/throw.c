@@ -98,6 +98,9 @@ throwPreparePaintScreen (CompScreen *s,
 
     for (w = s->windows; w; w = w->next)
     {
+	if (w->state & MAXIMIZE_STATE)
+		continue;
+
 	THROW_WINDOW (w);
 
 	if (tw->moving)
