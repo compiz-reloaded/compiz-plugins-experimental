@@ -262,7 +262,7 @@ CreateShaders (EarthScreen* es)
 	{
 		compLogMessage ("earth", CompLogLevelWarn,
 						"GL version 2.0 required for shader support");
-		return;
+		goto out;
 	}
 
 	if (stat (DATADIR "/earth/earth.vert", &st) == 0 && S_ISREG (st.st_mode))
@@ -271,7 +271,7 @@ CreateShaders (EarthScreen* es)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to stat %s",
 										DATADIR "/earth/earth.vert");
-		return;
+		goto out;
 	}
 
 	if (stat (DATADIR "/earth/earth.frag", &st) == 0 && S_ISREG (st.st_mode))
@@ -280,7 +280,7 @@ CreateShaders (EarthScreen* es)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to stat %s",
 										DATADIR "/earth/earth.frag");
-		return;
+		goto out;
 	}
 
 	/* Shader creation, loading and compiling */
@@ -301,13 +301,13 @@ CreateShaders (EarthScreen* es)
 	if (!status)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to compile vertex shader");
-		return;
+		goto out;
 	}
 	glGetObjectParameterivARB(es->frag[EARTH], GL_OBJECT_COMPILE_STATUS_ARB, &status);
 	if (!status)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to compile fragment shader");
-		return;
+		goto out;
 	}
 
 	/* Program creation, attaching and linking */
@@ -323,9 +323,9 @@ CreateShaders (EarthScreen* es)
 	if (!status)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to link shader program");
-		return;
 	}
 
+out:
 	/* Cleanup */
 	free (es->vertsource[EARTH]);
 	free (es->fragsource[EARTH]);
