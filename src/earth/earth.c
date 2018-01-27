@@ -215,8 +215,11 @@ LoadTexture_t (void* threaddata)
 		compLogMessage ("earth", CompLogLevelInfo,
 						"Loaded texture %s", texfile);
 	else
+	{
 		compLogMessage ("earth", CompLogLevelWarn,
 						"Failed to load %s", texfile);
+		es->imagedata[num].image = NULL;
+	}
 
 	free (texfile);
 
