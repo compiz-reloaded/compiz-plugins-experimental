@@ -708,11 +708,11 @@ tileSetNewWindowSize (CompWindow *w)
 
     TILE_WINDOW (w);
     TILE_SCREEN (w->screen);
-
-    xwc.x = tw->newCoords.x;
-    xwc.y = tw->newCoords.y;
-    xwc.width = tw->newCoords.width;
-    xwc.height = tw->newCoords.height;
+    /*for some reason odd correction factors needed on GtkFrameExtents here*/
+    xwc.x = tw->newCoords.x - (w->clientFrame.left);
+    xwc.y = tw->newCoords.y - 2.1 * (w->clientFrame.top);
+    xwc.width = tw->newCoords.width + 1.1 * (w->clientFrame.left + w->clientFrame.right);
+    xwc.height = tw->newCoords.height + 1.5 * (w->clientFrame.top + w->clientFrame.bottom);
 
     if (ts->tileType == -1)
     {
