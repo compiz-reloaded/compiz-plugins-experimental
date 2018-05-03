@@ -115,6 +115,8 @@ typedef struct _SnowglobeScreen
 
     float speedFactor; // multiply snowflake speeds by this value
 
+    float oldProgress;
+    
     GLuint snowflakeDisplayList;
 }
 SnowglobeScreen;
@@ -127,6 +129,9 @@ updateGround (CompScreen *s, float time);
 
 void
 updateHeight (Water *w);
+
+void
+deformCylinder(CompScreen *s, Water  *w, float);
 
 void
 freeWater (Water *w);
