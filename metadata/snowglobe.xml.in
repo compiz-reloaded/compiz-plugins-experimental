@@ -7,11 +7,13 @@
 		<deps>
 		<relation type="after">
 			<plugin>cube</plugin>
+			<plugin>cubeaddon</plugin>
 			<plugin>rotate</plugin>
 			<plugin>vpswitch</plugin>
 		</relation>
 		<requirement>
 			<plugin>cube</plugin>
+			<plugin>cubeaddon</plugin>
 		</requirement>
 		</deps>
 		<screen>
