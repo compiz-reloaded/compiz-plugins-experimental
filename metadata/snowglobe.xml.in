@@ -13,7 +13,6 @@
 		</relation>
 		<requirement>
 			<plugin>cube</plugin>
-			<plugin>cubeaddon</plugin>
 		</requirement>
 		</deps>
 		<screen>
