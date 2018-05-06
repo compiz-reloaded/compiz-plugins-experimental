@@ -195,6 +195,8 @@ snowglobeClearTargetOutput (CompScreen *s,
 static Bool
 snowglobeIsCylinder(CompScreen *s)
 {
+    static const int CYLINDER = 1;
+   
     CompPlugin *p = NULL;
     const char plugin[] = "cubeaddon";
     p = findActivePlugin (plugin);
@@ -205,10 +207,10 @@ snowglobeIsCylinder(CompScreen *s)
 
 	option = (*p->vTable->getObjectOptions) (p, (CompObject *)s,
 		&nOption);
-	option = compFindOption (option, nOption, "cylinder", 0);
+	option = compFindOption (option, nOption, "deformation", 0);
 
 	if (option)
-	    return option->value.b;
+	    return (option->value.i==CYLINDER);
     }
     return FALSE;
 }
