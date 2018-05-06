@@ -193,7 +193,7 @@ snowglobeClearTargetOutput (CompScreen *s,
 }
 
 static Bool
-atlantisIsCylinder(CompScreen *s)
+snowglobeIsCylinder(CompScreen *s)
 {
     CompPlugin *p = NULL;
     const char plugin[] = "cubeaddon";
@@ -246,11 +246,11 @@ snowglobePaintInside (CompScreen *s,
     if (snowglobeGetShowWater(s))
 	updateHeight(as->water);
     {
-	Bool cylinder = atlantisIsCylinder(s);
+	Bool cylinder = snowglobeIsCylinder(s);
 	
 	if (fabsf(progress-as->oldProgress)>0.0001 && cylinder)
 	{
-	    if (atlantisGetShowWater (s) || atlantisGetShowWaterWire (s))
+	    if (snowglobeGetShowWater (s))
 		deformCylinder(s, as->water, progress);
 
 	    if (atlantisGetShowGround (s))
@@ -299,7 +299,7 @@ snowglobePaintInside (CompScreen *s,
     }
     glCullFace(cull);
 
-    if (snowglobeGetShowGround (s) && !atlantisIsCylinder(s))
+    if (snowglobeGetShowGround (s) && !snowglobeIsCylinder(s))
     {
 	glColor4f(0.8, 0.8, 0.8, 1.0);
 	drawGround(NULL, as->ground);
