@@ -195,6 +195,8 @@ snowglobeClearTargetOutput (CompScreen *s,
 static Bool
 snowglobeIsCylinder(CompScreen *s)
 {
+    CUBE_SCREEN (s);
+    
     static const int CYLINDER = 1;
    
     CompPlugin *p = NULL;
@@ -203,17 +205,45 @@ snowglobeIsCylinder(CompScreen *s)
     if (p && p->vTable->getObjectOptions)
     {
 	CompOption *option;
-	int	       nOption;
-
+	int  nOption;
+	Bool cylinderManualOnly = FALSE;
+	Bool unfoldDeformation = TRUE;
+	
 	option = (*p->vTable->getObjectOptions) (p, (CompObject *)s,
 		&nOption);
 	option = compFindOption (option, nOption, "deformation", 0);
 
 	if (option)
-	    return (option->value.i==CYLINDER);
+	    if (option->value.b)
+		cylinderManualOnly = option->value.b;
+
+	option = (*p->vTable->getObjectOptions) (p, (CompObject *)s,
+		&nOption);
+	option = compFindOption (option, nOption, "cylinder_manual_only", 0);
+	
+	if (option)
+	    if (option->value.b)
+		unfoldDeformation = option->value.b;
+	
+	if (s->hsize * cs->nOutput > 2 && s->desktopWindowCount &&
+	    (cs->rotationState == RotationManual ||
+	    (cs->rotationState == RotationChange &&
+	    !cylinderManualOnly)) &&
+	    (!cs->unfolded || unfoldDeformation))
+	{
+	    option = (*p->vTable->getObjectOptions) (p, (CompObject *)s,
+		      &nOption);
+	    option = compFindOption (option, nOption, "deformation", 0);
+
+	    if (option)
+		return (option->value.i==CYLINDER);
+	}
     }
     return FALSE;
 }
+
+
+
 
 static void
 snowglobePaintInside (CompScreen *s,
@@ -249,8 +279,30 @@ snowglobePaintInside (CompScreen *s,
 	updateHeight(as->water);
     {
 	Bool cylinder = snowglobeIsCylinder(s);
+	Bool deform = FALSE;
 	
-	if (fabsf(progress-as->oldProgress)>0.0001 && cylinder)
+	if (cylinder)
+	{
+	    if (fabsf(1.0f - progress) < floatErr)
+		progress = 1.0f;
+	    
+	    if (as->oldProgress != 1.0f || progress != 1.0f)
+	    {
+		deform = TRUE;
+		as->oldProgress = progress;
+	    }
+	}
+	else if (as->oldProgress != 0.0f)
+	{
+	    if (fabsf(progress) < floatErr)
+		progress = 0.0f;
+
+	    deform = TRUE;
+
+	    as->oldProgress = progress;
+	}	
+	    
+	if (deform)
 	{
 	    if (snowglobeGetShowWater (s))
 		deformCylinder(s, as->water, progress);
@@ -261,7 +313,6 @@ snowglobePaintInside (CompScreen *s,
 		updateHeight (as->ground, FALSE);
 	    }
 	}
-	as->oldProgress = progress;
 	
     sA.yRotate += cs->invert * (360.0f / size) *
 		 (cs->xRotations - (s->x* cs->nOutput));
