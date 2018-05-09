@@ -115,7 +115,7 @@ initSnowglobe (CompScreen *s)
 
     }
 
-    as->waterHeight = 50000;
+    as->waterHeight = SnowglobeGetWaterHeight(s)*100000-50000;
 
     as->oldProgress = 0;
 
@@ -256,8 +256,11 @@ snowglobePaintInside (CompScreen *s,
     CUBE_SCREEN (s);
 
     int i;
-
-    as->waterHeight = 50000;
+	
+    float floatErr = 0.0001;
+    Bool cylinder = atlantisIsCylinder(s);
+	
+    as->waterHeight = snowglobeGetWaterHeight(s)*100000-50000;
 
     if (as->hsize!=s->hsize) updateSnowglobe (s);
 
@@ -274,11 +277,10 @@ snowglobePaintInside (CompScreen *s,
 
     float progress, dummy;
     (*cs->getRotation) (s, &dummy, &dummy, &progress);
-    
+
     if (snowglobeGetShowWater(s))
 	updateHeight(as->water);
     {
-	Bool cylinder = snowglobeIsCylinder(s);
 	Bool deform = FALSE;
 	
 	if (cylinder)
