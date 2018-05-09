@@ -25,6 +25,11 @@
 extern int snowglobeDisplayPrivateIndex;
 extern int cubeDisplayPrivateIndex;
 
+/* matching values from cubeaddon plugin */
+#define DeformationNone = 0
+#define DeformationCylinder = 1
+#define DeformationSphere = 2
+
 #define GET_SNOWGLOBE_DISPLAY(d) \
     ((SnowglobeDisplay *) (d)->base.privates[snowglobeDisplayPrivateIndex].ptr)
 #define SNOWGLOBE_DISPLAY(d) \
@@ -106,14 +111,14 @@ typedef struct _SnowglobeScreen
     float xRotate;
     float vRotate;
 
-    float waterHeight; //water surface height
+    float waterHeight;  /* water surface height */
 
     int hsize;
-    float distance;    //perpendicular distance to wall from center
-    float radius;      //radius on which the hSize points lie
-    float arcAngle;    //360 degrees / horizontal size
+    float distance;    //perpendicular distance to wall from center*/
+    float radius;       /* radius on which the hSize points lie */
+    float arcAngle;   	/* 360 degrees / horizontal size */
 
-    float speedFactor; // multiply snowflake speeds by this value
+    float speedFactor;  /* multiply fish/crab speeds by this value */
 
     float oldProgress;
     
