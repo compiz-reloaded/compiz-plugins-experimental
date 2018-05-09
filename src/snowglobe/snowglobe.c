@@ -296,7 +296,8 @@ snowglobePaintInside (CompScreen *s,
 	}
 	else if (as->oldProgress != 0.0f)
 	{
-	    if (fabsf(progress) < floatErr)
+	    if (fabsf(progress) < floatErr ||
+		progress >= as->oldProgress + floatErr)
 		progress = 0.0f;
 
 	    deform = TRUE;
