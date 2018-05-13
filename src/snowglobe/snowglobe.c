@@ -74,6 +74,7 @@
 #include "snowglobe-internal.h"
 #include "snowglobe_options.h"
 
+static Bool snowglobeIsCylinder(CompScreen *);
 
 int snowglobeDisplayPrivateIndex;
 
@@ -114,8 +115,11 @@ initSnowglobe (CompScreen *s)
 
     }
 
-    as->waterHeight = 50000;
+    as->waterHeight = SnowglobeGetWaterHeight(s)*100000-50000;
 
+    as->oldProgress = 0;
+
+   
     as->snowflakeDisplayList = glGenLists(1);
     glNewList(as->snowflakeDisplayList, GL_COMPILE);
     DrawSnowflake(0);
@@ -188,6 +192,58 @@ snowglobeClearTargetOutput (CompScreen *s,
     glClear (GL_DEPTH_BUFFER_BIT);
 }
 
+static Bool
+snowglobeIsCylinder(CompScreen *s)
+{
+    CUBE_SCREEN (s);
+    
+    static const int CYLINDER = 1;
+   
+    CompPlugin *p = NULL;
+    const char plugin[] = "cubeaddon";
+    p = findActivePlugin (plugin);
+    if (p && p->vTable->getObjectOptions)
+    {
+	CompOption *option;
+	int  nOption;
+	Bool cylinderManualOnly = FALSE;
+	Bool unfoldDeformation = TRUE;
+	
+	option = (*p->vTable->getObjectOptions) (p, (CompObject *)s,
+		&nOption);
+	option = compFindOption (option, nOption, "deformation", 0);
+
+	if (option)
+	    if (option->value.b)
+		cylinderManualOnly = option->value.b;
+
+	option = (*p->vTable->getObjectOptions) (p, (CompObject *)s,
+		&nOption);
+	option = compFindOption (option, nOption, "cylinder_manual_only", 0);
+	
+	if (option)
+	    if (option->value.b)
+		unfoldDeformation = option->value.b;
+	
+	if (s->hsize * cs->nOutput > 2 && s->desktopWindowCount &&
+	    (cs->rotationState == RotationManual ||
+	    (cs->rotationState == RotationChange &&
+	    !cylinderManualOnly)) &&
+	    (!cs->unfolded || unfoldDeformation))
+	{
+	    option = (*p->vTable->getObjectOptions) (p, (CompObject *)s,
+		      &nOption);
+	    option = compFindOption (option, nOption, "deformation", 0);
+
+	    if (option)
+		return (option->value.i==CYLINDER);
+	}
+    }
+    return FALSE;
+}
+
+
+
 
 static void
 snowglobePaintInside (CompScreen *s,
@@ -200,8 +256,11 @@ snowglobePaintInside (CompScreen *s,
     CUBE_SCREEN (s);
 
     int i;
-
-    as->waterHeight = 50000;
+	
+    float floatErr = 0.0001;
+    Bool cylinder = atlantisIsCylinder(s);
+	
+    as->waterHeight = snowglobeGetWaterHeight(s)*100000-50000;
 
     if (as->hsize!=s->hsize) updateSnowglobe (s);
 
@@ -216,9 +275,48 @@ snowglobePaintInside (CompScreen *s,
     ScreenPaintAttrib sA = *sAttrib;
     CompTransform mT = *transform;
 
+    float progress, dummy;
+    (*cs->getRotation) (s, &dummy, &dummy, &progress);
+
     if (snowglobeGetShowWater(s))
 	updateHeight(as->water);
+    {
+	Bool deform = FALSE;
+	
+	if (cylinder)
+	{
+	    if (fabsf(1.0f - progress) < floatErr)
+		progress = 1.0f;
+	    
+	    if (as->oldProgress != 1.0f || progress != 1.0f)
+	    {
+		deform = TRUE;
+		as->oldProgress = progress;
+	    }
+	}
+	else if (as->oldProgress != 0.0f)
+	{
+	    if (fabsf(progress) < floatErr ||
+		progress >= as->oldProgress + floatErr)
+		progress = 0.0f;
 
+	    deform = TRUE;
+
+	    as->oldProgress = progress;
+	}	
+	    
+	if (deform)
+	{
+	    if (snowglobeGetShowWater (s))
+		deformCylinder(s, as->water, progress);
+
+	    if (atlantisGetShowGround (s))
+	    {
+		deformCylinder(s, as->ground, progress);
+		updateHeight (as->ground, FALSE);
+	    }
+	}
+	
     sA.yRotate += cs->invert * (360.0f / size) *
 		 (cs->xRotations - (s->x* cs->nOutput));
 
@@ -257,7 +355,7 @@ snowglobePaintInside (CompScreen *s,
     }
     glCullFace(cull);
 
-    if (snowglobeGetShowGround(s))
+    if (snowglobeGetShowGround (s) && !snowglobeIsCylinder(s))
     {
 	glColor4f(0.8, 0.8, 0.8, 1.0);
 	drawGround(NULL, as->ground);
@@ -361,6 +459,19 @@ snowglobePreparePaintScreen (CompScreen *s,
 
     int i;
 
+    Bool cylinder = snowglobeIsCylinder(s);
+    int oldhsize = as->hsize;
+    
+    updateWater (s, (float)ms / 1000.0);
+    updateGround (s, (float)ms / 1000.0);
+	
+    if (cylinder && as->oldProgress>0.9)
+    {
+	as->hsize*=32/as->hsize;
+	as->arcAngle = 360.0f / as->hsize;
+	as->sideDistance = as->radius * as->ratio;
+    }
+	
     for (i = 0; i < as->numSnowflakes; i++)
     {
 	SnowflakeDrift(s, i);
@@ -368,7 +479,11 @@ snowglobePreparePaintScreen (CompScreen *s,
 
     updateWater(s, (float)ms / 1000.0);
     updateGround(s, (float)ms / 1000.0);
-
+    
+    as->hsize = oldhsize;
+    as->arcAngle = 360.0f / as->hsize;
+    as->sideDistance = as->topDistance * as->ratio;
+	
     UNWRAP (as, s, preparePaintScreen);
     (*s->preparePaintScreen)(s, ms);
     WRAP (as, s, preparePaintScreen, snowglobePreparePaintScreen);

@@ -103,7 +103,7 @@ genTriMesh (Vertex       *vertices,
 	}
 	for (j = 0; j <= i; j++)
 	    for (k = 0; k < 3; k++)
-		v[br + j].v[k] = rb[k] + (j * ri[k]);
+		v[br + j].v[k] = (rb[k] + (j * ri[k]));
     }
 
 }
@@ -309,11 +309,14 @@ setAmplitude (Vertex *v,
 void
 updateHeight (Water  *w)
 {
+    int offset;
+	
     int i;
-
+	
     if (!w)
 	return;
-
+    offset = w->nSVer/2 + 1;
+	
     for (i = 0; i < w->nSVer + (w->nWVer / 2); i++)
         setAmplitude(&w->vertices[i], w->bh, w->wave1, w->wave2, w->wa,
 		     w->swa, w->wf, w->swf);
@@ -358,6 +361,9 @@ updateWater (CompScreen *s, float time)
 	as->water->wf  = 0.0;
 	as->water->swf = 0.0;
 
+    }
+
+    as->water->bh  = -0.5 + snowglobeGetWaterHeight (s);
 }
 
 void
@@ -404,6 +410,148 @@ updateGround (CompScreen *s, float time)
     as->ground->swf = 10.0;
 
     updateHeight (as->ground);
+}
+
+void
+deformCylinder(CompScreen *s, Water  *w, float progress)
+{
+    SNOWGLOBE_SCREEN (s);
+    CUBE_SCREEN (s);
+
+    int          nVer, nWVer, nRow, nRowS, subdiv;
+    Vertex       *v;
+    int          i, j, k, l;
+    int          br;
+
+    float  ang, r, aStep;
+    
+    Vertex       *wv;
+    
+    int bottom = -0.5, size = as->hsize;
+ 
+    Vertex a = {{ 0.0, 0.0, 0.0 }};
+    Vertex b = {{ 0.0, 0.0, 0.0 }};
+    Vertex c = {{ 0.0, 0.0, 0.0 }};
+    Vertex d = {{ 0.0, bottom, 0.0 }};
+    Vertex e = {{ 0.0, bottom, 0.0 }};
+    
+    float    vab[3], vac[3], vcd[3], rb[3], re[3], ri[3];
+
+    if (!w)
+	return;
+    if (w->sDiv < 0)
+	return;
+    if (!w->vertices)
+	return;
+    if (w->size!=size)
+	return;
+
+    subdiv = w->sDiv;
+    nRow = (subdiv)?(2 << (subdiv - 1)) + 1 : 2;
+    nVer = (nRow * (nRow + 1)) / 2;
+
+    nWVer = pow (2, subdiv + 1) + 2;
+
+    r = cs->distance / cosf (M_PI / size);
+    ang = M_PI / size;
+    aStep = 2 * M_PI / size;
+    
+    wv = w->vertices + (size * nVer);
+
+
+    for (l = 0; l < size; l++)
+    {
+	v =   w->vertices + (l * nVer);
+
+	d.v[0] = b.v[0] = sin (ang - aStep) * r;
+	d.v[2] = b.v[2] = cos (ang - aStep) * r;
+
+	e.v[0] = c.v[0] = sin (ang) * r;
+	e.v[2] = c.v[2] = cos (ang) * r;
+
+	for (i = 0; i < 3; i++)
+	{
+	    vab[i] = b.v[i] - a.v[i];
+	    vab[i] /= nRow - 1.0;
+	    vac[i] = c.v[i] - a.v[i];
+	    vac[i] /= nRow - 1.0;
+	}
+
+	//v[0] = a;
+
+
+	for (i = 1; i < nRow; i++)
+	{
+	    br = (i * (i + 1)) / 2;
+	    for (k = 0; k < 3; k++)
+	    {
+		rb[k] = a.v[k] + (i * vab[k]);
+		re[k] = a.v[k] + (i * vac[k]);
+		ri[k] = re[k] - rb[k];
+		ri[k] /= i;
+	    }
+	    
+	    for (j = 0; j <= i; j++)
+	    {
+		v[br + j].v[0] = (rb[0] + (j * ri[0]));
+		v[br + j].v[2] = (rb[2] + (j * ri[2]));
+
+		float th = atan2(v[br + j].v[0], v[br + j].v[2]);
+		float factor = progress*(as->radius*as->ratio/as->sideDistance-1)*fabsf(cosf(size*th/2))+1;
+		
+		v[br + j].v[0] *= factor;
+		v[br + j].v[2] *= factor;
+	    }
+	}
+	
+	Vertex *lVer = wv + (l * nWVer / 2);
+	Vertex *hVer = wv + ((l + size) * nWVer / 2);
+	
+	/*side walls */
+	    nRowS = pow (2, subdiv);
+
+	    for (i = 0; i < 3; i++)
+	    {
+		vab[i] = c.v[i] - b.v[i];
+		vab[i] /= nRowS;
+		vcd[i] = e.v[i] - d.v[i];
+		vcd[i] /= nRowS;
+	    }
+
+	    for (i = 0; i <= nRowS; i++)
+	    {
+		for (k = 0; k < 3; k+=2)
+		{
+		    lVer[i].v[k] = b.v[k] + (i * vab[k]);
+		    hVer[i].v[k] = d.v[k] + (i * vcd[k]);
+		    
+		}
+		float th = atan2(lVer[i].v[0], lVer[i].v[2]);
+		float factor = progress*(as->radius*as->ratio/as->sideDistance-1)*fabsf(cosf(size*th/2))+1;
+		    
+		for (k = 0; k < 3; k+=2)
+		    lVer[i].v[k] *= factor;
+		
+		for (k = 0; k < 3; k+=2)
+		    hVer[i].v[k] *= factor;
+
+
+		
+		/*lVer[i].n[0] = sinf(ang);
+		lVer[i].n[1] = 0;
+		lVer[i].n[2] = cosf(ang);
+		
+		hVer[i].n[0] = lVer[i].n[0];
+		hVer[i].n[1] = lVer[i].n[1];
+		hVer[i].n[2] = lVer[i].n[2];*/
+	    }
+	
+	
+	
+	ang += aStep;
+    }
+    
+    
 }
 
 void
