@@ -83,6 +83,9 @@ AC_SUBST(metadatadir)
 compdatadir=$datadir/compiz
 AC_SUBST(compdatadir)
 
+pluginiconsdir=$datadir/compiz/icons
+AC_SUBST(pluginiconsdir)
+
 dnl ============================================================
 dnl Check for the pkg-config path.
 if test x"$PKG_CONFIG_PATH" = x; then
@@ -155,6 +158,7 @@ AM_CONDITIONAL(EARTH_PLUGIN, test "x$have_glew" = "xyes" && test "x$have_libcurl
 
 AC_OUTPUT([
 Makefile
+icons/Makefile
 data/Makefile
 data/earth/Makefile
 images/Makefile
