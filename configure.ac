@@ -158,9 +158,9 @@ AM_CONDITIONAL(EARTH_PLUGIN, test "x$have_glew" = "xyes" && test "x$have_libcurl
 
 AC_OUTPUT([
 Makefile
-icons/Makefile
 data/Makefile
 data/earth/Makefile
+icons/Makefile
 images/Makefile
 images/earth/Makefile
 images/elements/Makefile
