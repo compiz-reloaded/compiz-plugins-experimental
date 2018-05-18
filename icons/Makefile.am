@@ -1,5 +1,6 @@
 iconsdir = $(pluginiconsdir)/scalable/apps
-icons_DATA =	       \
+icons_DATA =			\
+	plugin-earth.svg	\
 	plugin-throw.svg
 
 install-data-hook:
