@@ -1,7 +1,8 @@
 iconsdir = $(pluginiconsdir)/scalable/apps
 icons_DATA =			\
 	plugin-earth.svg	\
-	plugin-throw.svg
+	plugin-throw.svg	\
+	plugin-animationplus.svg
 
 install-data-hook:
 	$(shell which gtk-update-icon-cache &> /dev/null &&	\
