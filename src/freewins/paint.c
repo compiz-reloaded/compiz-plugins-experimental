@@ -25,7 +25,7 @@
  * Most of the input handling here is based on
  * the shelf plugin by
  *        : Kristian Lyngstøl <kristian@bohemians.org>
- *        : Danny Baumann <maniac@opencompositing.org>
+ *        : Danny Baumann <dannybaumann@web.de>
  *
  * Description:
  *

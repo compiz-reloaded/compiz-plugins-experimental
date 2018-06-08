@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: compiz-plugins-experimental\n"
-"Report-Msgid-Bugs-To: https://github.com/compiz-reloaded/compiz-plugins-"
+"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-"
 "experimental/issues\n"
 "POT-Creation-Date: 2017-01-12 18:19+0300\n"
 "PO-Revision-Date: 2008-04-18 17:28+0200\n"

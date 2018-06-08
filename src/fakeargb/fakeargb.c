@@ -4,7 +4,7 @@
  *
  * fakeargb.c
  *
- * Copyright (c) 2006 Robert Carr <racarr@beryl-project.org>
+ * Copyright (c) 2006 Robert Carr <racarr@canonical.com>
  *
  *
  * This program is free software; you can redistribute it and/or

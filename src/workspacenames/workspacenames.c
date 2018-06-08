@@ -5,7 +5,7 @@
  * workspacenames.c
  *
  * Copyright : (C) 2008 by Danny Baumann
- * E-mail    : maniac@compiz-fusion.org
+ * E-mail    : dannybaumann@web.de
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

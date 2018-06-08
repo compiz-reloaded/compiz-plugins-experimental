@@ -3,7 +3,7 @@
  * Particle texture for Beryl benchmark plugin
  *
  * Copyright : (C) 2006 by Dennis Kasprzyk
- * E-mail    : onestone@beryl-project.org
+ * E-mail    : onestone@compiz.org
  *
  *
  * This program is free software; you can redistribute it and/or

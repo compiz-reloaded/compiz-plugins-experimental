@@ -6,7 +6,7 @@
  *
  * Copyright (c) 2006 Eckhart P. <beryl@cornergraf.net>
  * Copyright (c) 2006 Brian Jørgensen <qte@fundanemt.com>
- * Maintained by Danny Baumann <maniac@opencompositing.org>
+ * Maintained by Danny Baumann <dannybaumann@web.de>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

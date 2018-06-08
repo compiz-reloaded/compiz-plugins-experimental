@@ -12,7 +12,7 @@
  * Based on the 'snow' plugin:
  * Copyright (c) 2006 Eckhart P. <beryl@cornergraf.net>
  * Copyright (c) 2006 Brian Jørgensen <qte@fundanemt.com>
- * Maintained by Danny Baumann <maniac@opencompositing.org>
+ * Maintained by Danny Baumann <dannybaumann@web.de>
  *
  * Ported to Compiz by:
  * Copyright (c) 2007 Sam Spilsbury <smspillaz@gmail.com>
