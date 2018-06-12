@@ -19,10 +19,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Anaglyph"
-msgstr ""
+msgstr "Anáglifo"
 
 msgid "Anaglyph window and Desktop"
-msgstr ""
+msgstr "Escritorio y ventana Anaglifo"
 
 #, fuzzy
 msgid "Initiate Window"
@@ -37,7 +37,7 @@ msgid "Initiate Screen"
 msgstr "Iniciar dibujo del fuego"
 
 msgid "Start anaglyph screen"
-msgstr ""
+msgstr "Iniciar en pantalla anaglifo"
 
 #, fuzzy
 msgid "Initiate Window Button"
@@ -74,7 +74,7 @@ msgid "offset anaglyph"
 msgstr ""
 
 msgid "Increase Desktop deep"
-msgstr ""
+msgstr "profundidad de escritorio aumentado"
 
 #, fuzzy
 msgid "Desaturate"
@@ -96,7 +96,7 @@ msgid "Effect Settings"
 msgstr "Configuración de Efectos"
 
 msgid "Helix"
-msgstr ""
+msgstr "Hélice"
 
 #, fuzzy
 msgid "Helix Number of Twists"
@@ -110,7 +110,7 @@ msgid "Helix Gridsize Y"
 msgstr ""
 
 msgid "Number of blocks in the animation"
-msgstr ""
+msgstr "número de bloques en la animación"
 
 #, fuzzy
 msgid "Helix Thickness"
@@ -142,7 +142,7 @@ msgid ""
 msgstr ""
 
 msgid "Blinds"
-msgstr ""
+msgstr "Persianas"
 
 msgid "Blinds Number of Half Twists"
 msgstr ""
@@ -215,10 +215,10 @@ msgid "Simple Animations"
 msgstr "Abrir Animación"
 
 msgid "Animations that are simple on the eye"
-msgstr ""
+msgstr "Animaciones que son simples en el ojo"
 
 msgid "Fly In"
-msgstr ""
+msgstr "Volar en"
 
 #, fuzzy
 msgid "Fly In Direction"
@@ -342,7 +342,7 @@ msgid ""
 msgstr ""
 
 msgid "Expand"
-msgstr ""
+msgstr "Expandir"
 
 msgid "Cube Atlantis"
 msgstr "Cubo Atlantis"
@@ -750,7 +750,7 @@ msgid "Global Speed"
 msgstr "Velocidad del Zoom"
 
 msgid "Elements speed will be multiplied by this value"
-msgstr ""
+msgstr "La velocidad de los elementos se multiplicará por este valor"
 
 msgid "Screen Depth"
 msgstr "Profundidad de la pantalla"
