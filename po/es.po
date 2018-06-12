@@ -156,7 +156,7 @@ msgid "Blinds Thickness"
 msgstr "Espesor"
 
 msgid "Shatter"
-msgstr ""
+msgstr "quebrar"
 
 # los "spokes" son los rayos, como en la rueda de una bicicleta, y shatter es romper en mil pedazos... no logro hacer con ello una frase consistente...!
 #, fuzzy
