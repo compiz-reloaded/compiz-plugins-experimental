@@ -145,7 +145,7 @@ msgid "Blinds"
 msgstr "Persianas"
 
 msgid "Blinds Number of Half Twists"
-msgstr ""
+msgstr "Número de giros en persianas"
 
 #, fuzzy
 msgid "Number of half twists to do in the animation"
@@ -274,7 +274,7 @@ msgid "Angle to start from"
 msgstr ""
 
 msgid "Bounce"
-msgstr ""
+msgstr "Rebotar"
 
 #, fuzzy
 msgid "Maximum Size"
@@ -317,21 +317,21 @@ msgid "First expand horizontally"
 msgstr "Mosaico horizontal"
 
 msgid "If checked, initially expand horizontally, then vertically"
-msgstr ""
+msgstr "Si está marcado, inicialmente expande horizontalmente, luego verticalmente"
 
 #, fuzzy
 msgid "Initial horizontal size"
 msgstr "Mosaico horizontal"
 
 msgid "Number of pixels initially in horizontal direction"
-msgstr ""
+msgstr "Número de píxeles inicialmente en dirección horizontal"
 
 #, fuzzy
 msgid "Initial vertical size"
 msgstr "Tamaño de las partículas."
 
 msgid "Number of pixels initially in vertical direction"
-msgstr ""
+msgstr "Número de píxeles inicialmente en dirección vertical"
 
 #, fuzzy
 msgid "Delay"
@@ -340,6 +340,7 @@ msgstr "Tiempo de espera hasta mostrar la barra de fichas"
 msgid ""
 "Delay between expanding horizontally and vertically (expressed as a fraction)"
 msgstr ""
+"Retraso entre la expansión horizontal y vertical (expresada como una fracción)"
 
 msgid "Expand"
 msgstr "Expandir"
