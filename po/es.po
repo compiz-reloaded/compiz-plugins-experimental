@@ -22,7 +22,7 @@ msgid "Anaglyph"
 msgstr "Anáglifo"
 
 msgid "Anaglyph window and Desktop"
-msgstr "Escritorio y ventana Anaglifo"
+msgstr "Escritorio y ventana en Anaglifo"
 
 #, fuzzy
 msgid "Initiate Window"
