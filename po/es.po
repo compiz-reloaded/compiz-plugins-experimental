@@ -3276,6 +3276,54 @@ msgstr ""
 msgid "Fade Time"
 msgstr "Tiempo de fundición"
 
+msgid "Earth"
+msgstr "Tierra"
+
+msgid "Display a realtime lit 3d earth in the desktop cube"
+msgstr "Muestre una tierra 3d en tiempo real en el cubo de escritorio"
+
+msgid "Latitude"
+msgstr "Latitud"
+
+msgid "Enter a positive value for a North latitude, negative for a South one"
+msgstr "Ingrese un valor positivo para una latitud norte, negativo para una sur"
+
+msgid "Longitude"
+msgstr "Longitud"
+
+msgid "Enter a positive value for a West longitude, negative for an East one"
+msgstr "Ingrese un valor positivo para una longitud Oeste, negativo para uno Este"
+
+msgid "Time Zone"
+msgstr "Zona horaria"
+
+msgid "Time difference from GMT (without taking account of DST)"
+msgstr "Diferencia horaria de GMT (sin tener en cuenta el horario de verano)"
+
+msgid "Use shaders"
+msgstr "Usar sombreadores"
+
+msgid "Make use of the shaders if possible"
+msgstr "Haga uso de los sombreadores si es posible"
+
+msgid "Realtime cloudmap"
+msgstr "Mapa de nubes en tiempo real"
+
+msgid "Download a cloudmap every 3 hour"
+msgstr "Descargue un mapa de la nube cada 3 horas"
+
+msgid "Realtime cloudmap url"
+msgstr "URL del mapa en la nube en tiempo real"
+
+msgid "Url from which realtime cloudmap texture will be downloaded"
+msgstr "URL que descargará la textura del mapa en la nube en tiempo real"
+
+msgid "Earth size"
+msgstr "Tamaño de tierra"
+
+msgid "Size of earth"
+msgstr "Tamaño de la tierra"
+
 #, fuzzy
 msgid "Time (in s) the name display fades out after being shown."
 msgstr ""
