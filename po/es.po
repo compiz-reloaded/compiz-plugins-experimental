@@ -779,7 +779,8 @@ msgstr ""
 msgid ""
 "If enabled, Elements will toggle with keys. Otherwise, it will toggle by "
 "checkboxes."
-msgstr "Si está habilitado, Elementos alternará con las teclas. De lo contrario, se activará"
+msgstr ""
+"Si está habilitado, Elementos alternará con las teclas. De lo contrario, se activará"
 "Las casillas de verificación".
 
 msgid "Snow"
@@ -944,51 +945,42 @@ msgstr ""
 msgid "Toggle Bubbles. Only works if Toggle Elements with Keys is enabled."
 msgstr ""
 
-#, fuzzy
 msgid "Bubble Textures"
-msgstr "Habilitar texturas"
+msgstr "Texturas de burbuja"
 
-#, fuzzy
 msgid "Bubble textures"
-msgstr "Habilitar texturas"
+msgstr "Texturas de burbuja"
 
-#, fuzzy
 msgid "Fireflies"
-msgstr "Filtros de archivos"
+msgstr "Luciérnagas"
 
-#, fuzzy
 msgid "Number Of fireflies"
-msgstr "Número de Partículas de Fuego"
+msgstr "Número de Luciérnagas"
 
-#, fuzzy
 msgid "Number of fireflies"
-msgstr "Número de partículas de fuego"
+msgstr "Número de Luciérnagas"
 
-#, fuzzy
 msgid "Size Of fireflies"
-msgstr "Tamaño de los copos de nieve"
+msgstr "Tamaño de Luciérnagas"
 
 #, fuzzy
 msgid "Size of fireflies"
-msgstr "Tamaño de los copos de nieve"
+msgstr "Tamaño de Luciérnagas"
 
-#, fuzzy
 msgid "Firefly Speed"
-msgstr "Filtros de archivos"
+msgstr "Velocidad de Luciérnagas"
 
 msgid "Speed of firefly lifecycle and movement"
-msgstr ""
+msgstr "Velocidad del ciclo de vida de la luciérnaga y movimiento"
 
-#, fuzzy
 msgid "Rotate Fireflies"
-msgstr "Rotar copos"
+msgstr "Rotar Luciérnagas"
 
 msgid "When using \"glows\", you definitely want this ON"
 msgstr ""
 
-#, fuzzy
 msgid "Toggle Fireflies"
-msgstr "Filtros de archivos"
+msgstr "Habilitar o deshabilitar Luciérnagas"
 
 msgid "Toggle Fireflies. Only works if Toggle Elements with Keys is disabled."
 msgstr ""
@@ -996,40 +988,32 @@ msgstr ""
 msgid "Toggle Fireflies. Only works if Toggle Elements with Keys is enabled."
 msgstr ""
 
-#, fuzzy
 msgid "Fireflies Textures"
-msgstr "Filtros de archivos"
+msgstr "textura de Luciérnagas"
 
-#, fuzzy
 msgid "Fireflies textures"
-msgstr "Filtros de archivos"
+msgstr "textura de Luciérnagas"
 
 msgid "Stars"
 msgstr "Estrellas"
 
-#, fuzzy
 msgid "Number Of stars"
-msgstr "Número de partículas"
+msgstr "Número de estrellas"
 
-#, fuzzy
 msgid "Number of stars"
-msgstr "Número de partículas"
+msgstr "Número de estrellas"
 
-#, fuzzy
 msgid "Size Of stars"
-msgstr "Tamaño de los copos de nieve"
+msgstr "Tamaño de estrellas"
 
-#, fuzzy
 msgid "Size of stars"
-msgstr "Tamaño de los copos de nieve"
+msgstr "Tamaño de estrellas"
 
-#, fuzzy
 msgid "Star Speed"
-msgstr "Velocidad de la nieve"
+msgstr "Velocidad de las estrellas"
 
-#, fuzzy
 msgid "Speed of stars"
-msgstr "Factor de velocidad"
+msgstr "Factor de velocidad de las estrellas"
 
 msgid "Star X Offset"
 msgstr "Estrella del eje X"
@@ -1043,13 +1027,11 @@ msgstr "Estrella del eje Y"
 msgid "The Y point on the screen where stars should start"
 msgstr "El punto Y de la pantalla donde deberían empezar las estrellas"
 
-#, fuzzy
 msgid "Rotate Stars"
-msgstr "Rotar copos"
+msgstr "Rotar estrellas"
 
-#, fuzzy
 msgid "Toggle Stars"
-msgstr "Habilitar o deshabilitar estar en todos las caras del cubo"
+msgstr "Habilitar o deshabilitar estrellas"
 
 msgid "Toggle Stars. Only works if Toggle Elements with Keys is disabled."
 msgstr ""
@@ -1057,32 +1039,27 @@ msgstr ""
 msgid "Toggle Stars. Only works if Toggle Elements with Keys is enabled."
 msgstr ""
 
-#, fuzzy
 msgid "Star Textures"
-msgstr "Textura de la nieve"
+msgstr "Textura de las estrellas"
 
-#, fuzzy
+
 msgid "Star textures"
-msgstr "Textura de la nieve"
+msgstr "Textura de las estrellas"
 
-#, fuzzy
 msgid "Fireflies for Compiz"
-msgstr "Nieve para Compiz"
+msgstr "Luciérnagas para Compiz"
 
 msgid "Settings"
 msgstr "Configuraciones"
 
-#, fuzzy
 msgid "Number Of Fireflies"
-msgstr "Número de Partículas de Fuego"
+msgstr "Número de Luciérnagas"
 
-#, fuzzy
 msgid "The maximum number of fireflies allowed on screen"
-msgstr "Cantidad máxima de ondas para Lámpara Mágica."
+msgstr "Cantidad máxima de Luciérnagas permitidos en la pantalla"
 
-#, fuzzy
 msgid "Size Of Fireflies"
-msgstr "Filtros de archivos"
+msgstr "Tamaño de luciérnagas"
 
 msgid "Update Delay"
 msgstr "Actualizar retraso"
@@ -1106,17 +1083,14 @@ msgstr ""
 "Qué tan lejos del exterior de la resolución de la pantalla los copos de "
 "nieve pueden estar hasta ser removidos. Necesario para el campo de vista."
 
-#, fuzzy
 msgid "How deep into the screen fireflies can be drawn before being removed"
-msgstr "Qué tan profundos serán dibujados los copos de nieve hasta desaparecer"
+msgstr "Qué tan profundos en la pantalla serán dibujados las luciérnagas hasta desaparecer"
 
-#, fuzzy
 msgid "Fireflies Over Windows"
-msgstr "Nieve sobre las ventanas"
+msgstr "Luciérnagas sobre las ventanas"
 
-#, fuzzy
 msgid "Fireflies is drawn above windows"
-msgstr "Dibujar la nieve sobre las ventanas"
+msgstr "Dibujar las Luciérnagas sobre las ventanas"
 
 #, fuzzy
 msgid "Rotate Flies. Redundant"
@@ -1145,9 +1119,8 @@ msgstr "De izquierda a derecha"
 msgid "Enable by default"
 msgstr "Habilitar por defecto"
 
-#, fuzzy
 msgid "Enable fireflies by default."
-msgstr "Ventanas que deberían ser filtradas por defecto."
+msgstr "Habilita luciérnagas por defecto."
 
 msgid "Textures"
 msgstr "Texturas"
@@ -1430,7 +1403,7 @@ msgid "Misc"
 msgstr "Misc."
 
 msgid "Input Prevention"
-msgstr ""
+msgstr "Prevención de entrada"
 
 #, fuzzy
 msgid "Prevented Input Window Types"
@@ -1444,7 +1417,7 @@ msgid "Prevent input"
 msgstr ""
 
 msgid "Prevent input in transformed windows"
-msgstr ""
+msgstr "Evitar la entrada en ventanas transformadas"
 
 # berylog: esta opción se refiere a no usar ventanas gelatinosas al usar Expo
 #, fuzzy
@@ -1485,10 +1458,10 @@ msgid "Color of the cross line"
 msgstr "Color del fondo (cercano)."
 
 msgid "Show 3D rotation circle"
-msgstr ""
+msgstr "Mostrar círculo de rotación 3D"
 
 msgid "Show click area for 3D rotation"
-msgstr ""
+msgstr "Mostrar área de clic para la rotación 3D"
 
 msgid "Show rotation gizmo"
 msgstr ""
