@@ -145,7 +145,7 @@ msgid "Blinds"
 msgstr "Persianas"
 
 msgid "Blinds Number of Half Twists"
-msgstr "Número de giros en persianas"
+msgstr "Número de giros en las persianas"
 
 #, fuzzy
 msgid "Number of half twists to do in the animation"
@@ -288,7 +288,7 @@ msgid "Minimum Size"
 msgstr "Maximumize"
 
 msgid "Minimum scale factor of window when bouncing"
-msgstr ""
+msgstr "Factor de escala mínimo de la ventana al rebotar"
 
 #, fuzzy
 msgid "Number of Bounces"
@@ -299,7 +299,7 @@ msgid "How many bounces during the animation"
 msgstr "Ventanas que no deberían deslizarse durante la animación de deslizado"
 
 msgid "Sheet"
-msgstr ""
+msgstr "Hoja"
 
 #, fuzzy
 msgid "Starting Percent"
@@ -741,7 +741,7 @@ msgid "Elements"
 msgstr "Elementos"
 
 msgid "Snow, Stars, Autumn, Fireflies and Bubbles, all in one neat package"
-msgstr ""
+msgstr "Nieve, estrellas, otoño, luciérnagas y burbujas, todo en un paquete ordenado"
 
 msgid "General"
 msgstr "General"
@@ -760,7 +760,7 @@ msgid "How deep into the screen snowflakes can be drawn before being removed"
 msgstr "Qué tan profundos serán dibujados los copos de nieve hasta desaparecer"
 
 msgid "Apply Screen Transform"
-msgstr ""
+msgstr "Aplicar Transformación de pantalla"
 
 msgid "Moves particles with screen transforms when over_windows is enabled"
 msgstr ""
@@ -779,7 +779,8 @@ msgstr ""
 msgid ""
 "If enabled, Elements will toggle with keys. Otherwise, it will toggle by "
 "checkboxes."
-msgstr ""
+msgstr "Si está habilitado, Elementos alternará con las teclas. De lo contrario, se activará"
+"Las casillas de verificación".
 
 msgid "Snow"
 msgstr "Nieve"
@@ -808,7 +809,7 @@ msgstr "Tiempo de espera hasta mostrar la barra de fichas"
 
 msgid ""
 "Side-to-side movement of Snow. Snow now uses the old Autumn movement engine."
-msgstr ""
+msgstr "Movimiento de lado a lado de Nieve. Nieve ahora usa el viejo motor de movimiento de otoño."
 
 #, fuzzy
 msgid "Rotate Snowflakes"
@@ -1142,7 +1143,7 @@ msgid "Left to Right"
 msgstr "De izquierda a derecha"
 
 msgid "Enable by default"
-msgstr ""
+msgstr "Habilitar por defecto"
 
 #, fuzzy
 msgid "Enable fireflies by default."
@@ -1388,7 +1389,7 @@ msgid "3D Rotation Percentage"
 msgstr "Angulo de rotación"
 
 msgid "Percentage of the window area used for 3D rotation"
-msgstr ""
+msgstr "Porcentaje del área de la ventana utilizada para la rotación 3D"
 
 #, fuzzy
 msgid "Auto-Zoom"
