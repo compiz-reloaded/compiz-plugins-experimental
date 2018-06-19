@@ -145,7 +145,7 @@ msgid "Blinds"
 msgstr "Persianas"
 
 msgid "Blinds Number of Half Twists"
-msgstr "Número de giros en lass persianas"
+msgstr "Número de giros en las persianas"
 
 #, fuzzy
 msgid "Number of half twists to do in the animation"
