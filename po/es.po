@@ -780,8 +780,6 @@ msgid ""
 "If enabled, Elements will toggle with keys. Otherwise, it will toggle by "
 "checkboxes."
 msgstr ""
-"Si está habilitado, Elementos alternará con las teclas. De lo contrario, se activará"
-"Las casillas de verificación".
 
 msgid "Snow"
 msgstr "Nieve"
