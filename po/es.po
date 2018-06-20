@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: compiz-plugins-experimental\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-"
-"experimental/issues\n"
-"POT-Creation-Date: 2017-01-12 18:19+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-experimental/"
+"issues\n"
+"POT-Creation-Date: 2018-06-20 20:28+0200\n"
 "PO-Revision-Date: 2009-09-23 18:59+0200\n"
 "Last-Translator: Mariano Sanz <masanzsa@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -317,7 +317,8 @@ msgid "First expand horizontally"
 msgstr "Mosaico horizontal"
 
 msgid "If checked, initially expand horizontally, then vertically"
-msgstr "Si está marcado, inicialmente expande horizontalmente, luego verticalmente"
+msgstr ""
+"Si está marcado, inicialmente expande horizontalmente, luego verticalmente"
 
 #, fuzzy
 msgid "Initial horizontal size"
@@ -340,7 +341,8 @@ msgstr "Tiempo de espera hasta mostrar la barra de fichas"
 msgid ""
 "Delay between expanding horizontally and vertically (expressed as a fraction)"
 msgstr ""
-"Retraso entre la expansión horizontal y vertical (expresada como una fracción)"
+"Retraso entre la expansión horizontal y vertical (expresada como una "
+"fracción)"
 
 msgid "Expand"
 msgstr "Expandir"
@@ -720,28 +722,80 @@ msgstr "Cambiar la velocidad de la animación 3D"
 msgid "Opacity"
 msgstr "Opacidad"
 
-msgid "The Opacity of windows with open dialogs"
-msgstr ""
+#, fuzzy
+msgid "The opacity of windows with open dialogs"
+msgstr "Saturación de ventanas (no Widgets) en el modo Widget"
 
 msgid "Saturation"
 msgstr "Saturación"
 
 #, fuzzy
-msgid "The Saturation of windows with open dialogs"
+msgid "The saturation of windows with open dialogs"
 msgstr "Saturación de ventanas (no Widgets) en el modo Widget"
 
 msgid "Brightness"
 msgstr "Brillo"
 
 #, fuzzy
-msgid "The Brightness of windows with open dialogs"
+msgid "The brightness of windows with open dialogs"
 msgstr "Brillo de ventanas no Widget en modo Widget"
+
+msgid "Earth"
+msgstr "Tierra"
+
+msgid "Display a realtime lit 3d earth in the desktop cube"
+msgstr "Muestre una tierra 3d en tiempo real en el cubo de escritorio"
+
+msgid "Latitude"
+msgstr "Latitud"
+
+msgid "Enter a positive value for a North latitude, negative for a South one"
+msgstr ""
+"Ingrese un valor positivo para una latitud norte, negativo para una sur"
+
+msgid "Longitude"
+msgstr "Longitud"
+
+msgid "Enter a positive value for a West longitude, negative for an East one"
+msgstr ""
+"Ingrese un valor positivo para una longitud Oeste, negativo para uno Este"
+
+msgid "Time Zone"
+msgstr "Zona horaria"
+
+msgid "Time difference from GMT (without taking account of DST)"
+msgstr "Diferencia horaria de GMT (sin tener en cuenta el horario de verano)"
+
+msgid "Use shaders"
+msgstr "Usar sombreadores"
+
+msgid "Make use of the shaders if possible"
+msgstr "Haga uso de los sombreadores si es posible"
+
+msgid "Realtime cloudmap"
+msgstr "Mapa de nubes en tiempo real"
+
+msgid "Download a cloudmap every 3 hour"
+msgstr "Descargue un mapa de la nube cada 3 horas"
+
+msgid "Realtime cloudmap url"
+msgstr "URL del mapa en la nube en tiempo real"
+
+msgid "Url from which realtime cloudmap texture will be downloaded"
+msgstr "URL que descargará la textura del mapa en la nube en tiempo real"
+
+msgid "Earth size"
+msgstr "Tamaño de tierra"
+
+msgid "Size of earth"
+msgstr "Tamaño de la tierra"
 
 msgid "Elements"
 msgstr "Elementos"
 
 msgid "Snow, Stars, Autumn, Fireflies and Bubbles, all in one neat package"
-msgstr "Nieve, estrellas, otoño, luciérnagas y burbujas, todo en un paquete ordenado"
+msgstr ""
+"Nieve, estrellas, otoño, luciérnagas y burbujas, todo en un paquete ordenado"
 
 msgid "General"
 msgstr "General"
@@ -808,7 +862,9 @@ msgstr "Tiempo de espera hasta mostrar la barra de fichas"
 
 msgid ""
 "Side-to-side movement of Snow. Snow now uses the old Autumn movement engine."
-msgstr "Movimiento de lado a lado de Nieve. Nieve ahora usa el viejo motor de movimiento de otoño."
+msgstr ""
+"Movimiento de lado a lado de Nieve. Nieve ahora usa el viejo motor de "
+"movimiento de otoño."
 
 #, fuzzy
 msgid "Rotate Snowflakes"
@@ -1040,7 +1096,6 @@ msgstr ""
 msgid "Star Textures"
 msgstr "Textura de las estrellas"
 
-
 msgid "Star textures"
 msgstr "Textura de las estrellas"
 
@@ -1082,7 +1137,9 @@ msgstr ""
 "nieve pueden estar hasta ser removidos. Necesario para el campo de vista."
 
 msgid "How deep into the screen fireflies can be drawn before being removed"
-msgstr "Qué tan profundos en la pantalla serán dibujados las luciérnagas hasta desaparecer"
+msgstr ""
+"Qué tan profundos en la pantalla serán dibujados las luciérnagas hasta "
+"desaparecer"
 
 msgid "Fireflies Over Windows"
 msgstr "Luciérnagas sobre las ventanas"
@@ -3247,54 +3304,6 @@ msgstr ""
 
 msgid "Fade Time"
 msgstr "Tiempo de fundición"
-
-msgid "Earth"
-msgstr "Tierra"
-
-msgid "Display a realtime lit 3d earth in the desktop cube"
-msgstr "Muestre una tierra 3d en tiempo real en el cubo de escritorio"
-
-msgid "Latitude"
-msgstr "Latitud"
-
-msgid "Enter a positive value for a North latitude, negative for a South one"
-msgstr "Ingrese un valor positivo para una latitud norte, negativo para una sur"
-
-msgid "Longitude"
-msgstr "Longitud"
-
-msgid "Enter a positive value for a West longitude, negative for an East one"
-msgstr "Ingrese un valor positivo para una longitud Oeste, negativo para uno Este"
-
-msgid "Time Zone"
-msgstr "Zona horaria"
-
-msgid "Time difference from GMT (without taking account of DST)"
-msgstr "Diferencia horaria de GMT (sin tener en cuenta el horario de verano)"
-
-msgid "Use shaders"
-msgstr "Usar sombreadores"
-
-msgid "Make use of the shaders if possible"
-msgstr "Haga uso de los sombreadores si es posible"
-
-msgid "Realtime cloudmap"
-msgstr "Mapa de nubes en tiempo real"
-
-msgid "Download a cloudmap every 3 hour"
-msgstr "Descargue un mapa de la nube cada 3 horas"
-
-msgid "Realtime cloudmap url"
-msgstr "URL del mapa en la nube en tiempo real"
-
-msgid "Url from which realtime cloudmap texture will be downloaded"
-msgstr "URL que descargará la textura del mapa en la nube en tiempo real"
-
-msgid "Earth size"
-msgstr "Tamaño de tierra"
-
-msgid "Size of earth"
-msgstr "Tamaño de la tierra"
 
 #, fuzzy
 msgid "Time (in s) the name display fades out after being shown."

@@ -10,9 +10,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: compiz-plugins-experimental\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-"
-"experimental/issues\n"
-"POT-Creation-Date: 2017-01-12 18:19+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-experimental/"
+"issues\n"
+"POT-Creation-Date: 2018-06-20 20:28+0200\n"
 "PO-Revision-Date: 2009-07-22 12:39+0200\n"
 "Last-Translator: Piotrek <piotrekp90@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -670,14 +670,15 @@ msgstr "Zmiana prędkości animacji 3D"
 msgid "Opacity"
 msgstr "Nieprzezroczystość"
 
-msgid "The Opacity of windows with open dialogs"
-msgstr ""
+#, fuzzy
+msgid "The opacity of windows with open dialogs"
+msgstr "Nasycenie okien nie będących widżetami w trybie widżetów"
 
 msgid "Saturation"
 msgstr "Nasycenie"
 
 #, fuzzy
-msgid "The Saturation of windows with open dialogs"
+msgid "The saturation of windows with open dialogs"
 msgstr "Nasycenie okien nie będących widżetami w trybie widżetów"
 
 msgid "Brightness"
@@ -687,8 +688,58 @@ msgstr "Jasnosć"
 #
 # http://pl.wikipedia.org/wiki/Wid%C5%BCet
 #, fuzzy
-msgid "The Brightness of windows with open dialogs"
+msgid "The brightness of windows with open dialogs"
 msgstr "Jasność okien nie będących widgetami w trybie widżetów."
+
+msgid "Earth"
+msgstr ""
+
+msgid "Display a realtime lit 3d earth in the desktop cube"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Enter a positive value for a North latitude, negative for a South one"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "Enter a positive value for a West longitude, negative for an East one"
+msgstr ""
+
+msgid "Time Zone"
+msgstr ""
+
+msgid "Time difference from GMT (without taking account of DST)"
+msgstr ""
+
+msgid "Use shaders"
+msgstr ""
+
+msgid "Make use of the shaders if possible"
+msgstr ""
+
+msgid "Realtime cloudmap"
+msgstr ""
+
+msgid "Download a cloudmap every 3 hour"
+msgstr ""
+
+msgid "Realtime cloudmap url"
+msgstr ""
+
+msgid "Url from which realtime cloudmap texture will be downloaded"
+msgstr ""
+
+#, fuzzy
+msgid "Earth size"
+msgstr "Rozmiar rekinów"
+
+#, fuzzy
+msgid "Size of earth"
+msgstr "Rozmiar płatków śniegu"
 
 msgid "Elements"
 msgstr "Elementy"
@@ -7342,9 +7393,6 @@ msgstr "Kolor czcionki dla tytułu okna"
 
 #~ msgid "Fish size"
 #~ msgstr "Rozmiar ryb"
-
-#~ msgid "Shark size"
-#~ msgstr "Rozmiar rekinów"
 
 #~ msgid "Whale size."
 #~ msgstr "Rozmiar wielorybów."
