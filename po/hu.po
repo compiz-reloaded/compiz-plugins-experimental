@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: compiz-plugins-experimental\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-"
-"experimental/issues\n"
-"POT-Creation-Date: 2017-01-12 18:19+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-experimental/"
+"issues\n"
+"POT-Creation-Date: 2018-06-20 20:28+0200\n"
 "PO-Revision-Date: 2009-10-10 08:38+0200\n"
 "Last-Translator: KAMI <kamihir@freemail.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -664,22 +664,73 @@ msgstr "Térbeli animáció sebességének megváltoztatása"
 msgid "Opacity"
 msgstr "Átlátszatlanság"
 
-msgid "The Opacity of windows with open dialogs"
-msgstr ""
+#, fuzzy
+msgid "The opacity of windows with open dialogs"
+msgstr "Nem szerkentyű ablakok színtelítettsége Szerkentyű módban."
 
 msgid "Saturation"
 msgstr "Színtelítettség"
 
 #, fuzzy
-msgid "The Saturation of windows with open dialogs"
+msgid "The saturation of windows with open dialogs"
 msgstr "Nem szerkentyű ablakok színtelítettsége Szerkentyű módban."
 
 msgid "Brightness"
 msgstr "Fényerő"
 
 #, fuzzy
-msgid "The Brightness of windows with open dialogs"
+msgid "The brightness of windows with open dialogs"
 msgstr "Nem szerkentyű ablakok fényereje Szerkentyű módban."
+
+msgid "Earth"
+msgstr ""
+
+msgid "Display a realtime lit 3d earth in the desktop cube"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Enter a positive value for a North latitude, negative for a South one"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "Enter a positive value for a West longitude, negative for an East one"
+msgstr ""
+
+msgid "Time Zone"
+msgstr ""
+
+msgid "Time difference from GMT (without taking account of DST)"
+msgstr ""
+
+msgid "Use shaders"
+msgstr ""
+
+msgid "Make use of the shaders if possible"
+msgstr ""
+
+msgid "Realtime cloudmap"
+msgstr ""
+
+msgid "Download a cloudmap every 3 hour"
+msgstr ""
+
+msgid "Realtime cloudmap url"
+msgstr ""
+
+msgid "Url from which realtime cloudmap texture will be downloaded"
+msgstr ""
+
+#, fuzzy
+msgid "Earth size"
+msgstr "Cápák mérete"
+
+#, fuzzy
+msgid "Size of earth"
+msgstr "Hópihék mérete"
 
 msgid "Elements"
 msgstr "Elemek"
@@ -7323,9 +7374,6 @@ msgstr "Az ablak címsorának betűszíne"
 
 #~ msgid "Fish size"
 #~ msgstr "Halak mérete"
-
-#~ msgid "Shark size"
-#~ msgstr "Cápák mérete"
 
 #~ msgid "Whale size."
 #~ msgstr "Bálnák mérete."

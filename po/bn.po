@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: compiz-plugins-experimental\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-"
-"experimental/issues\n"
-"POT-Creation-Date: 2017-01-12 18:19+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/compiz/compiz-plugins-experimental/"
+"issues\n"
+"POT-Creation-Date: 2018-06-20 20:28+0200\n"
 "PO-Revision-Date: 2007-12-26 09:57+0100\n"
 "Last-Translator: Mahdee Jameel <mahdee.jameel@gmail.com>\n"
 "Language-Team: gist bengali team <info.gist@cdac.in>\n"
@@ -648,22 +648,73 @@ msgstr "ত্রিমাত্রিক অ্যানিমেশনের �
 msgid "Opacity"
 msgstr "অস্বচ্ছতা"
 
-msgid "The Opacity of windows with open dialogs"
-msgstr ""
+#, fuzzy
+msgid "The opacity of windows with open dialogs"
+msgstr "মলিন উইন্ডোর সম্পৃক্তি"
 
 msgid "Saturation"
 msgstr "সম্পৃক্তি"
 
 #, fuzzy
-msgid "The Saturation of windows with open dialogs"
+msgid "The saturation of windows with open dialogs"
 msgstr "মলিন উইন্ডোর সম্পৃক্তি"
 
 msgid "Brightness"
 msgstr "উজ্জ্বলতা"
 
 #, fuzzy
-msgid "The Brightness of windows with open dialogs"
+msgid "The brightness of windows with open dialogs"
 msgstr "মলিন উইন্ডোর উজ্জ্বলতা"
+
+msgid "Earth"
+msgstr ""
+
+msgid "Display a realtime lit 3d earth in the desktop cube"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Enter a positive value for a North latitude, negative for a South one"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "Enter a positive value for a West longitude, negative for an East one"
+msgstr ""
+
+msgid "Time Zone"
+msgstr ""
+
+msgid "Time difference from GMT (without taking account of DST)"
+msgstr ""
+
+msgid "Use shaders"
+msgstr ""
+
+msgid "Make use of the shaders if possible"
+msgstr ""
+
+msgid "Realtime cloudmap"
+msgstr ""
+
+msgid "Download a cloudmap every 3 hour"
+msgstr ""
+
+msgid "Realtime cloudmap url"
+msgstr ""
+
+msgid "Url from which realtime cloudmap texture will be downloaded"
+msgstr ""
+
+#, fuzzy
+msgid "Earth size"
+msgstr "অগ্নিকণার আকার."
+
+#, fuzzy
+msgid "Size of earth"
+msgstr "আগুন"
 
 msgid "Elements"
 msgstr ""
@@ -3301,10 +3352,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Element Title Display"
 #~ msgstr "উইন্ডোর প্রকৃতি"
-
-#, fuzzy
-#~ msgid "Element size"
-#~ msgstr "অগ্নিকণার আকার."
 
 #, fuzzy
 #~ msgid "Curve"
