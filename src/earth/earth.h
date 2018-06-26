@@ -118,6 +118,7 @@ typedef struct _EarthScreen
     float tz;
     Bool  shaders;
     Bool  clouds;
+    float rotspeed;
     Bool  clouds_url_changed;
     float earth_size;
 
@@ -125,6 +126,9 @@ typedef struct _EarthScreen
 
     /* Sun position */
     float dec, gha;
+
+    /* Animation */
+    float rotation;
 
     /* Threads */
     TexThreadData texthreaddata [4];
