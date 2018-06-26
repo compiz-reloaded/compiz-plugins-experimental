@@ -63,6 +63,11 @@
 				<_long>Url from which realtime cloudmap texture will be downloaded</_long>
 				<default>http://home.megapass.co.kr/~holywatr/cloud_data/clouds_2048.jpg</default>
 			</option>
+			<option name="south_on_top" type="bool">
+				<_short>Switch the poles</_short>
+				<_long>Switch the north and south pole</_long>
+				<default>false</default>
+			</option>
 			<option name="earth_size" type="float">
 				<_short>Earth size</_short>
 				<_long>Size of earth</_long>
