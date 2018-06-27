@@ -554,7 +554,7 @@ earthPreparePaintScreen (CompScreen *s,
 	/* Animation */
             es->rotation += es->rotspeed;
 	if (es->rotation > 360)
-	    es->rotation -= 360;
+            es->rotation -= 360;
 	else if (es->rotation < -360)
             es->rotation += 360;
 	/* Realtime cloudmap */
