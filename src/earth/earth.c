@@ -634,7 +634,7 @@ earthPaintInside (CompScreen			  *s,
 	glRotatef (es->rotation, 0, 1, 0);
 
 	if (cs->moMode == CUBE_MOMODE_MULTI)
-	glRotatef ((360.0f / s->nOutputDev) * output->id, 0, 1, 0);
+		glRotatef ((360.0f / s->nOutputDev) * output->id, 0, 1, 0);
 
 	/* Earth position according to longitude and latitude */
 	glRotatef (es->lat - 90, 1, 0, 0);
@@ -742,7 +742,7 @@ earthClearTargetOutput (CompScreen *s,
 	glRotatef (xRotate + es->rotation, 0.0f, 0.0f, 1.0f);
 
 	if (cs->moMode == CUBE_MOMODE_MULTI)
-	glRotatef ((360.0f / s->nOutputDev) * currentoutput->id, 0, 0, 1);
+		glRotatef ((360.0f / s->nOutputDev) * currentoutput->id, 0, 0, 1);
 
 	glRotatef (es->lat, 1, 0, 0);
 	glRotatef (es->lon + 180, 0, 0, 1);
