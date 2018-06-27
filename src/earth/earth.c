@@ -497,7 +497,7 @@ earthScreenOptionChanged (CompScreen		*s,
 		es->clouds = earthGetClouds (s);
 	break;
 	case EarthScreenOptionRotation:
-		es->rotspeed    = earthGetRotation (s);
+		es->rotspeed = earthGetRotation (s);
 	break;
 	case EarthScreenOptionCloudsUrl:
 		es->clouds_url_changed = TRUE;
@@ -554,9 +554,9 @@ earthPreparePaintScreen (CompScreen *s,
 	/* Animation */
 	es->rotation += es->rotspeed;
 	if (es->rotation > 360)
-	es->rotation -= 360;
+	    es->rotation -= 360;
 	else if (es->rotation < -360)
-	es->rotation += 360;
+	    es->rotation += 360;
 	/* Realtime cloudmap */
 	res = stat (es->cloudsfile.filename, &attrib);
 	if (es->clouds && (es->cloudsthreaddata.started == 0) &&
@@ -632,7 +632,7 @@ earthPaintInside (CompScreen			  *s,
 
 	/* Animation */
 	glRotatef (es->rotation, 0, 1, 0);
-    
+
 	if (cs->moMode == CUBE_MOMODE_MULTI)
 	glRotatef ((360.0f / s->nOutputDev) * output->id, 0, 1, 0);
 
@@ -740,7 +740,7 @@ earthClearTargetOutput (CompScreen *s,
 	/* Rotate the skydome according to the mouse and the rotation of the Earth */
 	glRotatef (vRotate - 90, 1.0f, 0.0f, 0.0f);
 	glRotatef (xRotate + es->rotation, 0.0f, 0.0f, 1.0f);
-    
+
 	if (cs->moMode == CUBE_MOMODE_MULTI)
 	glRotatef ((360.0f / s->nOutputDev) * currentoutput->id, 0, 0, 1);
 
