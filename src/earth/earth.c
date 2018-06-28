@@ -808,7 +808,7 @@ earthInitScreen (CompPlugin *p,
 	es->damage = FALSE;
 
 	/* Animation */
-	es->rotspeed
+	es->rotspeed = 0;
 	es->rotation = 0;
 
 
