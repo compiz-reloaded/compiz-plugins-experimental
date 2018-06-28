@@ -809,7 +809,7 @@ earthInitScreen (CompPlugin *p,
 
 	/* Animation */
 	es->rotation = 0;
-        es->rotspeed
+   es->rotspeed
 
 	/* Load texture images */
 	for (i = 0; i < 4; i++)
