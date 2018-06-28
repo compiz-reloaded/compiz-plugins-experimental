@@ -631,7 +631,7 @@ earthPaintInside (CompScreen			  *s,
 	es->previousoutput = output->id;
 
 	/* Animation */
-        glRotatef (xRotate + es->rotation, 0.0f, 0.0f, 1.0f);
+        glRotatef (es->rotation, 0, 1, 0);
 
 	if (cs->moMode == CUBE_MOMODE_MULTI)
 		glRotatef ((360.0f / s->nOutputDev) * output->id, 0, 1, 0);
