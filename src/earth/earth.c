@@ -548,7 +548,6 @@ earthPreparePaintScreen (CompScreen *s,
 				((float)currenttime->tm_yday + 10.0f));
 	es->gha = (float)currenttime->tm_hour-(es->tz +
 				(float)currenttime->tm_isdst) +
-				(float)currenttime->tm_min / 60.0f;
 				(float)currenttime->tm_sec/3600.0000f;
 	
 	/* Animation */
@@ -810,7 +809,8 @@ earthInitScreen (CompPlugin *p,
 
 	/* Animation */
 	es->rotation = 0;
-    
+        es->rotspeed
+
 	/* Load texture images */
 	for (i = 0; i < 4; i++)
 	{
