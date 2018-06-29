@@ -50,6 +50,14 @@
 				<_long>Download a cloudmap every 3 hour</_long>
 				<default>false</default>
 			</option>
+			<option name="rotation" type="float">
+				<_short>Rotation speed</_short>
+				<_long>Make the whole scene rotate</_long>
+				<min>-1</min>
+				<max>1</max>
+				<default>0</default>
+				<precision>0.001</precision>
+			</option>
 			<option name="clouds_url" type="string">
 				<_short>Realtime cloudmap url</_short>
 				<_long>Url from which realtime cloudmap texture will be downloaded</_long>

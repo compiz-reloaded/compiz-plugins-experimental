@@ -496,6 +496,9 @@ earthScreenOptionChanged (CompScreen		*s,
 	case EarthScreenOptionClouds:
 		es->clouds = earthGetClouds (s);
 	break;
+	case EarthScreenOptionRotation:
+		es->rotspeed = earthGetRotation (s);
+	break;
 	case EarthScreenOptionCloudsUrl:
 		es->clouds_url_changed = TRUE;
 		es->cloudsthreaddata.url = earthGetCloudsUrl (s);
@@ -545,8 +548,14 @@ earthPreparePaintScreen (CompScreen *s,
 				((float)currenttime->tm_yday + 10.0f));
 	es->gha = (float)currenttime->tm_hour-(es->tz +
 				(float)currenttime->tm_isdst) +
-				(float)currenttime->tm_min / 60.0f;
-
+				(float)currenttime->tm_sec/3600.0000f;
+	
+	/* Animation */
+	es->rotation += es->rotspeed;
+	if (es->rotation > 360)
+            es->rotation -= 360;
+	else if (es->rotation < -360)
+            es->rotation += 360;
 	/* Realtime cloudmap */
 	res = stat (es->cloudsfile.filename, &attrib);
 	if (es->clouds && (es->cloudsthreaddata.started == 0) &&
@@ -619,6 +628,12 @@ earthPaintInside (CompScreen			  *s,
 		ratio = (float)s->height / (float)s->width;
 	glScalef (ratio * es->earth_size, es->earth_size, ratio * es->earth_size);
 	es->previousoutput = output->id;
+
+	/* Animation */
+        glRotatef (es->rotation, 0, 1, 0);
+
+	if (cs->moMode == CUBE_MOMODE_MULTI)
+		glRotatef ((360.0f / s->nOutputDev) * output->id, 0, 1, 0);
 
 	/* Earth position according to longitude and latitude */
 	glRotatef (es->lat - 90, 1, 0, 0);
@@ -723,7 +738,11 @@ earthClearTargetOutput (CompScreen *s,
 
 	/* Rotate the skydome according to the mouse and the rotation of the Earth */
 	glRotatef (vRotate - 90, 1.0f, 0.0f, 0.0f);
-	glRotatef (xRotate, 0.0f, 0.0f, 1.0f);
+	glRotatef (xRotate + es->rotation, 0.0f, 0.0f, 1.0f);
+
+	if (cs->moMode == CUBE_MOMODE_MULTI)
+		glRotatef ((360.0f / s->nOutputDev) * currentoutput->id, 0, 0, 1);
+
 	glRotatef (es->lat, 1, 0, 0);
 	glRotatef (es->lon + 180, 0, 0, 1);
 
@@ -787,6 +806,11 @@ earthInitScreen (CompPlugin *p,
 	s->base.privates[ed->screenPrivateIndex].ptr = es;
 
 	es->damage = FALSE;
+
+	/* Animation */
+	es->rotspeed = 0;
+	es->rotation = 0;
+
 
 	/* Load texture images */
 	for (i = 0; i < 4; i++)
@@ -898,6 +922,7 @@ earthInitScreen (CompPlugin *p,
 	earthSetTimezoneNotify (s, earthScreenOptionChanged);
 	earthSetShadersNotify (s, earthScreenOptionChanged);
 	earthSetCloudsNotify (s, earthScreenOptionChanged);
+	earthSetRotationNotify (s, earthScreenOptionChanged);
 	earthSetCloudsUrlNotify (s, earthScreenOptionChanged);
 	earthSetEarthSizeNotify (s, earthScreenOptionChanged);
 
