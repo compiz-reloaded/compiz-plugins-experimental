@@ -551,7 +551,7 @@ earthPreparePaintScreen (CompScreen *s,
 				(float)currenttime->tm_sec/3600.0000f;
 	
 	/* Animation */
-            es->rotation += es->rotspeed;
+	es->rotation += es->rotspeed;
 	if (es->rotation > 360)
             es->rotation -= 360;
 	else if (es->rotation < -360)
