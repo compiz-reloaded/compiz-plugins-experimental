@@ -24,17 +24,14 @@ msgstr "Anáglifo"
 msgid "Anaglyph window and Desktop"
 msgstr "Escritorio y ventana en Anaglifo"
 
-#, fuzzy
 msgid "Initiate Window"
-msgstr "Habilitar ventana"
+msgstr "Iniciar en la ventana"
 
-#, fuzzy
 msgid "Start anaglyph window"
-msgstr "Seleccionar una sola ventana"
+msgstr "Comience la ventana en anaglifo"
 
-#, fuzzy
 msgid "Initiate Screen"
-msgstr "Iniciar dibujo del fuego"
+msgstr "Iniciar en Escritorio"
 
 msgid "Start anaglyph screen"
 msgstr "Iniciar en pantalla anaglifo"
@@ -43,28 +40,24 @@ msgstr "Iniciar en pantalla anaglifo"
 msgid "Initiate Window Button"
 msgstr "Iniciar (botón del ratón)"
 
-#, fuzzy
 msgid "Start anaglyph active window"
-msgstr "Habilitar una ventana determinada"
+msgstr "Iniciar anaglifo en la ventana activa"
 
 #, fuzzy
 msgid "Initiate Screen Button"
 msgstr "Iniciar dibujo del fuego"
 
-#, fuzzy
 msgid "Anaglyph Windows"
-msgstr "Ventanas del anillo"
+msgstr "Ventanas Anaglifo"
 
-#, fuzzy
 msgid "Windows to be anaglyph by default"
-msgstr "Ventanas en negativo por defecto"
+msgstr "Ventanas para ser anaglifo por defecto"
 
 msgid "Exclude Windows"
 msgstr "Ventanas excluídas"
 
-#, fuzzy
 msgid "Windows to exclude from anaglyph"
-msgstr "Ventanas que no se verán en negativo"
+msgstr "Ventanas para excluir anaglifo"
 
 #, fuzzy
 msgid "Offset"
@@ -76,9 +69,8 @@ msgstr ""
 msgid "Increase Desktop deep"
 msgstr "profundidad de escritorio aumentado"
 
-#, fuzzy
 msgid "Desaturate"
-msgstr "Saturación"
+msgstr "Desaturar"
 
 #, fuzzy
 msgid "Mipmaps"
@@ -88,9 +80,8 @@ msgstr "Crear mipmaps"
 msgid "Animations Plus"
 msgstr "Animaciones"
 
-#, fuzzy
 msgid "More window animations"
-msgstr "Filtro de las decoraciones de las ventanas"
+msgstr "Más animaciones de ventana"
 
 msgid "Effect Settings"
 msgstr "Configuración de Efectos"
@@ -102,9 +93,8 @@ msgstr "Hélice"
 msgid "Helix Number of Twists"
 msgstr "Fragmetar Numero de Hileras"
 
-#, fuzzy
 msgid "Number of twists to do in the animation"
-msgstr "Angulo de la ventana al final de la animación"
+msgstr "Número de giros para hacer en la animación"
 
 msgid "Helix Gridsize Y"
 msgstr ""
@@ -125,7 +115,7 @@ msgid "Spin Direction"
 msgstr "Dirección de la nieve"
 
 msgid "Direction the strips spin."
-msgstr ""
+msgstr "Dirección las tiras que giran."
 
 msgid "Counter-Clockwise"
 msgstr ""
@@ -133,9 +123,8 @@ msgstr ""
 msgid "Clockwise"
 msgstr ""
 
-#, fuzzy
 msgid "Vertical Helix"
-msgstr "Gradiente Vertical"
+msgstr "Hélice vertical"
 
 msgid ""
 "Whether Helix should rotate with its axis up/down or in/out of the screen"
