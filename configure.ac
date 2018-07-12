@@ -156,6 +156,8 @@ PKG_CHECK_MODULES(GLEW, glew, [have_glew=yes], [have_glew=no])
 PKG_CHECK_MODULES(LIBCURL, libcurl, [have_libcurl=yes], [have_libcurl=no])
 AM_CONDITIONAL(EARTH_PLUGIN, test "x$have_glew" = "xyes" && test "x$have_libcurl" = "xyes")
 
+AC_PATH_PROG(UPDATE_ICON_CACHE, gtk-update-icon-cache)
+
 AC_OUTPUT([
 Makefile
 icons/Makefile
