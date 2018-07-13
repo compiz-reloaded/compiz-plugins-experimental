@@ -148,14 +148,9 @@ typedef struct _EarthScreen
 
     /* Shaders */
     GLboolean shadersupport;
-    char* vertfile [1];
-    char* vertsource [1];
-    char* fragfile [1];
-    char* fragsource [1];
-    GLuint vert [1];
-    GLuint frag [1];
-    GLuint prog [1];
-    GLint texloc [2];
+    GLuint vert;
+    GLuint frag;
+    GLuint prog;
 
 } EarthScreen;
 

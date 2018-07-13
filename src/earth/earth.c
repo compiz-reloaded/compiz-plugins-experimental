@@ -257,6 +257,8 @@ CreateShaders (EarthScreen* es)
 {
 	struct stat st;
 	GLint status = 0;
+	char *vertfile, *vertsource;
+	char *fragfile, *fragsource;
 	/* Shader support */
 	glewInit ();
 	if (glewIsSupported ("GL_VERSION_2_0"))
@@ -265,73 +267,69 @@ CreateShaders (EarthScreen* es)
 	{
 		compLogMessage ("earth", CompLogLevelWarn,
 						"GL version 2.0 required for shader support");
-		goto out;
+		return;
 	}
 
 	if (stat (DATADIR "/earth/earth.vert", &st) == 0 && S_ISREG (st.st_mode))
-		es->vertfile[EARTH] = DATADIR "/earth/earth.vert";
+		vertfile = DATADIR "/earth/earth.vert";
 	else
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to stat %s",
 										DATADIR "/earth/earth.vert");
-		goto out;
+		return;
 	}
 
 	if (stat (DATADIR "/earth/earth.frag", &st) == 0 && S_ISREG (st.st_mode))
-		es->fragfile[EARTH] = DATADIR "/earth/earth.frag";
+		fragfile = DATADIR "/earth/earth.frag";
 	else
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to stat %s",
 										DATADIR "/earth/earth.frag");
-		goto out;
+		return;
 	}
 
 	/* Shader creation, loading and compiling */
-	es->vert[EARTH] = glCreateShader (GL_VERTEX_SHADER);
-	es->frag[EARTH] = glCreateShader (GL_FRAGMENT_SHADER);
+	es->vert = glCreateShader (GL_VERTEX_SHADER);
+	es->frag = glCreateShader (GL_FRAGMENT_SHADER);
 
-	es->vertsource[EARTH] = LoadSource (es->vertfile[EARTH]);
-	glShaderSource (es->vert[EARTH], 1, (const GLchar**)&es->vertsource[EARTH], NULL);
+	vertsource = LoadSource (vertfile);
+	glShaderSource (es->vert, 1, (const GLchar**)&vertsource, NULL);
 
-	es->fragsource[EARTH] = LoadSource (es->fragfile[EARTH]);
-	glShaderSource (es->frag[EARTH], 1, (const GLchar**)&es->fragsource[EARTH], NULL);
+	fragsource = LoadSource (fragfile);
+	glShaderSource (es->frag, 1, (const GLchar**)&fragsource, NULL);
 
-	glCompileShader (es->vert[EARTH]);
-	glCompileShader (es->frag[EARTH]);
+	glCompileShader (es->vert);
+	glCompileShader (es->frag);
 
 	/* Check for compile errors */
-	glGetObjectParameterivARB(es->vert[EARTH], GL_OBJECT_COMPILE_STATUS_ARB, &status);
+	glGetObjectParameterivARB(es->vert, GL_OBJECT_COMPILE_STATUS_ARB, &status);
 	if (!status)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to compile vertex shader");
-		goto out;
+		return;
 	}
-	glGetObjectParameterivARB(es->frag[EARTH], GL_OBJECT_COMPILE_STATUS_ARB, &status);
+	glGetObjectParameterivARB(es->frag, GL_OBJECT_COMPILE_STATUS_ARB, &status);
 	if (!status)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to compile fragment shader");
-		goto out;
+		return;
 	}
 
 	/* Program creation, attaching and linking */
-	es->prog[EARTH] = glCreateProgram ();
+	es->prog = glCreateProgram ();
 
-	glAttachShader (es->prog[EARTH], es->vert[EARTH]);
-	glAttachShader (es->prog[EARTH], es->frag[EARTH]);
+	glAttachShader (es->prog, es->vert);
+	glAttachShader (es->prog, es->frag);
 
-	glLinkProgram (es->prog[EARTH]);
+	glLinkProgram (es->prog);
 
 	/* Check for link errors */
-	glGetObjectParameterivARB(es->prog[EARTH], GL_OBJECT_LINK_STATUS_ARB, &status);
+	glGetObjectParameterivARB(es->prog, GL_OBJECT_LINK_STATUS_ARB, &status);
 	if (!status)
 	{
 		compLogMessage ("earth", CompLogLevelWarn, "Failed to link shader program");
+		return;
 	}
-
-out:
-	/* Cleanup */
-	free (es->vertsource[EARTH]);
-	free (es->fragsource[EARTH]);
 }
 
 static void
@@ -340,13 +338,13 @@ DeleteShaders (EarthScreen* es)
 	if (!es->shadersupport)
 		return;
 
-	glDetachShader(es->prog[EARTH], es->vert[EARTH]);
-	glDetachShader(es->prog[EARTH], es->frag[EARTH]);
+	glDetachShader(es->prog, es->vert);
+	glDetachShader(es->prog, es->frag);
 
-	glDeleteShader(es->vert[EARTH]);
-	glDeleteShader(es->frag[EARTH]);
+	glDeleteShader(es->vert);
+	glDeleteShader(es->frag);
 
-	glDeleteProgram(es->prog[EARTH]);
+	glDeleteProgram(es->prog);
 }
 
 static void
@@ -662,7 +660,7 @@ earthPaintInside (CompScreen			  *s,
 
 	if (es->shadersupport && es->shaders)
 	{
-		glUseProgram(es->prog[EARTH]);
+		glUseProgram(es->prog);
 
 		glActiveTexture (GL_TEXTURE0);
 		enableTexture (s, es->tex[DAY], COMP_TEXTURE_FILTER_GOOD);
@@ -671,11 +669,8 @@ earthPaintInside (CompScreen			  *s,
 		enableTexture (s, es->tex[NIGHT], COMP_TEXTURE_FILTER_GOOD);
 
 		/* Pass the textures to the shader */
-		es->texloc[DAY] = glGetUniformLocation (es->prog[EARTH], "daytex");
-		es->texloc[NIGHT] = glGetUniformLocation (es->prog[EARTH], "nighttex");
-
-		glUniform1i (es->texloc[DAY], 0);
-		glUniform1i (es->texloc[NIGHT], 1);
+		glUniform1i (glGetUniformLocation (es->prog, "daytex"), 0);
+		glUniform1i (glGetUniformLocation (es->prog, "nighttex"), 1);
 	}
 	else
 		enableTexture (s, es->tex[DAY], COMP_TEXTURE_FILTER_GOOD);
