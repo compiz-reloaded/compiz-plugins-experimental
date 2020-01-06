@@ -3282,89 +3282,8 @@ msgid ""
 "0.0"
 msgstr ""
 
-msgid "Workspace Naming"
-msgstr ""
-
-msgid "Allows assigning descriptions to workspaces"
-msgstr ""
-
-msgid "Names"
-msgstr ""
-
-msgid "Workspace Names"
-msgstr ""
-
-#, fuzzy
-msgid "Viewport"
-msgstr "Area visibile in alto"
-
-#, fuzzy
-msgid "Number of viewport to be named"
-msgstr "Numero di finestre"
-
-#, fuzzy
-msgid "Viewport name"
-msgstr "Area visibile a sinistra"
-
-msgid "Display Time"
-msgstr "Durata visualizzazione"
-
-msgid "Timeout (in s) of the name display"
-msgstr ""
-
-msgid "Fade Time"
-msgstr "Durata dissolvenza"
-
-#, fuzzy
-msgid "Time (in s) the name display fades out after being shown."
-msgstr ""
-"Tempo (in secondi) di visibilità della barra delle schede dopo il cambio di "
-"scheda"
-
-#, fuzzy
-msgid "Text Display"
-msgstr "Visualizzazione"
-
-#, fuzzy
-msgid "Selects if the text should be displayed in bold font or not."
-msgstr ""
-"Stabilisce se il titolo della finestra deve essere mostrato in grassetto."
-
 # (ndt) suggerimento
-#, fuzzy
-msgid "Font family for the text display."
-msgstr ""
-"Dimensione del carattere per la visualizzazione del titolo della finestra"
-
 # (ndt) suggerimento
-#, fuzzy
-msgid "Font size for the text display."
-msgstr ""
-"Dimensione del carattere per la visualizzazione del titolo della finestra"
-
-#, fuzzy
-msgid "Selects where to place the text."
-msgstr "Stabilisce dove posizionare il titolo della finestra."
-
-#, fuzzy
-msgid "Top of screen"
-msgstr "Tipo della creatura marina"
-
-#, fuzzy
-msgid "Bottom of screen"
-msgstr "Dal basso verso l'alto"
-
-msgid "Colors"
-msgstr "Colori"
-
-#, fuzzy
-msgid "Background color for the text display."
-msgstr "Colore di sfondo per il titolo della finestra"
-
-#, fuzzy
-msgid "Font color for the text display."
-msgstr "Colore del carattere per il titolo della finestra"
-
 #~ msgid "3D Only On Mouse Rotate"
 #~ msgstr "3D solo con la rotazione del mouse"
 

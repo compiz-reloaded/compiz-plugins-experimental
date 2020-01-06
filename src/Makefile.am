@@ -27,5 +27,4 @@ SUBDIRS =                \
 	throw             \
 	tile              \
 	toggle-decoration \
-	wizard            \
-	workspacenames
+	wizard

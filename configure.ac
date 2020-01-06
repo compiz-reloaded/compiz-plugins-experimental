@@ -131,7 +131,6 @@ AM_CONDITIONAL(FREEWINS_PLUGIN, test "x$have_cairo" = "xyes")
 PKG_CHECK_MODULES(COMPIZTEXT, compiz-text, [have_compiz_text=yes], [have_compiz_text=no])
 AM_CONDITIONAL(ELEMENTS_PLUGIN, test "x$have_compiz_text" = "xyes")
 AM_CONDITIONAL(STACKSWITCH_PLUGIN, test "x$have_compiz_text" = "xyes")
-AM_CONDITIONAL(WORKSPACENAMES_PLUGIN, test "x$have_compiz_text" = "xyes")
 
 PKG_CHECK_MODULES(COMPIZCUBE, compiz-cube, [have_compiz_cube=yes], [have_compiz_cube=no])
 AM_CONDITIONAL(ATLANTIS_PLUGIN, test "x$have_compiz_cube" = "xyes")
@@ -199,6 +198,5 @@ src/throw/Makefile
 src/tile/Makefile
 src/toggle-decoration/Makefile
 src/wizard/Makefile
-src/workspacenames/Makefile
 po/Makefile.in
 ])

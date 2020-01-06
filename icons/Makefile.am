@@ -26,8 +26,7 @@ icons_DATA =				\
 	plugin-throw.svg		\
 	plugin-tile.svg			\
 	plugin-toggledeco.svg		\
-	plugin-wizard.svg		\
-	plugin-workspacenames.svg
+	plugin-wizard.svg
 
 EXTRA_DIST = \
 	$(icons_DATA)
