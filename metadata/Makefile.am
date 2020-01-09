@@ -68,11 +68,6 @@ if STACKSWITCH_PLUGIN
 stackswitchxml = stackswitch.xml.in
 endif
 
-if WORKSPACENAMES_PLUGIN
-#depends on text
-workspacenamesxml = workspacenames.xml.in
-endif
-
 xml_in_files =               \
 	anaglyph.xml.in       \
 	dialog.xml.in         \
@@ -100,8 +95,7 @@ xml_in_files =               \
 	$(screensaverxml)     \
 	$(snowglobexml)       \
 	$(stackswitchxml)     \
-	$(wizardxml)          \
-	$(workspacenamesxml)
+	$(wizardxml)
 	
 xml_files    = $(xml_in_files:.xml.in=.xml)
 xml_DATA     = $(xml_files)
