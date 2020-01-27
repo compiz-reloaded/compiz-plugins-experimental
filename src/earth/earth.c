@@ -794,17 +794,11 @@ earthInitScreen (CompPlugin *p,
 
 	int i;
 
-	es = malloc (sizeof (EarthScreen));
+	es = calloc (1, sizeof (EarthScreen));
 	if (!es)
 		return FALSE;
 
 	s->base.privates[ed->screenPrivateIndex].ptr = es;
-
-	es->damage = FALSE;
-
-	/* Animation */
-	es->rotspeed = 0;
-	es->rotation = 0;
 
 
 	/* Load texture images */
