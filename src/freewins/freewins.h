@@ -338,7 +338,7 @@ typedef struct _FWWindow
 
 } FWWindow;
 
-int displayPrivateIndex;
+extern int displayPrivateIndex;
 
 /* ------ Forward Declarations --------------------------------------------*/
 
