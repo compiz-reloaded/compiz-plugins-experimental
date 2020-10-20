@@ -569,12 +569,15 @@ earthPreparePaintScreen (CompScreen *s,
 	{
 		pthread_join (es->cloudsthreaddata.tid, NULL);
 		clouds_filename = TransformClouds (s);
-		if (readImageToTexture (s, es->tex[CLOUDS], clouds_filename, 0, 0))
-			compLogMessage ("earth", CompLogLevelInfo,
-								"Loaded texture %s", clouds_filename);
-		else
-			readImageToTexture (s, es->tex[CLOUDS], "clouds.png", 0, 0);
-		free(clouds_filename);
+		if (clouds_filename)
+		{
+			if (readImageToTexture (s, es->tex[CLOUDS], clouds_filename, 0, 0))
+				compLogMessage ("earth", CompLogLevelInfo,
+									"Loaded texture %s", clouds_filename);
+			else
+				readImageToTexture (s, es->tex[CLOUDS], "clouds.png", 0, 0);
+			free(clouds_filename);
+		}
 		es->cloudsthreaddata.finished = 0;
 		es->cloudsthreaddata.started = 0;
 	}
