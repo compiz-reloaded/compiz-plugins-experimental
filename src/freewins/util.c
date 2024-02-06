@@ -48,6 +48,7 @@
  */
 
 #include "freewins.h"
+#include <stdlib.h>
 
 
 /* ------ Utility Functions ---------------------------------------------*/

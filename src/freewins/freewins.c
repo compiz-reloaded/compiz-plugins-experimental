@@ -48,6 +48,7 @@
  *    - 'Rotate' Button
  */
 
+#include <stdlib.h>
 #include "freewins.h"
 
 static CompMetadata freewinsMetadata;

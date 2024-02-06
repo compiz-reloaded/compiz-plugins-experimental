@@ -45,6 +45,7 @@
  *  Animation is based on Put Plugin (Author: Darryll Truchan <moopsy@comcast.net>
  *
  */
+#include <stdlib.h>
 #include <X11/Xatom.h>
 #include <math.h>
 #include <compiz-core.h>

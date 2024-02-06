@@ -102,6 +102,7 @@
 #define NRAND(n)                ((int) (LRAND() % (n)))
 #define MAXRAND                 (2147483648.0) /* unsigned 1<<31 as a float */
 
+#include <stdlib.h>
 #include <math.h>
 #include <float.h>
 

@@ -48,6 +48,7 @@
  */
 
 #include "freewins.h"
+#include <stdlib.h>
 #include <cairo/cairo-xlib.h>
 
 /* ------ Input Prevention -------------------------------------------*/
