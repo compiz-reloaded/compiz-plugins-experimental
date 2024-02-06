@@ -48,6 +48,7 @@
 
 
 
+#include <stdlib.h>
 #include <compiz-core.h>
 #include "elements_options.h"
 #define GET_DISPLAY(d)                            \

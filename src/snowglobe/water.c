@@ -24,6 +24,7 @@
 
 /* Uses water amplitude calculation by David Mikos */
 
+#include <stdlib.h>
 #include "snowglobe-internal.h"
 #include "math.h"
 #include "snowglobe_options.h"

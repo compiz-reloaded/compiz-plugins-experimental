@@ -18,6 +18,7 @@
  * Author:	Patryk Kowalczyk <wodor@wodor.org>
  **/
 
+#include <stdlib.h>
 #include <compiz-core.h>
 #include "anaglyph_options.h"
 

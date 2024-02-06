@@ -38,6 +38,7 @@
  * for helping me make this possible
  */
 
+#include <stdlib.h>
 #include <math.h>
 
 #include <compiz-core.h>

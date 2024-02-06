@@ -19,6 +19,7 @@
  *
  **/
 
+#include <stdlib.h>
 #include <compiz-core.h>
 #include "fakeargb_options.h"
 

@@ -1,5 +1,6 @@
 #include "snowglobe-internal.h"
 #include "snowglobe_options.h"
+#include <stdlib.h>
 #include <math.h>
 #include <float.h>
 
